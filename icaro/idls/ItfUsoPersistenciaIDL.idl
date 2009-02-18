@@ -1,0 +1,18 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+
+module organizacion {
+	module infraestructura {
+		module corba {
+			module recursos {
+				module ItfUsoPersistenciaIDL {
+					interface ItfUsoPersistenciaIDL : ::organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+						boolean compruebaUsuario(in string usuario, in string password);
+						boolean compruebaNombreUsuario(in string usuario);
+						void insertaUsuario (in string usuario,in string password);		
+					};
+				};
+			};
+		};
+	};
+};			

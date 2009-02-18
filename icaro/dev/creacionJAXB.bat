@@ -1,0 +1,1 @@
+xjc -d ../src ../schemas/DescripcionOrganizacionSchema.xsd -p icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.jaxb

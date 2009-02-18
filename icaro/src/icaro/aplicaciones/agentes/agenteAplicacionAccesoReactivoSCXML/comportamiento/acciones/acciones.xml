@@ -1,0 +1,16 @@
+<acciones cualificador="http://www.tid.es/icaro/agenteacceso" >
+    <accion nombre="arranque" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.Arranque"/>
+    <accion nombre="mostrarUsuarioNoAccede" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.MostrarUsuarioNoAccede"/>
+    <accion nombre="mostrarUsuarioAccede" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.MostrarUsuarioAccede"/>
+    <accion nombre="pedirTerminacionGestorAgentes" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.PedirTerminacionGestorAgentes"/>
+    <accion nombre="terminacion" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.Terminacion"/>
+    <accion nombre="valida" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.Valida"/>
+    <accion nombre="clasificarError" 
+	        clase="organizacion.agentes.aplicacion.agenteAplicacionAcceso2.acciones.ClasificarError"/>
+</acciones>

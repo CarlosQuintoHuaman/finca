@@ -1,0 +1,15 @@
+#include "EntidadesBasicas.idl"
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module patronAgenteReactivo {					
+					module itfUsoAgenteReactivoIDL {
+						interface ItfUsoAgenteReactivoIDL {
+							void aceptaEvento(in organizacion::infraestructura::corba::entidadesbasicas::eventoStruct::EventoStruct ev);
+						};
+					};
+				};				
+			};
+	};
+};

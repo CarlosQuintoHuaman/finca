@@ -1,0 +1,13 @@
+module organizacion {
+	module infraestructura {
+		module corba {
+			module patronRecursoSimple {
+				module factoriaRecursoSimpleIDL {
+					interface FactoriaRecursoSimpleIDL {
+						void crearRecursoSimple(in string nombreRecurso);
+					};
+				};
+			};
+		};
+	};
+};

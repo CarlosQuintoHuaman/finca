@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE tablaEstados SYSTEM "schemas/TablaEstados.dtd">
+<!-- para validacion manual:
+<!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
+ -->
+<tablaEstados descripcionTabla="Tabla para la ficha">
+	<estadoInicial idInicial="estadoInicial">
+		<transicion input="comenzar" accion="nula" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"/>
+	</estadoInicial>
+	<estado idIntermedio="esperaInicial">
+		<transicion input="mostrarVentanaFicha" accion="pintaVentanaFicha" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaFicha">
+		<transicion input="infoFicha" accion="darAlta" estadoSiguiente="esperaResultadoAlta" modoDeTransicion="bloqueante"/>
+		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="esperandoTerminacion">
+		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="esperaResultadoAlta">
+		<transicion input="correcto" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+		<transicion input="errorFormato" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="tratamientoErrores">
+		<transicion input="errorRecuperable" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
+		<transicion input="errorCritico" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estadoFinal idFinal="terminado"/>
+	<transicionUniversal input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/>
+	</tablaEstados>

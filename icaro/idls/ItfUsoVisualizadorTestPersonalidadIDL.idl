@@ -1,0 +1,26 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+module organizacion {
+	module infraestructura {
+		module corba {
+			module recursos {
+				module visualizacion {
+					module itfUsoVisualizadorTestPersonalidadIDL {
+						typedef sequence<wstring> t_textos;
+						typedef sequence<long> t_resultados;
+						
+						interface ItfUsoVisualizadorTestPersonalidadIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+							void accionSalir();
+							void mostrarMensajeError(in string descripcion);
+							void mostrarConfirmacion(in t_textos textosTest);
+							void mostrarVentanaPrincipal(in t_textos listaAyudas);
+							void variaVentanaPrincipal(in long panel, in t_textos listaPreguntas, in t_resultados resultadosPrevios);
+							void mostrarResultado(in string descripcion, in t_resultados resultados, in t_textos textosTest);
+							void mostrarIncompletitud();	
+						};
+					};
+				};
+			};
+		};
+	};
+};

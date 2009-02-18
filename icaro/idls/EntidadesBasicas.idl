@@ -1,0 +1,21 @@
+module organizacion {
+	module infraestructura {
+		module corba {
+			module entidadesbasicas {
+				module eventoStruct {
+					struct EventoStruct {
+						wstring clase;
+						wstring contenido;
+					};
+				};
+				
+				module mensajeStruct {
+					struct MensajeStruct {
+						wstring clase;
+						wstring contenido;
+					};
+				};		
+			};
+		};
+	};
+};

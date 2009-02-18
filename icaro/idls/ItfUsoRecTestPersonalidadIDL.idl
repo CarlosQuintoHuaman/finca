@@ -1,0 +1,24 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module recursos {
+					module itfUsoRecTestPersonalidadIDL {		
+						typedef sequence<wstring> t_cadenas;
+						typedef sequence<long> t_resultados;	
+									
+						interface ItfUsoRecTestPersonalidadIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {		
+							t_resultados cargaPreguntas(in t_cadenas preguntas);
+							void anotaRespuestas(in t_cadenas preguntas, in t_resultados respuestas);
+							void guardarProgresoFichero();
+							string textoResultado(in t_cadenas textos);
+							t_resultados getResultados();
+							boolean todasRespondidas();
+							void reinicia();
+						};	
+					};		
+				};				
+			};
+	};
+};

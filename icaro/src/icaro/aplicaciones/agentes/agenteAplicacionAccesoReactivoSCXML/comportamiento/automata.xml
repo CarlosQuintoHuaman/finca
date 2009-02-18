@@ -1,0 +1,54 @@
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       xmlns:aa="http://www.tid.es/icaro/agenteacceso"
+       version="1.0"
+       initialstate="Inicial">
+    <state id="Inicial">
+        <transition target="Funcionando">
+            <aa:arranque/>
+        </transition>
+    </state>
+    <state id="Funcionando">
+        <initial>
+            <transition>
+                <target next="EsperaLogin"/>
+            </transition>
+        </initial>
+        <state id="EsperaLogin">
+            <transition event="autenticacion" target="EsperaResultadoValidacion">
+                <aa:valida/>
+            </transition>
+            <transition event="peticion_terminacion_usuario" target="EsperandoTerminacion">
+            </transition>
+        </state>
+        <state id="EsperandoTerminacion">
+            <onentry>
+               <aa:pedirTerminacionGestorAgentes/>
+            </onentry>
+            <transition event="termina" target="Final">
+                <aa:terminacion/>
+            </transition>
+        </state>
+        <state id="EsperaResultadoValidacion">
+            <transition event="usuarioValido" target="EsperandoTerminacion">
+                <aa:mostrarUsuarioAccede/>
+            </transition>
+            <transition event="usuarioNoValido" target="EsperandoTerminacion">
+                <aa:mostrarUsuarioNoAccede/>
+            </transition>
+        </state>
+        <transition event="termina" target="Final">
+            <aa:terminacion/>
+        </transition>
+        <transition event="error" target="TratamientoErrores">
+            <aa:clasificaError/>
+        </transition>
+    </state>
+    <state id="TratamientoErrores">
+        <transition event="errorIrrecuperable" target="Final">
+            <aa:terminacion/>
+        </transition>
+        <transition event="errorRecuperable" target="Funcionando">
+        </transition>
+    </state>
+    <state id="Final" final="true"/>
+</scxml>

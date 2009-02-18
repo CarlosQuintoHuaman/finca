@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Organizacion xmlns="urn:organizacion:infraestructura:configuracion">
+    <PropiedadesGlobales>
+        <listaPropiedades>
+            <propiedad valor="5000" atributo="gestores.comun.intervaloMonitorizacion"/>
+            <propiedad valor="info" atributo="organizacion.nivel.log"/>
+        </listaPropiedades>
+    </PropiedadesGlobales>
+    <DescripcionComponentes>
+        <DescComportamientoAgentes>
+            <DescComportamientoGestores>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorAgentes"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorRecursos"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorOrganizacion"/>
+            </DescComportamientoGestores>
+            <DescComportamientoAgentesAplicacion>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteCognitivo" tipo="Cognitivo" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionAccesoCognitivo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaReglas>icaro/aplicaciones/agentes/agenteAplicacionAccesoCognitivo/procesoResolucionObjetivos/reglas.drl</rutaReglas>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteCognitivo" tipo="Cognitivo" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionAccesoMaestroCognitivo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaReglas>icaro/aplicaciones/agentes/agenteAplicacionAccesoMaestroCognitivo/procesoResolucionObjetivos/reglas.drl</rutaReglas>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionAccesoReactivo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaMaquinaEstados>icaro/aplicaciones/agentes/agenteAplicacionAccesoReactivo/comportamiento/automata.xml</rutaMaquinaEstados>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionAccesoReactivo.comportamiento.AccionesSemanticasAgenteAplicacionAcceso</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="ReactivoSCXML" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionAccesoReactivoSCXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaMaquinaEstados>Clase de Acciones Semanticas no encontrada</rutaMaquinaEstados>
+                    <rutaAcciones>icaro/aplicaciones/agentes/agenteAplicacionAccesoReactivoSCXML/comportamiento/accionesSemanticas/acciones.xml</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionAltaReactivo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaMaquinaEstados>icaro/aplicaciones/agentes/agenteAplicacionAltaReactivo/comportamiento/automata.xml</rutaMaquinaEstados>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionAltaReactivo.comportamiento.AccionesSemanticasAgenteAplicacionAlta</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="agenteAplicacionTestPersonalidadReactivo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaMaquinaEstados>icaro/aplicaciones/agentes/agenteAplicacionTestPersonalidadReactivo/comportamiento/automata.xml</rutaMaquinaEstados>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionTestPersonalidadReactivo.comportamiento.AccionesSemanticasAgenteAplicacionTestPersonalidad</rutaAcciones>
+                </DescComportamientoAgente>
+            </DescComportamientoAgentesAplicacion>
+        </DescComportamientoAgentes>
+        <DescRecursosAplicacion>
+            <DescRecursoAplicacion nombre="persistencia">
+                <claseGeneradora>icaro.aplicaciones.recursos.persistencia.imp.ClaseGeneradoraPersistencia</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="recInformacionUsuario">
+                <claseGeneradora>icaro.aplicaciones.recursos.recInformacionUsuario.imp.ClaseGeneradoraRecInformacionUsuario</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="recTestPersonalidad">
+                <claseGeneradora>icaro.aplicaciones.recursos.recTestPersonalidad.imp.ClaseGeneradoraRecTestPersonalidad</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="visualizacionAcceso">
+                <claseGeneradora>icaro.aplicaciones.recursos.visualizacionAcceso.imp.ClaseGeneradoraVisualizacionAcceso</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="visualizacionAccesoAlta">
+                <claseGeneradora>icaro.aplicaciones.recursos.visualizacionAccesoAlta.imp.ClaseGeneradoraVisualizacionAccesoAlta</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="visualizacionAlta">
+                <claseGeneradora>icaro.aplicaciones.recursos.visualizacionAlta.imp.ClaseGeneradoraVisualizacionAlta</claseGeneradora>
+            </DescRecursoAplicacion>
+            <DescRecursoAplicacion nombre="visualizacionRecTestPersonalidad">
+                <claseGeneradora>icaro.aplicaciones.recursos.visualizacionRecTestPersonalidad.imp.ClaseGeneradoraVisualizacionTestPersonalidad</claseGeneradora>
+            </DescRecursoAplicacion>
+        </DescRecursosAplicacion>
+    </DescripcionComponentes>
+    <Instancias>
+        <Gestores>
+            <InstanciaGestor refDescripcion="GestorAgentes" id="gestorAgentes">
+                <nodoEspecifico>
+                    <nombreUso>nodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado refId="*" refDescripcion="agenteAplicacionAccesoCognitivo"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+            <InstanciaGestor refDescripcion="GestorOrganizacion" id="gestorOrganizacion">
+                <nodoEspecifico>
+                    <nombreUso>nodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado refId="gestorAgentes" refDescripcion="GestorAgentes"/>
+                    <componenteGestionado refId="gestorRecursos" refDescripcion="GestorRecursos"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+            <InstanciaGestor refDescripcion="GestorRecursos" id="gestorRecursos">
+                <nodoEspecifico>
+                    <nombreUso>nodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado refId="*" refDescripcion="persistencia"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+        </Gestores>
+        <AgentesAplicacion>
+            <Instancia refDescripcion="agenteAplicacionAccesoCognitivo" id="*">
+                <listaPropiedades/>
+                <nodoEspecifico>
+                    <nombreUso>nodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </AgentesAplicacion>
+        <RecursosAplicacion>
+            <Instancia refDescripcion="persistencia" id="*">
+                <listaPropiedades/>
+                <nodoEspecifico>
+                    <nombreUso>nodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </RecursosAplicacion>
+    </Instancias>
+</Organizacion>

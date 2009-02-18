@@ -1,0 +1,12 @@
+module organizacion {
+	module infraestructura {
+		module corba {
+			module patronRecursoSimple {
+				module itfUsoRecursoSimpleIDL {
+					interface ItfUsoRecursoSimpleIDL {
+					};
+				};
+			};
+		};
+	};
+};

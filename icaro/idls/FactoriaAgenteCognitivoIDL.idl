@@ -1,0 +1,13 @@
+module organizacion {
+	module infraestructura {
+		module corba {
+			module patronAgenteCognitivo {
+				module factoriaAgenteCognitivoIDL {
+ 					interface FactoriaAgenteCognitivoIDL {
+ 						void   crearAgenteCognitivo(in string nombreAgente); 
+ 					};
+ 				};
+ 			};
+ 		};
+	};
+};

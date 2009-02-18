@@ -1,0 +1,15 @@
+#include "InterfazGestionIDL.idl"
+
+module organizacion {
+	module infraestructura {
+		module corba {
+			module patronRecursoSimple {
+				module ItfGestionRecursoSimpleIDL {
+					interface ItfGestionRecursoSimpleIDL : ::organizacion::infraestructura::corba::interfazGestionIDL::InterfazGestionIDL{
+						
+					};
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,230 @@
+package organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo;
+
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Objective;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Focus;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Creencia;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Tarea;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.gestortareas.IGestorTareas;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.objetivos.DarAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.objetivos.DarAyudaAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.objetivos.TerminarServicioAcceso;
+import organizacion.informacion.DatosAccesoSinValidar;
+global IGestorTareas gestorTareas;
+
+
+
+rule "Acciones Iniciales"
+ when
+ then
+  Focus foco = new Focus();
+  assert(foco);
+end
+
+rule "Creacion de los objectivos iniciales"
+ when
+ then
+  DarAcceso obj = new DarAcceso();
+  TerminarServicioAcceso objTerminar = new TerminarServicioAcceso();
+  assert(obj);
+  assert(objTerminar);
+end
+
+///Generacion Dinamica de Objetivos.
+rule "Creacion del objetivo DarAyudaAcceso"
+ when 
+  cre:Creencia(emisor == "Recurso:VisualizadorAcceso", contenido == "SolicitudAyuda")
+ then
+  DarAyudaAcceso obj = new DarAyudaAcceso();
+  assert(obj);
+  retract(cre);
+end
+
+///Reglas de focalizacion.
+
+rule "Regla de focalizacion 1"
+ when
+  focus:Focus(foco:foco->(foco == null))
+  obj:DarAcceso()
+ then
+  focus.setFoco(obj);
+  modify(focus);
+end
+
+rule "Regla de focalizacion 2"
+ when
+  obj:DarAyudaAcceso()
+  focus:Focus(foco:foco->(foco!=obj))
+ then
+  focus.setFoco(obj);
+  modify(focus);
+end
+
+rule "Regla de focalizacion 3"
+ when
+   obj:DarAyudaAcceso(state == Objective.SOLVED)
+   f:Focus(foco:foco->(obj==foco)) 
+ then
+   f.refocus();
+   modify(f);
+   retract(obj);
+end
+
+rule "Regla de focalizacion del objetivo terminarServicioAcceso"
+ when
+   obj:DarAcceso(state == Objective.SOLVED)
+   objTerminacion:TerminarServicioAcceso()
+   f:Focus(foco:foco->(obj==foco)) 
+ then
+   f.setFoco(objTerminacion);
+   modify(f);
+   retract(obj);
+end
+
+
+///Reglas de Resolucion de Objetivos.
+
+///Reglas de Resolucion del Objetivo DarAcceso
+
+rule "Iniciando objetivo DarAcceso"
+  when 
+    obj:DarAcceso(state==Objective.PENDING)
+    Focus(foco:foco->(obj==foco))
+  then
+    obj.setSolving(); 
+    modify(obj);
+end
+
+rule " Relanzar objetivo DarAcceso"
+ when 
+    obj:DarAcceso(state==Objective.FAILED)
+    Focus(foco:foco->(obj==foco))
+ then
+    obj.setPending();
+    modify(obj);
+end
+
+rule "Solicitud de Datos Inicial"
+   when
+    obj:DarAcceso(state==Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+   then
+     Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.SolicitarDatos.class);
+     tarea.ejecutar();
+end
+
+rule "Validacion de Datos"
+  when
+    obj:DarAcceso(state == Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+    cre:Creencia(emisor == "Recurso:VisualizacionAcceso",contenido:contenido->(contenido instanceof DatosAccesoSinValidar))
+  then
+    Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.ValidarDatos.class);
+    tarea.ejecutar(contenido);
+    retract(cre);
+end
+
+
+rule "Permiso del Acceso"
+ when
+  cre:Creencia(emisor=="Task:ValidarDatos",$contenido:contenido->($contenido.toString().equals("true")))
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+ then
+  Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.PermitirAcceso.class);
+  tarea.ejecutar();
+  retract(cre);
+end
+
+rule "Denegacion del Acceso"
+ when 
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+  cre:Creencia(emisor=="Task:ValidarDatos",$contenido:contenido->($contenido.toString().equals("false"))) 
+ then
+  Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.DenegarAcceso.class);
+  tarea.ejecutar();
+  retract(cre);
+end
+
+rule "Objectivo DarAcceso resuelto"
+ when
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+  cre:Creencia(emisor=="Task:PermitirAcceso",$contenido:contenido->($contenido.equals("visualizacion ok")))
+ then
+  retract(cre);
+  obj.setSolved();
+  modify(obj);
+end
+
+rule "Objectivo DarAcceso fracasado"
+ when
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+  cre:Creencia(emisor=="Task:DenegarAcceso",$contenido:contenido->($contenido.equals("ejecucion ok")))
+ then
+  retract(cre);
+  obj.setFailed();
+  modify(obj);
+end
+
+///Reglas de Resolucion de DarAyudaAcceso.
+
+rule "Iniciando objetivo DarAyudaAcceso"
+  when 
+    obj:DarAyudaAcceso(state==Objective.PENDING)
+    Focus(foco:foco->(obj==foco))
+  then
+    obj.setSolving(); 
+    modify(obj);
+end
+
+rule "Enviar la Ayuda al Usuario"
+ when
+   obj:DarAyudaAcceso(state == Objective.SOLVING)
+   Focus(foco:foco->(obj==foco)) 
+ then
+   Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.MostrarAyuda.class);
+   tarea.ejecutar();
+end
+
+rule "Objetivo DarAyudaAcceso resuelto"
+ when
+   obj:DarAyudaAcceso(state == Objective.SOLVING)
+   Focus(foco:foco->(obj==foco)) 
+   cre:Creencia(emisor=="Task:MostrarAyuda", contenido=="AyudaMostrada")
+ then
+   retract(cre);
+   obj.setSolved();
+   modify(obj);
+end
+
+//Reglas de resolucion del objetivo TerminarServicioAcceso
+rule "Iniciando objetivo TerminarServicioAcceso"
+  when 
+    obj:TerminarServicioAcceso(state==Objective.PENDING)
+    Focus(foco:foco->(obj==foco))
+  then
+    obj.setSolving(); 
+    modify(obj);
+end
+
+rule "Resolver objetivo TerminarServicioAcceso"
+  when 
+    obj:TerminarServicioAcceso(state==Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+  then
+  	Tarea tarea = gestorTareas.crearTarea(organizacion.agentes.aplicacion.agenteAplicacionAccesoCognitivo.tareas.PedirTerminacionAGestor.class);
+    tarea.ejecutar();
+end
+
+rule "Objetivo TerminarServicioAcceso resuelto"
+ when
+   obj:TerminarServicioAcceso(state == Objective.SOLVING)
+   Focus(foco:foco->(obj==foco)) 
+   cre:Creencia(emisor=="Task:PedirTerminacionAGestor", contenido=="peticionEnviada")
+ then
+   retract(cre);
+   obj.setSolved();
+   modify(obj);
+end

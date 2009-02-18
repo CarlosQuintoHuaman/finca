@@ -1,0 +1,24 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module recursos {
+					module itfUsoRecInformacionUsuarioIDL {		
+						interface ItfUsoRecInformacionUsuarioIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {		
+							void guardarMensaje(in wstring mensaje);
+							void anyadirAlternativaAlMensaje(in string id, in string alternativa);
+							void eliminarMensaje(in string id);
+							void eliminarAlternativaMensaje(in string id, in long alternativa);
+							wstring obtenerMensaje(in string idMensaje);
+							wstring obtenerMensajeAlternativo(in string idMensaje, in long numAlternativa);
+							wstring obtenerMensajeParametrizado(in string idMensaje, in wstring parametros);
+							wstring obtenerMensajeAlternativoParametrizado(in string idMensaje, in wstring parametros, in long numAlternativa);
+							wstring obtenerTodosLosMensajes();
+							wstring dameTablaDatosMostrar();							
+						};	
+					};		
+				};				
+			};
+	};
+};

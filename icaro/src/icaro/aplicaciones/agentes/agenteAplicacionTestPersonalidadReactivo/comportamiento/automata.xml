@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE tablaEstados SYSTEM "schemas/TablaEstados.dtd">
+<!-- para validacion manual:
+<!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
+ -->
+<tablaEstados descripcionTabla="Automata de control para el test de personalidad">
+	<estadoInicial idInicial="estadoInicial">
+		<transicion input="comenzar" accion="arranque" estadoSiguiente="arrancando" modoDeTransicion="bloqueante"/>
+		<transicion input="terminar" accion="terminacionSistema" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estadoInicial>
+	
+	<estado idIntermedio="arrancando">
+		<transicion input="preguntas_error" accion="error" estadoSiguiente="error" modoDeTransicion="bloqueante"/>
+		<transicion input="preguntas_ok" accion="comprobarTestRealizado" estadoSiguiente="comprobandoTestRealizado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="comprobandoTestRealizado">
+		<transicion input="test_no_realizado" accion="mostrarConfirmacionTest" estadoSiguiente="mostrandoConfirmacion" modoDeTransicion="bloqueante"/>
+		<transicion input="test_realizado" accion="mostrarResultado" estadoSiguiente="mostrandoResultado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="mostrandoConfirmacion">
+		<transicion input="confirmacion_ok" accion="mostrarInstrucciones" estadoSiguiente="mostrandoInstrucciones" modoDeTransicion="bloqueante"/>
+		<transicion input="confirmacion_no" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="mostrandoInstrucciones">
+		<transicion input="comenzar" accion="mostrarPanel" estadoSiguiente="presentandoPanel" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="presentandoPanel">
+		<transicion input="infoRespuestas" accion="guardarRespuestas" estadoSiguiente="guardandoRespuestas" modoDeTransicion="bloqueante"/>
+		<transicion input="guardarFin" accion="guardarProgreso" estadoSiguiente="almacenandoProgreso" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="guardandoRespuestas">
+		<transicion input="info_ok" accion="mostrarPanel" estadoSiguiente="presentandoPanel" modoDeTransicion="bloqueante"/>
+		<transicion input="fin_info" accion="guardarRespuestas" estadoSiguiente="almacenandoInfo" modoDeTransicion="bloqueante"/>
+		<transicion input="info_error" accion="error" estadoSiguiente="error" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="almacenandoInfo">
+		<transicion input="info_completa" accion="mostrarResultado" estadoSiguiente="mostrandoResultado" modoDeTransicion="bloqueante"/>
+		<transicion input="info_incompleta" accion="mostrarIncompletitud" estadoSiguiente="mostrandoIncompletitud" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="mostrandoIncompletitud">
+		<transicion input="terminar" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="mostrandoResultado">
+		<transicion input="terminar" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+		<transicion input="reinicio" accion="reiniciar" estadoSiguiente="reiniciando" modoDeTransicion="bloqueante"/>
+	</estado>
+
+	<estado idIntermedio="reiniciando">
+		<transicion input="reinicio_ok" accion="mostrarInstrucciones" estadoSiguiente="mostrandoInstrucciones" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="almacenandoProgreso">
+		<transicion input="progreso_guardado" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estado idIntermedio="error">
+		<transicion input="debo_terminar" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	
+	<estadoFinal idFinal="terminado"/>
+	
+	<transicionUniversal input="terminar" accion="accionTerminar" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+</tablaEstados>

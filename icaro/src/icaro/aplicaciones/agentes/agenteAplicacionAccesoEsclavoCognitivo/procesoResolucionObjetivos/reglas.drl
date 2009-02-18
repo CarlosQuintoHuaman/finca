@@ -1,0 +1,150 @@
+#created on: 25-abr-2008
+package organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo;
+
+#list any import classes here.
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.objetivos.DarAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.tareas.SolicitarDatos;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.tareas.EnviarInformacionAAgente;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.tareas.DenegarAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.tareas.ValidarDatos;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoEsclavo.tareas.PermitirAcceso;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Tarea;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Objective;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Creencia;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Focus;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.gestortareas.IGestorTareas;
+import organizacion.informacion.DatosAccesoValidados;
+import organizacion.informacion.DatosAccesoSinValidar;
+
+#declare any global variables here
+global IGestorTareas gestorTareas;
+
+rule "Acciones Iniciales"
+ when
+ then
+  Focus foco = new Focus();
+  assert(foco);
+end
+
+rule "Creacion de los objetivos iniciales"
+ when
+ then
+  DarAcceso obj = new DarAcceso();
+  obj.setSolving();
+  assert(obj);
+end
+
+//Reglas de focalizacion
+
+rule "Focalizacion del objetivo de acceso"
+ when
+  obj:DarAcceso()
+  f:Focus()
+  cre:Creencia(emisor == "AgenteAplicacionAccesoMaestro" , contenido == "ordenResolverObjetivoAcceso") 
+ then
+    retract(cre);
+    f.setFoco(obj);
+    modify(f);
+end
+///Reglas de Resolucion del Objetivo DarAcceso
+
+
+rule " Relanzar objetivo DarAcceso"
+ when 
+    obj:DarAcceso(state==Objective.FAILED)
+    Focus(foco:foco->(obj==foco))
+ then
+    obj.setSolving();
+    modify(obj);
+end
+/*
+rule "Lanzar objetivo DarAcceso"
+when
+  obj:DarAcceso(state == Objective.PENDING)
+  f:Focus(foco:foco->(obj==foco))
+ then
+  obj.setSolving();
+  modify(obj);
+end
+*/
+rule "Solicitud de Datos Inicial"
+   when
+    obj:DarAcceso(state==Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+   then
+     Tarea tarea = gestorTareas.crearTarea(SolicitarDatos.class);
+     tarea.ejecutar();
+end
+
+rule "Validacion de Datos"
+  when
+    obj:DarAcceso(state == Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+    cre:Creencia(emisor == "AgenteAplicacionAccesoMaestro",contenido:contenido->(contenido instanceof DatosAccesoSinValidar))
+  then
+    Tarea tarea = gestorTareas.crearTarea(ValidarDatos.class);
+    tarea.ejecutar(contenido);
+    retract(cre);
+end
+
+
+rule "Permiso del Acceso"
+ when
+  cre:Creencia(emisor=="Task:ValidarDatos",$contenido:contenido->($contenido.toString().equals("true")))
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(varFoco:foco->(varFoco==obj))
+ then
+  Tarea tarea = gestorTareas.crearTarea(PermitirAcceso.class);
+  tarea.ejecutar();
+  retract(cre);
+end
+
+rule "Denegacion del Acceso"
+ when 
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(varFoco:foco->(varFoco==obj))
+  cre:Creencia(emisor=="Task:ValidarDatos",$contenido:contenido->($contenido.toString().equals("false"))) 
+ then
+  Tarea tarea = gestorTareas.crearTarea(DenegarAcceso.class);
+  tarea.ejecutar();
+  retract(cre);
+end
+
+
+rule "Confirmacion objetivo resuelto"
+ when
+ 	obj:DarAcceso(state == Objective.SOLVING)
+    Focus(varFoco:foco->(obj==varFoco))
+    cre:Creencia(emisor=="Task:PermitirAcceso",contenido == "visualizacion ok")//$contenido:contenido->($contenido.equals("visualizacion ok")))
+ then
+    Tarea tarea = gestorTareas.crearTarea(EnviarInformacionAAgente.class);
+    tarea.ejecutar("AgenteAplicacionAccesoMaestro", "confirmacionObjetivoResuelto");
+    retract(cre); 
+    obj.setSolved();
+  	modify(obj);
+end
+
+/* 
+rule "Objectivo DarAcceso resuelto"
+ when
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+  //TODO
+  cre:Creencia(emisor=="Task:PermitirAcceso",$contenido:contenido->($contenido.equals("visualizacion ok")))
+ then
+  retract(cre);
+  obj.setSolved();
+  modify(obj);
+end
+*/
+rule "Objectivo DarAcceso fracasado"
+ when
+  obj:DarAcceso(state == Objective.SOLVING)
+  Focus(foco:foco->(obj==foco))
+  cre:Creencia(emisor=="Task:DenegarAcceso",$contenido:contenido->($contenido.equals("ejecucion ok")))
+ then
+  retract(cre);
+  obj.setFailed();
+  modify(obj);
+end
+

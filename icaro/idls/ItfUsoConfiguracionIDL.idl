@@ -1,0 +1,27 @@
+
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module recursosOrganizacion {
+							
+					module itfUsoConfiguracionIDL {
+						interface ItfUsoConfiguracionIDL {
+							string getNombreGestorOrganizacion();
+							
+							string getValorPropiedad(in string atributo);
+							
+							wstring getDescripcionGestor(in string nombre);
+							wstring getDescAgenteAplicacion(in string nombre);
+							wstring getDescripcionRecurso(in string nombre);
+							
+							wstring getEntornoEjecucionGestor(in string nombre);
+							wstring getEntornoEjecucionAgente(in string nombre);
+							wstring getEntornoEjecucionRecurso(in string nombre);
+							
+						};
+					};
+				};				
+			};
+	};
+};

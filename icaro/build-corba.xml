@@ -1,0 +1,432 @@
+<project name="Fuentes Organizacion con Cognitivo y CORBA" default="dist" basedir=".">
+	<description>
+        Infraestructura. Creacion de jars para deplegar con CORBA la organización, incluyendo el patrón de agente cognitivo
+    </description>
+
+
+	<property name="dist" location="${basedir}/dist" />
+	<property name="conf" location="${basedir}/config" />
+	<property name="lib" location="${basedir}/lib" />
+	<property name="reglas" location="${basedir}/reglas" />
+
+	<property name="idls" location="${basedir}/idls" />
+	<property name="corba-package" location="${infraestructura}/organizacion/infraestructura/corba" />
+
+	<!-- DIRECTORIOS FUENTES -->
+
+	<property name="infraestructura" location="${basedir}/src-infraestructura" />
+
+	<property name="gestorOrganizacion" location="${basedir}/src-gestorOrganizacion" />
+	<property name="gestorAgentes" location="${basedir}/src-gestorAgentes" />
+	<property name="gestorRecursos" location="${basedir}/src-gestorRecursos" />
+
+	<property name="agenteAplicacionAcceso" location="${basedir}/src-agenteAplicacionAcceso" />
+	<property name="agenteAplicacionAlta" location="${basedir}/src-agenteAplicacionAlta" />
+	<property name="agenteAplicacionTestPersonalidad" location="${basedir}/src-agenteAplicacionTestPersonalidad" />
+	
+	<property name="agenteAplicacionAccesoCognitivo" location="${basedir}/src-agenteAplicacionAccesoCognitivo" />
+	<property name="agenteAplicacionAccesoMaestro" location="${basedir}/src-agenteAplicacionAccesoMaestro" />
+	<property name="agenteAplicacionAccesoEsclavo" location="${basedir}/src-agenteAplicacionAccesoEsclavo" />
+
+	<property name="visualizacion-imp" location="${basedir}/src-recursoVisualizacion-imp" />
+	<property name="persistencia-imp" location="${basedir}/src-recursoPersistencia-imp" />
+	
+	<property name="recTestPersonalidad-imp" location="${basedir}/src-recTestPersonalidad-imp" />
+	<property name="recInformacionUsuario-imp" location="${basedir}/src-recInformacionUsuario-imp" />
+
+	<!--Añadir propiedad de los fuentes de los nuevos agentes y recursos-->
+	<!-- <property name="nuevoAgente" location="${basedir}/src-nuevoAgente" /> -->
+	<!-- <property name="nuevoRecurso-imp" location="${basedir}/src-nuevoRecurso-imp" /> -->
+
+
+	<!--DIRECTORIOS BINARIOS -->
+	<property name="infraestructura-build" location="${basedir}/classes-infraestructura" />
+	<property name="nodoPrincipal-build" location="${basedir}/classes-nodoPrincipal" />
+	<property name="nodoSecundario-build" location="${basedir}/classes-nodoSecundario" />
+
+	<property name="gestorOrganizacion-build" location="${basedir}/classes-gestorOrganizacion" />
+	<property name="gestorAgentes-build" location="${basedir}/classes-gestorAgentes" />
+	<property name="gestorRecursos-build" location="${basedir}/classes-gestorRecursos" />
+
+	<property name="agenteAplicacionAcceso-build" location="${basedir}/classes-agenteAplicacionAcceso" />
+	<property name="agenteAplicacionAlta-build" location="${basedir}/classes-agenteAplicacionAlta" />
+	<property name="agenteAplicacionTestPersonalidad-build" location="${basedir}/classes-agenteAplicacionTestPersonalidad" />
+	
+	<property name="agenteAplicacionAccesoCognitivo-build" location="${basedir}/classes-agenteAplicacionAccespCognitivo" />
+	<property name="agenteAplicacionAccesoMaestro-build" location="${basedir}/classes-agenteAplicacionAccesoMaestro" />
+	<property name="agenteAplicacionAccesoEsclavo-build" location="${basedir}/classes-agenteAplicacionAccesoEsclavo" />
+
+	<property name="visualizacion-imp-build" location="${basedir}/classes-recursovisualizacion-imp" />
+	<property name="persistencia-imp-build" location="${basedir}/classes-recursoPersistencia-imp" />
+
+	<property name="recTestPersonalidad-imp-build" location="${basedir}/classes-recTestPersonalidad-imp" />
+	<property name="recInformacionUsuario-imp-build" location="${basedir}/classes-recInformacionUsuario-imp" />
+
+	<!--Añadir propiedad de los binarios de los nuevos agentes y recursos-->
+	<!-- <property name="nuevoAgente-build" location="${basedir}/classes-nuevoAgente" /> -->
+	<!-- <property name="nuevoRecurso-imp-build" location="${basedir}/classes-nuevoRecurso-imp" /> -->
+
+
+	<property name="rutaDescripcion" value="./config/descripcionTestPersonalidad.xml"/>
+
+
+
+	<!--CLASSPATHs-->
+	<path id="class.path.infraestructura">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${infraestructura-build}" />
+	</path>
+
+	<path id="class.path.gestorOrg">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${gestorOrganizacion-build}" />
+	</path>
+
+	<path id="class.path.gestorAg">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${gestorAgentes-build}" />
+	</path>
+	<path id="class.path.gestorRec">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${gestorRecursos-build}" />
+	</path>
+
+
+	<path id="class.path.agenteAcc">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${agenteAplicacionAcceso-build}" />
+	</path>
+
+	<path id="class.path.agenteAlta">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${agenteAplicacionAlta-build}" />
+	</path>
+	<path id="class.path.agenteTestPerson">
+			<path refid="class.path.infraestructura" />
+			<pathelement location="${agenteAplicacionTestPersonalidad-build}" />
+	</path>
+	
+	<path id="class.path.agenteAccCogn">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${agenteAplicacionAccesoCognitivo-build}" />
+	</path>
+	<path id="class.path.agenteAccMaestro">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${agenteAplicacionAccesoMaestro-build}" />
+	</path>
+	<path id="class.path.agenteAccEsclavo">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${agenteAplicacionAccesoEsclavo-build}" />
+	</path>
+
+	<path id="class.path.recVisual">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${visualizacion-imp-build}" />
+	</path>
+	<path id="class.path.recPersist">
+		<path refid="class.path.infraestructura" />
+		<pathelement location="${persistencia-imp-build}" />
+	</path>
+	
+	<path id="class.path.recTestPerson">
+			<path refid="class.path.infraestructura" />
+			<pathelement location="${recTestPersonalidad-imp-build}" />
+	</path>
+	<path id="class.path.recInfoUsuario">
+				<path refid="class.path.infraestructura" />
+				<pathelement location="${recInformacionUsuario-imp-build}" />
+	</path>
+
+	<!-- Añadir classpath de cada nuevo agente y recuro -->
+	<!--
+	<path id="class.path.nuevoAgente">
+			<path refid="class.path.infraestructura" />
+			<pathelement location="${nuevoAgente-build}" />
+	</path>
+	-->
+	<!--
+	<path id="class.path.nuevoRecurso">
+			<path refid="class.path.infraestructura" />
+			<pathelement location="${nuevoRecurso-imp-build}" />
+	</path>
+	-->
+
+	<target name="init">
+		<!-- Crear el directorio dist -->
+		<mkdir dir="${dist}" />
+
+		<!-- Crear los directorios de binarios usados por la tarea compile -->
+		<mkdir dir="${nodoPrincipal-build}" />
+		<mkdir dir="${nodoSecundario-build}" />
+
+		<mkdir dir="${infraestructura-build}" />
+		<mkdir dir="${gestorOrganizacion-build}" />
+		<mkdir dir="${gestorAgentes-build}" />
+		<mkdir dir="${gestorRecursos-build}" />
+		<mkdir dir="${agenteAplicacionAcceso-build}" />
+		<mkdir dir="${agenteAplicacionAlta-build}" />
+		<mkdir dir="${agenteAplicacionTestPersonalidad-build}" />
+		
+		<mkdir dir="${agenteAplicacionAccesoCognitivo-build}" />
+		<mkdir dir="${agenteAplicacionAccesoMaestro-build}" />
+		<mkdir dir="${agenteAplicacionAccesoEsclavo-build}" />
+
+
+		<mkdir dir="${visualizacion-imp-build}" />
+		<mkdir dir="${persistencia-imp-build}" />
+		
+		<mkdir dir="${recTestPersonalidad-imp-build}" />
+		<mkdir dir="${recInformacionUsuario-imp-build}" />
+
+		<!--Crear los directorios de binarios de los nuevos agentes y recursos -->
+		<!--<mkdir dir="${nuevoAgente-build}" /> -->
+		<!-- <mkdir dir="${nuevoRecurso-imp-build}" /> -->
+
+	</target>
+
+
+	<!--Tarea que compila los idls que están en ${idls} -->
+	<target name="idl-compile" description="compile all IDL sources to Java source files">
+		<apply executable="idlj" failonerror="true">
+			<arg line="-verbose " />
+			<!-- Neccessary because of bug in Windows version -->
+			<arg value="-fall" />
+			<arg value="-OldImplBase" />
+			<arg value="-td" />
+			<arg value="${infraestructura}" />
+			<arg value="-i" />
+			<arg value="${idls}" />
+
+			<fileset dir="${idls}">
+				<include name="**/*.idl" />
+			</fileset>
+		</apply>
+	</target>
+
+
+	<!--Tarea que compila los fuentes -->
+	<target name="compile" depends="init" description="compile the source ">
+		<javac srcdir="${infraestructura}" destdir="${infraestructura-build}" classpathref="class.path.infraestructura" debug="off" />
+
+		<javac srcdir="${gestorOrganizacion}" destdir="${gestorOrganizacion-build}" classpathref="class.path.gestorOrg" debug="off" />
+		<javac srcdir="${gestorAgentes}" destdir="${gestorAgentes-build}" classpathref="class.path.gestorAg" debug="off" />
+		<javac srcdir="${gestorRecursos}" destdir="${gestorRecursos-build}" classpathref="class.path.gestorRec" debug="off" />
+
+
+		<javac srcdir="${agenteAplicacionAcceso}" destdir="${agenteAplicacionAcceso-build}" classpathref="class.path.agenteAcc" debug="off" />
+		<javac srcdir="${agenteAplicacionAlta}" destdir="${agenteAplicacionAlta-build}" classpathref="class.path.agenteAlta" debug="off" />
+		<javac srcdir="${agenteAplicacionTestPersonalidad}" destdir="${agenteAplicacionTestPersonalidad-build}" classpathref="class.path.agenteTestPerson" debug="off" />
+		
+		<javac srcdir="${agenteAplicacionAccesoCognitivo}" destdir="${agenteAplicacionAccesoCognitivo-build}" classpathref="class.path.agenteAccCogn" debug="off" />
+		<copy todir="${agenteAplicacionAccesoCognitivo-build}/reglas" >
+			<fileset dir="${reglas}">
+				<include name="agenteAplicacionAccesoCognitivo.drl" />
+			</fileset>
+		</copy>
+		
+		<javac srcdir="${agenteAplicacionAccesoMaestro}" destdir="${agenteAplicacionAccesoMaestro-build}" classpathref="class.path.agenteAccMaestro" debug="off" />
+		<copy todir="${agenteAplicacionAccesoMaestro-build}/reglas" >
+					<fileset dir="${reglas}">
+						<include name="agenteAplicacionAccesoMaestro.drl" />
+					</fileset>
+				</copy>
+		<javac srcdir="${agenteAplicacionAccesoEsclavo}" destdir="${agenteAplicacionAccesoEsclavo-build}" classpathref="class.path.agenteAccEsclavo" debug="off" />
+		<copy todir="${agenteAplicacionAccesoEsclavo-build}/reglas" >
+					<fileset dir="${reglas}">
+						<include name="agenteAplicacionAccesoEsclavo.drl" />
+					</fileset>
+				</copy>
+
+		<javac srcdir="${visualizacion-imp}" destdir="${visualizacion-imp-build}" classpathref="class.path.recVisual" debug="off" />
+		<javac srcdir="${persistencia-imp}" destdir="${persistencia-imp-build}" classpathref="class.path.recPersist" debug="off" />
+
+		<javac srcdir="${recTestPersonalidad-imp}" destdir="${recTestPersonalidad-imp-build}" classpathref="class.path.recTestPerson" debug="off" />
+		<javac srcdir="${recInformacionUsuario-imp}" destdir="${recInformacionUsuario-imp-build}" classpathref="class.path.recInfoUsuario" debug="off" />
+		
+		<!--Añadir la compilación de los nuevos agentes y recursos -->
+		<!--<javac srcdir="${nuevoAgente}" destdir="${nuevoAgente-build}" 
+		classpathref="class.path.nuevoAgente" debug="off" /> -->
+		<!--<javac srcdir=${nuevoAgenteCognitivo} destdir="${nuevoAgenteCognitivo-build}"
+				classpathref="class.path.nuevoAgenteCognitivo" debug="off" /> 
+			<copy todir="${nuevoAgenteCognitivo-build}/reglas" >
+				<fileset dir="${reglas}">
+					<include name="nuevoAgenteCognitivo.drl" />
+				</fileset>
+			</copy>
+		-->
+		<!--<javac srcdir="${nuevoRecurso-imp}" destdir="${nuevoRecurso-imp-build}" 
+		classpathref="class.path.nuevoRecurso" debug="off" /> 
+		-->
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<jar destfile="${dist}/infraestructura.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\lib\aclibico-2.1.jar ..\lib\commons-logging-1.1.jar ..\lib\log4j.jar ..\lib\mysql-3.1.7.jar ..\lib\org-jdesktop-layout.jar ..\lib\swing-layout-1.0.jar" />
+			</manifest>
+			<fileset dir="${infraestructura-build}" />
+		</jar>
+		<jar destfile="${dist}/gestorOrganizacion.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${gestorOrganizacion-build}" />
+		</jar>
+		<jar destfile="${dist}/gestorAgentes.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${gestorAgentes-build}" />
+		</jar>
+		<jar destfile="${dist}/gestorRecursos.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${gestorRecursos-build}" />
+		</jar>
+
+		<jar destfile="${dist}/agenteAplicacionAcceso.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${agenteAplicacionAcceso-build}" />
+		</jar>
+
+		<jar destfile="${dist}/agenteAplicacionAlta.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${agenteAplicacionAlta-build}" />
+		</jar>
+		
+		<jar destfile="${dist}/agenteAplicacionTestPersonalidad.jar">
+					<manifest>
+						<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+					</manifest>
+					<fileset dir="${agenteAplicacionTestPersonalidad-build}" />
+		</jar>
+		
+		<jar destfile="${dist}/agenteAplicacionAccesoCognitivo.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${agenteAplicacionAccesoCognitivo-build}" />
+		</jar>
+		<jar destfile="${dist}/agenteAplicacionAccesoMaestro.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${agenteAplicacionAccesoMaestro-build}" />
+		</jar>
+		<jar destfile="${dist}/agenteAplicacionAccesoEsclavo.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${agenteAplicacionAccesoEsclavo-build}" />
+		</jar>
+
+		<jar destfile="${dist}/recursovisualizacion-imp.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${visualizacion-imp-build}" />
+		</jar>
+
+		<jar destfile="${dist}/recursoPersistencia-imp.jar">
+			<manifest>
+				<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+			</manifest>
+			<fileset dir="${persistencia-imp-build}" />
+		</jar>
+		
+		<jar destfile="${dist}/recursoTestPersonalidad-imp.jar">
+					<manifest>
+						<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+					</manifest>
+					<fileset dir="${recTestPersonalidad-imp-build}" />
+		</jar>
+		<jar destfile="${dist}/recursoInformacionUsuario-imp.jar">
+							<manifest>
+								<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+							</manifest>
+							<fileset dir="${recInformacionUsuario-imp-build}" />
+		</jar>
+
+
+		<!--Crear los jar de cada nuevo agente y recurso -->
+		<!--	<jar destfile="${dist}/nuevoAgente.jar">
+					<manifest>
+						<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+					</manifest>
+					<fileset dir="${nuevoAgente-build}" />
+				</jar>
+		-->
+		<!--			<jar destfile="${dist}/nuevoRecurso-imp.jar">
+					<manifest>
+						<attribute name="Class-Path" value="..\dist\infraestructura.jar" />
+					</manifest>
+					<fileset dir="${nuevoRecurso-imp-build}" />
+				</jar>
+		-->
+	</target>
+
+
+
+	<target name="clean" description="clean up">
+		<!-- Borrar los directorios de binarios y el directorio dist -->
+		<delete dir="${dist}" includes="**/*.jar" />
+		<delete dir="${nodoPrincipal-build}" />
+		<delete dir="${nodoSecundario-build}" />
+		<delete dir="${infraestructura-build}" />
+		<delete dir="${gestorOrganizacion-build}" />
+		<delete dir="${gestorAgentes-build}" />
+		<delete dir="${gestorRecursos-build}" />
+
+		<delete dir="${agenteAplicacionAcceso-build}" />
+		<delete dir="${agenteAplicacionAlta-build}" />
+		<delete dir="${agenteAplicacionTestPersonalidad-build}" />
+		
+		<delete dir="${agenteAplicacionAccesoCognitivo-build}" />
+		<delete dir="${agenteAplicacionAccesoMaestro-build}" />
+		<delete dir="${agenteAplicacionAccesoEsclavo-build}" />
+
+		<delete dir="${visualizacion-imp-build}" />
+		<delete dir="${persistencia-imp-build}" />
+		
+		<delete dir="${recTestPersonalidad-imp-build}" />
+		<delete dir="${recInformacionUsuario-imp-build}" />
+
+		<!-- Añadir los directorios de binarios de los nuevos agentes y recursos -->
+		<!--<delete dir="${nuevoAgente-build}" />-->
+		<!--<delete dir="${nuevoRecurso-build}" />-->
+
+	</target>
+
+	<!-- *************************************************************************************** -->
+
+	<path id="run.class.path">
+		<path refid="class.path.infraestructura" />
+		<fileset dir="${dist}">
+					<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<target name="run-NodoPrincipal" depends="dist">
+		<java classname="organizacion.ArranqueNodoPrincipal" classpathref="run.class.path" fork="true" >
+			<arg value="${rutaDescripcion}"/>
+		</java>
+	</target>
+
+	<target name="run-NodoSecundario" depends="dist">
+		<java classname="organizacion.ArranqueNodoSecundario" classpathref="run.class.path" fork="true"/>
+	</target>
+	
+	<target name="run-local" depends="dist">
+		<java classname="organizacion.ArranqueSistema" classpathref="run.class.path" fork="true">
+			<arg value="${rutaDescripcion}"/>
+		</java>
+	</target>
+	</project>

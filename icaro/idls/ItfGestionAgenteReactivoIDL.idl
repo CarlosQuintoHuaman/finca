@@ -1,0 +1,15 @@
+#include "InterfazGestionIDL.idl"
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module patronAgenteReactivo {
+					module itfGestionAgenteReactivoIDL {
+						interface ItfGestionAgenteReactivoIDL : ::organizacion::infraestructura::corba::interfazGestionIDL::InterfazGestionIDL{
+							void setGestorAReportar(in string nombreGestor, in wstring conjuntoEventos);
+						};
+					};
+				}; 
+			};
+	};
+};

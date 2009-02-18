@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DescOrganizacion xmlns="urn:icaro:aplicaciones:descripcionOrganizaciones">
+    <PropiedadesGlobales>
+        <intervaloMonitorizacionGestores>5000</intervaloMonitorizacionGestores>
+        <activarPanelTrazasDebug>true</activarPanelTrazasDebug>
+        <listaPropiedades>
+            <propiedad valor="" atributo=""/>
+            <propiedad valor="5000" atributo="gestores.comun.intervaloMonitorizacion"/>
+            <propiedad valor="true" atributo="activar.panel.trazas.debug"/>
+        </listaPropiedades>
+    </PropiedadesGlobales>
+    <DescripcionComponentes>
+        <DescComportamientoAgentes>
+            <DescComportamientoGestores>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorOrganizacion"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorAgentes"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorRecursos"/>
+            </DescComportamientoGestores>
+            <DescComportamientoAgentesAplicacion>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteCognitivo" tipo="Cognitivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAcceso" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaReglas>/icaro/aplicaciones/agentes/agenteAplicacionAccesoCognitivo/procesoResolucionObjetivos/reglas.drl</rutaReglas>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteCognitivo" tipo="Cognitivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAccesoMaestro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaReglas>/icaro/aplicaciones/agentes/agenteAplicacionAccesoMaestroCognitivo/procesoResolucionObjetivos/reglas.drl</rutaReglas>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAcceso" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaAutomata>Maquina de Estados no encontrada</rutaAutomata>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionAccesoReactivo.comportamiento.AccionesSemanticasAgenteAplicacionAcceso</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="ReactivoSCXML" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAcceso" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaAutomata>Clase de Acciones Semanticas no encontrada</rutaAutomata>
+                    <rutaAcciones>/icaro/aplicaciones/agentes/agenteAplicacionAccesoReactivoSCXML/comportamiento/accionesSemanticas/acciones.xml</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAlta" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaAutomata>Maquina de Estados no encontrada</rutaAutomata>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionAltaReactivo.comportamiento.AccionesSemanticasAgenteAplicacionAlta</rutaAcciones>
+                </DescComportamientoAgente>
+                <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionTestPersonalidad" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <rutaAutomata>Maquina de Estados no encontrada</rutaAutomata>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionTestPersonalidadReactivo.comportamiento.AccionesSemanticasAgenteAplicacionTestPersonalidad</rutaAcciones>
+                </DescComportamientoAgente>
+            </DescComportamientoAgentesAplicacion>
+        </DescComportamientoAgentes>
+        <DescRecursosAplicacion>
+            <DescRecursoAplicacion nombre="Persistencia"/>
+            <DescRecursoAplicacion nombre="RecInformacionUsuario"/>
+            <DescRecursoAplicacion nombre="RecTestPersonalidad"/>
+            <DescRecursoAplicacion nombre="VisualizacionAcceso"/>
+            <DescRecursoAplicacion nombre="VisualizacionAccesoAlta"/>
+            <DescRecursoAplicacion nombre="VisualizacionAlta"/>
+            <DescRecursoAplicacion nombre="VisualizacionRecTestPersonalidad"/>
+        </DescRecursosAplicacion>
+    </DescripcionComponentes>
+    <Instancias>
+        <Gestores>
+            <InstanciaGestorOrganizacion refDescripcion="GestorOrganizacion" id="GestorOrganizacion">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="Gestor" refId="GestorAgentes" refDescripcion="GestorAgentes"/>
+                    <componenteGestionado tipoComponente="Gestor" refId="GestorRecursos" refDescripcion="GestorRecursos"/>
+                </componentesGestionados>
+            </InstanciaGestorOrganizacion>
+            <InstanciaGestor refDescripcion="GestorAgentes" id="GestorAgentes">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="AgenteAplicacion" refId="AgenteAplicacionAcceso1" refDescripcion="AgenteAplicacionAcceso"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+            <InstanciaGestor refDescripcion="GestorRecursos" id="GestorRecursos">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="RecursoAplicacion" refId="Persistencia1" refDescripcion="Persistencia"/>
+                    <componenteGestionado tipoComponente="RecursoAplicacion" refId="VisualizacionAcceso1" refDescripcion="VisualizacionAcceso"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+        </Gestores>
+        <AgentesAplicacion>
+            <Instancia refDescripcion="AgenteAplicacionAcceso" id="AgenteAplicacionAcceso1">
+                <listaPropiedades>
+                    <propiedad valor="" atributo=""/>
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </AgentesAplicacion>
+        <RecursosAplicacion>
+            <Instancia refDescripcion="Persistencia" id="Persistencia1">
+                <listaPropiedades>
+                    <propiedad valor="" atributo=""/>
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+            <Instancia refDescripcion="VisualizacionAcceso" id="VisualizacionAcceso1">
+                <listaPropiedades>
+                    <propiedad valor="" atributo=""/>
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </RecursosAplicacion>
+        <nodoComun>
+            <nombreUso>NodoPrincipal</nombreUso>
+            <nombreCompletoHost>localhost</nombreCompletoHost>
+        </nodoComun>
+    </Instancias>
+</DescOrganizacion>

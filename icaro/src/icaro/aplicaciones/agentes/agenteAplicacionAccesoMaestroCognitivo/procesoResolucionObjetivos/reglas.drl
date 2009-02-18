@@ -1,0 +1,146 @@
+#created on: 25-abr-2008
+package organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro;
+
+#list any import classes here.
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.objetivos.DarAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.objetivos.TerminarServicioAcceso;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.tareas.ComunicarInfoTerminacion;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.tareas.EnviarInformacionAAgente;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.tareas.GenerarInfoTerminacion;
+import organizacion.agentes.aplicacion.agenteAplicacionAccesoMaestro.tareas.PedirTerminacionAGestor;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Creencia;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Objective;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Focus;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.entidadesbasicas.Tarea;
+import organizacion.infraestructura.agentecognitivo2.procesadorconocimiento.gestortareas.IGestorTareas;
+import organizacion.informacion.DatosAccesoValidados;
+import organizacion.informacion.DatosAccesoSinValidar;
+
+
+#declare any global variables here
+global IGestorTareas gestorTareas;
+
+rule "Acciones Iniciales"
+ when
+ then
+  Focus foco = new Focus();
+  assert(foco);
+end
+
+rule "Creacion de los objetivos iniciales"
+ when
+ then
+  DarAcceso obj = new DarAcceso();
+  TerminarServicioAcceso objTerminacion = new TerminarServicioAcceso();
+  assert(obj);
+  assert(objTerminacion);
+end
+
+
+//Reglas de focalizacion
+
+
+rule "Regla de focalizacion 1"
+ when
+  focus:Focus(foco:foco->(foco == null))
+  obj:DarAcceso()
+ then
+  focus.setFoco(obj);
+  modify(focus);
+end
+/*
+rule "Regla de focalizacion 2"
+ when
+  obj:DarAyudaAcceso()
+  focus:Focus(foco:foco->(foco!=obj))
+ then
+  focus.setFoco(obj);
+  modify(focus);
+end
+*/
+rule "Regla de focalizacion del objetivo terminarServicioAcceso"
+ when
+   obj:DarAcceso(state == Objective.SOLVED)
+   objTerminacion:TerminarServicioAcceso()
+   f:Focus(foco:foco->(obj==foco)) 
+ then
+   f.setFoco(objTerminacion);
+   modify(f);
+   retract(obj);
+end
+
+
+//Reglas de resolucion del objetivos
+
+
+//Reglas de resolucion del objetivo de acceso
+
+rule "Iniciando objetivo DarAcceso"
+  when 
+    obj:DarAcceso(state==Objective.PENDING)
+    Focus(foco:foco->(obj==foco))
+  then
+    obj.setSolving(); 
+    modify(obj);
+end
+
+rule "Delegar objetivo a agente esclavo"
+  when
+    obj:DarAcceso(state == Objective.SOLVING)
+    Focus( foco:foco->(obj==foco))
+  then  
+	Tarea tarea = gestorTareas.crearTarea(EnviarInformacionAAgente.class);
+	tarea.ejecutar("AgenteAplicacionAccesoEsclavo", "ordenResolverObjetivoAcceso");
+end
+	
+rule "Enviar informacion acceso"
+ when
+   obj:DarAcceso(state == Objective.SOLVING)
+   Focus( foco:foco->(obj==foco))
+   cre:Creencia(emisor == "Recurso:VisualizacionAcceso",contenido:contenido->(contenido instanceof DatosAccesoSinValidar))
+ then
+   Tarea tarea = gestorTareas.crearTarea(EnviarInformacionAAgente.class);
+   tarea.ejecutar("AgenteAplicacionAccesoEsclavo", cre.getContenido());
+   retract(cre);
+end
+
+rule "Objetivo Acceso resuelto"
+  when
+    obj:DarAcceso(state == Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+    cre:Creencia(emisor =="AgenteAplicacionAccesoEsclavo", contenido=="confirmacionObjetivoResuelto")
+  then
+    obj.setSolved();
+    modify(obj);
+    retract(cre);
+end
+
+//Reglas de resolucion del objetivo TerminarServicioAcceso
+rule "Iniciando objetivo TerminarServicioAcceso"
+  when 
+    obj:TerminarServicioAcceso(state==Objective.PENDING)
+    Focus(foco:foco->(obj==foco))
+  then
+    obj.setSolving(); 
+    modify(obj);
+end
+
+rule "Resolver objetivo TerminarServicioAcceso"
+  when 
+    obj:TerminarServicioAcceso(state==Objective.SOLVING)
+    Focus(foco:foco->(obj==foco))
+  then
+  	Tarea tarea = gestorTareas.crearTarea(PedirTerminacionAGestor.class);
+    tarea.ejecutar();
+end
+
+rule "Objetivo TerminarServicioAcceso resuelto"
+ when
+   obj:TerminarServicioAcceso(state == Objective.SOLVING)
+   Focus(foco:foco->(obj==foco)) 
+   cre:Creencia(emisor=="Task:PedirTerminacionAGestor", contenido=="peticionEnviada")
+ then
+   retract(cre);
+   obj.setSolved();
+   modify(obj);
+end

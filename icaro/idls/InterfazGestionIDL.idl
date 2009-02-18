@@ -1,0 +1,15 @@
+module organizacion {
+	module infraestructura {
+		module corba {
+			module interfazGestionIDL {
+				interface InterfazGestionIDL {
+					void arranca();
+					void continua();
+					long obtenerEstado();
+					void para();
+					void termina();
+				};
+			};
+		};
+	};
+};

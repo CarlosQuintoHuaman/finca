@@ -1,0 +1,17 @@
+
+
+
+module organizacion {
+	module infraestructura {
+		module corba {
+			module patronAgenteReactivo {
+				module factoriaAgenteReactivoIDL {
+						interface FactoriaAgenteReactivoIDL {			
+							void crearAgenteReactivo (in string nombreAgente);
+						};
+				};
+			};
+		};
+	};
+};
+

@@ -1,0 +1,42 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+module organizacion {
+	module infraestructura {
+		module corba {
+			module recursos {
+				module visualizacion {
+					module itfUsoVisualizadorAccesoIDL {
+						interface ItfUsoVisualizadorAccesoIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+							void mostrarVisualizadorAcceso(in string nombreAgente, in string tipoAgente);
+							void cerrarVisualizadorAcceso();
+  							void mostrarMensajeInformacion(in string titulo, in string mensaje);
+  							void mostrarMensajeAviso(in string titulo, in string mensaje);
+  							void mostrarMensajeError(in string titulo, in string mensaje);	
+						};
+					};
+					
+					module itfUsoVisualizadorAccesoAltaIDL {
+						interface ItfUsoVisualizadorAccesoAltaIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+							void mostrarVisualizadorAccesoAlta();
+							void cerrarVisualizadorAccesoAlta();
+  							void mostrarMensajeInformacion(in string titulo, in string mensaje);
+  							void mostrarMensajeAviso(in string titulo, in string mensaje);
+  							void mostrarMensajeError(in string titulo, in string mensaje);	
+						};
+					};
+					
+					module itfUsoVisualizadorAltaIDL {
+						interface ItfUsoVisualizadorAltaIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+							void mostrarVisualizadorAlta();
+							void cerrarVisualizadorAlta();
+  							void mostrarMensajeInformacion(in string titulo, in string mensaje);
+  							void mostrarMensajeAviso(in string titulo, in string mensaje);
+  							void mostrarMensajeError(in string titulo, in string mensaje);	
+						};
+					};
+				};
+			};
+		};
+	};
+};		
+

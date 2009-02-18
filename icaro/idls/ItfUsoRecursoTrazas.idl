@@ -1,0 +1,29 @@
+#include "ItfUsoRecursoSimpleIDL.idl"
+
+module organizacion {
+	module infraestructura {
+			module corba {
+				module recursosOrganizacion {
+							
+					module itfUsoRecursoTrazasIDL {
+						module infoTrazaStruct {
+							enum NivelTrazaIDL {error,info,debug,fatal};	
+							struct InfoTrazaStruct {
+								string entidadEmisora;
+								string mensaje;
+								NivelTrazaIDL nivel;
+							};
+						};
+										
+						interface ItfUsoRecursoTrazasIDL : organizacion::infraestructura::corba::patronRecursoSimple::itfUsoRecursoSimpleIDL::ItfUsoRecursoSimpleIDL {
+							void aceptaNuevaTraza(in infoTrazaStruct::InfoTrazaStruct traza);
+							void visualizaNuevaTraza(in infoTrazaStruct::InfoTrazaStruct traza);
+						};
+						
+						
+					};
+					
+				};				
+			};
+	};
+};

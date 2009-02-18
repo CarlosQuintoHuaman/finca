@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DescOrganizacion xmlns="urn:icaro:aplicaciones:descripcionOrganizaciones">
+    <PropiedadesGlobales>
+        <intervaloMonitorizacionGestores>5000</intervaloMonitorizacionGestores>
+        <activarPanelTrazasDebug>true</activarPanelTrazasDebug>
+        <listaPropiedades>
+            <propiedad valor="5000" atributo="gestores.comun.intervaloMonitorizacion"/>
+        </listaPropiedades>
+    </PropiedadesGlobales>
+    <DescripcionComponentes>
+        <DescComportamientoAgentes>
+            <DescComportamientoGestores>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorAgentes"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorRecursos"/>
+                <DescComportamientoAgente tipo="Reactivo" rol="Gestor" nombreComportamiento="GestorOrganizacion"/>
+            </DescComportamientoGestores>
+            <DescComportamientoAgentesAplicacion>
+                 <DescComportamientoAgente xsi:type="DescComportamientoAgenteReactivo" tipo="Reactivo" rol="AgenteAplicacion" nombreComportamiento="AgenteAplicacionAcceso" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                   <rutaAutomata>/icaro/aplicaciones/agentes/agenteAplicacionAccesoReactivo/comportamiento/automata.xml</rutaAutomata>
+                    <rutaAcciones>icaro.aplicaciones.agentes.agenteAplicacionAccesoReactivo.comportamiento.AccionesSemanticasAgenteAplicacionAcceso</rutaAcciones>
+                </DescComportamientoAgente>
+             </DescComportamientoAgentesAplicacion>
+        </DescComportamientoAgentes>
+        <DescRecursosAplicacion>
+            <DescRecursoAplicacion nombre="Persistencia"/>
+             <DescRecursoAplicacion nombre="VisualizacionAcceso"/>
+        </DescRecursosAplicacion>
+    </DescripcionComponentes>
+    <Instancias>
+        <Gestores>
+		       <InstanciaGestor refDescripcion="GestorOrganizacion" id="GestorOrganizacion">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="Gestor" refId="GestorAgentes" refDescripcion="GestorAgentes"/>
+                    <componenteGestionado tipoComponente="Gestor" refId="GestorRecursos" refDescripcion="GestorRecursos"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+            <InstanciaGestor refDescripcion="GestorAgentes" id="GestorAgentes">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="AgenteAplicacion" refId="AgenteAplicacionAcceso1" refDescripcion="AgenteAplicacionAcceso"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+            <InstanciaGestor refDescripcion="GestorRecursos" id="GestorRecursos">
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+                <componentesGestionados>
+                    <componenteGestionado tipoComponente="RecursoAplicacion" refId="Persistencia1" refDescripcion="Persistencia"/>
+                    <componenteGestionado tipoComponente="RecursoAplicacion" refId="VisualizacionAcceso1" refDescripcion="VisualizacionAcceso"/>
+                </componentesGestionados>
+            </InstanciaGestor>
+        </Gestores>
+        <AgentesAplicacion>
+            <Instancia refDescripcion="AgenteAplicacionAcceso" id="AgenteAplicacionAcceso1">
+                <listaPropiedades>
+                    <propiedad valor="" atributo=""/>
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </AgentesAplicacion>
+        <RecursosAplicacion>
+            <Instancia refDescripcion="Persistencia" id="Persistencia1">
+                <listaPropiedades>
+					<propiedad atributo="MYSQL_USER" valor="root" />
+					<propiedad atributo="MYSQL_PASSWORD" valor="root" />
+					<propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/bbddejemplo" />
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+            <Instancia refDescripcion="VisualizacionAcceso" id="VisualizacionAcceso1">
+                <listaPropiedades>
+                    <propiedad valor="" atributo=""/>
+                </listaPropiedades>
+                <nodoEspecifico>
+                    <nombreUso>NodoPrincipal</nombreUso>
+                    <nombreCompletoHost>localhost</nombreCompletoHost>
+                </nodoEspecifico>
+            </Instancia>
+        </RecursosAplicacion>
+        <nodoComun>
+            <nombreUso>NodoPrincipal</nombreUso>
+            <nombreCompletoHost>localhost</nombreCompletoHost>
+        </nodoComun>
+    </Instancias>
+</DescOrganizacion>
