@@ -1,5 +1,10 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp;
 
+import java.sql.Connection;
+
+import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
+import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.ConsultaBBDD;
+import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -31,6 +36,11 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 	private PanelMedico ventanaMedicoUsuario;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
+	// Persistencia
+	private ItfUsoPersistenciaMedico p;
+	private AccesoBBDD bd;
+	//private ConsultaBBDD consultabd = new ConsultaBBDD("PersistenciaMedico1");
+	
   	public ClaseGeneradoraVisualizacionMedico(String id) throws Exception{
   		super(id);
   		try{
@@ -40,6 +50,16 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 	    	  this.estadoAutomata.transita("error");
 	      	System.out.println("No se pudo usar el recurso de trazas");
 	    }
+	   
+		// MUY IMPORTANTE: El id que se pasa como parametro deberia ser algo del estilo "PersistenciaAlgo1"
+		// Si este nombre esta mal va a petar
+	    p = (ItfUsoPersistenciaMedico)RepositorioInterfaces.instance().obtenerInterfaz(
+	      			NombresPredefinidos.ITF_USO+"PersistenciaMedico1");
+	    Connection c = bd.conectar("PersistenciaMedico1");
+	    // Ejemplo de consulta
+	    //consultabd.compruebaUsuario("prueba", "p");
+	    //Hay que ussar la interfaz de uso
+	    p.compruebaUsuario("prueba", "p");
   		this.inicializa();
 	}
 
@@ -51,7 +71,7 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
   		ventanaMedicoUsuario.start();
   		/*
                  ventanaAgendaUsuario.setPosicion(850,100);
-                 */
+                 */ 
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedico",
   				"Inicializando recurso",
   				InfoTraza.NivelTraza.debug));

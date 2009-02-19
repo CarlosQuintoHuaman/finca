@@ -16,7 +16,7 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorMedico visualizacion;
-	private ItfUsoPersistencia Persistencia1;
+	private ItfUsoPersistencia PersistenciaMedico;
 	private ItfUsoAgenteReactivo agenteMedico;
 
 	
@@ -60,7 +60,7 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 		infoMedico datos = new infoMedico(nombre,apell1,telf);
 		
 		try {
-			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
+			PersistenciaMedico = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"Persistencia1");
 			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
