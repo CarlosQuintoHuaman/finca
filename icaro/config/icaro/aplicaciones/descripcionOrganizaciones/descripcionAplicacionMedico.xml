@@ -42,7 +42,7 @@
 	******************   Descripción de los recursos de aplicación							******************
 	********************************************************************************************************-->
 		<icaro:DescRecursosAplicacion>
-			<icaro:DescRecursoAplicacion nombre="Persistencia"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionHistorial"/>
 		</icaro:DescRecursosAplicacion>
@@ -67,7 +67,7 @@
 			
 			<icaro:InstanciaGestor id="GestorRecursos" refDescripcion="GestorRecursos" >
 				<icaro:componentesGestionados>
-					<icaro:componenteGestionado refId="Persistencia1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaMedico1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionMedico1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionHistorial1" tipoComponente="RecursoAplicacion"/>
 				</icaro:componentesGestionados>
@@ -92,12 +92,12 @@
 	******************   Instancias de Recursos de aplicación								******************
 	********************************************************************************************************-->	
 		<icaro:RecursosAplicacion>
-			<icaro:Instancia id="Persistencia1" refDescripcion="Persistencia" xsi:type="icaro:Instancia">
+			<icaro:Instancia id="PersistenciaMedico1" refDescripcion="PersistenciaMedico" xsi:type="icaro:Instancia">
 				<icaro:listaPropiedades>
 					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
 					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="root" />
 					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
-					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/bbddejemplo" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
 			<icaro:Instancia id="VisualizacionMedico1" refDescripcion="VisualizacionMedico" xsi:type="icaro:Instancia"/>
