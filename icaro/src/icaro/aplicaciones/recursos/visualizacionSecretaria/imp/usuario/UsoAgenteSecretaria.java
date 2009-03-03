@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.*;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
@@ -114,6 +115,144 @@ public class UsoAgenteSecretaria {
         }
     }
     
+    public void mostrarVentanaCita(){
+    	getInformacionAgente();
+    	
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("darCita", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            e.printStackTrace();
+        }
+    }
+    
+    public void mostrarVentanaLlamadas(){
+    	getInformacionAgente();
+    	
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("anadirLlamada", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            e.printStackTrace();
+        }
+    }
+    
+    public void mostrarVentanaLlamada(String nombre, String mensaje, String Telf, Boolean paciente, String hora){
+    	getInformacionAgente();
+    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora);
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("anadirLlamada", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            e.printStackTrace();
+        }
+    }
+    
+       public void mostrarVentanaExtra(){
+    	getInformacionAgente();
+    	
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("anadirExtra", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el añadir extra ");
+            e.printStackTrace();
+        }
+    }
+    
+    public void mostrarVentanaExtra(String nombre, String mensaje, String Telf, Boolean paciente, String hora){
+    	getInformacionAgente();
+    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora);
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("anadirExtra", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el extra ");
+            e.printStackTrace();
+        }
+    }
+
+    public void cerrarVentanaCita(){
+    	getInformacionAgente();
+    	
+    	try {
+    		visualizador.cerrarVisualizadorCita();
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cancelarCita", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar evento cancelarcita al agente secretaria");
+            e.printStackTrace();
+        }
+    }
     
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
@@ -145,6 +284,116 @@ public class UsoAgenteSecretaria {
         }
         
     }
+    
+    public void anadeLlamada(DatosLlamada datos) {
+        
+ 	   getInformacionAgente();
+         //provoca la peticiï¿½n de autentificaciï¿½n
+     	
+          
+
+         try {
+             if (itfUsoRepositorioInterfaces == null) {
+                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+             }
+
+             if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                 //AgenteAplicacionSecretaria
+                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                 if (itfUsoAgente != null) {
+                     itfUsoAgente.aceptaEvento(new EventoInput("infoLlamada", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                 }
+             }
+
+         } catch (Exception e) {
+             System.out.println("Ha habido un error al enviar los datos de la cita ");
+             e.printStackTrace();
+         }
+         
+     }
+    
+    public void borraLlamada(DatosLlamada datos) {
+        
+  	   getInformacionAgente();
+          //provoca la peticiï¿½n de autentificaciï¿½n
+      	
+           
+
+          try {
+              if (itfUsoRepositorioInterfaces == null) {
+                  itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+              }
+
+              if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                  //AgenteAplicacionSecretaria
+                  ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                  if (itfUsoAgente != null) {
+                      itfUsoAgente.aceptaEvento(new EventoInput("borrarLlamada", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                  }
+              }
+
+          } catch (Exception e) {
+              System.out.println("Ha habido un error al enviar los datos de la cita ");
+              e.printStackTrace();
+          }
+          
+      }
+      
+          public void anadeExtra(DatosLlamada datos) {
+        
+ 	   getInformacionAgente();
+         //provoca la peticiï¿½n de autentificaciï¿½n
+     	
+          
+
+         try {
+             if (itfUsoRepositorioInterfaces == null) {
+                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+             }
+
+             if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                 //AgenteAplicacionSecretaria
+                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                 if (itfUsoAgente != null) {
+                     itfUsoAgente.aceptaEvento(new EventoInput("infoExtra", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                 }
+             }
+
+         } catch (Exception e) {
+             System.out.println("Ha habido un error al enviar los datos del extra ");
+             e.printStackTrace();
+         }
+         
+     }
+    
+    public void borraExtra(DatosLlamada datos) {
+        
+  	   getInformacionAgente();
+          //provoca la peticiï¿½n de autentificaciï¿½n
+      	
+           
+
+          try {
+              if (itfUsoRepositorioInterfaces == null) {
+                  itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+              }
+
+              if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                  //AgenteAplicacionSecretaria
+                  ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                  if (itfUsoAgente != null) {
+                      itfUsoAgente.aceptaEvento(new EventoInput("borrarExtra", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                  }
+              }
+
+          } catch (Exception e) {
+              System.out.println("Ha habido un error al enviar los datos del extra ");
+              e.printStackTrace();
+          }
+          
+      }
+     
+     
     
     public void crearAgenteFicha() {
     	getInformacionAgente();

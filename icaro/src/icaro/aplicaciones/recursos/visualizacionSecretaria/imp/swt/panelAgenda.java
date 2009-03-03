@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -9,6 +10,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -16,18 +18,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import java.util.GregorianCalendar;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
+import icaro.util.util;
 
 public class panelAgenda extends Thread {
 
@@ -46,7 +52,7 @@ public class panelAgenda extends Thread {
 	private CLabel cSeleccionado;
 	private CLabel nombreL;
 	private Button Tarde;
-	private Button button1;
+	private Button agenda;
 	private Button anadirE;
 	private Button AnadirL;
 	private CLabel llamadas;
@@ -75,7 +81,7 @@ public class panelAgenda extends Thread {
 	private Composite huecoAgenda;
 	private boolean man=true;
 	private int intervalo=15;
-	//private Display display;
+	
 	private Time iniMan = new java.sql.Time(0000000);
 	private Time iniTar=new java.sql.Time(0000000);
 	private Time finMan=new java.sql.Time(0000000);
@@ -89,14 +95,32 @@ public class panelAgenda extends Thread {
 	private boolean init=true;
 	private int k=0;
 	private int c=0;
-	
+	private DatosAgenda copiado, pegado;
+	private ArrayList <DatosLlamada>extra=new ArrayList();
+	private ArrayList <DatosLlamada>llamada=new ArrayList();
 	protected Date fecha;
 	protected Date fechaAnt;
 	private int min;
+	//DatosLlamada
+	private CLabel[] NombresL;
+	private String[] TelefonosL;
+	private String[] MensajeL;
+	private boolean[] PacienteL;
+	private String[] horasL;
+	
+	//DatosExtra
+	private CLabel[] NombresE;
+	private String[] TelefonosE;
+	private String[] MensajeE;
+	private boolean[] PacienteE;
+	private CLabel[] horasE;
+	
 	private Display disp;
 	private Shell shell;
 	private panelAgenda este;
 	private panelCita f;
+	private panelLlamada l;
+	private panelExtra e;
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 
 	/**
@@ -109,7 +133,11 @@ public class panelAgenda extends Thread {
 		vis =visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
 		f=new panelCita(vis); 
+		l=new panelLlamada(vis);
+		e=new panelExtra(vis);
+		l.start();
     	f.start();
+    	e.start();
 	}
 
 	public void run(){
@@ -172,6 +200,8 @@ public class panelAgenda extends Thread {
 			
 
 			int n=5;
+			
+			
 			
 			//numero de medicos de los que dispone esta secretaria
 			int medicos =5;
@@ -239,6 +269,12 @@ public class panelAgenda extends Thread {
 						PegarLData.horizontalAlignment = GridData.FILL;
 						Pegar.setLayoutData(PegarLData);
 						Pegar.setText("Pegar");
+						Pegar.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent evt) {
+								PegarWidgetSelected(evt);
+								
+							}                               
+						});
 					}
 					{
 						Borrar = new Button(Menu1, SWT.PUSH | SWT.CENTER);
@@ -246,6 +282,12 @@ public class panelAgenda extends Thread {
 						BorrarLData.horizontalAlignment = GridData.FILL;
 						Borrar.setLayoutData(BorrarLData);
 						Borrar.setText("Borrar");
+						Borrar.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent e) {
+								BorrarWidgetSelected(e);
+								
+							}                               
+						});
 					}
 					{
 						CrearFicha = new Button(Menu1, SWT.PUSH | SWT.CENTER);
@@ -267,6 +309,12 @@ public class panelAgenda extends Thread {
 						DarCitaLData.horizontalAlignment = GridData.FILL;
 						DarCita.setLayoutData(DarCitaLData);
 						DarCita.setText("Dar Cita");
+						DarCita.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent e) {
+								DarCitaWidgetSelected(e);
+								
+							}                               
+						});
 					}
 					{
 						Manana = new Button(Menu1, SWT.PUSH | SWT.CENTER);
@@ -298,13 +346,19 @@ public class panelAgenda extends Thread {
 						
 					}
 					{
-						button1 = new Button(Menu1, SWT.PUSH | SWT.CENTER);
+						agenda = new Button(Menu1, SWT.PUSH | SWT.CENTER);
 						GridData button1LData = new GridData();
 						button1LData.widthHint = 68;
 						button1LData.heightHint = 57;
 						button1LData.horizontalAlignment = GridData.CENTER;
-						button1.setLayoutData(button1LData);
-						button1.setText("AGENDA");
+						agenda.setLayoutData(button1LData);
+						agenda.setText("AGENDA");
+						agenda.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								agendaWidgetSelected(evt);
+								
+							}
+						});
 					}
 				}
 				{
@@ -481,6 +535,7 @@ public class panelAgenda extends Thread {
 							
 							
 						}
+						
 						{
 							NombreE = new CLabel(tablaExtras, SWT.NONE);
 							NombreE.setText("NOMBRE");
@@ -505,6 +560,9 @@ public class panelAgenda extends Thread {
 							horaE.setLayoutData(horaELData);
 							horaE.setForeground(SWTResourceManager.getColor(255, 255, 255));
 						}
+						DatosLlamada e = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
+						extra.add(e);
+						listaLlamadasE();
 					}
 					{
 						anadirE = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
@@ -515,6 +573,12 @@ public class panelAgenda extends Thread {
 						añadirELData.verticalAlignment = GridData.BEGINNING;
 						anadirE.setLayoutData(añadirELData);
 						anadirE.setText("Añadir");
+						anadirE.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								anadirEWidgetSelected(evt);
+								
+							}
+						});
 					}
 					{
 						tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
@@ -554,10 +618,15 @@ public class panelAgenda extends Thread {
 							nombreL.setBackground(SWTResourceManager.getColor(220, 189, 244));
 							nombreL.setForeground(SWTResourceManager.getColor(255, 255, 255));
 						}
+						DatosLlamada l = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
+						llamada.add(l);
+						listaLlamadasL();
+						
+
 					}
 
 					{
-						//RELLENADO DE LA TABLA DE EXTRAS
+						/*//RELLENADO DE LA TABLA DE EXTRAS
 						CLabel[] NombresE= new CLabel[n];
 						CLabel[] horasE= new CLabel[n];
 						for (int i=0;i<n;i++){
@@ -569,9 +638,11 @@ public class panelAgenda extends Thread {
 							horasE[i].setText("18:30");
 							horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 							
-						}
+						}*/
 						
 					}
+					
+					
 
 					{
 						AnadirL = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
@@ -586,6 +657,12 @@ public class panelAgenda extends Thread {
 						AnadirLLData.verticalAlignment = GridData.BEGINNING;
 						AnadirL.setLayoutData(AnadirLLData);
 						AnadirL.setText("Añadir");
+						AnadirL.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								anadirLWidgetSelected(evt);
+								
+							}
+						});
 					}
 				}
 			}
@@ -705,7 +782,53 @@ public class panelAgenda extends Thread {
 	}
 	private void CopiarWidgetSelected(SelectionEvent evt){
 		
-		cNomSel.setText("");
+		if (cNomSel.getText()=="")
+			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
+		else
+			cNomSel.setBackground(SWTResourceManager.getColor(249, 120, 106));
+			copiado=buscarSeleccionado2(cNomSel.getText());
+			copiado.setCrear(true);
+	}
+	
+	private void PegarWidgetSelected(SelectionEvent evt){
+		
+		if (!copiado.tomaCrear())
+			usoAgente.mostrarMensajeError("No hay ningun paciente copiado", "Atención");
+		else{
+			cNomSel.setBackground(SWTResourceManager.getColor(255, 255, 255));
+			pegado=buscarSeleccionado2(cNomSel.getText());
+			String nombre=copiado.tomaNombre();
+			copiado.setCrear(false);
+			int i=0;
+			boolean Es =false;
+			while (i<c & !Es){
+				if(Nombres[i].getText()==nombre){
+					Telefonos[i].setText(pegado.tomatelf());
+					Nombres[i].setText(pegado.tomaNombre());
+					Es=true;
+				}
+				i++;
+			}
+		}
+	}
+	
+	private void BorrarWidgetSelected(SelectionEvent e){
+		if (cNomSel.getText()=="")
+			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
+		else{
+			//mostrar mensaje confirmacion de borrado
+			
+			int i=0;
+			boolean Es =false;
+			while (i<c & !Es){
+				if(Nombres[i].getText()==cNomSel.getText()){
+					Telefonos[i].setText("");
+					Nombres[i].setText("");
+					Es=true;
+				}
+				i++;
+			}
+		}
 	}
 	
 	private void CrearFichaWidgetSelected(SelectionEvent evt){
@@ -713,30 +836,89 @@ public class panelAgenda extends Thread {
 		DatosAgenda a= new DatosAgenda(d.tomaNombre(), d.tomaTelf(), true);
 		usoAgente.mostrarVentanaFicha(a);
 	}
+	
+	private void DarCitaWidgetSelected(SelectionEvent evt){
+		DatosCitaSinValidar d= buscarSeleccionado(cNomSel.getText());
+		if (d.tomaNombre()=="")
+			usoAgente.mostrarVentanaCita();
+		else
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
+	
+	}
+	
+	private void anadirEWidgetSelected(SelectionEvent evt){
+		usoAgente.mostrarVentanaExtra();
+	}
+	
+	private void anadirLWidgetSelected(SelectionEvent evt){
+		usoAgente.mostrarVentanaLlamadas();
+	}
 	private void nombreMouseDown(MouseEvent evt) {
 		String nombre=""; 
 		String apellido="";
 		String Telf="";
 		String Hora="";
 		boolean Es =false;
-		//DatosCitaSinValidar datos=new DatosCitaSinValidar(nombre, apellido, Telf);;
 		CLabel lsel=(CLabel)evt.getSource();
 		nombre=lsel.getText();
+
 		int i;
 		for (i=0;i<c;i++){
 			Nombres[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			Telefonos[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
-		lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
-		DatosCitaSinValidar d= buscarSeleccionado(nombre);
-		cNomSel.setText(nombre);
-		usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
+		for(i=0;i<llamada.size();i++){
+			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
 		
+		for(i=0;i<extra.size();i++){
+			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		if (cNomSel.getText()!=nombre){
 			
-
+			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
+			DatosCitaSinValidar d= buscarSeleccionado(nombre);
+			cNomSel.setText(nombre);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
+		}
+		else{
+			cNomSel.setText("");
+		}
+		
 	}
 	
 	public DatosCitaSinValidar buscarSeleccionado(String nombre){
+		int i=0;
+		int p=1;
+		boolean Es =false;
+		String apell1="";
+		String Telf="";
+		String Hora="";
+		String [] aux;
+		while (i<c & !Es){
+			if(Nombres[i].getText()==nombre){
+				Telf=Telefonos[i].getText();
+				Hora=horas[i].getText();
+				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				aux=nombre.split(" ");
+				while (p<aux.length){
+					if (p==1)
+						apell1=aux[p];
+					else
+						apell1=apell1+" "+aux[p];
+					p++;
+				}
+				Es=true;
+			}
+			i++;
+		}
+		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre, apell1, Telf, Hora);
+		return d;
+		
+	}
+	
+	public DatosAgenda buscarSeleccionado2(String nombre){
 		int i=0;
 		boolean Es =false;
 		String apell1="";
@@ -752,7 +934,9 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
-		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre, apell1, Telf, Hora);
+		util f=new util(); 
+		String fecha=f.getStrDate();
+		DatosAgenda d= new DatosAgenda(nombre, Telf, Hora, fecha);
 		return d;
 		
 	}
@@ -777,6 +961,86 @@ public class panelAgenda extends Thread {
 		
 		}
 	}
+	
+	public void mostrarCita() {
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	
+					f.mostrar();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	}
+	
+public void mostrarLlamada() {
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	
+					l.mostrar();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	}
+
+public void mostrarLlamada(final DatosLlamada datos) {
+	
+	try{
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	l.meteDatos(datos);
+				l.mostrar();
+            }
+         });
+	}
+	catch(Exception e){
+		e.printStackTrace();
+	
+	}
+}
+
+public void mostrarExtra() {
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	
+					e.mostrar();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	}
+
+public void mostrarExtra(final DatosLlamada datos) {
+	
+	try{
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	e.meteDatos(datos);
+				e.mostrar();
+            }
+         });
+	}
+	catch(Exception e){
+		e.printStackTrace();
+	
+	}
+}
 	
 	public void inicializaCita(){
 		f=new panelCita(vis);
@@ -820,6 +1084,533 @@ public class panelAgenda extends Thread {
 		
 		}
 		
+	}
+	public void insertaLlamada(final DatosLlamada d){
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	boolean esta=false;
+	            	if (!llamada.isEmpty()){
+	            		for (int i=0;i<llamada.size();i++){	            		
+	            			NombresL[i].dispose();
+	            			if (llamada.get(i).getHora()==d.getHora() && llamada.get(i).getNombre()==d.getNombre())
+	            				esta=true;
+	            		}
+	            	}
+	            	
+	            	//Y ESTO QUE HAGO?????
+            		if(!esta){
+            			llamada.add(d);
+            		}
+	            	listaLlamadasL();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
+	
+	public void borraLlamada(final DatosLlamada d){
+		try{
+			disp.asyncExec(new Runnable() {
+				int j=0;
+				boolean esta=false;
+	            public void run() {
+	            	if (!llamada.isEmpty()){
+	            		for (int i=0;i<llamada.size();i++){	            		
+	            			NombresL[i].dispose();
+	            			if (llamada.get(i).getHora().equals(d.getHora()) && llamada.get(i).getNombre().equals(d.getNombre())){
+	            				esta=true;
+	            				j=i;
+	            			}
+	            		}
+	            	}
+	            	if(esta)
+            			llamada.remove(j);
+            		
+	            	listaLlamadasL();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
+
+		public void insertaExtra(final DatosLlamada d){
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	boolean esta=false;
+	            	if (!extra.isEmpty()){
+	            		for (int i=0;i<extra.size();i++){	            		
+	            			NombresE[i].dispose();
+	            			horasE[i].dispose();
+	            			if (extra.get(i).getHora()==d.getHora() && extra.get(i).getNombre()==d.getNombre())
+	            				esta=true;
+	            		}
+	            	}
+	            	
+	            	
+            		if(!esta){
+            			extra.add(d);
+            		}
+	            	listaLlamadasE();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
+	
+	public void borraExtra(final DatosLlamada d){
+		try{
+			disp.asyncExec(new Runnable() {
+				int j=0;
+				boolean esta=false;
+	            public void run() {
+	            	if (!extra.isEmpty()){
+	            		for (int i=0;i<extra.size();i++){	            		
+	            			NombresE[i].dispose();
+	            			horasE[i].dispose();
+	            			if (extra.get(i).getHora().equals(d.getHora()) && extra.get(i).getNombre().equals(d.getNombre())){
+	            				esta=true;
+	            				j=i;
+	            			}
+	            		}
+	            	}
+	            	if(esta)
+            			llamada.remove(j);
+            		
+	            	listaLlamadasE();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
+	public void listaLlamadasL(){
+
+		NombresL= new CLabel[llamada.size()];
+		TelefonosL= new String[llamada.size()];
+		MensajeL= new String [llamada.size()];
+		PacienteL = new boolean[llamada.size()];
+		horasL = new String[llamada.size()];
+		for(int i=0;i<llamada.size();i++){
+			NombresL[i]=new CLabel(tablaLlamadas, SWT.NONE);
+			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			NombresL[i].setText(llamada.get(i).getNombre());
+			TelefonosL[i]=llamada.get(i).getTelf();
+			MensajeL[i]=llamada.get(i).getMensaje();
+			PacienteL[i]=llamada.get(i).getPaciente();
+			horasL[i]=llamada.get(i).getHora();
+			tablaLlamadas.layout();
+			NombresL[i].addMouseListener(new MouseAdapter() {
+				public void mouseDown(MouseEvent evt) {
+					nombreLMouseDown(evt);
+				}
+			});
+		}
+	}
+	
+		public void listaLlamadasE(){
+
+		NombresE= new CLabel[extra.size()];
+		TelefonosE= new String[extra.size()];
+		MensajeE= new String [extra.size()];
+		PacienteE = new boolean[extra.size()];
+		horasE = new CLabel[extra.size()];
+		for(int i=0;i<extra.size();i++){
+			NombresE[i]=new CLabel(tablaExtras, SWT.NONE);
+			horasE[i]=new CLabel(tablaExtras, SWT.NONE);
+			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			NombresE[i].setText(extra.get(i).getNombre());
+			TelefonosE[i]=extra.get(i).getTelf();
+			MensajeE[i]=extra.get(i).getMensaje();
+			PacienteE[i]=extra.get(i).getPaciente();
+			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			horasE[i].setText(extra.get(i).getHora());
+			tablaExtras.layout();
+			NombresE[i].addMouseListener(new MouseAdapter() {
+				public void mouseDown(MouseEvent evt) {
+					nombreEMouseDown(evt);
+				}
+			});
+		}
+	}
+	
+	public DatosLlamada buscarSeleccionadoL(String nombre){
+		int i=0;
+		boolean Es =false;
+		Boolean paciente =false;
+		String Telf="";
+		String mensaje="";
+		String h="";
+		while (i<llamada.size() & !Es){
+			if(NombresL[i].getText()==nombre){
+				Telf=TelefonosL[i];
+				mensaje=MensajeL[i];
+				NombresL[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				paciente=PacienteL[i];
+				h=horasL[i];
+				Es=true;
+			}
+			i++;
+		}
+		DatosLlamada d= new DatosLlamada(nombre, mensaje, Telf, paciente,h);
+		return d;
+		
+	}
+	
+	private void nombreLMouseDown(MouseEvent evt) {
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+		
+		for(int i=0;i<llamada.size();i++){
+			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		for(int i=0;i<extra.size();i++){
+			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		int i;
+		for (i=0;i<c;i++){
+			Nombres[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			Telefonos[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		if (cNomSel.getText()!=nombre){
+			
+			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
+			DatosLlamada d= buscarSeleccionadoL(nombre);
+			cNomSel.setText(nombre);
+			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
+		}
+		else{
+			cNomSel.setText("");
+		}
+	}
+	
+	public DatosLlamada buscarSeleccionadoE(String nombre){
+		int i=0;
+		boolean Es =false;
+		Boolean paciente =false;
+		String Telf="";
+		String mensaje="";
+		String h="";
+		while (i<extra.size() & !Es){
+			if(NombresE[i].getText()==nombre){
+				Telf=TelefonosE[i];
+				mensaje=MensajeE[i];
+				NombresE[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				horasE[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				paciente=PacienteE[i];
+				h=horasE[i].getText();
+				Es=true;
+			}
+			i++;
+		}
+		DatosLlamada d= new DatosLlamada(nombre, mensaje, Telf, paciente,h);
+		return d;
+		
+	}
+	
+	private void nombreEMouseDown(MouseEvent evt) {
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+		
+		for(int i=0;i<llamada.size();i++){
+			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		
+		for(int i=0;i<extra.size();i++){
+			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		int i;
+		for (i=0;i<c;i++){
+			Nombres[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			Telefonos[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+		}
+		if (cNomSel.getText()!=nombre){
+			
+			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
+			DatosLlamada d= buscarSeleccionadoE(nombre);
+			cNomSel.setText(nombre);
+			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
+		}
+		else{
+			cNomSel.setText("");
+		}
+	}
+	private void agendaWidgetSelected(SelectionEvent evt){
+		if (agenda.getText().equals("AGENDA"))
+			agenda.setText("AGENDA DE HOY");
+		else
+			agenda.setText("AGENDA");
+		inicializa(agenda.getText());
+	}
+	
+	public void inicializa(String a){
+		
+		//BORRAR
+		tablaExtras.dispose();
+		tablaLlamadas.dispose();
+		Extras.dispose();
+		NombreE.dispose();
+		horaE.dispose();
+		anadirE.dispose();
+		nombreL.dispose();
+		AnadirL.dispose();
+		llamada.clear();
+		extra.clear();
+		tablaExtras = new Composite(tablasDerecha, SWT.BORDER);
+		GridLayout tablaExtrasLayout = new GridLayout();
+		tablaExtrasLayout.numColumns = 2;
+		GridData tablaExtrasLData = new GridData();
+		tablaExtrasLData.verticalSpan = 0;
+		tablaExtrasLData.horizontalSpan = 0;
+		tablaExtrasLData.horizontalAlignment = GridData.FILL;
+		tablaExtrasLData.verticalAlignment = GridData.FILL;
+		tablaExtrasLData.grabExcessVerticalSpace = true;
+		tablaExtrasLData.grabExcessHorizontalSpace = true;
+		tablaExtras.setLayoutData(tablaExtrasLData);
+		tablaExtras.setLayout(tablaExtrasLayout);
+
+
+		
+		if(a.equals("AGENDA")){
+			shell.setText("Agenda");
+			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
+			GridLayout tablaLlamadasLayout = new GridLayout();
+			tablaLlamadasLayout.numColumns = 2;
+			GridData tablaLlamadasLData = new GridData();
+			tablaLlamadasLData.verticalSpan = 0;
+			tablaLlamadasLData.horizontalSpan = 0;
+			tablaLlamadasLData.horizontalAlignment = GridData.FILL;
+			tablaLlamadasLData.grabExcessVerticalSpace = true;
+			tablaLlamadasLData.grabExcessHorizontalSpace = true;
+			tablaLlamadasLData.verticalAlignment = GridData.FILL;
+			
+			tablaLlamadas.setLayoutData(tablaLlamadasLData);
+			tablaLlamadas.setLayout(tablaLlamadasLayout);
+			
+            final DateTime calendario = new DateTime (tablaExtras, SWT.CALENDAR);
+            calendario.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
+            
+            calendario.addMouseListener(new MouseListener () {
+                    public void mouseDoubleClick(MouseEvent e) {
+                            // TODO ¿Y esto por qué no va?
+                            fecha = new Date(calendario.getYear(),calendario.getMonth(),calendario.getDay());
+                            //shell.dispose();
+                    }
+                    public void mouseUp(MouseEvent e) {};
+                    public void mouseDown(MouseEvent e) {};
+            });
+            final Button bEnviar    = new Button(tablaExtras, SWT.PUSH);
+            bEnviar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+            bEnviar.setText("Seleccionar");
+            //Introducimos los valores y eventos de Fecha Inicio
+            bEnviar.addSelectionListener (new SelectionAdapter () {
+					public void widgetSelected (SelectionEvent e) {
+                            // TODO ¿Se puede evitar usar métodos obsoletos?
+                            fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
+                            fechaAnt = fecha;
+                            
+                    }                               
+            });
+            
+            final Button bCancelar  = new Button(tablaExtras, SWT.PUSH);
+            bCancelar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+            bCancelar.setText("Cancelar");
+            //Introducimos los valores y eventos de Fecha Inicio
+            bCancelar.addSelectionListener (new SelectionAdapter () {
+                    public void widgetSelected (SelectionEvent e) {
+            /*              if (fechaAnt!=null)
+                                    fecha=fechaAnt;
+                            else*/
+                                    fecha = null;
+                            
+                    }                               
+            });
+            
+            final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
+            calendario.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
+            
+            calendario2.addMouseListener(new MouseListener () {
+                    public void mouseDoubleClick(MouseEvent e) {
+                            // TODO ¿Y esto por qué no va?
+                            fecha = new Date(calendario.getYear(),calendario.getMonth(),calendario.getDay());
+                            //shell.dispose();
+                    }
+                    public void mouseUp(MouseEvent e) {};
+                    public void mouseDown(MouseEvent e) {};
+            });
+            final Button bEnviar1    = new Button(tablaLlamadas, SWT.PUSH);
+            bEnviar1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+            bEnviar1.setText("s1");
+            //Introducimos los valores y eventos de Fecha Inicio
+            bEnviar1.addSelectionListener (new SelectionAdapter () {
+					public void widgetSelected (SelectionEvent e) {
+                            // TODO ¿Se puede evitar usar métodos obsoletos?
+                            fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
+                            fechaAnt = fecha;
+                            
+                    }                               
+            });
+            
+            final Button bCancelar1  = new Button(tablaLlamadas, SWT.PUSH);
+            bCancelar1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+            bCancelar1.setText("c1");
+            //Introducimos los valores y eventos de Fecha Inicio
+            bCancelar1.addSelectionListener (new SelectionAdapter () {
+                    public void widgetSelected (SelectionEvent e) {
+            /*              if (fechaAnt!=null)
+                                    fecha=fechaAnt;
+                            else*/
+                                    fecha = null;
+                            
+                    }                               
+            });
+		}else{
+			shell.setText("Consulta de Hoy");
+			anadirE = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
+			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
+			AnadirL = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
+			GridLayout tablaLlamadasLayout = new GridLayout();
+			GridData tablaLlamadasLData = new GridData();
+			tablaLlamadasLData.verticalSpan = 0;
+			tablaLlamadasLData.horizontalSpan = 0;
+			tablaLlamadasLData.horizontalAlignment = GridData.FILL;
+			tablaLlamadasLData.grabExcessVerticalSpace = true;
+			tablaLlamadasLData.grabExcessHorizontalSpace = true;
+			tablaLlamadasLData.verticalAlignment = GridData.FILL;
+			tablaLlamadas.setLayoutData(tablaLlamadasLData);
+			tablaLlamadas.setLayout(tablaLlamadasLayout);
+			{
+				Extras = new CLabel(tablaExtras, SWT.NONE);
+				Extras.setText("EXTRAS");
+				Extras.setBackground(SWTResourceManager.getColor(220,189,224));
+				Extras.setFont(SWTResourceManager.getFont("Palatino Linotype",12,1,false,false));
+				Extras.setForeground(SWTResourceManager.getColor(255,255,255));
+				Extras.setAlignment(SWT.CENTER);
+				GridData ExtrasLData = new GridData();
+				ExtrasLData.horizontalSpan = 2;
+				ExtrasLData.widthHint = 199;
+				ExtrasLData.heightHint = 28;
+				Extras.setLayoutData(ExtrasLData);		
+			}
+			{
+				NombreE = new CLabel(tablaExtras, SWT.NONE);
+				NombreE.setText("NOMBRE");
+				NombreE.setBackground(SWTResourceManager.getColor(220,189,224));
+				NombreE.setForeground(SWTResourceManager.getColor(255,255,255));
+				GridData NombreELData = new GridData();
+				NombreELData.heightHint = 17;
+				NombreELData.grabExcessHorizontalSpace = true;
+				NombreELData.horizontalAlignment = GridData.FILL;
+				NombreE.setLayoutData(NombreELData);
+				NombreE.setAlignment(SWT.CENTER);
+			}
+			{
+				horaE = new CLabel(tablaExtras, SWT.NONE);
+				horaE.setText("HORA");
+				horaE.setBounds(157, 34, 38, 17);
+				horaE.setAlignment(SWT.CENTER);
+				horaE.setBackground(SWTResourceManager.getColor(220, 189, 224));
+				GridData horaELData = new GridData();
+				horaELData.widthHint = 38;
+				horaELData.heightHint = 17;
+				horaE.setLayoutData(horaELData);
+				horaE.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			}
+			DatosLlamada e = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
+			extra.add(e);
+			listaLlamadasE();
+			{
+			
+			GridData añadirELData = new GridData();
+			añadirELData.widthHint = 82;
+			añadirELData.heightHint = 23;
+			añadirELData.horizontalAlignment = GridData.CENTER;
+			añadirELData.verticalAlignment = GridData.BEGINNING;
+			anadirE.setLayoutData(añadirELData);
+			anadirE.setText("Añadir");
+			anadirE.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent evt) {
+					anadirEWidgetSelected(evt);
+					
+				}
+			});
+		}
+		{
+			
+			{
+				llamadas = new CLabel(tablaLlamadas, SWT.NONE);
+				GridData llamadasLData = new GridData();
+				llamadasLData.horizontalAlignment = GridData.FILL;
+				llamadasLData.verticalAlignment = GridData.BEGINNING;
+				llamadasLData.verticalSpan = 0;
+				llamadasLData.horizontalSpan = 0;
+				llamadasLData.grabExcessHorizontalSpace = true;
+				llamadas.setLayoutData(llamadasLData);
+				llamadas.setText("LLAMADAS");
+				llamadas.setAlignment(SWT.CENTER);
+				llamadas.setBackground(SWTResourceManager.getColor(220, 189, 224));
+				llamadas.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
+				llamadas.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			}
+			{
+				nombreL = new CLabel(tablaLlamadas, SWT.NONE);
+				GridData nombreLLData = new GridData();
+				nombreLLData.verticalAlignment = GridData.BEGINNING;
+				nombreLLData.horizontalAlignment = GridData.FILL;
+				nombreL.setLayoutData(nombreLLData);
+				nombreL.setText("NOMBRE");
+				nombreL.setAlignment(SWT.CENTER);
+				nombreL.setBackground(SWTResourceManager.getColor(220, 189, 244));
+				nombreL.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			}
+			DatosLlamada l = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
+			llamada.add(l);
+			listaLlamadasL();
+			
+			{
+				
+				GridData AnadirLLData = new GridData();
+				AnadirLLData.widthHint = 79;
+				AnadirLLData.heightHint = 23;
+				AnadirLLData.horizontalSpan = 0;
+				AnadirLLData.verticalSpan = 0;
+				AnadirLLData.grabExcessVerticalSpace = true;
+				AnadirLLData.grabExcessHorizontalSpace = true;
+				AnadirLLData.horizontalAlignment = GridData.CENTER;
+				AnadirLLData.verticalAlignment = GridData.BEGINNING;
+				AnadirL.setLayoutData(AnadirLLData);
+				AnadirL.setText("Añadir");
+				AnadirL.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						anadirLWidgetSelected(evt);
+						
+					}
+				});
+			}
+
+		}
+		}
+		tablasDerecha.layout();
 	}
 	
 	public void cerrarCita() {

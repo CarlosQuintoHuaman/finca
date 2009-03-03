@@ -97,6 +97,29 @@ public class UsoAgenteFicha {
     }
     
 
+    public void cerrarVentanaFicha(){
+    	getInformacionAgente();
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteFicha.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionFicha
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteFicha);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cerrarVentanaFicha", "VisualizacionFicha1", nombreAgenteFicha));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            e.printStackTrace();
+        }
+    }
+    
+    
+
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }

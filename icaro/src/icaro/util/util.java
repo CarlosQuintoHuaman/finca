@@ -23,4 +23,15 @@ public class util {
 		java.util.Date d=sdf.parse(f); 
 		return d;
 	}
+	public static String getStrTime() {
+		GregorianCalendar c=new GregorianCalendar();
+		 int h = c.get(GregorianCalendar.HOUR_OF_DAY);
+		 int m = c.get(GregorianCalendar.MINUTE);
+		 int s = c.get(GregorianCalendar.SECOND);
+		 String hh=Integer.toString(h);
+		 String mm=Integer.toString(m);
+		 String ss=Integer.toString(s);
+		 return (h < 10 ? "0" + hh : hh)+":"+(m < 10 ? "0" + mm : mm)+":"+(s < 10 ? "0" + ss : ss);
+		 
+		}
 }

@@ -8,6 +8,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -137,11 +139,17 @@ public class panelCita extends Thread {
 			shell.setLayout(shellLayout);
 			shell.setSize(492, 259);
 			shell.setText("Dar Cita");
+			
 			{
 				//Register as a resource user - SWTResourceManager will
 				//handle the obtaining and disposing of resources
 				SWTResourceManager.registerResourceUser(shell);
 			}
+			shell.addShellListener(new ShellAdapter() {
+			    public void shellClosed(ShellEvent event) {
+			    	usoAgente.cerrarVentanaCita();
+			    }
+			});
 			periodo=1;
 			{
 				compoPrincipal = new Composite(shell, SWT.NONE);
@@ -344,7 +352,7 @@ public class panelCita extends Thread {
 						bAceptar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 								bAceptarWidgetSelected(evt);
-								shell.dispose();
+								destruir();
 							}
 						});
 					}
@@ -359,7 +367,8 @@ public class panelCita extends Thread {
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								shell.dispose();
+								destruir();
+								usoAgente.cerrarVentanaCita();
 							}
 						});
 					}
@@ -408,8 +417,8 @@ public class panelCita extends Thread {
                 	tApellidos.setText("");
             	}else{
             		tPaciente.setText(aux[0]);
-            		//tApellidos.setText(aux.toString());
-            		tApellidos.setText("");
+            		
+            		tApellidos.setText(dat.tomaApell1());
             	}
         		tTelefono1.setText(dat.tomaTelf());
         		tHoraD.setText(dat.tomaHora());
@@ -438,7 +447,7 @@ public class panelCita extends Thread {
 		datos.setPeriodo(periodo);
 		datos.setTelf(tTelefono1.getText());
 		usoAgente.validaCita(datos);
-		shell.dispose();
+		destruir();
 	}
 	public void calculaPeriodo(){
 		int c=periodo;

@@ -9,8 +9,15 @@
 	</estadoInicial>
 	<estado idIntermedio="esperaAccion">
 		<transicion input="darCita" accion="pintaVentanaCita" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"/>
-		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/></estado>
-	<estado idIntermedio="esperandoTerminacion">
+		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/><transicion input="anadirLlamada" accion="pintaVentanaLlamada" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion></estado>
+	<estado idIntermedio="esperaResultadoLlamada">
+		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="borrarLlamada" accion="borrarLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
+	<transicion input="infoExtra" accion="insertaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="cancelarExtra" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="borrarExtra" accion="borrarExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperandoTerminacion">
 		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperaResultadoCita">
@@ -27,4 +34,4 @@
 	<estadoFinal idFinal="terminado"/>
 	<transicionUniversal input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
 	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/>
-</tablaEstados>
+	</tablaEstados>

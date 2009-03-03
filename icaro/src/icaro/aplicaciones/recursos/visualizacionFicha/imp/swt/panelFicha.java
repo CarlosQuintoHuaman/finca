@@ -13,6 +13,8 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
@@ -226,6 +228,12 @@ public class panelFicha extends Thread {
         	//handle the obtaining and disposing of resources
         	SWTResourceManager.registerResourceUser(shell);
         }
+        
+		shell.addShellListener(new ShellAdapter() {
+		    public void shellClosed(ShellEvent event) {
+		    	usoAgente.cerrarVentanaFicha();
+		    }
+		});
         nuevo=true;
         GridLayout layout = new GridLayout(2,false);
 		
@@ -1064,7 +1072,9 @@ public class panelFicha extends Thread {
 		shell.dispose();
 	}
 	private void bCerrarWidgetSelected(SelectionEvent evt){
+		
 		shell.dispose();
+		usoAgente.cerrarVentanaFicha();
 	}
 	
 
