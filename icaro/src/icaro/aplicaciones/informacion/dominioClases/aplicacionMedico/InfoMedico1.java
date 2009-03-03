@@ -2,7 +2,7 @@ package icaro.aplicaciones.informacion.dominioClases.aplicacionMedico;
 
 import java.io.Serializable;
 
-public class InfoMedico implements Serializable {
+public class InfoMedico1 implements Serializable {
 	
 	/**
 	 * 
@@ -15,7 +15,7 @@ public class InfoMedico implements Serializable {
 	private String telf;
 		
 	
-	public InfoMedico (String nombre, String apell1, String telf) {
+	public InfoMedico1 (String nombre, String apell1, String telf) {
 		
 		this.nombre = nombre;
 		this.apell1 = apell1;
