@@ -55,7 +55,8 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		// Si este nombre esta mal va a petar
 	    p = (ItfUsoPersistenciaMedico)RepositorioInterfaces.instance().obtenerInterfaz(
 	      			NombresPredefinidos.ITF_USO+"PersistenciaMedico1");
-	    Connection c = bd.conectar("PersistenciaMedico1");
+
+	    //Connection c = bd.conectar("PersistenciaMedico1");
 	    // Ejemplo de consulta
 	    //consultabd.compruebaUsuario("prueba", "p");
 	    //Hay que ussar la interfaz de uso

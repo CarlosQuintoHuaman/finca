@@ -1,7 +1,7 @@
 package icaro.aplicaciones.agentes.agenteAplicacionMedicoReactivo.comportamiento;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.infoMedico;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -20,11 +20,26 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 	private ItfUsoAgenteReactivo agenteMedico;
 
 	
+	
+	public void cargaDatos() {
+		try {
+			
+		} catch (Exception ex) {
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Ha habido un problema al abrir el visualizador de Medico en accion semantica 'pintaVentanaMedico()'", 
+															  InfoTraza.NivelTraza.error));
+						ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
 	// Ejemplo de accion semantica sencilla
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
-	public void pintaVentanaMedico(){
+	public void pintaVentanaMedico() {
 		
 		try {
 			//Se obtiene el visualizador
@@ -57,7 +72,7 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 		boolean ok = false;
 		
 		// Hay que crear un objeto con los datos para enviar con el evento
-		infoMedico datos = new infoMedico(nombre,apell1,telf);
+		InfoMedico datos = new InfoMedico(nombre,apell1,telf);
 		
 		try {
 			PersistenciaMedico = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz

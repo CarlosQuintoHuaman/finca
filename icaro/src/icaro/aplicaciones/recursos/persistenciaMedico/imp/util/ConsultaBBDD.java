@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class ConsultaBBDD {
@@ -78,6 +79,24 @@ public class ConsultaBBDD {
 		}			
 	}
 	
+	public ArrayList<Object> getPacientes() {
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT *FROM pacientes");
+			
+			if (resultado.next()) {
+				
+				ArrayList<Object> datos = new ArrayList<Object>();
+				
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	/**
 	 * EJEMPLO de como usar la BD
 	 */

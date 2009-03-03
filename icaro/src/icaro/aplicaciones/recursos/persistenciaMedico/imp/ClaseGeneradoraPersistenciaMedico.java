@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaMedico.imp;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.AccesoBBDD;
@@ -68,6 +69,11 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 		}
 
 	}
+	
+	public ArrayList<Object> getPacientes() {
+		
+		return null;
+	}
 
 	public boolean compruebaNombreUsuario(String usuario)
 			throws ErrorEnRecursoException {
@@ -100,5 +106,4 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 			e.printStackTrace();
 		}
 	}
-
 }

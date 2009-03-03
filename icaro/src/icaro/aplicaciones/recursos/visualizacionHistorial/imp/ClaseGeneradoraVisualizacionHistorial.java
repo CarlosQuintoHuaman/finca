@@ -14,12 +14,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 
-/**
- * 
- *@author     F Garijo
- *@created    20 de noviembre de 2007
- */
-
 public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple implements ItfUsoVisualizadorHistorial{
 
 	private static final long serialVersionUID = 1L;
