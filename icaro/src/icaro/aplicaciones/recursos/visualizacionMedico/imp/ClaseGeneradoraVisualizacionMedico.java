@@ -114,7 +114,12 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedico",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
-	}  
+	}
+	
+	public void reiniciaVisualizadorMedico() {
+		ventanaMedicoUsuario = new PanelMedico(this);
+  		ventanaMedicoUsuario.start();
+	}
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/

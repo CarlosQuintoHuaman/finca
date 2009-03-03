@@ -7,6 +7,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -540,6 +542,14 @@ public class PanelHistorial extends Thread {
 			}
 		}
 
+		shell.addShellListener(new ShellAdapter() {
+			@Override
+			public void shellClosed(ShellEvent arg0) {
+				usoAgente.cerrarVentanaHistorial();
+			}
+			
+		});
+		
 		shell.layout();
 		
 		while (!shell.isDisposed()) {
@@ -596,6 +606,7 @@ public class PanelHistorial extends Thread {
 	private void bCerrarWidgetSelected(SelectionEvent evt) {
 		System.out.println("bCerrar.widgetSelected, event="+evt);
 		
-		shell.close();
+		usoAgente.cerrarVentanaHistorial();
+		//shell.close();
 	}
 }

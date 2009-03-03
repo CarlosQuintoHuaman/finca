@@ -110,5 +110,9 @@ public class UsoAgenteHistorial {
     public void mostrarMensajeInformacion(String mensaje, String titulo){
     	visualizador.mostrarMensajeInformacion(titulo, mensaje);
     }
+    
+    public void cerrarVentanaHistorial() {
+    	visualizador.cerrarVisualizadorHistorial();
+    }
 }
 

@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionHistorial.imp;
 
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.*;
+import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedico;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.patronRecursoSimple.imp.ImplRecursoSimple;
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTrazas;
@@ -78,6 +79,8 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	}
 
 	public void mostrarVisualizadorHistorial(String nombreAgente, String tipo) {
+		
+		
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
@@ -94,7 +97,15 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
-	}  
+		
+		reiniciaVisualizadorHistorial();
+	}
+	
+	public void reiniciaVisualizadorHistorial() {
+		ventanaHistorialUsuario = new PanelHistorial(this);
+  		ventanaHistorialUsuario.start();
+  		System.out.println("Reiniciando...");
+	}
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
