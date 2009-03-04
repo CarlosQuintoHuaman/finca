@@ -3,6 +3,8 @@ package icaro.aplicaciones.recursos.persistenciaMedico.imp;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.ConsultaBBDD;
@@ -46,8 +48,6 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 			
 			c = AccesoBBDD.conectar("PersistenciaMedico1");
 			consulta = new ConsultaBBDD("PersistenciaMedico1");
-			
-
 		} catch (Exception e) {
 			this.estadoAutomata.transita("error");
 			throw e;
@@ -70,9 +70,12 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 
 	}
 	
-	public ArrayList<Object> getPacientes() {
-		
-		return null;
+	public ArrayList<InfoPaciente> getPacientes() {
+		return consulta.getPacientes();
+	}
+	
+	public ArrayList<InfoCita> getCitas() {
+		return consulta.getCitas();
 	}
 
 	public boolean compruebaNombreUsuario(String usuario)

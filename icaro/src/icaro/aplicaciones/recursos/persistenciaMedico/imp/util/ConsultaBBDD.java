@@ -86,7 +86,7 @@ public class ConsultaBBDD {
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT *FROM pacientes");
+			resultado = query.executeQuery("SELECT * FROM usuario U, paciente P WHERE P.NombreUsuario = U.NombreUsuario");
 			
 			while (resultado.next()) {
 				InfoPaciente p = new InfoPaciente(resultado.getString("NombreUsuario"),
@@ -96,7 +96,7 @@ public class ConsultaBBDD {
 												resultado.getString("Apellido2"),
 												resultado.getString("Direccion"),
 												resultado.getString("Telefono"),
-												""
+												resultado.getString("Seguro")
 				);
 				
 				pacientes.add(p);
@@ -115,17 +115,11 @@ public class ConsultaBBDD {
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT *FROM pacientes");
+			resultado = query.executeQuery("SELECT * FROM medicopaciente");
 			
 			while (resultado.next()) {
-				InfoCita p = new InfoCita(resultado.getString("NombreUsuario"),
-												resultado.getString("Password"),
-												resultado.getString("Nombre"),
-												resultado.getString("Apellido1"),
-												resultado.getString("Apellido2"),
-												resultado.getString("Direccion"),
-												resultado.getString("Telefono"),
-												""
+				InfoCita p = new InfoCita(resultado.getString("Paciente"),
+										resultado.getTimestamp("Fecha")
 				);
 				
 				citas.add(p);

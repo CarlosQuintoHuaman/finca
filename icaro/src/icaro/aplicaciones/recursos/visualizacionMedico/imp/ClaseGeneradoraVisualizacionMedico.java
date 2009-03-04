@@ -1,7 +1,10 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.ConsultaBBDD;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.AccesoBBDD;
@@ -17,13 +20,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-
-/**
- * 
- *@author     F Garijo
- *@created    20 de noviembre de 2007
- */
-
 public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implements ItfUsoVisualizadorMedico{
 
 	private static final long serialVersionUID = 1L;
@@ -38,8 +34,12 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 	
 	// Persistencia
 	private ItfUsoPersistenciaMedico p;
-	private AccesoBBDD bd;
+	//private AccesoBBDD bd;
 	//private ConsultaBBDD consultabd = new ConsultaBBDD("PersistenciaMedico1");
+	
+	// Resto de variables
+	ArrayList<InfoPaciente> pacientes;
+	ArrayList<InfoCita> citas;
 	
   	public ClaseGeneradoraVisualizacionMedico(String id) throws Exception{
   		super(id);
@@ -59,8 +59,12 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 	    //Connection c = bd.conectar("PersistenciaMedico1");
 	    // Ejemplo de consulta
 	    //consultabd.compruebaUsuario("prueba", "p");
-	    //Hay que ussar la interfaz de uso
+	    //Hay que usar la interfaz de uso
 	    p.compruebaUsuario("prueba", "p");
+	    
+	    pacientes = p.getPacientes();
+		citas = p.getCitas();
+		
   		this.inicializa();
 	}
 
@@ -70,33 +74,14 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
   	private void inicializa() {
   		this.ventanaMedicoUsuario = new PanelMedico(this);
   		ventanaMedicoUsuario.start();
-  		/*
-                 ventanaAgendaUsuario.setPosicion(850,100);
-                 */ 
+ 
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedico",
   				"Inicializando recurso",
   				InfoTraza.NivelTraza.debug));
   	}
-  	
-  	
 
 
 	
-	public String getNombreAgenteControlador() {
-		return nombreAgenteControlador;
-	}
-
-	public void setNombreAgenteControlador(String nombreAgenteControlador) {
-		this.nombreAgenteControlador = nombreAgenteControlador;
-	}
-
-	public String getTipoAgenteControlador() {
-		return tipoAgenteControlador;
-	}
-
-	public void setTipoAgenteControlador(String tipoAgenteControlador) {
-		this.tipoAgenteControlador = tipoAgenteControlador;
-	}
 
 	public void mostrarVisualizadorMedico(String nombreAgente, String tipo) {
 		this.nombreAgenteControlador = nombreAgente;
@@ -122,6 +107,38 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
   		ventanaMedicoUsuario.start();
 	}
   
+	public ArrayList<InfoPaciente> getPacientes() {
+		return pacientes;
+	}
+	
+	public ArrayList<InfoCita> getCitas() {
+		return citas;
+	}
+
+	public void setCitas(ArrayList<InfoCita> citas) {
+		this.citas = citas;
+	}
+
+
+
+
+	// Metodos genericos
+	public String getNombreAgenteControlador() {
+		return nombreAgenteControlador;
+	}
+
+	public void setNombreAgenteControlador(String nombreAgenteControlador) {
+		this.nombreAgenteControlador = nombreAgenteControlador;
+	}
+
+	public String getTipoAgenteControlador() {
+		return tipoAgenteControlador;
+	}
+
+	public void setTipoAgenteControlador(String tipoAgenteControlador) {
+		this.tipoAgenteControlador = tipoAgenteControlador;
+	}
+		
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
 		

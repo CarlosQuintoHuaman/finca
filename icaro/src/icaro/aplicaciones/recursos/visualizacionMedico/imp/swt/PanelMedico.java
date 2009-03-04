@@ -1,6 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp.swt;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Text;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
@@ -74,7 +76,9 @@ public class PanelMedico extends Thread {
 	private MenuItem fileMenuItem;
 
 	protected Date fecha;
-	private ArrayList<String> pacientes = new ArrayList<String>();
+	private ArrayList<InfoPaciente> pacientes;
+	private ArrayList<InfoCita> citas;
+	
 	
 	/**
 	 * comunicacion con el agente (control)
@@ -111,6 +115,10 @@ public class PanelMedico extends Thread {
 		// Crear el display y generar la ventana pero SIN MOSTRARLA
 		// Es decir, no debe haber un shell.open en initGUI()
 		disp = new Display();
+		
+		pacientes = visualizador.getPacientes();
+		citas = visualizador.getCitas();
+		
 		initGUI();
 	}
 
@@ -180,9 +188,20 @@ public class PanelMedico extends Thread {
 					cTabItem1.setText("Pacientes del dia");
 					{
 						listadoPacientes = new List(barraLateral, SWT.NONE);
-						listadoPacientes.add("Paciente1");
-						listadoPacientes.add("Paciente2");
-						listadoPacientes.add("Paciente3");
+						
+						for (int i=0; i<citas.size(); i++) {
+							InfoCita t = citas.get(i);
+							
+							String horas = String.valueOf(t.getFecha().getHours());
+							if (horas.length() == 1)
+								horas = "0"+horas;
+							
+							String minutos = String.valueOf(t.getFecha().getMinutes());
+							if (minutos.length() == 1)
+								minutos = "0"+minutos;
+							
+							listadoPacientes.add(horas + ":" + minutos + " " + t.getUsuario());
+						}
 						cTabItem1.setControl(listadoPacientes);
 					}
 				}
@@ -240,10 +259,7 @@ public class PanelMedico extends Thread {
 							listaBusPacienteLData.grabExcessVerticalSpace = true;
 							listaBusPaciente = new List(cBuscar, SWT.V_SCROLL | SWT.BORDER);
 							listaBusPaciente.setLayoutData(listaBusPacienteLData);
-							
-							pacientes.add("Paciente1 uno");
-							pacientes.add("Paciente2 dos");
-							pacientes.add("Paciente3 tres");
+
 							actualizarLista();
 						}
 					}
@@ -513,12 +529,15 @@ public class PanelMedico extends Thread {
 		listaBusPaciente.removeAll();
 		
 		for (int i=0; i<pacientes.size(); i++) {
-			String paciente = pacientes.get(i).toLowerCase();
+			InfoPaciente p = pacientes.get(i);
+			
+			String nombre = p.getNombre().toLowerCase();
+			String apellidos = p.getApellido1() + " " + p.getApellido2();
+			
 			String filtroNombre = tBusNombre.getText().toLowerCase();
 			String filtroApellido = tBusApellido.getText().toLowerCase();
-			if (paciente.contains(filtroNombre) && paciente.contains(filtroApellido))
-				listaBusPaciente.add(pacientes.get(i));
-			
+			if (nombre.contains(filtroNombre) && apellidos.contains(filtroApellido))
+				listaBusPaciente.add(p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2());
 		}
 			
 	}
