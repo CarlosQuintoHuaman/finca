@@ -189,19 +189,7 @@ public class PanelMedico extends Thread {
 					{
 						listadoPacientes = new List(barraLateral, SWT.NONE);
 						
-						for (int i=0; i<citas.size(); i++) {
-							InfoCita t = citas.get(i);
-							
-							String horas = String.valueOf(t.getFecha().getHours());
-							if (horas.length() == 1)
-								horas = "0"+horas;
-							
-							String minutos = String.valueOf(t.getFecha().getMinutes());
-							if (minutos.length() == 1)
-								minutos = "0"+minutos;
-							
-							listadoPacientes.add(horas + ":" + minutos + " " + t.getUsuario());
-						}
+						actualizarCitas(new Date());
 						cTabItem1.setControl(listadoPacientes);
 					}
 				}
@@ -319,7 +307,7 @@ public class PanelMedico extends Thread {
 									fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
 									listadoPacientes.removeAll();
 									listadoPacientes.add("Pacientes del dia " + fecha.toString());
-									
+									actualizarCitas(fecha);
 						}
 						public void mouseUp(MouseEvent e) {};
 						public void mouseDown(MouseEvent e) {};
@@ -542,5 +530,27 @@ public class PanelMedico extends Thread {
 			
 	}
 	
+	private void actualizarCitas(Date f) {
+		//citas = visualizador.getCitas();
+		
+		for (int i=0; i<citas.size(); i++) {
+			InfoCita t = citas.get(i);
+			
+			if (t.getFecha().getDate() != f.getDate()
+					|| t.getFecha().getMonth() != f.getMonth())
+				continue;
+			
+			String horas = String.valueOf(t.getFecha().getHours());
+			if (horas.length() == 1)
+				horas = "0"+horas;
+			
+			String minutos = String.valueOf(t.getFecha().getMinutes());
+			if (minutos.length() == 1)
+				minutos = "0"+minutos;
+			
+			listadoPacientes.add(horas + ":" + minutos + " " + t.getUsuario());
+		}
+			
+	}
 
 }
