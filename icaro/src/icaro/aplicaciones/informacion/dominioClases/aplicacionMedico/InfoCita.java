@@ -2,7 +2,7 @@ package icaro.aplicaciones.informacion.dominioClases.aplicacionMedico;
 
 import java.io.Serializable;
 
-public class InfoPaciente implements Serializable {
+public class InfoCita implements Serializable {
 	
 	/**
 	 * 
@@ -11,7 +11,6 @@ public class InfoPaciente implements Serializable {
 	
 	
 	private String usuario;
-	private String password;
 	private String nombre;
 	private String apellido1;
 	private String apellido2;
@@ -19,9 +18,8 @@ public class InfoPaciente implements Serializable {
 	private String telefono;
 	private String seguro;
 
-	public InfoPaciente (String u, String p, String n, String ape1, String ape2, String dir, String tel, String seguro) {
+	public InfoCita (String u, String p, String n, String ape1, String ape2, String dir, String tel, String seguro) {
 		setUsuario(u);
-		setPassword(p);
 		setNombre(n);
 		setApellido1(ape1);
 		setApellido2(ape2);
@@ -36,14 +34,6 @@ public class InfoPaciente implements Serializable {
 
 	public String getUsuario() {
 		return usuario;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getPassword() {
-		return password;
 	}
 
 	public void setNombre(String nombre) {

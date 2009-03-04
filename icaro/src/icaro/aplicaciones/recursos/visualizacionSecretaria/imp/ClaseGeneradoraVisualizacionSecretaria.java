@@ -243,7 +243,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	
 	public void cerrarVisualizadorCita() throws Exception {
 		this.ventanaCitaAgenda.destruir();
-		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionCita",
                 "Cerrando visualizador...",
                 InfoTraza.NivelTraza.debug));
      

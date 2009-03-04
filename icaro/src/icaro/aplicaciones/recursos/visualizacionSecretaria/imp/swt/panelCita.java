@@ -352,7 +352,8 @@ public class panelCita extends Thread {
 						bAceptar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 								bAceptarWidgetSelected(evt);
-								destruir();
+								usoAgente.cerrarVentanaCita();
+								//destruir();
 							}
 						});
 					}
@@ -367,7 +368,7 @@ public class panelCita extends Thread {
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								destruir();
+								//destruir();
 								usoAgente.cerrarVentanaCita();
 							}
 						});

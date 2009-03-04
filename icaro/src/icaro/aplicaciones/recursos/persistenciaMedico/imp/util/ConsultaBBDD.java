@@ -1,5 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaMedico.imp.util;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -79,15 +81,25 @@ public class ConsultaBBDD {
 		}			
 	}
 	
-	public ArrayList<Object> getPacientes() {
+	public ArrayList<InfoPaciente> getPacientes() {
+		ArrayList<InfoPaciente> pacientes = new ArrayList<InfoPaciente>();
+		
 		try {
 			crearQuery();
 			resultado = query.executeQuery("SELECT *FROM pacientes");
 			
-			if (resultado.next()) {
+			while (resultado.next()) {
+				InfoPaciente p = new InfoPaciente(resultado.getString("NombreUsuario"),
+												resultado.getString("Password"),
+												resultado.getString("Nombre"),
+												resultado.getString("Apellido1"),
+												resultado.getString("Apellido2"),
+												resultado.getString("Direccion"),
+												resultado.getString("Telefono"),
+												""
+				);
 				
-				ArrayList<Object> datos = new ArrayList<Object>();
-				
+				pacientes.add(p);
 			}
 				
 		} catch (Exception e) {
@@ -95,7 +107,36 @@ public class ConsultaBBDD {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return pacientes;
+	}
+	
+	public ArrayList<InfoCita> getCitas() {
+		ArrayList<InfoCita> citas = new ArrayList<InfoCita>();
+		
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT *FROM pacientes");
+			
+			while (resultado.next()) {
+				InfoCita p = new InfoCita(resultado.getString("NombreUsuario"),
+												resultado.getString("Password"),
+												resultado.getString("Nombre"),
+												resultado.getString("Apellido1"),
+												resultado.getString("Apellido2"),
+												resultado.getString("Direccion"),
+												resultado.getString("Telefono"),
+												""
+				);
+				
+				citas.add(p);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return citas;
 	}
 	/**
 	 * EJEMPLO de como usar la BD
