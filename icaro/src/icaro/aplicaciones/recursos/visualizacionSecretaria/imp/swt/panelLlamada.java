@@ -80,9 +80,10 @@ public class panelLlamada extends Thread {
          });
 	}
 	
-	public void meteDatos(final DatosLlamada dat){
+	public void mostrar(final DatosLlamada dat){
 		disp.asyncExec(new Runnable() {
             public void run() {   
+            	shell.open();
             	tNombre.setText(dat.getNombre());
             	tTelefono.setText(dat.getTelf());
             	tMensaje.setText(dat.getMensaje());

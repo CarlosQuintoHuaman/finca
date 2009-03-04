@@ -33,6 +33,9 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	//Ventana que gestiona este visualizador
 	private panelAgenda ventanaAgendaUsuario;
 	private panelCita ventanaCitaAgenda;
+	private panelLlamada ventanaLlamada;
+	private panelExtra ventanaExtra;
+	
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
   	public ClaseGeneradoraVisualizacionSecretaria(String id) throws Exception{
@@ -53,6 +56,12 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   	private void inicializa() {
   		this.ventanaAgendaUsuario = new panelAgenda(this);
   		ventanaAgendaUsuario.start();
+  		this.ventanaCitaAgenda = new panelCita(this);
+  		ventanaCitaAgenda.start();
+  		this.ventanaLlamada = new panelLlamada(this);
+  		ventanaLlamada.start();
+  		this.ventanaExtra = new panelExtra(this);
+  		ventanaExtra.start();
 
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionAgenda",
   				"Inicializando recurso",
@@ -167,7 +176,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
 
-		this.ventanaAgendaUsuario.mostrarCita(datos);
+		this.ventanaCitaAgenda.mostrar(datos);
 		//this.ventanaAgendaUsuario.mostrarCita();
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
@@ -181,7 +190,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 			System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 			this.tipoAgenteControlador = tipo;
 
-			this.ventanaAgendaUsuario.mostrarCita();
+			this.ventanaCitaAgenda.mostrar();
 			//this.ventanaAgendaUsuario.mostrarCita();
 			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",
@@ -195,7 +204,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 			System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 			this.tipoAgenteControlador = tipo;
 
-			this.ventanaAgendaUsuario.mostrarLlamada();
+			this.ventanaLlamada.mostrar();
 			//this.ventanaAgendaUsuario.mostrarCita();
 			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",
@@ -208,7 +217,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
 
-		this.ventanaAgendaUsuario.mostrarLlamada(datos);
+		this.ventanaLlamada.mostrar(datos);
 		//this.ventanaAgendaUsuario.mostrarCita();
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
@@ -221,7 +230,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 			System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 			this.tipoAgenteControlador = tipo;
 
-			this.ventanaAgendaUsuario.mostrarExtra();
+			this.ventanaExtra.mostrar();
 			
 			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",
@@ -234,7 +243,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
 
-		this.ventanaAgendaUsuario.mostrarExtra(datos);
+		this.ventanaExtra.mostrar(datos);
 		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
@@ -254,6 +263,36 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     public void reiniciaVisualizadorCita() {
     	ventanaCitaAgenda = new panelCita(this);
     	ventanaCitaAgenda.start();
+    }
+    
+	public void cerrarVisualizadorLlamada() throws Exception {
+		this.ventanaLlamada.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+                "Cerrando visualizador...",
+                InfoTraza.NivelTraza.debug));
+     
+      reiniciaVisualizadorLlamada();
+		
+	}
+	
+    public void reiniciaVisualizadorLlamada() {
+    	ventanaLlamada = new panelLlamada(this);
+    	ventanaLlamada.start();
+    }
+    
+	public void cerrarVisualizadorExtra() throws Exception {
+		this.ventanaExtra.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+                "Cerrando visualizador...",
+                InfoTraza.NivelTraza.debug));
+     
+      reiniciaVisualizadorExtra();
+		
+	}
+	
+    public void reiniciaVisualizadorExtra() {
+    	ventanaExtra = new panelExtra(this);
+    	ventanaExtra.start();
     }
 
     public void insertaLlamada(String nombreAgente,String tipo, DatosLlamada datos){

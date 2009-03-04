@@ -103,6 +103,31 @@ public class panelCita extends Thread {
 	       }
          });
 	}
+	
+	public void mostrar(final DatosCitaSinValidar dat){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+         	   shell.open();
+         	  String[]aux;
+          	
+          	aux=dat.tomaNombre().split(" ");
+          	if (aux.length==0){
+          		tPaciente.setText("");
+              	tApellidos.setText("");
+          	}else{
+          		tPaciente.setText(aux[0]);
+          		
+          		tApellidos.setText(dat.tomaApell1());
+          	}
+      		tTelefono1.setText(dat.tomaTelf());
+      		tHoraD.setText(dat.tomaHora());
+      		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(), dat.tomaTelf(), dat.tomaHora(),periodo);
+      		calculaPeriodo(); 
+	       }
+         });
+	}
 
 	public void ocultar(){
 		// NO CONFIRMADO
@@ -406,29 +431,7 @@ public class panelCita extends Thread {
 		// Ahora va el codigo de la ventana.
 		// ¡Ojo! Las variables de SWT deberian ser globales
 	}
-	
-	public void meteDatos(final DatosCitaSinValidar dat){
-		disp.asyncExec(new Runnable() {
-            public void run() {
-            	String[]aux;
-            	
-            	aux=dat.tomaNombre().split(" ");
-            	if (aux.length==0){
-            		tPaciente.setText("");
-                	tApellidos.setText("");
-            	}else{
-            		tPaciente.setText(aux[0]);
-            		
-            		tApellidos.setText(dat.tomaApell1());
-            	}
-        		tTelefono1.setText(dat.tomaTelf());
-        		tHoraD.setText(dat.tomaHora());
-        		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(), dat.tomaTelf(), dat.tomaHora(),periodo);
-        		calculaPeriodo();      		
-		    }
-        });
-	}
-	
+
 	private void bmenosWidgetSelected(SelectionEvent evt){
 		if (periodo>1)
 			periodo--;

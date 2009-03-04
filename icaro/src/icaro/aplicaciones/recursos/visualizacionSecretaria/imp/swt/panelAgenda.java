@@ -118,9 +118,9 @@ public class panelAgenda extends Thread {
 	private Display disp;
 	private Shell shell;
 	private panelAgenda este;
-	private panelCita f;
+/*	private panelCita f;
 	private panelLlamada l;
-	private panelExtra e;
+	private panelExtra e;*/
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 
 	/**
@@ -132,12 +132,6 @@ public class panelAgenda extends Thread {
 		este = this;
 		vis =visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
-		f=new panelCita(vis); 
-		l=new panelLlamada(vis);
-		e=new panelExtra(vis);
-		l.start();
-    	f.start();
-    	e.start();
 	}
 
 	public void run(){
@@ -946,7 +940,7 @@ public class panelAgenda extends Thread {
 		
 	}
 	
-	public void mostrarCita(final DatosCitaSinValidar datos) {
+/*	public void mostrarCita(final DatosCitaSinValidar datos) {
 	
 		try{
 			disp.asyncExec(new Runnable() {
@@ -960,9 +954,9 @@ public class panelAgenda extends Thread {
 			e.printStackTrace();
 		
 		}
-	}
+	}*/
 	
-	public void mostrarCita() {
+/*	public void mostrarCita() {
 		
 		try{
 			disp.asyncExec(new Runnable() {
@@ -992,9 +986,9 @@ public void mostrarLlamada() {
 			e.printStackTrace();
 		
 		}
-	}
+	}*/
 
-public void mostrarLlamada(final DatosLlamada datos) {
+/*public void mostrarLlamada(final DatosLlamada datos) {
 	
 	try{
 		disp.asyncExec(new Runnable() {
@@ -1040,13 +1034,13 @@ public void mostrarExtra(final DatosLlamada datos) {
 		e.printStackTrace();
 	
 	}
-}
+}*/
 	
-	public void inicializaCita(){
+/*	public void inicializaCita(){
 		f=new panelCita(vis);
 		f.start();
 		
-	}
+	}*/
 	
 	public void comprobarCita(final DatosCitaSinValidar d) {
 		
@@ -1071,9 +1065,9 @@ public void mostrarExtra(final DatosLlamada datos) {
 	         }
 	         else{
 			//Si fallo muestro la cita otra vez y mensaje error
-	        	 f=new panelCita(vis);
+/*	        	 f=new panelCita(vis);
 	        	 f.meteDatos(datos);
-	        	 f.mostrar();
+	        	 f.mostrar();*/
 	         }
 	         
 			       }
@@ -1612,8 +1606,5 @@ public void mostrarExtra(final DatosLlamada datos) {
 		}
 		tablasDerecha.layout();
 	}
-	
-	public void cerrarCita() {
-		f.cerrar();
-	}
+
 }
