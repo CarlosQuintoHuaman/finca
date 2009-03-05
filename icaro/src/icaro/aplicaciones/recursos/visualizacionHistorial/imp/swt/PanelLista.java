@@ -27,6 +27,7 @@ public class PanelLista extends Thread {
 
 	// Variables
 	private Composite listado;
+	private Button bCerrar;
 	private CLabel lMotivo1;
 	private CLabel lFecha1;
 	private CLabel lMotivoTitulo;
@@ -189,6 +190,8 @@ public class PanelLista extends Thread {
 					t.setText(lista.get(i)[0]);
 					GridData tLData = new GridData();
 					tLData.horizontalAlignment = GridData.FILL;
+					tLData.verticalAlignment = GridData.BEGINNING;
+					tLData.grabExcessVerticalSpace = true;
 					t.setLayoutData(tLData);
 					t.setBackground(SWTResourceManager.getColor(255, 255, 255));
 					
@@ -202,6 +205,8 @@ public class PanelLista extends Thread {
 					t1.setText(lista.get(i)[1]);
 					GridData t1LData = new GridData();
 					t1LData.horizontalAlignment = GridData.FILL;
+					t1LData.verticalAlignment = GridData.BEGINNING;
+					t1LData.grabExcessVerticalSpace = true;
 					t1.setLayoutData(t1LData);
 					t1.setBackground(SWTResourceManager.getColor(255, 255, 255));
 					
@@ -210,6 +215,23 @@ public class PanelLista extends Thread {
 					tupla[1] = t1;
 					
 					listaLabels.add(tupla);
+				}
+				
+				if (lista.size() > 0) {
+					{
+						bCerrar = new Button(listado, SWT.PUSH | SWT.CENTER);
+						GridData bCerrarLData = new GridData();
+						bCerrarLData.verticalAlignment = GridData.FILL;
+						bCerrarLData.horizontalSpan = 2;
+						bCerrarLData.horizontalAlignment = GridData.CENTER;
+						bCerrar.setLayoutData(bCerrarLData);
+						bCerrar.setText("Cerrar Ventana");
+						bCerrar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bCerrarWidgetSelected(evt);
+							}
+						});
+					}
 				}
 				
 				listado.layout();
@@ -244,6 +266,10 @@ public class PanelLista extends Thread {
 		});
 		
 		rellenaLista();
+	}
+	
+	private void bCerrarWidgetSelected(SelectionEvent evt) {
+		usoAgente.cerrarVentanaLista();
 	}
 
 }
