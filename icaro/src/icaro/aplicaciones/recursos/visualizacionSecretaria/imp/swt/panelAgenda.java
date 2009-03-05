@@ -150,16 +150,16 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	public void meteDatos(final ArrayList<DatosCitaSinValidar> l1){
+	public void meteDatos(ArrayList<DatosCitaSinValidar> l1){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.asyncExec(new Runnable() {
             public void run() {
-            	l=l1;
             	System.out.println("eeeeeeeeeeeeeeeeeeeeeeooooooooooooooo");
             	shell.open();
 	       }
          });
+		l=l1;
 	}
 
 	public void ocultar(){
@@ -207,7 +207,7 @@ public class panelAgenda extends Thread {
 			NombresM[2]="Estética";
 			NombresM[3]="Laser";
 			NombresM[4]="Dr Martín";
-			
+			l=new ArrayList<DatosCitaSinValidar> ();
 			
 			shell.setLayout(new FillLayout());
 			shell.setText("Consulta de Hoy");
@@ -732,8 +732,8 @@ public class panelAgenda extends Thread {
 				Nombres[c] = new CLabel(AgendaDinamica, SWT.NONE);
 				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
 				if (m<l.size()){
-					Nombres[c].setText(l.get(i).tomaNombre());
-					Telefonos[c].setText(l.get(i).tomaTelf());
+					Nombres[c].setText(l.get(m).tomaNombre());
+					Telefonos[c].setText(l.get(m).tomaTelf());
 					
 				}else{
 				
@@ -764,6 +764,7 @@ public class panelAgenda extends Thread {
 					}
 				});
 				c++;
+				m++;
 			}
 			
 		}

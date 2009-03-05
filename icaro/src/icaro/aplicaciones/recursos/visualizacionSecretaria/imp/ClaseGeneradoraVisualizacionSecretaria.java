@@ -107,7 +107,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
         this.tipoAgenteControlador = tipo;
         this.ventanaAgendaUsuario.meteDatos(l);
-        this.ventanaAgendaUsuario.mostrar();
+        
         trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",
 			InfoTraza.NivelTraza.debug));
