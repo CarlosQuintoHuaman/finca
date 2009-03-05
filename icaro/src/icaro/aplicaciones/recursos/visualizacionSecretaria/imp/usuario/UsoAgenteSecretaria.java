@@ -254,6 +254,55 @@ public class UsoAgenteSecretaria {
         }
     }
     
+    public void cerrarVentanaLlamada(){
+    	getInformacionAgente();
+    	
+    	try {
+    		visualizador.cerrarVisualizadorLlamada();
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cancelarLlamada", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar evento cancelarLlamada al agente secretaria");
+            e.printStackTrace();
+        }
+    }
+    
+    public void cerrarVentanaExtra(){
+    	getInformacionAgente();
+    	
+    	try {
+    		visualizador.cerrarVisualizadorExtra();
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cancelarExtra", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+            
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar evento cancelarExtra al agente secretaria");
+            e.printStackTrace();
+        }
+    }
+    
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
@@ -293,6 +342,7 @@ public class UsoAgenteSecretaria {
           
 
          try {
+        	 
              if (itfUsoRepositorioInterfaces == null) {
                  itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
              }
@@ -306,12 +356,40 @@ public class UsoAgenteSecretaria {
              }
 
          } catch (Exception e) {
-             System.out.println("Ha habido un error al enviar los datos de la cita ");
+             System.out.println("Ha habido un error al enviar los datos de la llamada ");
              e.printStackTrace();
          }
          
      }
     
+    public void modificaLlamada(DatosLlamada datAnt, DatosLlamada datPost) {
+        
+  	   getInformacionAgente();
+          //provoca la petici�n de autentificaci�n
+      	
+           DatosLlamada[] datos={datAnt,datPost};
+  	   //DatosLlamada datos=datAnt;
+
+          try {
+         	 
+              if (itfUsoRepositorioInterfaces == null) {
+                  itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+              }
+
+              if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                  //AgenteAplicacionSecretaria
+                  ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                  if (itfUsoAgente != null) {
+                      itfUsoAgente.aceptaEvento(new EventoInput("modLlamada", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                  }
+              }
+
+          } catch (Exception e) {
+              System.out.println("Ha habido un error al enviar los datos de la llamada ");
+              e.printStackTrace();
+          }
+          
+      }
     public void borraLlamada(DatosLlamada datos) {
         
   	   getInformacionAgente();
@@ -320,6 +398,7 @@ public class UsoAgenteSecretaria {
            
 
           try {
+        	  visualizador.cerrarVisualizadorLlamada();
               if (itfUsoRepositorioInterfaces == null) {
                   itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
               }
@@ -347,6 +426,7 @@ public class UsoAgenteSecretaria {
           
 
          try {
+        	 
              if (itfUsoRepositorioInterfaces == null) {
                  itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
              }
@@ -365,6 +445,35 @@ public class UsoAgenteSecretaria {
          }
          
      }
+          
+          public void modificaExtra(DatosLlamada datAnt, DatosLlamada datPost) {
+              
+         	   getInformacionAgente();
+                 //provoca la petici�n de autentificaci�n
+             	
+                  DatosLlamada[] datos={datAnt,datPost};
+         	   
+
+                 try {
+                	 
+                     if (itfUsoRepositorioInterfaces == null) {
+                         itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+                     }
+
+                     if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                         //AgenteAplicacionSecretaria
+                         ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                         if (itfUsoAgente != null) {
+                             itfUsoAgente.aceptaEvento(new EventoInput("modExtra", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                         }
+                     }
+
+                 } catch (Exception e) {
+                     System.out.println("Ha habido un error al enviar los datos del extra ");
+                     e.printStackTrace();
+                 }
+                 
+             }
     
     public void borraExtra(DatosLlamada datos) {
         
@@ -374,6 +483,7 @@ public class UsoAgenteSecretaria {
            
 
           try {
+        	  visualizador.cerrarVisualizadorExtra();
               if (itfUsoRepositorioInterfaces == null) {
                   itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
               }

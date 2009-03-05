@@ -66,7 +66,7 @@ public class panelCita extends Thread {
 	private panelCita este;
 	private panelAgenda p;
 	private DatosCitaSinValidar datos;
-
+	private ClaseGeneradoraVisualizacionSecretaria vis;
 	/**
 	 * 
 	 * @param visualizador
@@ -74,7 +74,7 @@ public class panelCita extends Thread {
 	public panelCita(ClaseGeneradoraVisualizacionSecretaria visualizador){
 		super("Agenda");
 		este = this;
-		
+		vis=visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
 	}
 	
@@ -378,7 +378,7 @@ public class panelCita extends Thread {
 							public void widgetSelected(SelectionEvent evt) {
 								bAceptarWidgetSelected(evt);
 								usoAgente.cerrarVentanaCita();
-								//destruir();
+								
 							}
 						});
 					}
@@ -393,7 +393,6 @@ public class panelCita extends Thread {
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								//destruir();
 								usoAgente.cerrarVentanaCita();
 							}
 						});
@@ -451,7 +450,12 @@ public class panelCita extends Thread {
 		datos.setPeriodo(periodo);
 		datos.setTelf(tTelefono1.getText());
 		usoAgente.validaCita(datos);
-		destruir();
+		try {
+			vis.cerrarVisualizadorExtra();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void calculaPeriodo(){
 		int c=periodo;

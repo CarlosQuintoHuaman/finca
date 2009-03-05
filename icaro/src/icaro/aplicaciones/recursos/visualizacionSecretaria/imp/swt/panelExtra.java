@@ -22,6 +22,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+
 import icaro.util.util;
 
 public class panelExtra extends Thread {
@@ -32,6 +35,7 @@ public class panelExtra extends Thread {
     private Composite compoBotones;
     private Button bCancelar;
     private Button bAceptar;
+    private Button bEditar;
     private Text tMensaje;
     private Text tTelefono;
     private Composite composite1;
@@ -51,7 +55,8 @@ public class panelExtra extends Thread {
 	private Shell shell;
 	private panelExtra este;
 	private DatosLlamada llamada;
-
+	private DatosLlamada llamadaAnterior;
+	private ClaseGeneradoraVisualizacionSecretaria vis;
 	/**
 	 * 
 	 * @param visualizador
@@ -59,7 +64,7 @@ public class panelExtra extends Thread {
 	public panelExtra(ClaseGeneradoraVisualizacionSecretaria visualizador){
 		super("Extra");
 		este = this;
-		
+		vis=visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
 	}
 
@@ -134,6 +139,11 @@ public class panelExtra extends Thread {
         		//handle the obtaining and disposing of resources
         		SWTResourceManager.registerResourceUser(shell);
         	}
+			shell.addShellListener(new ShellAdapter() {
+			    public void shellClosed(ShellEvent event) {
+			    	usoAgente.cerrarVentanaExtra();
+			    }
+			});
 			{
 				GridData composite1LData = new GridData();
 				composite1LData.horizontalAlignment = GridData.FILL;
@@ -159,6 +169,7 @@ public class panelExtra extends Thread {
 					tNombreLData.widthHint = 269;
 					tNombre = new Text(composite1, SWT.BORDER);
 					tNombre.setLayoutData(tNombreLData);
+					tNombre.setEditable(false);
 				}
 				{
 					GridData tTelefonoLData = new GridData();
@@ -166,6 +177,7 @@ public class panelExtra extends Thread {
 					tTelefonoLData.widthHint = 66;
 					tTelefono = new Text(composite1, SWT.BORDER);
 					tTelefono.setLayoutData(tTelefonoLData);
+					tTelefono.setEditable(false);
 				}
 				{
 					cMensaje = new CLabel(composite1, SWT.NONE);
@@ -173,6 +185,7 @@ public class panelExtra extends Thread {
 					cMensajeLData.horizontalSpan = 2;
 					cMensaje.setLayoutData(cMensajeLData);
 					cMensaje.setText("Informacion adicional");
+					
 				}
 				{
 					GridData tmensajeLData = new GridData();
@@ -181,6 +194,7 @@ public class panelExtra extends Thread {
 					tmensajeLData.horizontalSpan = 2;
 					tMensaje = new Text(composite1, SWT.MULTI | SWT.WRAP | SWT.BORDER);
 					tMensaje.setLayoutData(tmensajeLData);
+					tMensaje.setEditable(false);
 				}
 				{
 					bPaciente = new Button(composite1, SWT.CHECK | SWT.LEFT);
@@ -188,16 +202,17 @@ public class panelExtra extends Thread {
 					bPacienteLData.horizontalSpan = 2;
 					bPaciente.setLayoutData(bPacienteLData);
 					bPaciente.setText("Tiene Ficha");
+					bPaciente.setEnabled(false);
 				}
 				{
 					GridData composite2LData = new GridData();
-					composite2LData.widthHint = 215;
+					composite2LData.widthHint = 250;
 					composite2LData.heightHint = 42;
 					composite2LData.horizontalAlignment = GridData.CENTER;
 					compoBotones = new Composite(composite1, SWT.NONE);
 					GridLayout composite2Layout = new GridLayout();
 					composite2Layout.makeColumnsEqualWidth = true;
-					composite2Layout.numColumns = 3;
+					composite2Layout.numColumns = 4;
 					compoBotones.setLayout(composite2Layout);
 					compoBotones.setLayoutData(composite2LData);
 					{
@@ -223,7 +238,9 @@ public class panelExtra extends Thread {
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
-								destruir();
+								
+									usoAgente.cerrarVentanaExtra();
+								
 								
 							}                               
 						});
@@ -238,6 +255,21 @@ public class panelExtra extends Thread {
 						bBorrar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
 								bBorrarWidgetSelected(evt);
+								
+							}                               
+						});
+					}
+					
+					{
+						bEditar = new Button(compoBotones, SWT.PUSH | SWT.CENTER);
+						GridData bEditarLData = new GridData();
+						bEditarLData.heightHint = 29;
+						bEditarLData.widthHint = 63;
+						bEditar.setLayoutData(bEditarLData);
+						bEditar.setText("Editar");
+						bEditar.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent evt) {
+								bEditarWidgetSelected(evt);
 								
 							}                               
 						});
@@ -269,16 +301,49 @@ public class panelExtra extends Thread {
 		}
 		else{
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
-		usoAgente.anadeExtra(llamada);
-		destruir();
+		if(!tNombre.getEditable())
+			usoAgente.anadeExtra(llamada);
+		usoAgente.cerrarVentanaExtra();
 		}
 	}
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
 		usoAgente.borraExtra(llamada);
-		destruir();
+		usoAgente.cerrarVentanaExtra();
 	}
+	
+	private void bEditarWidgetSelected(SelectionEvent evt){
+		if(bEditar.getText().equals("Editar"))
+			bEditar.setText("Guardar");
+		else
+			bEditar.setText("Editar");
+		
+		if(bEditar.getText().equals("Guardar")){
+			tNombre.setEditable(true);
+			tTelefono.setEditable(true);
+			tMensaje.setEditable(true);
+			bPaciente.setEnabled(true);
+			llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+		}
+		else{
+			if (hora==null){
+				 f=new util(); 
+				hora=f.getStrTime();
+			}
+			tNombre.setEditable(false);
+			tTelefono.setEditable(false);
+			tMensaje.setEditable(false);
+			bPaciente.setEnabled(false);
+			if (tNombre.getText().equals("")){
+				usoAgente.mostrarMensajeError("Debe rellenar un nombre", "Error en formato");
+			}
+			else{
+			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+			usoAgente.modificaExtra(llamadaAnterior, llamada);
+			//usoAgente.cerrarVentanaLlamada();
+			}
+		}
 
-
+	}
 }

@@ -155,7 +155,7 @@ public void pintaVentanaExtra(){
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
-			visualizacion.mostrarVisualizadorLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			visualizacion.mostrarVisualizadorExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
 			
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador extra",InfoTraza.NivelTraza.debug));
 		}
@@ -317,6 +317,144 @@ public void pintaVentanaExtra(){
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
 			visualizacion.insertaLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'insertaLlamada()'", 
+														  InfoTraza.NivelTraza.error));
+			}catch(Exception e){e.printStackTrace();}
+		}
+		
+		//Una vez comprobado todo correcto se manda a persistencia
+/*		try {
+			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"Persistencia1");
+			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
+			ok=true;
+			
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Comprobando usuario...", 
+															  InfoTraza.NivelTraza.debug));
+			}catch(Exception e){e.printStackTrace();}
+		}
+
+		catch (Exception ex){
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Ha habido un problema en la Persistencia1 al comprobar cita", 
+															  InfoTraza.NivelTraza.error));
+				}catch(Exception e){e.printStackTrace();}
+		}
+		try {
+			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+this.nombreAgente);
+			Object[] datosEnvio = new Object[]{datos.tomaNombre(), datos.tomaApell1(),datos.tomaTelf()};
+			if(ok){
+				agenteSecretaria.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
+			}
+			
+			visualizacion.cerrarVisualizadorCita();
+			
+			//trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Ejecutando accion: darAlta",InfoTraza.NivelTraza.debug));
+		}
+		catch (Exception e) {
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Ha habido un problema enviar el evento correcto al agente", 
+															  InfoTraza.NivelTraza.error));
+				}catch(Exception e2){e2.printStackTrace();}
+		}*/
+	}
+	
+	public void modificaLlamada(DatosLlamada dAnt, DatosLlamada dPost) {
+		boolean ok = false;
+		
+		//Se lo mando a panel agenda para que lo compruebe
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			visualizacion.modificaLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, dAnt,dPost);
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'insertaLlamada()'", 
+														  InfoTraza.NivelTraza.error));
+			}catch(Exception e){e.printStackTrace();}
+		}
+		
+		//Una vez comprobado todo correcto se manda a persistencia
+/*		try {
+			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"Persistencia1");
+			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
+			ok=true;
+			
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Comprobando usuario...", 
+															  InfoTraza.NivelTraza.debug));
+			}catch(Exception e){e.printStackTrace();}
+		}
+
+		catch (Exception ex){
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Ha habido un problema en la Persistencia1 al comprobar cita", 
+															  InfoTraza.NivelTraza.error));
+				}catch(Exception e){e.printStackTrace();}
+		}
+		try {
+			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+this.nombreAgente);
+			Object[] datosEnvio = new Object[]{datos.tomaNombre(), datos.tomaApell1(),datos.tomaTelf()};
+			if(ok){
+				agenteSecretaria.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
+			}
+			
+			visualizacion.cerrarVisualizadorCita();
+			
+			//trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Ejecutando accion: darAlta",InfoTraza.NivelTraza.debug));
+		}
+		catch (Exception e) {
+			try {
+				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+															  "Ha habido un problema enviar el evento correcto al agente", 
+															  InfoTraza.NivelTraza.error));
+				}catch(Exception e2){e2.printStackTrace();}
+		}*/
+	}
+	
+	public void modificaExtra(DatosLlamada dAnt, DatosLlamada dPost) {
+		boolean ok = false;
+		
+		//Se lo mando a panel agenda para que lo compruebe
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			visualizacion.modificaExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, dAnt,dPost);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
 		}
 

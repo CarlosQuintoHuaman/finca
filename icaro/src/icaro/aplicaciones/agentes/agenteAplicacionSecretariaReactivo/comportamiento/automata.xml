@@ -14,10 +14,12 @@
 	<estado idIntermedio="esperaResultadoLlamada">
 		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="borrarLlamada" accion="borrarLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
+		<transicion input="borrarLlamada" accion="borrarLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="modLlamada" accion="modificaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
 	<transicion input="infoExtra" accion="insertaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 	<transicion input="cancelarExtra" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
-	<transicion input="borrarExtra" accion="borrarExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperandoTerminacion">
+	<transicion input="borrarExtra" accion="borrarExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="modExtra" accion="modificaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperandoTerminacion">
 		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperaResultadoCita">

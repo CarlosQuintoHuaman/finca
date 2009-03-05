@@ -22,8 +22,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+
 import icaro.util.util;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class panelLlamada extends Thread {
 
 	// Variables
@@ -41,7 +57,7 @@ public class panelLlamada extends Thread {
     private CLabel cNombre;
     private String hora;
     private util f;
-
+    private Button bEditar;
 
 	final UsoAgenteSecretaria usoAgente;
 	
@@ -51,6 +67,8 @@ public class panelLlamada extends Thread {
 	private Shell shell;
 	private panelLlamada este;
 	private DatosLlamada llamada;
+	private DatosLlamada llamadaAnterior;
+	private ClaseGeneradoraVisualizacionSecretaria vis;
 
 	/**
 	 * 
@@ -59,7 +77,7 @@ public class panelLlamada extends Thread {
 	public panelLlamada(ClaseGeneradoraVisualizacionSecretaria visualizador){
 		super("Llamada");
 		este = this;
-		
+		vis=visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
 	}
 
@@ -134,6 +152,11 @@ public class panelLlamada extends Thread {
         		//handle the obtaining and disposing of resources
         		SWTResourceManager.registerResourceUser(shell);
         	}
+			shell.addShellListener(new ShellAdapter() {
+			    public void shellClosed(ShellEvent event) {
+			    	usoAgente.cerrarVentanaLlamada();
+			    }
+			});
 			{
 				GridData composite1LData = new GridData();
 				composite1LData.horizontalAlignment = GridData.FILL;
@@ -159,6 +182,7 @@ public class panelLlamada extends Thread {
 					tNombreLData.widthHint = 269;
 					tNombre = new Text(composite1, SWT.BORDER);
 					tNombre.setLayoutData(tNombreLData);
+					tNombre.setEditable(false);
 				}
 				{
 					GridData tTelefonoLData = new GridData();
@@ -166,6 +190,7 @@ public class panelLlamada extends Thread {
 					tTelefonoLData.widthHint = 66;
 					tTelefono = new Text(composite1, SWT.BORDER);
 					tTelefono.setLayoutData(tTelefonoLData);
+					tTelefono.setEditable(false);
 				}
 				{
 					cMensaje = new CLabel(composite1, SWT.NONE);
@@ -181,6 +206,7 @@ public class panelLlamada extends Thread {
 					tmensajeLData.horizontalSpan = 2;
 					tMensaje = new Text(composite1, SWT.MULTI | SWT.WRAP | SWT.BORDER);
 					tMensaje.setLayoutData(tmensajeLData);
+					tMensaje.setEditable(false);
 				}
 				{
 					bPaciente = new Button(composite1, SWT.CHECK | SWT.LEFT);
@@ -188,16 +214,17 @@ public class panelLlamada extends Thread {
 					bPacienteLData.horizontalSpan = 2;
 					bPaciente.setLayoutData(bPacienteLData);
 					bPaciente.setText("Tiene Ficha");
+					bPaciente.setEnabled(false);
 				}
 				{
 					GridData composite2LData = new GridData();
-					composite2LData.widthHint = 215;
+					composite2LData.widthHint = 276;
 					composite2LData.heightHint = 42;
 					composite2LData.horizontalAlignment = GridData.CENTER;
 					compoBotones = new Composite(composite1, SWT.NONE);
 					GridLayout composite2Layout = new GridLayout();
 					composite2Layout.makeColumnsEqualWidth = true;
-					composite2Layout.numColumns = 3;
+					composite2Layout.numColumns = 4;
 					compoBotones.setLayout(composite2Layout);
 					compoBotones.setLayoutData(composite2LData);
 					{
@@ -223,7 +250,7 @@ public class panelLlamada extends Thread {
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
-								destruir();
+								usoAgente.cerrarVentanaLlamada();
 								
 							}                               
 						});
@@ -240,6 +267,20 @@ public class panelLlamada extends Thread {
 								bBorrarWidgetSelected(evt);
 								
 							}                               
+						});
+					}
+					{
+						bEditar = new Button(compoBotones, SWT.PUSH | SWT.CENTER);
+						GridData bEditarLData = new GridData();
+						bEditarLData.heightHint = 29;
+						bEditarLData.widthHint = 63;
+						bEditar.setLayoutData(bEditarLData);
+						bEditar.setText("Editar");
+						bEditar.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent evt) {
+								bEditarWidgetSelected(evt);
+								
+							}  
 						});
 					}
 				}
@@ -269,15 +310,50 @@ public class panelLlamada extends Thread {
 		}
 		else{
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
-		usoAgente.anadeLlamada(llamada);
-		destruir();
+		if(!tNombre.getEditable())
+			usoAgente.anadeLlamada(llamada);
+		usoAgente.cerrarVentanaLlamada();
 		}
 	}
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		//llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),indice);
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
 		usoAgente.borraLlamada(llamada);
-		destruir();
+		usoAgente.cerrarVentanaLlamada();
+	}
+	
+	private void bEditarWidgetSelected(SelectionEvent evt){
+		if(bEditar.getText().equals("Editar"))
+			bEditar.setText("Guardar");
+		else
+			bEditar.setText("Editar");
+		
+		if(bEditar.getText().equals("Guardar")){
+			tNombre.setEditable(true);
+			tTelefono.setEditable(true);
+			tMensaje.setEditable(true);
+			bPaciente.setEnabled(true);
+			llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+		}
+		else{
+			if (hora==null){
+				 f=new util(); 
+				hora=f.getStrTime();
+			}
+			tNombre.setEditable(false);
+			tTelefono.setEditable(false);
+			tMensaje.setEditable(false);
+			bPaciente.setEnabled(false);
+			if (tNombre.getText().equals("")){
+				usoAgente.mostrarMensajeError("Debe rellenar un nombre", "Error en formato");
+			}
+			else{
+			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+			usoAgente.modificaLlamada(llamadaAnterior, llamada);
+			//usoAgente.cerrarVentanaLlamada();
+			}
+		}
+		
 	}
 
 }

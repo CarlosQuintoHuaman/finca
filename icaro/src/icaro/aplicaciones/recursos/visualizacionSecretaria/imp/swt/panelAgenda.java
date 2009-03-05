@@ -118,9 +118,6 @@ public class panelAgenda extends Thread {
 	private Display disp;
 	private Shell shell;
 	private panelAgenda este;
-/*	private panelCita f;
-	private panelLlamada l;
-	private panelExtra e;*/
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 
 	/**
@@ -182,21 +179,12 @@ public class panelAgenda extends Thread {
 		// Ahora va el codigo de la ventana.
 		// ¡Ojo! Las variables de SWT deberian ser globales
 		try {
-			
-			/*final Shell shell = new Shell(display);*/
-			
 			{
 				//Register as a resource user - SWTResourceManager will
 				//handle the obtaining and disposing of resources
 				SWTResourceManager.registerResourceUser(shell);
 			}
 			//VARIABLES
-			
-
-			int n=5;
-			
-			
-			
 			//numero de medicos de los que dispone esta secretaria
 			int medicos =5;
 			String [] NombresM= new String[medicos]; 
@@ -939,109 +927,7 @@ public class panelAgenda extends Thread {
 		Nombres[1].setText(nombre+" "+apellido);
 		
 	}
-	
-/*	public void mostrarCita(final DatosCitaSinValidar datos) {
-	
-		try{
-			disp.asyncExec(new Runnable() {
-	            public void run() {
-	            	f.meteDatos(datos);
-					f.mostrar();
-	            }
-	         });
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		
-		}
-	}*/
-	
-/*	public void mostrarCita() {
-		
-		try{
-			disp.asyncExec(new Runnable() {
-	            public void run() {
-	            	
-					f.mostrar();
-	            }
-	         });
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		
-		}
-	}
-	
-public void mostrarLlamada() {
-		
-		try{
-			disp.asyncExec(new Runnable() {
-	            public void run() {
-	            	
-					l.mostrar();
-	            }
-	         });
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		
-		}
-	}*/
 
-/*public void mostrarLlamada(final DatosLlamada datos) {
-	
-	try{
-		disp.asyncExec(new Runnable() {
-            public void run() {
-            	l.meteDatos(datos);
-				l.mostrar();
-            }
-         });
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	
-	}
-}
-
-public void mostrarExtra() {
-		
-		try{
-			disp.asyncExec(new Runnable() {
-	            public void run() {
-	            	
-					e.mostrar();
-	            }
-	         });
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		
-		}
-	}
-
-public void mostrarExtra(final DatosLlamada datos) {
-	
-	try{
-		disp.asyncExec(new Runnable() {
-            public void run() {
-            	e.meteDatos(datos);
-				e.mostrar();
-            }
-         });
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	
-	}
-}*/
-	
-/*	public void inicializaCita(){
-		f=new panelCita(vis);
-		f.start();
-		
-	}*/
-	
 	public void comprobarCita(final DatosCitaSinValidar d) {
 		
 		try{
@@ -1088,7 +974,7 @@ public void mostrarExtra(final DatosLlamada datos) {
 	            	if (!llamada.isEmpty()){
 	            		for (int i=0;i<llamada.size();i++){	            		
 	            			NombresL[i].dispose();
-	            			if (llamada.get(i).getHora()==d.getHora() && llamada.get(i).getNombre()==d.getNombre())
+	            			if (llamada.get(i).getHora().equals(d.getHora()) && llamada.get(i).getNombre().equals(d.getNombre()))
 	            				esta=true;
 	            		}
 	            	}
@@ -1096,6 +982,40 @@ public void mostrarExtra(final DatosLlamada datos) {
 	            	//Y ESTO QUE HAGO?????
             		if(!esta){
             			llamada.add(d);
+            		}
+	            	listaLlamadasL();
+	            }
+	         });
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
+	
+	public void modificaLlamada(final DatosLlamada dA, final DatosLlamada dP){
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	boolean esta=false;
+	            	if (!llamada.isEmpty()){
+	            		for (int i=0;i<llamada.size();i++){	            		
+	            			NombresL[i].dispose();
+	            			if (llamada.get(i).getHora().equals(dA.getHora()) && llamada.get(i).getNombre().equals(dA.getNombre())){
+	            				esta=true;
+	            				llamada.get(i).setNombre(dP.getNombre());
+	            				llamada.get(i).setMensaje(dP.getMensaje());
+	            				llamada.get(i).setTelf(dP.getTelf());
+	            				llamada.get(i).setPaciente(dP.getPaciente());
+	            			}
+	            		}
+	            	}
+	            	
+	            	//Y ESTO QUE HAGO?????
+            		if(!esta){
+            			llamada.add(dP);
             		}
 	            	listaLlamadasL();
 	            }
@@ -1147,7 +1067,7 @@ public void mostrarExtra(final DatosLlamada datos) {
 	            		for (int i=0;i<extra.size();i++){	            		
 	            			NombresE[i].dispose();
 	            			horasE[i].dispose();
-	            			if (extra.get(i).getHora()==d.getHora() && extra.get(i).getNombre()==d.getNombre())
+	            			if (extra.get(i).getHora().equals(d.getHora()) && extra.get(i).getNombre().equals(d.getNombre()))
 	            				esta=true;
 	            		}
 	            	}
@@ -1166,6 +1086,41 @@ public void mostrarExtra(final DatosLlamada datos) {
 		}
 	            
 	}
+		
+		public void modificaExtra(final DatosLlamada dA, final DatosLlamada dP){
+			
+			try{
+				disp.asyncExec(new Runnable() {
+		            public void run() {
+		            	boolean esta=false;
+		            	if (!extra.isEmpty()){
+		            		for (int i=0;i<extra.size();i++){	            		
+		            			NombresE[i].dispose();
+		            			horasE[i].dispose();
+		            			if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getNombre().equals(dA.getNombre())){
+		            				esta=true;
+		            				extra.get(i).setNombre(dP.getNombre());
+		            				extra.get(i).setMensaje(dP.getMensaje());
+		            				extra.get(i).setTelf(dP.getTelf());
+		            				extra.get(i).setPaciente(dP.getPaciente());
+		            			}
+		            		}
+		            	}
+		            	
+		            	//Y ESTO QUE HAGO?????
+	            		if(!esta){
+	            			extra.add(dP);
+	            		}
+		            	listaLlamadasE();
+		            }
+		         });
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			
+			}
+		            
+		}
 	
 	public void borraExtra(final DatosLlamada d){
 		try{
@@ -1184,7 +1139,7 @@ public void mostrarExtra(final DatosLlamada datos) {
 	            		}
 	            	}
 	            	if(esta)
-            			llamada.remove(j);
+            			extra.remove(j);
             		
 	            	listaLlamadasE();
 	            }
@@ -1343,7 +1298,7 @@ public void mostrarExtra(final DatosLlamada datos) {
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
 			DatosLlamada d= buscarSeleccionadoE(nombre);
 			cNomSel.setText(nombre);
-			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
+			usoAgente.mostrarVentanaExtra(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
 		}
 		else{
 			cNomSel.setText("");

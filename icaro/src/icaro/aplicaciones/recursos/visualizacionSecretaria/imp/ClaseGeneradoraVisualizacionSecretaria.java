@@ -267,7 +267,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     
 	public void cerrarVisualizadorLlamada() throws Exception {
 		this.ventanaLlamada.destruir();
-		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionLlamada",
                 "Cerrando visualizador...",
                 InfoTraza.NivelTraza.debug));
      
@@ -282,7 +282,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     
 	public void cerrarVisualizadorExtra() throws Exception {
 		this.ventanaExtra.destruir();
-		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionExtra",
                 "Cerrando visualizador...",
                 InfoTraza.NivelTraza.debug));
      
@@ -301,6 +301,17 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		this.tipoAgenteControlador = tipo;
 
 		this.ventanaAgendaUsuario.insertaLlamada(datos);
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+		"Mostrando visualizador...",
+		InfoTraza.NivelTraza.debug));
+    }
+    
+    public void modificaLlamada(String nombreAgente,String tipo, DatosLlamada datAnt, DatosLlamada datPost){
+		this.nombreAgenteControlador = nombreAgente;
+		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+
+		this.ventanaAgendaUsuario.modificaLlamada(datAnt,datPost);
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
@@ -327,6 +338,17 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
     }
+        
+        public void modificaExtra(String nombreAgente,String tipo, DatosLlamada datAnt, DatosLlamada datPost){
+    		this.nombreAgenteControlador = nombreAgente;
+    		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+    		this.tipoAgenteControlador = tipo;
+
+    		this.ventanaAgendaUsuario.modificaExtra(datAnt,datPost);
+    		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+    		"Mostrando visualizador...",
+    		InfoTraza.NivelTraza.debug));
+        }
     
     public void borrarExtra(String nombreAgente,String tipo, DatosLlamada datos){
 		this.nombreAgenteControlador = nombreAgente;
