@@ -7,6 +7,8 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCi
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
+import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
+import icaro.aplicaciones.recursos.persistenciaSecretaria.ItfUsoPersistenciaSecretaria;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -19,7 +21,7 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorSecretaria visualizacion;
-	private ItfUsoPersistencia Persistencia1;
+	private ItfUsoPersistenciaSecretaria persistencia;
 	private ItfUsoAgenteReactivo agenteSecretaria;
 
 	
@@ -28,7 +30,11 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
-			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas());
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 
@@ -194,16 +200,18 @@ public void pintaVentanaExtra(){
 		
 		//Una vez comprobado todo correcto se manda a persistencia
 		try {
-			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"Persistencia1");
-			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			//visualizacion.mostrarDatos(persistencia.getHistorial(paciente));
+			//ok = Persistencia.InsertaCita(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
 			
 			try {
 				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
 						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-															  "Comprobando usuario...", 
+															  "Comprobando cita...", 
 															  InfoTraza.NivelTraza.debug));
 			}catch(Exception e){e.printStackTrace();}
 		}
@@ -217,6 +225,7 @@ public void pintaVentanaExtra(){
 															  InfoTraza.NivelTraza.error));
 				}catch(Exception e){e.printStackTrace();}
 		}
+		//envio evento cita correcta
 		try {
 			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
@@ -227,7 +236,7 @@ public void pintaVentanaExtra(){
 			
 			visualizacion.cerrarVisualizadorCita();
 			
-			//trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Ejecutando accion: darAlta",InfoTraza.NivelTraza.debug));
+			
 		}
 		catch (Exception e) {
 			try {

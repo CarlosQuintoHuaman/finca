@@ -1,6 +1,9 @@
 package icaro.aplicaciones.recursos.visualizacionSecretaria;
 
 
+import java.util.ArrayList;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
@@ -14,6 +17,7 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 
 	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo) throws Exception;
+	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l) throws Exception;
 
     public void cerrarVisualizadorSecretaria() throws Exception;
     

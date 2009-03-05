@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -119,7 +120,8 @@ public class panelAgenda extends Thread {
 	private Shell shell;
 	private panelAgenda este;
 	private ClaseGeneradoraVisualizacionSecretaria vis;
-
+	//Datos persistencia
+	private ArrayList<DatosCitaSinValidar> l;
 	/**
 	 * 
 	 * @param visualizador
@@ -144,6 +146,18 @@ public class panelAgenda extends Thread {
 		disp.asyncExec(new Runnable() {
             public void run() {
          	   shell.open();
+	       }
+         });
+	}
+	
+	public void meteDatos(final ArrayList<DatosCitaSinValidar> l1){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	l=l1;
+            	System.out.println("eeeeeeeeeeeeeeeeeeeeeeooooooooooooooo");
+            	shell.open();
 	       }
          });
 	}
@@ -691,6 +705,7 @@ public class panelAgenda extends Thread {
 		Nombres= new CLabel[min+1];
 		Telefonos= new CLabel[min+1];
 		 c=0;
+		 int m=0;
 		for (int i=0;i<a;i++){
 			int j=0;
 			while(j<60){
@@ -715,7 +730,17 @@ public class panelAgenda extends Thread {
 				
 				j=j+intervalo;
 				Nombres[c] = new CLabel(AgendaDinamica, SWT.NONE);
-				Nombres[c].setText("PEPITA GARCIA GONZALEZ");
+				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
+				if (m<l.size()){
+					Nombres[c].setText(l.get(i).tomaNombre());
+					Telefonos[c].setText(l.get(i).tomaTelf());
+					
+				}else{
+				
+				Nombres[c].setText("");
+				Telefonos[c].setText("");
+				}
+				
 				Nombres[c].setBackground(SWTResourceManager.getColor(255, 255, 255));
 				Nombres[c].setAlignment(SWT.CENTER);
 				aux2[c] = new GridData();
@@ -724,8 +749,6 @@ public class panelAgenda extends Thread {
 
 				aux2[c].grabExcessHorizontalSpace = true;
 				Nombres[c].setLayoutData(aux2[c]);
-				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
-				Telefonos[c].setText("91234567");
 				Telefonos[c].setBackground(SWTResourceManager.getColor(255, 255, 255));
 				Telefonos[c].setAlignment(SWT.CENTER);
 				aux3[c] = new GridData();
