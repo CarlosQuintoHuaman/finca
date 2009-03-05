@@ -9,6 +9,7 @@
 	</estadoInicial>
 	<estado idIntermedio="esperaAccion">
 		<transicion input="mostrarVentanaHistorial" accion="pintaVentanaHistorial" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="mostrarVentanaLista" accion="pintaVentanaLista" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="guardarDatos" accion="insertaDatos" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>

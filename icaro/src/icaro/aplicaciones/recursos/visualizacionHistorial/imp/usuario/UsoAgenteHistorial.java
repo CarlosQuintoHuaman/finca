@@ -110,9 +110,33 @@ public class UsoAgenteHistorial {
     public void mostrarMensajeInformacion(String mensaje, String titulo){
     	visualizador.mostrarMensajeInformacion(titulo, mensaje);
     }
+
+    public void mostrarVentanaHistorial(String paciente) {
+    	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", paciente, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
     
     public void cerrarVentanaHistorial() {
     	visualizador.cerrarVisualizadorHistorial();
+    }
+    
+    public void cerrarVentanaLista() {
+    	visualizador.cerrarVisualizadorLista();
     }
 }
 

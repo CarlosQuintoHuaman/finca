@@ -27,6 +27,7 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	
 	//Ventana que gestiona este visualizador
 	private PanelHistorial ventanaHistorialUsuario;
+	private PanelLista ventanaListaUsuario;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
   	public ClaseGeneradoraVisualizacionHistorial(String id) throws Exception{
@@ -47,18 +48,19 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
   	private void inicializa() {
   		this.ventanaHistorialUsuario = new PanelHistorial(this);
   		ventanaHistorialUsuario.start();
-  		/*
-                 ventanaAgendaUsuario.setPosicion(850,100);
-                 */
+ 
+  		ventanaListaUsuario = new PanelLista(this);
+  		ventanaListaUsuario.start();
+  		
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
   				"Inicializando recurso",
   				InfoTraza.NivelTraza.debug));
   	}
   	
 
+  	// Metodos para historial
+  	
   	public void mostrarVisualizadorHistorial(String nombreAgente, String tipo) {
-		
-		
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
@@ -85,11 +87,44 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
   		System.out.println("Reiniciando...");
 	}
   
-	public void mostrarDatos(ArrayList<InfoVisita> historial) {
+	public void mostrarDatosHistorial(ArrayList<InfoVisita> historial) {
 		ventanaHistorialUsuario.mostrarDatos(historial);
 	}
 	
 	
+	// Metodos para Lista
+	
+  	public void mostrarVisualizadorLista(String nombreAgente, String tipo) {
+		this.nombreAgenteControlador = nombreAgente;
+        System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+   
+		this.ventanaListaUsuario.mostrar();
+		
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+  				"Mostrando visualizador Lista...",
+  				InfoTraza.NivelTraza.debug));
+	}
+ 
+	public void cerrarVisualizadorLista() {
+		//this.ventanaAgendaUsuario.ocultar();
+		this.ventanaListaUsuario.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+  				"Cerrando visualizador Lista...",
+  				InfoTraza.NivelTraza.debug));
+		
+		reiniciaVisualizadorLista();
+	}
+	
+	public void reiniciaVisualizadorLista() {
+		ventanaListaUsuario = new PanelLista(this);
+  		ventanaListaUsuario.start();
+  		System.out.println("Reiniciando...");
+	}
+	
+	public void mostrarDatosLista(ArrayList<InfoVisita> historial) {
+		ventanaListaUsuario.mostrarDatos(historial);
+	}
 	
 	public String getNombreAgenteControlador() {
 		return nombreAgenteControlador;

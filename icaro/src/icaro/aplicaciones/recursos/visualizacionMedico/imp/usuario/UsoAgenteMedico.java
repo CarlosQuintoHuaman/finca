@@ -115,13 +115,14 @@ public class UsoAgenteMedico {
     	try {
     		
     		paciente = paciente.substring(6);
+    		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }
             
             ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
             
-            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", paciente, "VisualizacionMedico1", "AgenteAplicacionHistorial1"));
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaLista", paciente, "VisualizacionMedico1", "AgenteAplicacionHistorial1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");

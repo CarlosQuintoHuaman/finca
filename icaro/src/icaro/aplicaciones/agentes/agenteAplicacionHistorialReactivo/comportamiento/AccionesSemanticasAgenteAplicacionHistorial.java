@@ -39,7 +39,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
 			
-			visualizacion.mostrarDatos(persistencia.getHistorial(paciente));
+			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente));
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -55,7 +55,22 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
 		}
-	}	
+	}
+	
+	public void pintaVentanaLista(String paciente) {
+		try {
+			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			
+			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
+			
+			visualizacion.mostrarVisualizadorLista(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarDatosLista(persistencia.getHistorial(paciente));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	// Ejemplo de otra accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
