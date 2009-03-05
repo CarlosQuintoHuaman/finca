@@ -1,13 +1,10 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
-import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.ConsultaBBDD;
-import icaro.aplicaciones.recursos.persistenciaMedico.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -118,7 +115,6 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 	public void setCitas(ArrayList<InfoCita> citas) {
 		this.citas = citas;
 	}
-
 
 
 

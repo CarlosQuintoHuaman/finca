@@ -1,5 +1,8 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp;
 
+import java.util.ArrayList;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.*;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedico;
@@ -52,27 +55,8 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
   				InfoTraza.NivelTraza.debug));
   	}
   	
-  	
 
-
-	
-	public String getNombreAgenteControlador() {
-		return nombreAgenteControlador;
-	}
-
-	public void setNombreAgenteControlador(String nombreAgenteControlador) {
-		this.nombreAgenteControlador = nombreAgenteControlador;
-	}
-
-	public String getTipoAgenteControlador() {
-		return tipoAgenteControlador;
-	}
-
-	public void setTipoAgenteControlador(String tipoAgenteControlador) {
-		this.tipoAgenteControlador = tipoAgenteControlador;
-	}
-
-	public void mostrarVisualizadorHistorial(String nombreAgente, String tipo) {
+  	public void mostrarVisualizadorHistorial(String nombreAgente, String tipo) {
 		
 		
 		this.nombreAgenteControlador = nombreAgente;
@@ -101,6 +85,28 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
   		System.out.println("Reiniciando...");
 	}
   
+	public void mostrarDatos(ArrayList<InfoVisita> historial) {
+		ventanaHistorialUsuario.mostrarDatos(historial);
+	}
+	
+	
+	
+	public String getNombreAgenteControlador() {
+		return nombreAgenteControlador;
+	}
+
+	public void setNombreAgenteControlador(String nombreAgenteControlador) {
+		this.nombreAgenteControlador = nombreAgenteControlador;
+	}
+
+	public String getTipoAgenteControlador() {
+		return tipoAgenteControlador;
+	}
+
+	public void setTipoAgenteControlador(String tipoAgenteControlador) {
+		this.tipoAgenteControlador = tipoAgenteControlador;
+	}
+	
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
 		

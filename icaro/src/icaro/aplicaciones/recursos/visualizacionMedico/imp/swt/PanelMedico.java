@@ -355,7 +355,7 @@ public class PanelMedico extends Thread {
 								System.out.println("opcion1.widgetSelected, event="+evt);
 								
 								//Visita v = new Visita(shell, SWT.NONE);
-								usoAgente.abrirVisita("Paciente1");
+								usoAgente.abrirVisita(listadoPacientes.getSelection()[0]);
 							}
 						});
 					}
@@ -496,7 +496,7 @@ public class PanelMedico extends Thread {
 		if (listadoPacientes.getSelectionIndex() == -1) {
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
 		} else {
-			usoAgente.abrirHistorial("Paciente1");
+			usoAgente.abrirHistorial(listadoPacientes.getSelection()[0]);
 		}
 	}
 	

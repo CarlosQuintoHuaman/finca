@@ -1,5 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
@@ -15,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario.UsoAgenteHistorial;
 
@@ -608,5 +611,18 @@ public class PanelHistorial extends Thread {
 		
 		usoAgente.cerrarVentanaHistorial();
 		//shell.close();
+	}
+	
+	public void mostrarDatos(ArrayList<InfoVisita> historial) {
+		final InfoVisita v = historial.get(0);
+		
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	tMotivo.setText(v.getMotivo());
+            	tDescripcion.setText(v.getDescripcion());
+            	tExploracion.setText(v.getExploracion());
+            	tDiagnostico.setText(v.getDiagnostico());
+	       }
+         });
 	}
 }

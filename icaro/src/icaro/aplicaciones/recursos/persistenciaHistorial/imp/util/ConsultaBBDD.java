@@ -1,8 +1,7 @@
-package icaro.aplicaciones.recursos.persistenciaMedico.imp.util;
+package icaro.aplicaciones.recursos.persistenciaHistorial.imp.util;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
-import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.recursos.persistenciaHistorial.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
 import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfiguracion;
@@ -80,46 +79,21 @@ public class ConsultaBBDD {
 			throw new ErrorEnRecursoException("No se ha podido crear la sentencia SQL para acceder a la base de datos: " + e.getMessage());
 		}			
 	}
-	
-	public ArrayList<InfoPaciente> getPacientes() {
-		ArrayList<InfoPaciente> pacientes = new ArrayList<InfoPaciente>();
+		
+	public ArrayList<InfoVisita> getHistorial(String usuario) {
+		ArrayList<InfoVisita> citas = new ArrayList<InfoVisita>();
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario U, paciente P WHERE P.NombreUsuario = U.NombreUsuario");
+			resultado = query.executeQuery("SELECT * FROM visita WHERE NombreUsuario = '"+usuario+"'");
 			
 			while (resultado.next()) {
-				InfoPaciente p = new InfoPaciente(resultado.getString("NombreUsuario"),
-												resultado.getString("Password"),
-												resultado.getString("Nombre"),
-												resultado.getString("Apellido1"),
-												resultado.getString("Apellido2"),
-												resultado.getString("Direccion"),
-												resultado.getString("Telefono"),
-												resultado.getString("Seguro")
-				);
-				
-				pacientes.add(p);
-			}
-				
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return pacientes;
-	}
-	
-	public ArrayList<InfoCita> getCitas() {
-		ArrayList<InfoCita> citas = new ArrayList<InfoCita>();
-		
-		try {
-			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM medicopaciente");
-			
-			while (resultado.next()) {
-				InfoCita p = new InfoCita(resultado.getString("Paciente"),
-										resultado.getTimestamp("Fecha")
+				InfoVisita p = new InfoVisita(resultado.getString("NombreUsuario"),
+										resultado.getTimestamp("Fecha"),
+										resultado.getString("Motivo"),
+										resultado.getString("Descripcion"),
+										resultado.getString("Exploracion"),
+										resultado.getString("Diagnostico")
 				);
 				
 				citas.add(p);

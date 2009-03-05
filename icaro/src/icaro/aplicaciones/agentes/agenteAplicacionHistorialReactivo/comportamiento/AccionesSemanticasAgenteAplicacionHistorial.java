@@ -4,6 +4,7 @@ package icaro.aplicaciones.agentes.agenteAplicacionHistorialReactivo.comportamie
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
+import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -16,7 +17,7 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorHistorial visualizacion;
-	private ItfUsoPersistencia Persistencia1;
+	private ItfUsoPersistenciaHistorial persistencia;
 	private ItfUsoAgenteReactivo agenteHistorial;
 
 	
@@ -24,7 +25,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
-	public void pintaVentanaHistorial(){
+	public void pintaVentanaHistorial(String paciente){
 		
 		try {
 			//Se obtiene el visualizador
@@ -33,6 +34,12 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			
 			// Ejemplo de algo que podemos hacer con el
 			visualizacion.mostrarVisualizadorHistorial(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			
+			//Y la persistencia
+			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
+			
+			visualizacion.mostrarDatos(persistencia.getHistorial(paciente));
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -60,8 +67,8 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		InfoHistorial datos = new InfoHistorial(motivo, descripcion, exploracion, diagnostico, tratamiento);
 		
 		try {
-			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"Persistencia1");
+			//persistencia = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
+			//(NombresPredefinidos.ITF_USO+"Persistencia1");
 			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
 			
