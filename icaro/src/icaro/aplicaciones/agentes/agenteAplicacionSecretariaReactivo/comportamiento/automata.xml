@@ -5,8 +5,11 @@
  -->
 <tablaEstados descripcionTabla="Tabla para la ficha">
 	<estadoInicial idInicial="estadoInicial">
-		<transicion input="comenzar" accion="pintaVentanaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="comenzar" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
 	</estadoInicial>
+	<estado idIntermedio="empezando">
+		<transicion input="inicio" accion="pintaVentanaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+	</estado>
 	<estado idIntermedio="esperaAccion">
 		<transicion input="darCita" accion="pintaVentanaCita" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/><transicion input="anadirLlamada" accion="pintaVentanaLlamada" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion>
