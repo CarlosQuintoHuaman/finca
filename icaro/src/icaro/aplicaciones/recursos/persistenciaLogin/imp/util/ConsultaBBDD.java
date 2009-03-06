@@ -1,7 +1,7 @@
-package icaro.aplicaciones.recursos.persistenciaHistorial.imp.util;
+package icaro.aplicaciones.recursos.persistenciaLogin.imp.util;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
-import icaro.aplicaciones.recursos.persistenciaHistorial.imp.ErrorEnRecursoException;
+
+import icaro.aplicaciones.recursos.persistenciaLogin.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
 import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfiguracion;
@@ -79,47 +79,7 @@ public class ConsultaBBDD {
 			throw new ErrorEnRecursoException("No se ha podido crear la sentencia SQL para acceder a la base de datos: " + e.getMessage());
 		}			
 	}
-		
-	public ArrayList<InfoVisita> getHistorial(String usuario) {
-		ArrayList<InfoVisita> citas = new ArrayList<InfoVisita>();
-		
-		try {
-			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM visita WHERE NombreUsuario = '"+usuario+"'");
-			
-			while (resultado.next()) {
-				InfoVisita p = new InfoVisita(resultado.getString("NombreUsuario"),
-										resultado.getTimestamp("Fecha"),
-										resultado.getString("Motivo"),
-										resultado.getString("Descripcion"),
-										resultado.getString("Exploracion"),
-										resultado.getString("Diagnostico")
-				);
-				
-				citas.add(p);
-			}
-				
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return citas;
-	}
-	
-	public void setVisita(InfoVisita v) {
-		try {
-			crearQuery();
-			query.executeUpdate("UPDATE visita SET Motivo = '" + v.getMotivo() + 
-								"' , Descripcion = '" + v.getDescripcion() +
-								"' , Exploracion = '" + v.getExploracion() +
-								"' , Diagnostico = '" + v.getDiagnostico() + 
-								"' WHERE NombreUsuario = '" + v.getUsuario() + "'");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 	
 	/**
 	 * EJEMPLO de como usar la BD
@@ -150,6 +110,38 @@ public class ConsultaBBDD {
 		catch (Exception e) {
 			throw new ErrorEnRecursoException(e.getMessage());
 		}
+	}
+	
+	public String tipoUsuario(String usuario) {
+		try {
+			// TODO Comprobar que la conexion este activa
+      		
+      		crearQuery();
+      		resultado = query.executeQuery("SELECT * FROM secretaria WHERE NombreUsuario = '"
+      					+ usuario + "'");	
+			if (resultado.next()) 
+				return "Secretaria";
+
+			resultado.close();
+			
+      		resultado = query.executeQuery("SELECT * FROM medico WHERE NombreUsuario = '"
+  					+ usuario + "'");	
+      		if (resultado.next()) 
+      			return "Medico";
+
+      		resultado.close();
+		}
+		
+		catch (Exception e) {
+			try {
+				throw new ErrorEnRecursoException(e.getMessage());
+			} catch (ErrorEnRecursoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		return "false";
 	}
 	
 	

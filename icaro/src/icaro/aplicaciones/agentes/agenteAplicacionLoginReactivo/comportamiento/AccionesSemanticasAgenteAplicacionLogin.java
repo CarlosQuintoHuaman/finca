@@ -1,11 +1,10 @@
-package icaro.aplicaciones.agentes.agenteAplicacionHistorialReactivo.comportamiento;
+package icaro.aplicaciones.agentes.agenteAplicacionLoginReactivo.comportamiento;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoHistorial;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
-import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
-import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionLogin.InfoLogin;
+import icaro.aplicaciones.recursos.visualizacionLogin.ItfUsoVisualizadorLogin;
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
+import icaro.aplicaciones.recursos.persistenciaLogin.ItfUsoPersistenciaLogin; 
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -15,32 +14,32 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanticasAgenteReactivo {
+public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasAgenteReactivo {
 	
-	private ItfUsoVisualizadorHistorial visualizacion;
-	private ItfUsoPersistenciaHistorial persistencia;
-	private ItfUsoAgenteReactivo agenteHistorial;
+	private ItfUsoVisualizadorLogin visualizacion;
+	private ItfUsoPersistenciaLogin persistencia;
+	private ItfUsoAgenteReactivo agenteLogin;
+	private ItfUsoAgenteReactivo agenteMedico;
+	private ItfUsoAgenteReactivo agenteSecretaria;
 
 	
 	// Ejemplo de accion semantica sencilla
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
-	public void pintaVentanaHistorial(String paciente){
+	public void pintaVentanaLogin(){
 		
 		try {
 			//Se obtiene el visualizador
-			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			visualizacion = (ItfUsoVisualizadorLogin) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionLogin1");
 			
 			// Ejemplo de algo que podemos hacer con el
-			visualizacion.mostrarVisualizadorHistorial(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarVisualizadorLogin(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
 			
 			//Y la persistencia
-			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
-			
-			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente));
+			persistencia = (ItfUsoPersistenciaLogin) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaLogin1");
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -51,44 +50,52 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-														  "Ha habido un problema al abrir el visualizador de Historial en accion semantica 'pintaVentanaHistorial()'", 
+														  "Ha habido un problema al abrir el visualizador de Login en accion semantica 'pintaVentanaLogin()'", 
 														  InfoTraza.NivelTraza.error));
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}
 	
-	public void pintaVentanaLista(String paciente) {
+	public void compruebaUsuario(String u, String p) {
 		try {
-			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			agenteMedico = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"AgenteAplicacionMedico1");
 			
-			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
+			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"AgenteAplicacionSecretaria1");
+				
+			String tipo = persistencia.compruebaUsuario(u, p);
 			
-			visualizacion.mostrarVisualizadorLista(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
-			visualizacion.mostrarDatosLista(persistencia.getHistorial(paciente));
+			if (tipo == "Secretaria") {
+				agenteSecretaria.aceptaEvento(new EventoInput("inicio", "AgenteAplicacionLogin1", "AgenteAplicacionSecretaria1"));
+				visualizacion.cerrarVisualizadorLogin();
+			}
+			else if (tipo == "Medico") {
+				agenteMedico.aceptaEvento(new EventoInput("inicio","AgenteAplicacionLogin1", "AgenteAplicacionMedico1"));
+				visualizacion.cerrarVisualizadorLogin();
+			}
+			else
+				visualizacion.mostrarMensajeError("Fallo de Login", "Nombre de usuario o contraseña incorrectos");
+				
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void guardarVisita(InfoVisita v) {
-		persistencia.setVisita(v);
 	}
 
 	// Ejemplo de otra accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
 	// tal como se ve aqui	
-	public void insertaDatos(String motivo, String descripcion, String exploracion, String diagnostico, String tratamiento) {
+	public void inserta(String nombre, String apell1, String telf) {
 		boolean ok = false;
 		
 		// Hay que crear un objeto con los datos para enviar con el evento
-		InfoHistorial datos = new InfoHistorial(motivo, descripcion, exploracion, diagnostico, tratamiento);
+		InfoLogin datos = new InfoLogin(nombre,apell1,telf);
 		
 		try {
-			//persistencia = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
-			//(NombresPredefinidos.ITF_USO+"Persistencia1");
+			persistencia = (ItfUsoPersistenciaLogin) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"Persistencia1");
 			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
 			
@@ -112,14 +119,14 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 		try {
 			// Hay que coger la instancia del agente para poder enviarle eventos
-			agenteHistorial = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
 						
 			if(ok){
 				// Se envia el evento sin datos ya que no lo requiere
-				agenteHistorial.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Historial"));
+				agenteLogin.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Login"));
 				// Si hubiera que enviar datos con el evento se haria asi:
-				// agenteHistorial.aceptaEvento(new EventoInput("correcto",infoHistorial, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Historial"));
+				// agenteLogin.aceptaEvento(new EventoInput("correcto",infoLogin, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Login"));
 			}
 			
 			// Aqui se pueden seguir haciendo cosas con la visualizacion, trazas, etc
@@ -140,7 +147,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	public void terminacion() {
 		try {
 			// Aqui se hacen las cosas, por ejemplo esto
-			visualizacion.cerrarVisualizadorHistorial();
+			visualizacion.cerrarVisualizadorLogin();
 			
 			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
@@ -159,9 +166,9 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	 *En este caso la politica es que todos los errores son criticos.  
 	 */
 		try {
-			agenteHistorial = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
-			agenteHistorial.aceptaEvento(new EventoInput("errorIrrecuperable",this.nombreAgente,this.nombreAgente));
+			agenteLogin.aceptaEvento(new EventoInput("errorIrrecuperable",this.nombreAgente,this.nombreAgente));
 
 		}
 		catch (Exception e) {
@@ -187,9 +194,9 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 															  InfoTraza.NivelTraza.error));
 			}catch(Exception e2){e2.printStackTrace();}
 			try{
-				agenteHistorial = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+				agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 				(NombresPredefinidos.ITF_USO+this.nombreAgente);
-				agenteHistorial.aceptaEvento(new EventoInput("error",this.nombreAgente,this.nombreAgente));
+				agenteLogin.aceptaEvento(new EventoInput("error",this.nombreAgente,this.nombreAgente));
 			}
 			catch(Exception exc){
 				try {

@@ -3,15 +3,12 @@
 <!-- para validacion manual:
 <!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
  -->
-<tablaEstados descripcionTabla="Tabla para Medico">
+<tablaEstados descripcionTabla="Tabla para Login">
 	<estadoInicial idInicial="estadoInicial">
-		<transicion input="comenzar" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
+		<transicion input="comenzar" accion="pintaVentanaLogin" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 	</estadoInicial>
-	<estado idIntermedio="empezando">
-		<transicion input="inicio" accion="pintaVentanaMedico" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-	</estado>
 	<estado idIntermedio="esperaAccion">
-		<transicion input="mostrarVentanaMedico" accion="pintaVentanaMedico" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="validaUsuario" accion="compruebaUsuario" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

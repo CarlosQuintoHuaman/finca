@@ -88,6 +88,7 @@ public class PanelHistorial extends Thread {
 	 * Hay que cambiar "Template" por el nombre del agente.
 	 */
 	final UsoAgenteHistorial usoAgente;
+	InfoVisita v = null;
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -597,13 +598,20 @@ public class PanelHistorial extends Thread {
 			correcto = false;
 			mensaje += "- Tratamiento\n";
 		}
-		 
+
+		v.setMotivo(tMotivo.getText());
+		v.setDescripcion(tDescripcion.getText());
+		v.setExploracion(tExploracion.getText());
+		v.setDiagnostico(v.getDiagnostico());
+		
 		if (correcto)
-			usoAgente.insertaDatos(tMotivo.getText(), tDescripcion.getText(), tExploracion.getText(), tDiagnostico.getText(), tTratamiento.getText());
+			//usoAgente.insertaDatos(tMotivo.getText(), tDescripcion.getText(), tExploracion.getText(), tDiagnostico.getText(), tTratamiento.getText());
+			usoAgente.guardarVisita(v);
 		else
 			usoAgente.mostrarMensajeError(mensaje, "Faltan campos por rellenar");
 		
 		//usoAgente.validaHistorial();
+		
 	}
 	
 	private void bCerrarWidgetSelected(SelectionEvent evt) {
@@ -614,7 +622,7 @@ public class PanelHistorial extends Thread {
 	}
 	
 	public void mostrarDatos(ArrayList<InfoVisita> historial) {
-		final InfoVisita v = historial.get(0);
+		v = historial.get(0);
 		
 		disp.asyncExec(new Runnable() {
             public void run() {
