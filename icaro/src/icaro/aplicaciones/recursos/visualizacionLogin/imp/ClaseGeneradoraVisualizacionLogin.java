@@ -127,7 +127,7 @@ public class ClaseGeneradoraVisualizacionLogin extends ImplRecursoSimple impleme
   				"Mostrando mensaje de error",
   				InfoTraza.NivelTraza.debug));
       	
-      	Display.getCurrent().asyncExec(new Runnable() {
+      	Display.getDefault().asyncExec(new Runnable() {
             public void run() {
 		      	MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK | SWT.ICON_ERROR);
 				messageBox.setText (titulo);

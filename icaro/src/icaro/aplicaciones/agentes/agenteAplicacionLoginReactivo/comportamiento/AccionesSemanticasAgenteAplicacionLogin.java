@@ -75,8 +75,9 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 				agenteMedico.aceptaEvento(new EventoInput("inicio","AgenteAplicacionLogin1", "AgenteAplicacionMedico1"));
 				visualizacion.cerrarVisualizadorLogin();
 			}
-			else
+			else {
 				visualizacion.mostrarMensajeError("Fallo de Login", "Nombre de usuario o contraseña incorrectos");
+			}
 				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
