@@ -16,6 +16,7 @@ import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgen
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTrazas;
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.InfoTraza;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
+import icaro.util.util;
 
 
 public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemanticasAgenteReactivo {
@@ -33,8 +34,9 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
-			
-			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas());
+			util f=new util(); 
+			String fecha=f.getStrDateSQL();
+			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 

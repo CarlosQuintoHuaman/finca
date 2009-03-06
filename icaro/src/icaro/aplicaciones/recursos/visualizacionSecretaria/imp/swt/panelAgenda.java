@@ -122,6 +122,7 @@ public class panelAgenda extends Thread {
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 	//Datos persistencia
 	private ArrayList<DatosCitaSinValidar> l;
+	private String fechaAgenda;
 	/**
 	 * 
 	 * @param visualizador
@@ -150,16 +151,18 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	public void meteDatos(ArrayList<DatosCitaSinValidar> l1){
+	public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
+		l=l1;
+		fechaAgenda=fecha;
 		disp.asyncExec(new Runnable() {
             public void run() {
             	System.out.println("eeeeeeeeeeeeeeeeeeeeeeooooooooooooooo");
             	shell.open();
 	       }
          });
-		l=l1;
+
 	}
 
 	public void ocultar(){
@@ -1366,17 +1369,26 @@ public class panelAgenda extends Thread {
 		
 		if(a.equals("AGENDA")){
 			shell.setText("Agenda");
+			GridData tablasDerechaLData = new GridData();
+			tablasDerechaLData.verticalAlignment = GridData.BEGINNING;
+			tablasDerechaLData.horizontalAlignment = GridData.BEGINNING;
+			//tablasDerechaLData.heightHint=199;
+			//tablasDerechaLData.widthHint=199;
+			tablasDerecha.setLayoutData(tablasDerechaLData);
+			
 			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
 			GridLayout tablaLlamadasLayout = new GridLayout();
 			tablaLlamadasLayout.numColumns = 2;
 			GridData tablaLlamadasLData = new GridData();
 			tablaLlamadasLData.verticalSpan = 0;
 			tablaLlamadasLData.horizontalSpan = 0;
-			tablaLlamadasLData.horizontalAlignment = GridData.FILL;
+			tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
 			tablaLlamadasLData.grabExcessVerticalSpace = true;
 			tablaLlamadasLData.grabExcessHorizontalSpace = true;
-			tablaLlamadasLData.verticalAlignment = GridData.FILL;
-			
+			tablaLlamadasLData.verticalAlignment = GridData.BEGINNING;
+			tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
+//			tablaLlamadasLData.heightHint=150;
+//			tablaLlamadasLData.widthHint=199;
 			tablaLlamadas.setLayoutData(tablaLlamadasLData);
 			tablaLlamadas.setLayout(tablaLlamadasLayout);
 			
@@ -1420,7 +1432,7 @@ public class panelAgenda extends Thread {
             });
             
             final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
-            calendario.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
+            calendario2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
             
             calendario2.addMouseListener(new MouseListener () {
                     public void mouseDoubleClick(MouseEvent e) {

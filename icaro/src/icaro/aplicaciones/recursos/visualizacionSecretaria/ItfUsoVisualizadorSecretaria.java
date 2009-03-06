@@ -17,7 +17,7 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 
 	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo) throws Exception;
-	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l) throws Exception;
+	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l, String fecha) throws Exception;
 
     public void cerrarVisualizadorSecretaria() throws Exception;
     

@@ -76,8 +76,8 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 		return consulta.getPacientes();
 	}*/
 	
-	public ArrayList<DatosCitaSinValidar> getCitas() {
-		return consulta.getCitas();
+	public ArrayList<DatosCitaSinValidar> getCitas(String fecha) {
+		return consulta.getCitas(fecha);
 	}
 
 /*	public boolean compruebaNombreUsuario(String usuario)

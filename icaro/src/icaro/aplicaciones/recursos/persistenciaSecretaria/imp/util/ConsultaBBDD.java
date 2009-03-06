@@ -8,13 +8,16 @@ import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
 import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfiguracion;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
+import icaro.util.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ConsultaBBDD {
@@ -111,15 +114,26 @@ public class ConsultaBBDD {
 		return pacientes;
 	}
 	
-	public ArrayList<DatosCitaSinValidar> getCitas() {
+	public ArrayList<DatosCitaSinValidar> getCitas(String fecha) {
 		ArrayList<DatosCitaSinValidar> citas = new ArrayList<DatosCitaSinValidar>();
 		
-		try {
-			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM medicopaciente");
+		try {		
 			
+			Date f=util.StrToDateSQL(fecha);
+		
+			String fecha2= util.getStrDateSQL(f);
+			crearQuery();
+			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
+			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "'");
 			while (resultado.next()) {
-				DatosCitaSinValidar p = new DatosCitaSinValidar(resultado.getString("Paciente"),"","","",0);
+				
+				String paciente=resultado.getString("Paciente");
+				String aux[]= paciente.split(" ");
+				String apellido = "";
+				for (int i=1;i<aux.length;i++){
+					apellido=apellido+aux[i]+" ";
+				}
+				DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412", resultado.getTimestamp("Fecha").toString(),1);
 				
 				citas.add(p);
 			}

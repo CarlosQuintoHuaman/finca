@@ -17,6 +17,6 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	
 	//public boolean compruebaNombreUsuario(String usuario) throws Exception;
 	//public void insertaUsuario (String usuario,String password) throws Exception;
-	public ArrayList<DatosCitaSinValidar> getCitas();
+	public ArrayList<DatosCitaSinValidar> getCitas(String fecha);
 	
 }
