@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
-import icaro.aplicaciones.recursos.visualizacionFicha.imp.swt.PanelCita;
+
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;

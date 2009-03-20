@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -248,6 +249,7 @@ public class panelAgenda extends Thread {
 						ConsultarCitasLData.horizontalAlignment = GridData.FILL;
 						ConsultarCitas.setLayoutData(ConsultarCitasLData);
 						ConsultarCitas.setText("Consultar Citas");
+
 					}
 					{
 						Copiar = new Button(Menu1, SWT.PUSH | SWT.CENTER);
@@ -493,6 +495,7 @@ public class panelAgenda extends Thread {
 								cNomSel.setLayoutData(cNomSelLData);
 								cNomSel.setBackground(SWTResourceManager.getColor(255, 255, 255));
 								cNomSel.setText("");
+						
 							}
 						}
 					}
@@ -734,6 +737,55 @@ public class panelAgenda extends Thread {
 				j=j+intervalo;
 				Nombres[c] = new CLabel(AgendaDinamica, SWT.NONE);
 				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
+				
+				Menu opciones = new Menu(shell,SWT.POP_UP);
+				Nombres[c].setMenu(opciones);
+				MenuItem copiar = new MenuItem(opciones,SWT.PUSH);
+				copiar.setText("Copiar");
+				copiar.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						CopiarWidgetSelected(evt);
+						
+					}
+				});
+			
+				MenuItem pegar = new MenuItem(opciones,SWT.PUSH);
+				pegar.setText("Pegar");
+				pegar.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						PegarWidgetSelected(evt);
+						
+					}
+				});
+				MenuItem Estado = new MenuItem(opciones,SWT.CASCADE);
+				Estado.setText("Estado");
+				Menu estadoMenu = new Menu(opciones);
+				Estado.setMenu(estadoMenu);
+				MenuItem espera = new MenuItem(estadoMenu,SWT.CHECK);
+				espera.setText("En sala espera"); 
+				espera.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						EsperaWidgetSelected(evt);
+					}
+				});
+				MenuItem Siguiente = new MenuItem(estadoMenu,SWT.CHECK);
+				Siguiente.setText("El siguiente");
+				Siguiente.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						SiguienteWidgetSelected(evt);
+						
+						
+					}
+				});
+				MenuItem cobrado = new MenuItem(estadoMenu,SWT.CHECK);
+				cobrado.setText("Cobrado");
+				cobrado.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						CobradoWidgetSelected(evt);
+						
+						
+					}
+				});
 				if (m<l.size()){
 					Nombres[c].setText(l.get(m).tomaNombre());
 					Telefonos[c].setText(l.get(m).tomaTelf());
@@ -1597,5 +1649,40 @@ public class panelAgenda extends Thread {
 		}
 		tablasDerecha.layout();
 	}
+	
+	private void EsperaWidgetSelected(SelectionEvent evt){
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+
+		int i;
+		for (i=0;i<c;i++){
+			if (Nombres[i].getText().equals(nombre))
+				Nombres[i].setBackground(SWTResourceManager.getColor(116, 193, 30));
+		}
+	}
+	private void CobradoWidgetSelected(SelectionEvent evt){
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+
+		int i;
+		for (i=0;i<c;i++){
+			if (Nombres[i].getText().equals(nombre))
+				Nombres[i].setBackground(SWTResourceManager.getColor(218, 101, 101));
+		}
+		
+	}
+	private void SiguienteWidgetSelected(SelectionEvent evt){
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+
+		int i;
+		for (i=0;i<c;i++){
+			if (Nombres[i].getText().equals(nombre))
+				Nombres[i].setBackground(SWTResourceManager.getColor(48, 175, 175));
+		}
+		
+	}
+	
+	
 
 }

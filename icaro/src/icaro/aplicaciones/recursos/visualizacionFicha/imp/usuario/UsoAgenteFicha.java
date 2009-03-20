@@ -100,6 +100,7 @@ public class UsoAgenteFicha {
     public void cerrarVentanaFicha(){
     	getInformacionAgente();
     	try {
+    		visualizador.cerrarVisualizadorFicha();
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }

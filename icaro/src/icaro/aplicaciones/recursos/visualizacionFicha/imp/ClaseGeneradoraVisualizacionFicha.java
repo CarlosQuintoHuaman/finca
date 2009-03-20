@@ -5,6 +5,7 @@ import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 
 import icaro.aplicaciones.recursos.visualizacionFicha.*;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.swt.*;
+import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt.panelCita;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.patronRecursoSimple.imp.ImplRecursoSimple;
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTrazas;
@@ -108,7 +109,14 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
-	}  
+	      reiniciaVisualizadorFicha();
+			
+	}
+	
+    public void reiniciaVisualizadorFicha() {
+    	ventanaFichaUsuario = new panelFicha(this);
+    	ventanaFichaUsuario.start();
+    }  
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
