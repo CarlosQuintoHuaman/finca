@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.persistenciaHistorial.imp.util;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.persistenciaHistorial.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ConsultaBBDD {
@@ -85,10 +87,10 @@ public class ConsultaBBDD {
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM visita WHERE NombreUsuario = '"+usuario+"'");
+			resultado = query.executeQuery("SELECT * FROM visita WHERE Paciente = '"+usuario+"'");
 			
 			while (resultado.next()) {
-				InfoVisita p = new InfoVisita(resultado.getString("NombreUsuario"),
+				InfoVisita p = new InfoVisita(resultado.getString("Paciente"),
 										resultado.getTimestamp("Fecha"),
 										resultado.getString("Motivo"),
 										resultado.getString("Descripcion"),
@@ -114,8 +116,58 @@ public class ConsultaBBDD {
 								"' , Descripcion = '" + v.getDescripcion() +
 								"' , Exploracion = '" + v.getExploracion() +
 								"' , Diagnostico = '" + v.getDiagnostico() + 
-								"' WHERE NombreUsuario = '" + v.getUsuario() + "'");
+								"' WHERE Paciente = '" + v.getUsuario() + "'");
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<InfoPrueba> getPruebas(String usuario) {
+		ArrayList<InfoPrueba> pruebas = new ArrayList<InfoPrueba>();
+		
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM documentos WHERE Paciente = '"+usuario+"'");
+			
+			while (resultado.next()) {
+				InfoPrueba p = new InfoPrueba(usuario,
+											resultado.getString("Nombre"),
+											new Date(resultado.getTimestamp("FechaVisita").getTime()),
+											resultado.getString("tipo"),
+											resultado.getString("archivo"),
+											resultado.getString("descripcion")
+				);
+				
+				pruebas.add(p);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return pruebas;
+	}
+	
+	public void setPrueba(InfoPrueba p) {
+		try {
+			crearQuery();
+			query.executeUpdate("INSERT INTO documentos (paciente,nombre,fechavisita,tipo,archivo,descripcion) VALUES ('" + p.getPaciente() + 
+								"', '" + p.getNombre() +
+								"', '" + p.getFecha() +
+								"', '" + p.getTipo() +
+								"', '" + p.getArchivo() + 
+								"', '" + p.getDescripcion() + "')");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void borrarPrueba(InfoPrueba p) {
+		try {
+			crearQuery();
+			query.executeUpdate("DELETE FROM documentos WHERE Paciente='"+p.getPaciente()+"' AND Nombre='"+p.getNombre()+"' AND FechaVisita='"+p.getFecha()+"'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

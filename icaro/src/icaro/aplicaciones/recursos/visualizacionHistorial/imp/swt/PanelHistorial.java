@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario.UsoAgenteHistorial;
@@ -89,6 +90,7 @@ public class PanelHistorial extends Thread {
 	 */
 	final UsoAgenteHistorial usoAgente;
 	InfoVisita v = null;
+	ArrayList<InfoPrueba> pruebas = null;
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -392,6 +394,11 @@ public class PanelHistorial extends Thread {
 								listadoPruebasLData.grabExcessVerticalSpace = true;
 								listadoPruebas = new List(gPruebasListado, SWT.V_SCROLL | SWT.BORDER);
 								listadoPruebas.setLayoutData(listadoPruebasLData);
+								listadoPruebas.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										tPruebasDesc.setText(pruebas.get(listadoPruebas.getSelectionIndex()).getDescripcion());
+									}
+								});
 							}
 							{
 								bPruebaNueva = new Button(gPruebasListado, SWT.PUSH | SWT.CENTER);
@@ -399,11 +406,22 @@ public class PanelHistorial extends Thread {
 								bPruebaNuevaLData.horizontalAlignment = GridData.END;
 								bPruebaNueva.setLayoutData(bPruebaNuevaLData);
 								bPruebaNueva.setText("Nueva Prueba");
+								
+								bPruebaNueva.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										bPruebaNuevaWidgetSelected(evt);
+									}
+								});
 							}
 							{
 								bPruebaBorrar = new Button(gPruebasListado, SWT.PUSH | SWT.CENTER);
 								bPruebaBorrar.setText("Borrar");
 								bPruebaBorrar.setSize(86, 25);
+								bPruebaBorrar.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										usoAgente.borrarPrueba(pruebas.get(listadoPruebas.getSelectionIndex()));
+									}
+								});
 							}
 						}
 						{
@@ -547,7 +565,6 @@ public class PanelHistorial extends Thread {
 		}
 
 		shell.addShellListener(new ShellAdapter() {
-			@Override
 			public void shellClosed(ShellEvent arg0) {
 				usoAgente.cerrarVentanaHistorial();
 			}
@@ -621,6 +638,13 @@ public class PanelHistorial extends Thread {
 		//shell.close();
 	}
 	
+	private void bPruebaNuevaWidgetSelected(SelectionEvent evt) {
+		System.out.println("bCerrar.widgetSelected, event="+evt);
+		
+		usoAgente.mostrarVentanaPrueba(v.getUsuario());
+		//shell.close();
+	}
+	
 	public void mostrarDatos(ArrayList<InfoVisita> historial) {
 		v = historial.get(0);
 		
@@ -630,7 +654,23 @@ public class PanelHistorial extends Thread {
             	tDescripcion.setText(v.getDescripcion());
             	tExploracion.setText(v.getExploracion());
             	tDiagnostico.setText(v.getDiagnostico());
+            	
+            	tExpDesc.setText(v.getExploracion());
 	       }
          });
+	}
+	
+	public void mostrarDatosPrueba(final ArrayList<InfoPrueba> p) {
+		pruebas = p;
+		
+		disp.asyncExec(new Runnable() {
+			public void run() {
+				listadoPruebas.removeAll();
+				for (int i=0; i<p.size(); i++) {
+					listadoPruebas.add(p.get(i).getNombre());
+					tPruebasDesc.setText(p.get(i).getDescripcion());
+				}
+			}
+		});
 	}
 }

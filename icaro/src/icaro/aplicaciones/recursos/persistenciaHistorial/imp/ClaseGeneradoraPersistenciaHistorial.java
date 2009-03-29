@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.persistenciaHistorial.imp;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
 import icaro.aplicaciones.recursos.persistenciaHistorial.imp.util.AccesoBBDD;
@@ -76,7 +77,18 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 	public void setVisita(InfoVisita v) {
 		consulta.setVisita(v);
 	}
-
+	
+	public ArrayList<InfoPrueba> getPruebas(String paciente) {
+		return consulta.getPruebas(paciente);
+	}
+	
+	public void setPrueba(InfoPrueba p) {
+		consulta.setPrueba(p);
+	}
+	
+	public void borrarPrueba(InfoPrueba p) {
+		consulta.borrarPrueba(p);
+	}
 
 	@Override
 	public void termina() {

@@ -10,7 +10,10 @@
 	<estado idIntermedio="esperaAccion">
 		<transicion input="mostrarVentanaHistorial" accion="pintaVentanaHistorial" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="mostrarVentanaLista" accion="pintaVentanaLista" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="mostrarVentanaPrueba" accion="pintaVentanaPrueba" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="guardarVisita" accion="guardarVisita" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="guardarPrueba" accion="guardarPrueba" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="borrarPrueba" accion="borrarPrueba" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

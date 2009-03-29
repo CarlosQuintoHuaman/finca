@@ -2,6 +2,7 @@ package icaro.aplicaciones.agentes.agenteAplicacionHistorialReactivo.comportamie
 
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoHistorial;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
@@ -41,6 +42,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
 			
 			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente));
+			visualizacion.mostrarDatosPrueba(persistencia.getPruebas(paciente));
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -73,8 +75,30 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 	}
 	
+	public void pintaVentanaPrueba(String paciente) {
+		try {
+			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			
+			visualizacion.mostrarVisualizadorPrueba(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, paciente);
+			//visualizacion.mostrarDatosLista(persistencia.getHistorial(paciente));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void guardarVisita(InfoVisita v) {
 		persistencia.setVisita(v);
+	}
+	
+	public void guardarPrueba(InfoPrueba p) {
+		persistencia.setPrueba(p);
+		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente()));
+	}
+	
+	public void borrarPrueba(InfoPrueba p) {
+		persistencia.borrarPrueba(p);
+		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente()));
 	}
 
 	// Ejemplo de otra accion semantica mas compleja

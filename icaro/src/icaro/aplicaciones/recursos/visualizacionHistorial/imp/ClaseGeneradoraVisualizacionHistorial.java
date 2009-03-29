@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionHistorial.imp;
 
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.*;
@@ -28,6 +29,7 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	//Ventana que gestiona este visualizador
 	private PanelHistorial ventanaHistorialUsuario;
 	private PanelLista ventanaListaUsuario;
+	private PanelPrueba ventanaPruebaUsuario;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
   	public ClaseGeneradoraVisualizacionHistorial(String id) throws Exception{
@@ -51,6 +53,9 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
  
   		ventanaListaUsuario = new PanelLista(this);
   		ventanaListaUsuario.start();
+  		
+  		ventanaPruebaUsuario = new PanelPrueba(this);
+  		ventanaPruebaUsuario.start();
   		
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
   				"Inicializando recurso",
@@ -125,6 +130,42 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	public void mostrarDatosLista(ArrayList<InfoVisita> historial) {
 		ventanaListaUsuario.mostrarDatos(historial);
 	}
+	
+  	public void mostrarVisualizadorPrueba(String nombreAgente, String tipo, String paciente) {
+		this.nombreAgenteControlador = nombreAgente;
+        System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+   
+		ventanaPruebaUsuario.setPaciente(paciente);
+		this.ventanaPruebaUsuario.mostrar();
+		
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+  				"Mostrando visualizador Prueba...",
+  				InfoTraza.NivelTraza.debug));
+	}
+ 
+	public void cerrarVisualizadorPrueba() {
+		//this.ventanaAgendaUsuario.ocultar();
+		this.ventanaPruebaUsuario.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
+  				"Cerrando visualizador Prueba...",
+  				InfoTraza.NivelTraza.debug));
+		
+		reiniciaVisualizadorPrueba();
+	}
+	
+	public void reiniciaVisualizadorPrueba() {
+		ventanaPruebaUsuario = new PanelPrueba(this);
+  		ventanaPruebaUsuario.start();
+  		System.out.println("Reiniciando Prueba...");
+	}
+	
+	public void mostrarDatosPrueba(ArrayList<InfoPrueba> p) {
+		ventanaHistorialUsuario.mostrarDatosPrueba(p);
+	}
+	
+	
+	
 	
 	public String getNombreAgenteControlador() {
 		return nombreAgenteControlador;
