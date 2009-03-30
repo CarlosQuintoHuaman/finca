@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Decorations;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -33,10 +34,24 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
 import icaro.util.util;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class panelAgenda extends Thread {
 
 	// Variables
@@ -79,7 +94,7 @@ public class panelAgenda extends Thread {
 	private Button ConsultarCitas;
 	private Label LMenu1;
 	private Composite Menu1;
-
+	private Composite principal;
 	private Composite huecoAgenda;
 	private boolean man=true;
 	private int intervalo=15;
@@ -124,6 +139,13 @@ public class panelAgenda extends Thread {
 	//Datos persistencia
 	private ArrayList<DatosCitaSinValidar> l;
 	private String fechaAgenda;
+	
+	private Menu opciones;
+	private boolean cumple=true;
+
+	//medicos de esta secretaria
+	private ArrayList<String> Medicos;
+	private int medicos=0;
 	/**
 	 * 
 	 * @param visualizador
@@ -152,10 +174,14 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha){
-		// Al ser un Thread, SWT nos obliga a enviarle comandos
+	public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha, ArrayList<String> lm1 ,int numM){
+	//public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha){
+	// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		l=l1;
+		
+		Medicos=lm1;
+		medicos=numM;	
 		fechaAgenda=fecha;
 		disp.asyncExec(new Runnable() {
             public void run() {
@@ -204,23 +230,25 @@ public class panelAgenda extends Thread {
 			}
 			//VARIABLES
 			//numero de medicos de los que dispone esta secretaria
-			int medicos =5;
-			String [] NombresM= new String[medicos]; 
+		/*	 medicos =5;
+			String []NombresM= new String[medicos]; 
 			NombresM[0]="Dr. Valerón";
 			NombresM[1]="Dr. Julio";
 			NombresM[2]="Estética";
 			NombresM[3]="Laser";
-			NombresM[4]="Dr Martín";
+			NombresM[4]="Dr Martín";*/
+			medicos=1;
+			Medicos =new ArrayList<String>();
 			l=new ArrayList<DatosCitaSinValidar> ();
 			
 			shell.setLayout(new FillLayout());
 			shell.setText("Consulta de Hoy");
 			shell.setSize(800, 600);
 			{
-				Composite principal = new Composite(shell, SWT.NONE);
+				principal = new Composite(shell, SWT.NONE);
 				GridLayout thisLayout = new GridLayout();
 				thisLayout.numColumns = 3;
-				principal.setSize(800, 600);
+				principal.setSize(800, 660);
 				principal.setBackground(SWTResourceManager.getColor(192, 192, 192));
 				principal.setLayout(thisLayout);
 				{
@@ -373,14 +401,14 @@ public class panelAgenda extends Thread {
 					huecoAgenda.setLayoutData(huecoAgendaLData);
 					huecoAgenda.setLayout(huecoAgendaLayout);
 					huecoAgenda.setDragDetect(false);
-					CTabItem[] TabNomMed= new CTabItem[medicos];
+					CTabItem[] TabNomMed= new CTabItem[5];
 					{
 						
 						Agenda = new CTabFolder(huecoAgenda, SWT.V_SCROLL);
 													
-							for(int i=0;i<medicos;i++){
+							for(int i=0;i<5;i++){
 								TabNomMed[i] = new CTabItem(Agenda, SWT.NONE);
-								TabNomMed[i].setText(NombresM[i]);
+								//TabNomMed[i].setText(Medicos.get(i));
 							}
 
 						
@@ -503,11 +531,13 @@ public class panelAgenda extends Thread {
 				{
 					GridData tablasDerechaLData = new GridData();
 					tablasDerechaLData.verticalAlignment = GridData.FILL;
-					tablasDerechaLData.horizontalAlignment = GridData.FILL;
+					tablasDerechaLData.horizontalAlignment = GridData.BEGINNING;
 					tablasDerecha = new Composite(principal, SWT.NONE);
 					GridLayout tablasDerechaLayout = new GridLayout();
 					tablasDerecha.setLayout(tablasDerechaLayout);
+					tablasDerechaLData.widthHint = 250;
 					tablasDerecha.setLayoutData(tablasDerechaLData);
+					
 					{
 						tablaExtras = new Composite(tablasDerecha, SWT.BORDER);
 						GridLayout tablaExtrasLayout = new GridLayout();
@@ -529,13 +559,13 @@ public class panelAgenda extends Thread {
 							Extras.setForeground(SWTResourceManager.getColor(255,255,255));
 							Extras.setAlignment(SWT.CENTER);
 							GridData ExtrasLData = new GridData();
+							ExtrasLData.horizontalAlignment = GridData.FILL;
+							ExtrasLData.verticalAlignment = GridData.BEGINNING;
 							ExtrasLData.horizontalSpan = 2;
 							ExtrasLData.widthHint = 199;
 							ExtrasLData.heightHint = 28;
-							Extras.setLayoutData(ExtrasLData);
-							
-							
-							
+							ExtrasLData.grabExcessHorizontalSpace = true;
+							Extras.setLayoutData(ExtrasLData);		
 						}
 						
 						{
@@ -738,8 +768,9 @@ public class panelAgenda extends Thread {
 				Nombres[c] = new CLabel(AgendaDinamica, SWT.NONE);
 				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
 				
-				Menu opciones = new Menu(shell,SWT.POP_UP);
+				opciones = new Menu(shell,SWT.POP_UP);
 				Nombres[c].setMenu(opciones);
+
 				MenuItem copiar = new MenuItem(opciones,SWT.PUSH);
 				copiar.setText("Copiar");
 				copiar.addSelectionListener(new SelectionAdapter() {
@@ -757,18 +788,21 @@ public class panelAgenda extends Thread {
 						
 					}
 				});
-				MenuItem Estado = new MenuItem(opciones,SWT.CASCADE);
+				/*MenuItem Estado = new MenuItem(opciones,SWT.CASCADE);
 				Estado.setText("Estado");
 				Menu estadoMenu = new Menu(opciones);
-				Estado.setMenu(estadoMenu);
-				MenuItem espera = new MenuItem(estadoMenu,SWT.CHECK);
+				Estado.setMenu(estadoMenu);*/
+				//Nombres[0].setText("Pepita");
+				
+				
+				MenuItem espera = new MenuItem(opciones,SWT.PUSH);
 				espera.setText("En sala espera"); 
 				espera.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						EsperaWidgetSelected(evt);
 					}
 				});
-				MenuItem Siguiente = new MenuItem(estadoMenu,SWT.CHECK);
+				MenuItem Siguiente = new MenuItem(opciones,SWT.PUSH);
 				Siguiente.setText("El siguiente");
 				Siguiente.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -777,7 +811,7 @@ public class panelAgenda extends Thread {
 						
 					}
 				});
-				MenuItem cobrado = new MenuItem(estadoMenu,SWT.CHECK);
+				MenuItem cobrado = new MenuItem(opciones,SWT.PUSH);
 				cobrado.setText("Cobrado");
 				cobrado.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -786,7 +820,8 @@ public class panelAgenda extends Thread {
 						
 					}
 				});
-				if (m<l.size()){
+				// RELLENAR LA AGENDA
+/*				if (m<l.size()){
 					Nombres[c].setText(l.get(m).tomaNombre());
 					Telefonos[c].setText(l.get(m).tomaTelf());
 					
@@ -794,7 +829,7 @@ public class panelAgenda extends Thread {
 				
 				Nombres[c].setText("");
 				Telefonos[c].setText("");
-				}
+				}*/
 				
 				Nombres[c].setBackground(SWTResourceManager.getColor(255, 255, 255));
 				Nombres[c].setAlignment(SWT.CENTER);
@@ -1384,11 +1419,14 @@ public class panelAgenda extends Thread {
 		}
 	}
 	private void agendaWidgetSelected(SelectionEvent evt){
-		if (agenda.getText().equals("AGENDA"))
+		if (agenda.getText().equals("AGENDA")){
 			agenda.setText("AGENDA DE HOY");
-		else
+			agenda.setSize(100, 57);
+		}else{
 			agenda.setText("AGENDA");
-		inicializa(agenda.getText());
+			agenda.setSize(68, 57);
+	}
+			inicializa(agenda.getText());
 	}
 	
 	public void inicializa(String a){
@@ -1404,128 +1442,96 @@ public class panelAgenda extends Thread {
 		AnadirL.dispose();
 		llamada.clear();
 		extra.clear();
-		tablaExtras = new Composite(tablasDerecha, SWT.BORDER);
-		GridLayout tablaExtrasLayout = new GridLayout();
-		tablaExtrasLayout.numColumns = 2;
-		GridData tablaExtrasLData = new GridData();
-		tablaExtrasLData.verticalSpan = 0;
-		tablaExtrasLData.horizontalSpan = 0;
-		tablaExtrasLData.horizontalAlignment = GridData.FILL;
-		tablaExtrasLData.verticalAlignment = GridData.FILL;
-		tablaExtrasLData.grabExcessVerticalSpace = true;
-		tablaExtrasLData.grabExcessHorizontalSpace = true;
-		tablaExtras.setLayoutData(tablaExtrasLData);
-		tablaExtras.setLayout(tablaExtrasLayout);
+				
+		if(a.equals("AGENDA DE HOY")){
+		shell.setText("Consulta de Hoy");
+		{
 
-
+		//inicializar tabla extras
+			tablaExtras = new Composite(tablasDerecha, SWT.NONE);
+			GridLayout tablaExtrasLayout = new GridLayout();
+			tablaExtrasLayout.numColumns = 2;
+			GridData tablaExtrasLData = new GridData();
+			tablaExtrasLData.verticalSpan = 0;
+			tablaExtrasLData.horizontalSpan = 0;
+			tablaExtrasLData.horizontalAlignment = GridData.FILL;
+			tablaExtrasLData.verticalAlignment = GridData.FILL;
+			tablaExtrasLData.grabExcessVerticalSpace = true;
+			tablaExtrasLData.grabExcessHorizontalSpace = true;
+			tablaExtras.setLayoutData(tablaExtrasLData);
+			tablaExtras.setLayout(tablaExtrasLayout);
+			
+				final DateTime calendario = new DateTime(tablaExtras, SWT.CALENDAR);
+				GridData calendarioLData = new GridData();
+				calendarioLData.verticalAlignment = GridData.BEGINNING;
+				calendarioLData.horizontalSpan = 2;
+				calendarioLData.grabExcessVerticalSpace = true;
+				calendario.setLayoutData(calendarioLData);
+				calendario.addMouseListener(new MouseListener () {
+					public void mouseDoubleClick(MouseEvent e) {
+						// TODO ¿Y esto por qué no va?
+								fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
+						//shell.dispose();
+					}
+					public void mouseUp(MouseEvent e) {};
+					public void mouseDown(MouseEvent e) {};
+				});
+			}
 		
-		if(a.equals("AGENDA")){
-			shell.setText("Agenda");
-			GridData tablasDerechaLData = new GridData();
-			tablasDerechaLData.verticalAlignment = GridData.BEGINNING;
-			tablasDerechaLData.horizontalAlignment = GridData.BEGINNING;
-			//tablasDerechaLData.heightHint=199;
-			//tablasDerechaLData.widthHint=199;
-			tablasDerecha.setLayoutData(tablasDerechaLData);
-			
-			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
-			GridLayout tablaLlamadasLayout = new GridLayout();
-			tablaLlamadasLayout.numColumns = 2;
-			GridData tablaLlamadasLData = new GridData();
-			tablaLlamadasLData.verticalSpan = 0;
-			tablaLlamadasLData.horizontalSpan = 0;
-			tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
-			tablaLlamadasLData.grabExcessVerticalSpace = true;
-			tablaLlamadasLData.grabExcessHorizontalSpace = true;
-			tablaLlamadasLData.verticalAlignment = GridData.BEGINNING;
-			tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
-//			tablaLlamadasLData.heightHint=150;
-//			tablaLlamadasLData.widthHint=199;
-			tablaLlamadas.setLayoutData(tablaLlamadasLData);
-			tablaLlamadas.setLayout(tablaLlamadasLayout);
-			
-            final DateTime calendario = new DateTime (tablaExtras, SWT.CALENDAR);
-            calendario.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
-            
-            calendario.addMouseListener(new MouseListener () {
-                    public void mouseDoubleClick(MouseEvent e) {
-                            // TODO ¿Y esto por qué no va?
-                            fecha = new Date(calendario.getYear(),calendario.getMonth(),calendario.getDay());
-                            //shell.dispose();
-                    }
-                    public void mouseUp(MouseEvent e) {};
-                    public void mouseDown(MouseEvent e) {};
-            });
-            final Button bEnviar    = new Button(tablaExtras, SWT.PUSH);
-            bEnviar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-            bEnviar.setText("Seleccionar");
-            //Introducimos los valores y eventos de Fecha Inicio
-            bEnviar.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-                            // TODO ¿Se puede evitar usar métodos obsoletos?
-                            fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
-                            fechaAnt = fecha;
-                            
-                    }                               
-            });
-            
-            final Button bCancelar  = new Button(tablaExtras, SWT.PUSH);
-            bCancelar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-            bCancelar.setText("Cancelar");
-            //Introducimos los valores y eventos de Fecha Inicio
-            bCancelar.addSelectionListener (new SelectionAdapter () {
-                    public void widgetSelected (SelectionEvent e) {
-            /*              if (fechaAnt!=null)
-                                    fecha=fechaAnt;
-                            else*/
-                                    fecha = null;
-                            
-                    }                               
-            });
-            
-            final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
-            calendario2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
-            
-            calendario2.addMouseListener(new MouseListener () {
-                    public void mouseDoubleClick(MouseEvent e) {
-                            // TODO ¿Y esto por qué no va?
-                            fecha = new Date(calendario.getYear(),calendario.getMonth(),calendario.getDay());
-                            //shell.dispose();
-                    }
-                    public void mouseUp(MouseEvent e) {};
-                    public void mouseDown(MouseEvent e) {};
-            });
-            final Button bEnviar1    = new Button(tablaLlamadas, SWT.PUSH);
-            bEnviar1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-            bEnviar1.setText("s1");
-            //Introducimos los valores y eventos de Fecha Inicio
-            bEnviar1.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-                            // TODO ¿Se puede evitar usar métodos obsoletos?
-                            fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
-                            fechaAnt = fecha;
-                            
-                    }                               
-            });
-            
-            final Button bCancelar1  = new Button(tablaLlamadas, SWT.PUSH);
-            bCancelar1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-            bCancelar1.setText("c1");
-            //Introducimos los valores y eventos de Fecha Inicio
-            bCancelar1.addSelectionListener (new SelectionAdapter () {
-                    public void widgetSelected (SelectionEvent e) {
-            /*              if (fechaAnt!=null)
-                                    fecha=fechaAnt;
-                            else*/
-                                    fecha = null;
-                            
-                    }                               
-            });
+		//inicializar tabla llamadas
+		
+		tablaLlamadas = new Composite(tablasDerecha, SWT.NONE);
+		GridLayout tablaLlamadasLayout = new GridLayout();
+		tablaLlamadasLayout.numColumns = 2;
+		GridData tablaLlamadasLData = new GridData();
+		tablaLlamadasLData.verticalSpan = 0;
+		tablaLlamadasLData.horizontalSpan = 0;
+		tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
+		tablaLlamadasLData.grabExcessVerticalSpace = true;
+		tablaLlamadasLData.grabExcessHorizontalSpace = true;
+		tablaLlamadasLData.verticalAlignment = GridData.BEGINNING;
+		tablaLlamadasLData.horizontalAlignment = GridData.BEGINNING;
+
+		tablaLlamadas.setLayoutData(tablaLlamadasLData);
+		tablaLlamadas.setLayout(tablaLlamadasLayout);
+
+        //Introducimos los valores y eventos de Fecha Inicio
+        final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
+        calendario2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
+        
+        calendario2.addMouseListener(new MouseListener () {
+                public void mouseDoubleClick(MouseEvent e) {
+                        // TODO ¿Y esto por qué no va?
+                		int m=0;
+                        fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(), calendario2.getDay());
+                        
+                        m++;
+                        //shell.dispose();
+                }
+                public void mouseUp(MouseEvent e) {};
+                public void mouseDown(MouseEvent e) {};
+        });
 		}else{
-			shell.setText("Consulta de Hoy");
+
+			//redefinir tabla extras
+			tablaExtras = new Composite(tablasDerecha, SWT.BORDER);
+			GridLayout tablaExtrasLayout = new GridLayout();
+			tablaExtrasLayout.numColumns = 2;
+			GridData tablaExtrasLData = new GridData();
+			tablaExtrasLData.verticalSpan = 0;
+			tablaExtrasLData.horizontalSpan = 0;
+			tablaExtrasLData.horizontalAlignment = GridData.FILL;
+			tablaExtrasLData.verticalAlignment = GridData.FILL;
+			tablaExtrasLData.grabExcessVerticalSpace = true;
+			tablaExtrasLData.grabExcessHorizontalSpace = true;
+			tablaExtras.setLayoutData(tablaExtrasLData);
+			tablaExtras.setLayout(tablaExtrasLayout);
+			
+			shell.setText("Agenda");
 			anadirE = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
 			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
 			AnadirL = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
+			
 			GridLayout tablaLlamadasLayout = new GridLayout();
 			GridData tablaLlamadasLData = new GridData();
 			tablaLlamadasLData.verticalSpan = 0;
@@ -1544,9 +1550,12 @@ public class panelAgenda extends Thread {
 				Extras.setForeground(SWTResourceManager.getColor(255,255,255));
 				Extras.setAlignment(SWT.CENTER);
 				GridData ExtrasLData = new GridData();
+				ExtrasLData.horizontalAlignment = GridData.FILL;
+				ExtrasLData.verticalAlignment = GridData.BEGINNING;
 				ExtrasLData.horizontalSpan = 2;
 				ExtrasLData.widthHint = 199;
 				ExtrasLData.heightHint = 28;
+				ExtrasLData.grabExcessHorizontalSpace = true;
 				Extras.setLayoutData(ExtrasLData);		
 			}
 			{
@@ -1651,14 +1660,22 @@ public class panelAgenda extends Thread {
 	}
 	
 	private void EsperaWidgetSelected(SelectionEvent evt){
-		CLabel lsel=(CLabel)evt.getSource();
-		String nombre=lsel.getText();
+/*		MenuItem lsel=(MenuItem)evt.getSource();
+		Menu m=lsel.getParent();
+		//lsel.get
+		CLabel llLabel=(CLabel)lsel.getData();
+		CLabel llLabel1=(CLabel)m.getData();
+		Menu m1=lsel.getParent();
+		
+		Decorations ll=(Decorations)m.getParent();
+	
+		String nombre=ll.getText();
 
 		int i;
 		for (i=0;i<c;i++){
 			if (Nombres[i].getText().equals(nombre))
 				Nombres[i].setBackground(SWTResourceManager.getColor(116, 193, 30));
-		}
+		}*/
 	}
 	private void CobradoWidgetSelected(SelectionEvent evt){
 		CLabel lsel=(CLabel)evt.getSource();
@@ -1680,6 +1697,43 @@ public class panelAgenda extends Thread {
 			if (Nombres[i].getText().equals(nombre))
 				Nombres[i].setBackground(SWTResourceManager.getColor(48, 175, 175));
 		}
+		
+	}
+	
+	public boolean estaLibre(final HorasCita hora){
+		
+		
+		disp.asyncExec(new Runnable() {
+            public void run() {
+       
+		String h=hora.getHInicio();
+		String haux=hora.getHFin();
+		
+		while(!haux.equals(h)& cumple){
+			int i=c-1;
+			while(i>=0 & !horas[i].getText().equals(h)){
+				if (horas[i].getText().equals(haux)& !Nombres[i].getText().equals(""))
+					cumple=false;
+				i--;
+			}
+			
+			String min=haux.substring(3, 5);
+			String h1=haux.substring(0,2);
+			if (min.equals("00")){
+				h1=String.valueOf((Integer.valueOf(h1)-1));
+				min=String.valueOf(60);
+			}
+			min=String.valueOf((Integer.valueOf(min)-intervalo));
+			if (min.equals("0")){
+				min=min+"0";
+			}
+			haux=h1+":"+min;
+		}
+		cumple=true;
+            }
+            
+        });
+		return cumple;
 		
 	}
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt.*;
@@ -102,11 +103,12 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   				InfoTraza.NivelTraza.debug));
 	}
 	
-	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l, String fecha){
+	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l, String fecha, ArrayList<String> m, int num){
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
         this.tipoAgenteControlador = tipo;
-        this.ventanaAgendaUsuario.meteDatos(l,fecha);
+        this.ventanaAgendaUsuario.meteDatos(l,fecha, m, num);
+         //this.ventanaAgendaUsuario.meteDatos(l,fecha);
         
         trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",
@@ -383,6 +385,14 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
+    }
+    
+    public boolean estaLibre(HorasCita hora){
+    	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+    			"Mostrando visualizador...",
+    			InfoTraza.NivelTraza.debug));
+		 return this.ventanaAgendaUsuario.estaLibre(hora);
+		
     }
 			
 }

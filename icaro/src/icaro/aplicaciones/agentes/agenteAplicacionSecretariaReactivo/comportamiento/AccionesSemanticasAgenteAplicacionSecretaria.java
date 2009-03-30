@@ -1,6 +1,8 @@
 package icaro.aplicaciones.agentes.agenteAplicacionSecretariaReactivo.comportamiento;
 
 
+import java.util.ArrayList;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAccesoSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAccesoValidados;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
@@ -26,7 +28,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 	private ItfUsoAgenteReactivo agenteSecretaria;
 
 	
-	public void pintaVentanaSecretaria(){
+	public void pintaVentanaSecretaria(String secretaria){
 		
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
@@ -36,7 +38,10 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
 			util f=new util(); 
 			String fecha=f.getStrDateSQL();
-			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha);
+			ArrayList<String> l=new ArrayList<String>();
+			l=persistencia.getMedicos(secretaria);
+			int num=l.size();
+			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha,l,num);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 

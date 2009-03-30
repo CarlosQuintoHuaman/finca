@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import com.cloudgarden.resource.SWTResourceManager;
 import icaro.util.util;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
 
@@ -54,6 +55,7 @@ public class panelCita extends Thread {
 	private CLabel cFechaCita;
 	private int intervalo=15;
 	private int periodo;
+	private HorasCita hora;
 	/**
 	 * comunicacion con el agente (control)
 	 * Hay que cambiar "Template" por el nombre del agente.
@@ -123,6 +125,8 @@ public class panelCita extends Thread {
           	}
       		tTelefono1.setText(dat.tomaTelf());
       		tHoraD.setText(dat.tomaHora());
+      		hora= new HorasCita(dat.tomaHora(),"");
+      	
       		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(), dat.tomaTelf(), dat.tomaHora(),periodo);
       		calculaPeriodo(); 
 	       }
@@ -438,9 +442,12 @@ public class panelCita extends Thread {
 	}
 	private void bMasWidgetSelected(SelectionEvent evt) {
 		periodo=periodo+1;
-		calculaPeriodo();
 		
-		disp.update();
+		
+		calculaPeriodo();
+		//disp.update();
+		Boolean l=usoAgente.estaLibre(hora);
+		l=false;
 	}
 
 	private void bAceptarWidgetSelected(SelectionEvent evt){
@@ -494,13 +501,13 @@ public class panelCita extends Thread {
 				c--;
 		}
 		t=t-15;
-		if (x==0)
+		if (x==0){
 			text1.setText(aux+String.valueOf(x)+"0");
-
-		else
+			hora.setHFin(aux+String.valueOf(x)+"0");
+		}else{
 			text1.setText(aux+String.valueOf(x));
-		
-		if (t==0)
+			hora.setHFin(aux+String.valueOf(x));
+		}if (t==0)
 			cTiempo.setText(aux2+String.valueOf(t)+"0");
 		else
 			cTiempo.setText(aux2+String.valueOf(t));

@@ -68,7 +68,7 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 			String tipo = persistencia.compruebaUsuario(u, p);
 			
 			if (tipo == "Secretaria") {
-				agenteSecretaria.aceptaEvento(new EventoInput("inicio", "AgenteAplicacionLogin1", "AgenteAplicacionSecretaria1"));
+				agenteSecretaria.aceptaEvento(new EventoInput("inicio", u,"AgenteAplicacionLogin1", "AgenteAplicacionSecretaria1"));
 				visualizacion.cerrarVisualizadorLogin();
 			}
 			else if (tipo == "Medico") {

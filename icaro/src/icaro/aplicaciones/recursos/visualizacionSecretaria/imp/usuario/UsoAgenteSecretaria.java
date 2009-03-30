@@ -4,6 +4,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSi
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.*;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
@@ -333,6 +334,27 @@ public class UsoAgenteSecretaria {
         }
         
     }
+    
+    public boolean estaLibre(HorasCita hora) {
+        
+ 	   getInformacionAgente();
+         //provoca la petici�n de autentificaci�n
+     	
+          
+
+         try {
+             if (itfUsoRepositorioInterfaces == null) {
+                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+             }
+           return visualizador.estaLibre(hora);
+
+         } catch (Exception e) {
+             System.out.println("Ha habido un error al enviar los datos de la hora de la cita bMas ");
+             e.printStackTrace();
+             return false;
+         }
+         
+     }
     
     public void anadeLlamada(DatosLlamada datos) {
         

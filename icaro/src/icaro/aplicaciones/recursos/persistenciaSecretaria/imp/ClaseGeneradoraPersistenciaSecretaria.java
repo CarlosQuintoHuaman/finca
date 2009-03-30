@@ -79,7 +79,9 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 	public ArrayList<DatosCitaSinValidar> getCitas(String fecha) {
 		return consulta.getCitas(fecha);
 	}
-
+	public ArrayList<String> getMedicos(String s){
+		return consulta.getMedicos(s);
+	}
 /*	public boolean compruebaNombreUsuario(String usuario)
 			throws ErrorEnRecursoException {
 			trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaSecretaria",

@@ -142,8 +142,35 @@ public class ConsultaBBDD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		citas = new ArrayList<DatosCitaSinValidar>();
+		DatosCitaSinValidar p = new DatosCitaSinValidar("pepo","apellido","918765412", "".toString(),1);
 		
+		citas.add(p);
+		citas.add(p);
+	
 		return citas;
+	}
+	
+	public ArrayList<String> getMedicos(String s) {
+		ArrayList<String> medicos = new ArrayList<String>();
+		
+		try {	
+			
+			crearQuery();
+			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
+			resultado = query.executeQuery("SELECT * FROM tieneagenda WHERE Secretaria = '" + s + "'");
+			while (resultado.next()) {
+				String m=resultado.getString("Medico");			
+				medicos.add(m);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
+		return medicos;
 	}
 	/**
 	 * EJEMPLO de como usar la BD
