@@ -508,6 +508,11 @@ public class PanelHistorial extends Thread {
 								bMedNuevoLData.horizontalAlignment = GridData.END;
 								bMedNuevo.setLayoutData(bMedNuevoLData);
 								bMedNuevo.setText("Añadir Medicamento");
+								bMedNuevo.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										bMedNuevoWidgetSelected(evt);
+									}
+								});
 							}
 							{
 								bMedBorrar = new Button(gMedicamentos, SWT.PUSH | SWT.CENTER);
@@ -672,5 +677,11 @@ public class PanelHistorial extends Thread {
 				}
 			}
 		});
+	}
+	
+	private void bMedNuevoWidgetSelected(SelectionEvent evt) {
+		System.out.println("bMedNuevo.widgetSelected, event="+evt);
+		//TODO add your code for bMedNuevo.widgetSelected
+		usoAgente.mostrarVentanaBusquedaMed();
 	}
 }

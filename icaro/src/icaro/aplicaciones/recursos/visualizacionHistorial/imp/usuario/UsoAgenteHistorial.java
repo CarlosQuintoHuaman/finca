@@ -221,5 +221,24 @@ public class UsoAgenteHistorial {
             e.printStackTrace();
         }
     }
+    
+    public void mostrarVentanaBusquedaMed() {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaBusqueda", "VisualizacionMedicamentos1", "AgenteAplicacionHistorial1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al guardar el Historial");
+            e.printStackTrace();
+        }
+    }
 }
 
