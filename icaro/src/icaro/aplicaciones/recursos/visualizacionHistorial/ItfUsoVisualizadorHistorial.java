@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
@@ -26,6 +27,8 @@ public interface ItfUsoVisualizadorHistorial extends ItfUsoRecursoSimple{
     public void mostrarVisualizadorPrueba(String nombreAgente,String tipo, String paciente) throws Exception;
     public void cerrarVisualizadorPrueba() throws Exception;
 	public void mostrarDatosPrueba(ArrayList<InfoPrueba> p);
+	
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m);
     
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;
   	public void mostrarMensajeAviso(String titulo,String mensaje) throws Exception;

@@ -82,19 +82,21 @@ public class ConsultaBBDD {
 	}
 	
 	public ArrayList<InfoMedicamento> getMedicamentos() {
-		ArrayList<InfoMedicamento> citas = new ArrayList<InfoMedicamento>();
+		ArrayList<InfoMedicamento> med = new ArrayList<InfoMedicamento>();
 		
 		try {
 			crearQuery();
 			resultado = query.executeQuery("SELECT * FROM medicamentos");
 			
 			while (resultado.next()) {
-				InfoMedicamento p = new InfoMedicamento(resultado.getString("NombreUsuario"),
-										resultado.getString("Motivo"),
-										resultado.getString("Diagnostico")
+				InfoMedicamento p = new InfoMedicamento(resultado.getInt("Codigo"),
+										resultado.getString("Nombre"),
+										resultado.getString("PrincipioActivo"),
+										resultado.getString("Descripcion"),
+										resultado.getString("Indicaciones")
 				);
 				
-				citas.add(p);
+				med.add(p);
 			}
 				
 		} catch (Exception e) {
@@ -102,18 +104,25 @@ public class ConsultaBBDD {
 			e.printStackTrace();
 		}
 		
-		return citas;
+		return med;
 	}
 	
 	public void insertaMedicamento(InfoMedicamento m) {
 		try {
 			crearQuery();
-//			query.executeUpdate("INSERT INTO documentos (paciente,nombre,fechavisita,tipo,archivo,descripcion) VALUES ('" + p.getPaciente() + 
-//								"', '" + p.getNombre() +
-//								"', '" + p.getFecha() +
-//								"', '" + p.getTipo() +
-//								"', '" + p.getArchivo() + 
-//								"', '" + p.getDescripcion() + "')");
+			query.executeUpdate("INSERT INTO medicamentos (Nombre,PrincipioActivo,Descripcion,Indicaciones) VALUES ('" + m.getNombre() + 
+								"', '" + m.getPa() +
+								"', '" + m.getDescripcion() +
+								"', '" + m.getIndicaciones() + "')");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void asignaMedicamento(String p, InfoMedicamento m) {
+		try {
+			crearQuery();
+			query.executeUpdate("INSERT INTO recetas (Codigo) VALUES ('" + m.getCodigo() + "')");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

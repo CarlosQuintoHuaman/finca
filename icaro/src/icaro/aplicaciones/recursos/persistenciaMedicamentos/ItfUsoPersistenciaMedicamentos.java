@@ -9,5 +9,6 @@ public interface ItfUsoPersistenciaMedicamentos extends ItfUsoRecursoSimple {
 	public ArrayList<InfoMedicamento> getMedicamentos() throws Exception;
 	
 	public void insertaMedicamento(InfoMedicamento m) throws Exception;
+	public void asignaMedicamento(String p, InfoMedicamento m) throws Exception;
 	public void borrarMedicamento(InfoMedicamento m) throws Exception;
 }

@@ -53,9 +53,9 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
-	public void guardarMedicamento(InfoMedicamento p) {
+	public void guardarMedicamento(String p, InfoMedicamento m) {
 		try {
-			persistencia.insertaMedicamento(p);
+			persistencia.asignaMedicamento(p,m);
 			visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

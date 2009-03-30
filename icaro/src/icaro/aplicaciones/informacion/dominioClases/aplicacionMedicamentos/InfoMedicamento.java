@@ -10,30 +10,72 @@ public class InfoMedicamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	
+	private int codigo;
 	private String nombre;
-	private String apell1;
-	private String telf;
+	private String pa;
+	private String descripcion;
+	private String indicaciones;
 		
 	
-	public InfoMedicamento (String nombre, String apell1, String telf) {
-		
-		this.nombre = nombre;
-		this.apell1 = apell1;
-		this.telf = telf;
-		
+	public InfoMedicamento (int cod, String nombre, String pa, String desc, String ind) {
+		setCodigo(cod);
+		this.setNombre(nombre);
+		this.setPa(pa);
+		this.setDescripcion(desc);
+		this.setIndicaciones(ind);
 	}
-	
-	public String tomaNombre() {
+
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public String getNombre() {
 		return nombre;
 	}
-	
-	public String tomaApell1() {
-		return apell1;
+
+
+	public void setPa(String pa) {
+		this.pa = pa;
+	}
+
+
+	public String getPa() {
+		return pa;
+	}
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+	public void setIndicaciones(String indicaciones) {
+		this.indicaciones = indicaciones;
+	}
+
+
+	public String getIndicaciones() {
+		return indicaciones;
 	}
 	
-	public String tomaTelf() {
-		return telf;
-	}
+
 	
 	
 }

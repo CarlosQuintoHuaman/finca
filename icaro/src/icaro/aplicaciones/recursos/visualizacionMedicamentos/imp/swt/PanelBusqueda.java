@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -13,6 +15,7 @@ import org.eclipse.swt.widgets.*;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.ClaseGeneradoraVisualizacionMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.usuario.UsoAgenteMedicamentos;
 
@@ -40,6 +43,8 @@ public class PanelBusqueda extends Thread {
 	private Display disp;
 	private Shell shell;
 	private PanelBusqueda este;
+	
+	private ArrayList<InfoMedicamento> medicamentos;
 
 	/**
 	 * 
@@ -97,10 +102,6 @@ public class PanelBusqueda extends Thread {
 		// Lo primero es inicializar el Shell
 		shell = new Shell(disp);
 		
-		// Ahora va el codigo de la ventana.
-		// ¡Ojo! Las variables de SWT deberian ser globales
-
-		
 		{
 			//Register as a resource user - SWTResourceManager will
 			//handle the obtaining and disposing of resources
@@ -142,6 +143,11 @@ public class PanelBusqueda extends Thread {
 				tNombreLData.horizontalAlignment = GridData.FILL;
 				tNombre = new Text(cContenido, SWT.BORDER);
 				tNombre.setLayoutData(tNombreLData);
+				tNombre.addModifyListener(new ModifyListener() {
+					public void modifyText(ModifyEvent evt) {
+						actualizarLista();
+					}
+				});
 			}
 			{
 				lPActivo = new CLabel(cContenido, SWT.NONE);
@@ -153,6 +159,11 @@ public class PanelBusqueda extends Thread {
 				tPActivoLData.horizontalAlignment = GridData.FILL;
 				tPActivo = new Text(cContenido, SWT.BORDER);
 				tPActivo.setLayoutData(tPActivoLData);
+				tPActivo.addModifyListener(new ModifyListener() {
+					public void modifyText(ModifyEvent evt) {
+						actualizarLista();
+					}
+				});
 			}
 			{
 				lLista = new CLabel(cContenido, SWT.NONE);
@@ -208,16 +219,39 @@ public class PanelBusqueda extends Thread {
 	// Aqui iran los metodos especificos de cada ventana
 
 	private void bAceptarWidgetSelected(SelectionEvent evt) {
-		System.out.println("bAceptar.widgetSelected, event="+evt);
-		//TODO add your code for bAceptar.widgetSelected
+		
 	}
 	
 	private void bCancelarWidgetSelected(SelectionEvent evt) {
-		System.out.println("bCancelar.widgetSelected, event="+evt);
-		//TODO add your code for bCancelar.widgetSelected
+		
 	}
 	
-	public void mostrarDatos(ArrayList<InfoMedicamento> m) {
+	public void mostrarDatos(final ArrayList<InfoMedicamento> m) {
+		medicamentos = m;
+
+		disp.asyncExec(new Runnable() {
+			public void run() {
+				listaMed.removeAll();
+				for (int i=0; i<m.size(); i++) {
+					listaMed.add(m.get(i).getNombre());
+				}
+			}
+		});
+	}
+	
+	public void actualizarLista() {
+		listaMed.removeAll();
+		
+		for (int i=0; i<medicamentos.size(); i++) {
+			InfoMedicamento m = medicamentos.get(i);
 			
+			String nombre = m.getNombre().toLowerCase();
+			String pa = m.getPa().toLowerCase();
+			
+			String filtroNombre = tNombre.getText().toLowerCase();
+			String filtroPA = tPActivo.getText().toLowerCase();
+			if (nombre.contains(filtroNombre) && pa.contains(filtroPA))
+				listaMed.add(m.getNombre() + " (Principio Activo: " + m.getPa() +")");
+		}
 	}
 }

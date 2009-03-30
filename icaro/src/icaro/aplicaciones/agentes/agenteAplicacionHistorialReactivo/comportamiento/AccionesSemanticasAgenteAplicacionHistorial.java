@@ -5,6 +5,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrue
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
+import icaro.aplicaciones.recursos.persistenciaMedicamentos.ItfUsoPersistenciaMedicamentos;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -19,6 +20,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	private ItfUsoVisualizadorHistorial visualizacion;
 	private ItfUsoPersistenciaHistorial persistencia;
 	private ItfUsoAgenteReactivo agenteHistorial;
+	private ItfUsoPersistenciaMedicamentos persistenciaMed;
 
 	
 	// Ejemplo de accion semantica sencilla
@@ -41,6 +43,10 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			
 			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente));
 			visualizacion.mostrarDatosPrueba(persistencia.getPruebas(paciente));
+			
+			persistenciaMed = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos());
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));

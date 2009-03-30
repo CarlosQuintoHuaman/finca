@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.*;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedico;
@@ -162,6 +163,10 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	
 	public void mostrarDatosPrueba(ArrayList<InfoPrueba> p) {
 		ventanaHistorialUsuario.mostrarDatosPrueba(p);
+	}
+	
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
+		ventanaHistorialUsuario.mostrarDatosMed(m);
 	}
 	
 	

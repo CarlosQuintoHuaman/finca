@@ -19,6 +19,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario.UsoAgenteHistorial;
 
@@ -91,6 +92,7 @@ public class PanelHistorial extends Thread {
 	final UsoAgenteHistorial usoAgente;
 	InfoVisita v = null;
 	ArrayList<InfoPrueba> pruebas = null;
+	ArrayList<InfoMedicamento> medicamentos = null;
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -501,6 +503,11 @@ public class PanelHistorial extends Thread {
 								listaMedicamentosLData.horizontalSpan = 2;
 								listaMedicamentos = new List(gMedicamentos, SWT.V_SCROLL | SWT.BORDER);
 								listaMedicamentos.setLayoutData(listaMedicamentosLData);
+								listaMedicamentos.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										tMedNotas.setText(medicamentos.get(listaMedicamentos.getSelectionIndex()).getIndicaciones());
+									}
+								});
 							}
 							{
 								bMedNuevo = new Button(gMedicamentos, SWT.PUSH | SWT.CENTER);
@@ -518,6 +525,11 @@ public class PanelHistorial extends Thread {
 								bMedBorrar = new Button(gMedicamentos, SWT.PUSH | SWT.CENTER);
 								bMedBorrar.setText("Borrar Medicamento");
 								bMedBorrar.setSize(124, 25);
+								bMedBorrar.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(SelectionEvent evt) {
+										usoAgente.borrarMed(medicamentos.get(listaMedicamentos.getSelectionIndex()));
+									}
+								});
 							}
 						}
 						{
@@ -674,6 +686,20 @@ public class PanelHistorial extends Thread {
 				for (int i=0; i<p.size(); i++) {
 					listadoPruebas.add(p.get(i).getNombre());
 					tPruebasDesc.setText(p.get(i).getDescripcion());
+				}
+			}
+		});
+	}
+	
+	public void mostrarDatosMed(final ArrayList<InfoMedicamento> m) {
+		medicamentos = m;
+
+		disp.asyncExec(new Runnable() {
+			public void run() {
+				listaMedicamentos.removeAll();
+				for (int i=0; i<m.size(); i++) {
+					listaMedicamentos.add(m.get(i).getNombre());
+					tMedNotas.setText(m.get(i).getIndicaciones());
 				}
 			}
 		});

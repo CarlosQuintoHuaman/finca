@@ -67,6 +67,10 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void asignaMedicamento(String p, InfoMedicamento m) throws Exception {
+		
+	}
 
 	@Override
 	public void termina() {

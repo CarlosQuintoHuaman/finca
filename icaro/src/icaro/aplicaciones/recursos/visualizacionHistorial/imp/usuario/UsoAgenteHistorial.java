@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -233,7 +234,26 @@ public class UsoAgenteHistorial {
             
             ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
             
-            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaBusqueda", "VisualizacionMedicamentos1", "AgenteAplicacionHistorial1"));
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaBusqueda", "AgenteAplicacionHistorial1", "VisualizacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al guardar el Historial");
+            e.printStackTrace();
+        }
+    }
+    
+    public void borrarMed(InfoMedicamento m) {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            
+            itfUsoHistorial.aceptaEvento(new EventoInput("borrarMedicamento", m, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al guardar el Historial");

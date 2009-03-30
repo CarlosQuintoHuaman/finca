@@ -80,6 +80,8 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 		this.tipoAgenteControlador = tipoAgenteControlador;
 	}
 
+	//METODOS PROPIOS
+	
 	public void mostrarVisualizadorBusqueda(String nombreAgente, String tipo) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
