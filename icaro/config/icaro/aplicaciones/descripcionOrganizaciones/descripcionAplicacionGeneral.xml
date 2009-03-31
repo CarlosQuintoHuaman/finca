@@ -40,6 +40,9 @@
 					nombreComportamiento="AgenteAplicacionHistorial" rol="AgenteAplicacion"
 					tipo="Reactivo" />
 				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionMedicamentos" rol="AgenteAplicacion"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
 					nombreComportamiento="AgenteAplicacionSecretaria" rol="AgenteAplicacion"
 					tipo="Reactivo" />
 				<icaro:DescComportamientoAgente
@@ -56,8 +59,10 @@
 			<icaro:DescRecursoAplicacion nombre="PersistenciaMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionHistorial"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionMedicamentos"/>
 			<icaro:DescRecursoAplicacion nombre="PersistenciaHistorial"/>
 			<icaro:DescRecursoAplicacion nombre="PersistenciaSecretaria"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaMedicamentos"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionSecretaria"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionFicha"/>
 		</icaro:DescRecursosAplicacion>
@@ -78,6 +83,7 @@
 				  <icaro:componenteGestionado refId="AgenteAplicacionLogin1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionMedico1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionHistorial1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionMedicamentos1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionSecretaria1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionFicha1" tipoComponente="AgenteAplicacion"/>
 				</icaro:componentesGestionados>
@@ -91,6 +97,8 @@
 					<icaro:componenteGestionado refId="VisualizacionMedico1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionHistorial1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="PersistenciaHistorial1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionMedicamentos1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaMedicamentos1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="PersistenciaSecretaria1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionSecretaria1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionFicha1" tipoComponente="RecursoAplicacion"/>
@@ -112,6 +120,11 @@
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
 			<icaro:Instancia id="AgenteAplicacionHistorial1" refDescripcion="AgenteAplicacionHistorial">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionMedicamentos1" refDescripcion="AgenteAplicacionMedicamentos">
 				<icaro:listaPropiedades>
 					<icaro:propiedad atributo="" valor=""/>
 				</icaro:listaPropiedades>
@@ -155,9 +168,18 @@
 					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaMedicamentos1" refDescripcion="PersistenciaMedicamentos" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
 			<icaro:Instancia id="VisualizacionLogin1" refDescripcion="VisualizacionLogin" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="VisualizacionMedico1" refDescripcion="VisualizacionMedico" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="VisualizacionHistorial1" refDescripcion="VisualizacionHistorial" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionMedicamentos1" refDescripcion="VisualizacionMedicamentos" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="PersistenciaSecretaria1" refDescripcion="PersistenciaSecretaria" xsi:type="icaro:Instancia">
 				<icaro:listaPropiedades>
 					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
