@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -109,6 +110,31 @@ public class ConsultaBBDD {
 		return citas;
 	}
 	
+	public InfoVisita getHistorial(String usuario, Timestamp fecha) {
+		InfoVisita p = null;
+		
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM visita WHERE Paciente = '"+usuario+"' AND Fecha='"+fecha+"'");
+			
+			while (resultado.next()) {
+				p = new InfoVisita(resultado.getString("Paciente"),
+										resultado.getTimestamp("Fecha"),
+										resultado.getString("Motivo"),
+										resultado.getString("Descripcion"),
+										resultado.getString("Exploracion"),
+										resultado.getString("Diagnostico")
+				);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return p;
+	}
+	
 	public void setVisita(InfoVisita v) {
 		try {
 			crearQuery();
@@ -123,12 +149,12 @@ public class ConsultaBBDD {
 		}
 	}
 	
-	public ArrayList<InfoPrueba> getPruebas(String usuario) {
+	public ArrayList<InfoPrueba> getPruebas(String usuario, Timestamp fecha) {
 		ArrayList<InfoPrueba> pruebas = new ArrayList<InfoPrueba>();
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM documentos WHERE Paciente = '"+usuario+"'");
+			resultado = query.executeQuery("SELECT * FROM documentos WHERE Paciente = '"+usuario+"' AND FechaVisita='"+fecha+"'");
 			
 			while (resultado.next()) {
 				InfoPrueba p = new InfoPrueba(usuario,

@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -37,6 +38,7 @@ public class PanelLista extends Thread {
 	private ArrayList<CLabel[]> listaLabels = new ArrayList<CLabel[]>();
 	
 	private ArrayList<String[]> lista = new ArrayList<String[]>();
+	private ArrayList<InfoVisita> v = null;
 	
 	/**
 	 * comunicacion con el agente (control)
@@ -242,11 +244,21 @@ public class PanelLista extends Thread {
 	private void lFechaMouseDoubleClick(MouseEvent evt) {
 		CLabel e = (CLabel)evt.getSource();
 		
-		usoAgente.mostrarVentanaHistorial(lTitulo.getText().substring(13));
+		int i;
+		for (i=0; i<listaLabels.size(); i++) {
+			if (listaLabels.get(i)[0].getText().equals(e.getText()))
+				break;
+		}
+		
+		Date f = v.get(i%2).getFecha();
+		
+		usoAgente.mostrarVentanaHistorial(lTitulo.getText().substring(13), f);
 	}
 	
 	public void mostrarDatos(ArrayList<InfoVisita> v) {
 		String usuario = "";
+		
+		this.v = v;
 		
 		for (int i=0; i<v.size(); i++) {
 			InfoVisita temp = v.get(i);

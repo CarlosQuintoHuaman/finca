@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 
@@ -97,6 +98,39 @@ public class ConsultaBBDD {
 				);
 				
 				med.add(p);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return med;
+	}
+	
+	/**
+	 * Lee de la BD todos los medicamentos para un paciente en concreto
+	 * @param p
+	 * @return
+	 */
+	public ArrayList<InfoMedicamento> getMedicamentos(String p, Timestamp f) {
+		ArrayList<InfoMedicamento> med = new ArrayList<InfoMedicamento>();
+		
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM medicamentos M, TieneTratamientos T, Recetas R " +
+											"WHERE T.Nombre = R.Tratamiento AND R.CodigoMed = M.Codigo " +
+											"AND Paciente='"+p+"' AND  FechaVisita='"+f+"'");
+			
+			while (resultado.next()) {
+				InfoMedicamento m = new InfoMedicamento(resultado.getInt("Codigo"),
+										resultado.getString("Nombre"),
+										resultado.getString("PrincipioActivo"),
+										resultado.getString("Descripcion"),
+										resultado.getString("Indicaciones")
+				);
+				
+				med.add(m);
 			}
 				
 		} catch (Exception e) {

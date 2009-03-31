@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaHistorial.imp;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
@@ -74,12 +75,16 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 		return consulta.getHistorial(paciente);
 	}
 	
+	public InfoVisita getHistorial(String paciente, Timestamp fecha) {
+		return consulta.getHistorial(paciente, fecha);
+	}
+	
 	public void setVisita(InfoVisita v) {
 		consulta.setVisita(v);
 	}
 	
-	public ArrayList<InfoPrueba> getPruebas(String paciente) {
-		return consulta.getPruebas(paciente);
+	public ArrayList<InfoPrueba> getPruebas(String paciente, Timestamp fecha) {
+		return consulta.getPruebas(paciente, fecha);
 	}
 	
 	public void setPrueba(InfoPrueba p) {

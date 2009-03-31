@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.persistenciaHistorial;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
@@ -8,7 +9,8 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 public interface ItfUsoPersistenciaHistorial extends ItfUsoRecursoSimple {
 	public ArrayList<InfoVisita> getHistorial(String paciente);
-	public ArrayList<InfoPrueba> getPruebas(String paciente);
+	public InfoVisita getHistorial(String paciente, Timestamp fecha);
+	public ArrayList<InfoPrueba> getPruebas(String paciente, Timestamp fecha);
 	
 	public void setVisita(InfoVisita v);
 	public void setPrueba(InfoPrueba p);

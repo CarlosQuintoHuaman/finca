@@ -97,7 +97,7 @@ public class PanelHistorial extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelHistorial este;
+	//private PanelHistorial este;
 
 	/**
 	 * 
@@ -105,7 +105,7 @@ public class PanelHistorial extends Thread {
 	 */
 	public PanelHistorial(ClaseGeneradoraVisualizacionHistorial visualizador){
 		super("Historial");
-		este = this;
+		//este = this;
 		
 		usoAgente = new UsoAgenteHistorial(visualizador);
 	}
@@ -662,8 +662,7 @@ public class PanelHistorial extends Thread {
 		//shell.close();
 	}
 	
-	public void mostrarDatos(ArrayList<InfoVisita> historial) {
-		v = historial.get(0);
+	public void mostrarDatos(final InfoVisita v) {
 		
 		disp.asyncExec(new Runnable() {
             public void run() {

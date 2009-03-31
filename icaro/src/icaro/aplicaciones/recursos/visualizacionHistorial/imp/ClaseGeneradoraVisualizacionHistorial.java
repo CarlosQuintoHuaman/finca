@@ -93,7 +93,7 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
   		System.out.println("Reiniciando...");
 	}
   
-	public void mostrarDatosHistorial(ArrayList<InfoVisita> historial) {
+	public void mostrarDatosHistorial(InfoVisita historial) {
 		ventanaHistorialUsuario.mostrarDatos(historial);
 	}
 	

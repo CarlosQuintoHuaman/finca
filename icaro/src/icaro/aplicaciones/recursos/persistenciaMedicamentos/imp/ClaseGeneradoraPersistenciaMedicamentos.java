@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaMedicamentos.imp;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
@@ -56,6 +57,10 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 
 	public ArrayList<InfoMedicamento> getMedicamentos() {
 		return consulta.getMedicamentos();
+	}
+	
+	public ArrayList<InfoMedicamento> getMedicamentos(String p, Timestamp f) {
+		return consulta.getMedicamentos(p,f);
 	}
 	
 	public void borrarMedicamento(InfoMedicamento m) throws Exception {

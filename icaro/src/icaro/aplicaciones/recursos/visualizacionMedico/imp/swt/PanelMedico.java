@@ -381,6 +381,11 @@ public class PanelMedico extends Thread {
 						opcion3.setLayoutData(button1LData);
 						opcion3.setText("Opcion3");
 						opcion3.setSize(-1, 100);
+						opcion3.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								panelContenido.setSelection(1);
+							}
+						});
 					}
 					{
 						opcion4 = new Button(composite1, SWT.PUSH | SWT.CENTER);

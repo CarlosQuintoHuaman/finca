@@ -11,6 +11,8 @@ import icaro.infraestructura.patronAgenteCognitivo.ItfUsoAgenteCognitivo;
 import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgenteReactivo;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.ItfUsoRepositorioInterfaces;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
+
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,11 +116,13 @@ public class UsoAgenteHistorial {
     	visualizador.mostrarMensajeInformacion(titulo, mensaje);
     }
 
-    public void mostrarVentanaHistorial(String paciente) {
+    public void mostrarVentanaHistorial(String paciente, Date fecha) {
     	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
     	getInformacionAgente();
     	
     	try {
+    		
+    		Object datos[] = {paciente,fecha};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
@@ -126,7 +130,7 @@ public class UsoAgenteHistorial {
             
             ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
             
-            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", paciente, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", datos, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al mostrar el agente Historial");

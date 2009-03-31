@@ -1,6 +1,9 @@
 package icaro.aplicaciones.agentes.agenteAplicacionHistorialReactivo.comportamiento;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
@@ -27,7 +30,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
-	public void pintaVentanaHistorial(String paciente){
+	public void pintaVentanaHistorial(String paciente, Timestamp fecha){
 		
 		try {
 			//Se obtiene el visualizador
@@ -41,12 +44,12 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			persistencia = (ItfUsoPersistenciaHistorial) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaHistorial1");
 			
-			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente));
-			visualizacion.mostrarDatosPrueba(persistencia.getPruebas(paciente));
+			visualizacion.mostrarDatosHistorial(persistencia.getHistorial(paciente, fecha));
+			visualizacion.mostrarDatosPrueba(persistencia.getPruebas(paciente, fecha));
 			
 			persistenciaMed = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
-			visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos());
+			visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos(paciente, fecha));
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -97,12 +100,12 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	
 	public void guardarPrueba(InfoPrueba p) {
 		persistencia.setPrueba(p);
-		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente()));
+		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente(), p.getFecha()));
 	}
 	
 	public void borrarPrueba(InfoPrueba p) {
 		persistencia.borrarPrueba(p);
-		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente()));
+		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente(), p.getFecha()));
 	}
 	
 	// Los siguientes 3 metodos suelen estar siempre en todos los automatas
