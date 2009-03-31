@@ -31,9 +31,12 @@ import java.util.GregorianCalendar;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.Agenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
@@ -141,11 +144,15 @@ public class panelAgenda extends Thread {
 	private String fechaAgenda;
 	
 	private Menu opciones;
-	private boolean cumple=true;
+	private boolean cumple;
 
-	//medicos de esta secretaria
-	private ArrayList<String> Medicos;
-	private int medicos=0;
+
+	private DatosSecretaria datos;
+	private ArrayList<DatosMedico> medatos;
+	private int numM;
+	private CTabItem[] TabNomMed;
+	private Composite[] agendaDinamica;
+	private ArrayList<Agenda> Ag;
 	/**
 	 * 
 	 * @param visualizador
@@ -174,22 +181,28 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha, ArrayList<String> lm1 ,int numM){
-	//public void meteDatos(ArrayList<DatosCitaSinValidar> l1, String fecha){
-	// Al ser un Thread, SWT nos obliga a enviarle comandos
-		// rodeando el codigo de esta manera
-		l=l1;
+	
+	public void meteDatos(final ArrayList<DatosCitaSinValidar> l1, String fecha, final ArrayList<String> lm1 ,final int numM){
 		
-		Medicos=lm1;
-		medicos=numM;	
-		fechaAgenda=fecha;
 		disp.asyncExec(new Runnable() {
             public void run() {
-            	System.out.println("eeeeeeeeeeeeeeeeeeeeeeooooooooooooooo");
-            	shell.open();
-	       }
-         });
-
+            	
+            	datos.setNumM(numM);
+            	for(int i=0;i<lm1.size();i++){
+            		DatosMedico med=new DatosMedico(lm1.get(i),intervalo);
+            		datos.getMedicos().add(med);
+            		
+            	}
+            	for(int i=0;i<l1.size();i++){
+            		DatosCitaSinValidar dat=new DatosCitaSinValidar(l1.get(i).tomaNombre(), l1.get(i).tomaApell1(), 
+            								l1.get(i).tomaTelf(), l1.get(i).tomaHora(), l1.get(i).tomaPeriodo());
+            		l.add(dat);
+            	}
+            	
+            	generaTabla();
+            
+            }
+        });
 	}
 
 	public void ocultar(){
@@ -229,17 +242,13 @@ public class panelAgenda extends Thread {
 				SWTResourceManager.registerResourceUser(shell);
 			}
 			//VARIABLES
-			//numero de medicos de los que dispone esta secretaria
-		/*	 medicos =5;
-			String []NombresM= new String[medicos]; 
-			NombresM[0]="Dr. Valerón";
-			NombresM[1]="Dr. Julio";
-			NombresM[2]="Estética";
-			NombresM[3]="Laser";
-			NombresM[4]="Dr Martín";*/
-			medicos=1;
-			Medicos =new ArrayList<String>();
+
+			medatos=new ArrayList<DatosMedico>();
+			numM=0;
+			datos=new DatosSecretaria(medatos, numM);
+//			Medicos =new ArrayList<String>();
 			l=new ArrayList<DatosCitaSinValidar> ();
+			Ag= new ArrayList<Agenda>();
 			
 			shell.setLayout(new FillLayout());
 			shell.setText("Consulta de Hoy");
@@ -401,91 +410,10 @@ public class panelAgenda extends Thread {
 					huecoAgenda.setLayoutData(huecoAgendaLData);
 					huecoAgenda.setLayout(huecoAgendaLayout);
 					huecoAgenda.setDragDetect(false);
-					CTabItem[] TabNomMed= new CTabItem[5];
 					{
 						
 						Agenda = new CTabFolder(huecoAgenda, SWT.V_SCROLL);
-													
-							for(int i=0;i<5;i++){
-								TabNomMed[i] = new CTabItem(Agenda, SWT.NONE);
-								//TabNomMed[i].setText(Medicos.get(i));
-							}
-
-						
-						
-							int k=0;
-							while(k<medicos&& (TabNomMed[k].getText()!="Dr. Julio")){
-								k++;
-
-							
-							}
-							{
-								AgendaDinamica = new Composite(Agenda, SWT.V_SCROLL | SWT.BORDER);
-								GridLayout AgendaDinamicaLayout = new GridLayout();
-								AgendaDinamicaLayout.numColumns = 3;
-								AgendaDinamica.setLayout(AgendaDinamicaLayout);
-								
-								TabNomMed[k].setControl(AgendaDinamica);
-								{
-									Horas = new CLabel(AgendaDinamica, SWT.NONE);
-									GridData HorasLData = new GridData();
-									HorasLData.widthHint = 70;
-									HorasLData.heightHint = 28;
-									Horas.setLayoutData(HorasLData);
-									Horas.setText("HORAS");
-									Horas.setBackground(SWTResourceManager.getColor(220, 189, 224));
-									Horas.setForeground(SWTResourceManager.getColor(255, 255, 255));
-									Horas.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
-									Horas.setAlignment(SWT.CENTER);
-								}
-								{
-									Nombre = new CLabel(AgendaDinamica, SWT.NONE);
-									Nombre.setText("NOMBRE");
-									Nombre.setBackground(SWTResourceManager.getColor(220, 189, 224));
-									Nombre.setForeground(SWTResourceManager.getColor(255, 255, 255));
-									GridData NombreLData = new GridData();
-									NombreLData.widthHint = 484;
-									NombreLData.heightHint = 28;
-									NombreLData.horizontalAlignment = GridData.FILL;
-									NombreLData.grabExcessVerticalSpace = true;
-									NombreLData.grabExcessHorizontalSpace = true;
-									
-									Nombre.setLayoutData(NombreLData);
-									Nombre.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
-									Nombre.setAlignment(SWT.CENTER);
-								}
-								{
-									telefono = new CLabel(AgendaDinamica, SWT.NONE);
-									telefono.setText("TELEFONO");
-									telefono.setBackground(SWTResourceManager.getColor(220, 189, 224));
-									telefono.setForeground(SWTResourceManager.getColor(255, 255, 255));
-									telefono.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
-									GridData telefonoLData = new GridData();
-									telefonoLData.heightHint = 28;
-									telefonoLData.horizontalAlignment = GridData.FILL;
-									telefonoLData.grabExcessVerticalSpace = true;
-									telefonoLData.grabExcessHorizontalSpace = true;
-									telefono.setLayoutData(telefonoLData);
-									telefono.setAlignment(SWT.CENTER);
-								}
-								
-								//RELLENADO DE LA AGENDA DE JULIO
-								
-								iniMan.setMinutes(0);
-								iniMan.setHours(9);
-								
-								finMan.setHours(14);
-								finMan.setMinutes(0);
-								
-								finTar.setHours(21);
-								finTar.setMinutes(30);
-								
-								iniTar.setMinutes(30);
-								iniTar.setHours(16);
-								
-								RellenaTabla(iniMan, iniTar, finMan, finTar, man, init);							
-						
-						}
+					
 						GridData AgendaLData = new GridData();
 						AgendaLData.verticalAlignment = GridData.FILL;
 						AgendaLData.horizontalAlignment = GridData.FILL;
@@ -656,26 +584,6 @@ public class panelAgenda extends Thread {
 						
 
 					}
-
-					{
-						/*//RELLENADO DE LA TABLA DE EXTRAS
-						CLabel[] NombresE= new CLabel[n];
-						CLabel[] horasE= new CLabel[n];
-						for (int i=0;i<n;i++){
-							NombresE[i] = new CLabel(tablaExtras, SWT.NONE);
-							NombresE[i].setText("HERMINIA LOPEZ SANTANA");
-							NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
-							
-							horasE[i] = new CLabel(tablaExtras, SWT.NONE);
-							horasE[i].setText("18:30");
-							horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
-							
-						}*/
-						
-					}
-					
-					
-
 					{
 						AnadirL = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
 						GridData AnadirLLData = new GridData();
@@ -711,17 +619,123 @@ public class panelAgenda extends Thread {
 			e.printStackTrace();
 		}
 	}
-
-
-	// Aqui iran los metodos especificos de cada ventana
-	private void RellenaTabla(Time iniMan, Time iniTar, Time finMan, Time finTar, boolean man, boolean init){
-		if (man)
-			tablaAux(iniMan, finMan);
-		else
-			tablaAux(iniTar,finTar);
+	public void agendaMedico(int i){
+		TabNomMed[i].setControl(agendaDinamica[i]);
+		{
+			Horas = new CLabel(agendaDinamica[i], SWT.NONE);
+			GridData HorasLData = new GridData();
+			HorasLData.widthHint = 70;
+			HorasLData.heightHint = 28;
+			Horas.setLayoutData(HorasLData);
+			Horas.setText("HORAS");
+			Horas.setBackground(SWTResourceManager.getColor(220, 189, 224));
+			Horas.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			Horas.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
+			Horas.setAlignment(SWT.CENTER);
+		}
+		{
+			Nombre = new CLabel(agendaDinamica[i], SWT.NONE);
+			Nombre.setText("NOMBRE");
+			Nombre.setBackground(SWTResourceManager.getColor(220, 189, 224));
+			Nombre.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			GridData NombreLData = new GridData();
+			NombreLData.widthHint = 484;
+			NombreLData.heightHint = 28;
+			NombreLData.horizontalAlignment = GridData.FILL;
+			NombreLData.grabExcessVerticalSpace = true;
+			NombreLData.grabExcessHorizontalSpace = true;
+			
+			Nombre.setLayoutData(NombreLData);
+			Nombre.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
+			Nombre.setAlignment(SWT.CENTER);
+		}
+		{
+			telefono = new CLabel(agendaDinamica[i], SWT.NONE);
+			telefono.setText("TELEFONO");
+			telefono.setBackground(SWTResourceManager.getColor(220, 189, 224));
+			telefono.setForeground(SWTResourceManager.getColor(255, 255, 255));
+			telefono.setFont(SWTResourceManager.getFont("Palatino Linotype", 12, 1, false, false));
+			GridData telefonoLData = new GridData();
+			telefonoLData.heightHint = 28;
+			telefonoLData.horizontalAlignment = GridData.FILL;
+			telefonoLData.grabExcessVerticalSpace = true;
+			telefonoLData.grabExcessHorizontalSpace = true;
+			telefono.setLayoutData(telefonoLData);
+			telefono.setAlignment(SWT.CENTER);
+		}
+		
+		//RELLENADO DE LA AGENDA DE JULIO
+		
+		iniMan.setMinutes(0);
+		iniMan.setHours(9);
+		
+		finMan.setHours(14);
+		finMan.setMinutes(0);
+		
+		finTar.setHours(21);
+		finTar.setMinutes(30);
+		
+		iniTar.setMinutes(30);
+		iniTar.setHours(16);
+		
+			
+/*		CTabItem aux=Agenda.getSelection();
+		aux.getText();
+		if (m>-1)
+			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);*/
 	}
 	
-	private void tablaAux(Time inicio,Time fin){
+
+	public void generaTabla(){
+		TabNomMed= new CTabItem[datos.getNumM()];
+		agendaDinamica= new Composite[datos.getNumM()];
+		{
+			Agenda.dispose();
+			Agenda = new CTabFolder(huecoAgenda, SWT.V_SCROLL);
+										
+				for(int i=0;i<datos.getNumM();i++){
+					TabNomMed[i] = new CTabItem(Agenda, SWT.NONE);
+					TabNomMed[i].setText(datos.getMedicos().get(i).getNombre());
+					agendaDinamica[i] = new Composite(Agenda, SWT.V_SCROLL | SWT.BORDER);
+					GridLayout AgendaDinamicaLayout = new GridLayout();
+					AgendaDinamicaLayout.numColumns = 3;
+					agendaDinamica[i].setLayout(AgendaDinamicaLayout);
+					agendaMedico(i);
+				}
+
+			GridData AgendaLData = new GridData();
+			AgendaLData.verticalAlignment = GridData.FILL;
+			AgendaLData.horizontalAlignment = GridData.FILL;
+			AgendaLData.grabExcessVerticalSpace = true;
+			AgendaLData.grabExcessHorizontalSpace = true;
+			Agenda.setLayoutData(AgendaLData);
+			Agenda.setSelection(0);
+			
+			int m=Agenda.getSelectionIndex();
+			if (m>-1)
+				RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+			huecoAgenda.layout();
+			Agenda.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent evt) {
+					int m=Agenda.getSelectionIndex();
+					if (m>-1)
+						RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+					huecoAgenda.layout();
+					disp.update();
+				}
+			});
+	}
+	}
+
+	// Aqui iran los metodos especificos de cada ventana
+	private void RellenaTabla(Time iniMan, Time iniTar, Time finMan, Time finTar, boolean man, boolean init, int k){
+		if (man)
+			tablaAux(iniMan, finMan, k);
+		else
+			tablaAux(iniTar,finTar, k);
+	}
+	
+	private void tablaAux(Time inicio,Time fin, int k){
 		int minIni=inicio.getHours()*60+inicio.getMinutes();
 		int minFin=fin.getHours()*60+fin.getMinutes();
 		min=(minFin-minIni)/intervalo;
@@ -751,7 +765,7 @@ public class panelAgenda extends Thread {
 				
 				if (i==a-1&& j>fin.getMinutes())
 					break;
-				horas[c] = new Button(AgendaDinamica, SWT.PUSH | SWT.CENTER);
+				horas[c] = new Button(agendaDinamica[k], SWT.PUSH | SWT.CENTER);
 				aux1[c] = new GridData();
 				aux1[c].horizontalAlignment = GridData.FILL;
 				horas[c].setLayoutData(aux1[c]);
@@ -765,8 +779,8 @@ public class panelAgenda extends Thread {
 					horas[c].setText(aux+":"+String.valueOf(j));
 				
 				j=j+intervalo;
-				Nombres[c] = new CLabel(AgendaDinamica, SWT.NONE);
-				Telefonos[c] = new CLabel(AgendaDinamica, SWT.NONE);
+				Nombres[c] = new CLabel(agendaDinamica[k], SWT.NONE);
+				Telefonos[c] = new CLabel(agendaDinamica[k], SWT.NONE);
 				
 				opciones = new Menu(shell,SWT.POP_UP);
 				Nombres[c].setMenu(opciones);
@@ -859,19 +873,23 @@ public class panelAgenda extends Thread {
 			
 		}
 		this.init=false;
-		AgendaDinamica.layout();
+		agendaDinamica[k].layout();
 	}
 
 	
 	private void MananaWidgetSelected(SelectionEvent evt) {
 		man=true;
-		RellenaTabla(iniMan,iniTar,finMan,finTar,man, false);
+		int m=Agenda.getSelectionIndex();
+		if (m>-1)
+			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
 		disp.update();
 	}
 	
 	private void TardeWidgetSelected(SelectionEvent evt) {
 		man=false;
-		RellenaTabla(iniMan,iniTar,finMan,finTar,man, false);
+		int m=Agenda.getSelectionIndex();
+		if (m>-1)
+			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
 		disp.update();
 		
 		
@@ -1702,8 +1720,8 @@ public class panelAgenda extends Thread {
 	
 	public boolean estaLibre(final HorasCita hora){
 		
-		
-		disp.asyncExec(new Runnable() {
+		cumple=true;
+		disp.syncExec(new Runnable() {
             public void run() {
        
 		String h=hora.getHInicio();
@@ -1729,7 +1747,7 @@ public class panelAgenda extends Thread {
 			}
 			haux=h1+":"+min;
 		}
-		cumple=true;
+		
             }
             
         });

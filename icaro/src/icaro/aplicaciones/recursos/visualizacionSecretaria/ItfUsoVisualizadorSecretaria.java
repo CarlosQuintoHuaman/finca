@@ -21,7 +21,7 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 	public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo, ArrayList<DatosCitaSinValidar> l, String fecha, ArrayList<String> m, int num) throws Exception;
 
     public void cerrarVisualizadorSecretaria() throws Exception;
-    
+    public void meteDatos(ArrayList<DatosCitaSinValidar> l, String fecha, ArrayList<String> m, int num) throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo) throws Exception;
     public void mostrarVisualizadorLlamada(String nombreAgente,String tipo) throws Exception;

@@ -41,7 +41,9 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			ArrayList<String> l=new ArrayList<String>();
 			l=persistencia.getMedicos(secretaria);
 			int num=l.size();
-			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha,l,num);
+			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha,l,num);
+			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.meteDatos(persistencia.getCitas(fecha),fecha,l,num);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 
