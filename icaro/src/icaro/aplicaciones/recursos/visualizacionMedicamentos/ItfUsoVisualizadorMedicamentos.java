@@ -14,12 +14,12 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 public interface ItfUsoVisualizadorMedicamentos extends ItfUsoRecursoSimple{
 
-	public void mostrarVisualizadorBusqueda(String nombreAgente,String tipo) throws Exception;
+	public void mostrarVisualizadorBusqueda(String nombreAgente,String tipo, String paciente) throws Exception;
 	public void mostrarVisualizadorNuevo(String nombreAgente,String tipo) throws Exception;
 	
 	public void mostrarDatosMedicamentos(ArrayList<InfoMedicamento> m) throws Exception;
 
-    public void cerrarVisualizadorMedicamentos() throws Exception;
+    public void cerrarVisualizadorBusqueda() throws Exception;
     
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;
   	public void mostrarMensajeAviso(String titulo,String mensaje) throws Exception;

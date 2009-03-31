@@ -245,10 +245,9 @@ public class PanelLista extends Thread {
 		CLabel e = (CLabel)evt.getSource();
 		
 		int i;
-		for (i=0; i<listaLabels.size(); i++) {
-			if (listaLabels.get(i)[0].getText().equals(e.getText()))
+		for (i=0; i<listaLabels.size(); i++)
+			if (listaLabels.get(i)[0] == e)
 				break;
-		}
 		
 		Date f = v.get(i%2).getFecha();
 		

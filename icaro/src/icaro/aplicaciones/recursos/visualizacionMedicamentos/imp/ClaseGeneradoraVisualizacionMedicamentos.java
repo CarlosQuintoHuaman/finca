@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.visualizacionMedicamentos.imp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
+import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.PanelHistorial;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -82,12 +83,14 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 
 	//METODOS PROPIOS
 	
-	public void mostrarVisualizadorBusqueda(String nombreAgente, String tipo) {
+	public void mostrarVisualizadorBusqueda(String nombreAgente, String tipo, String paciente) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
+		ventanaBusquedaUsuario.setPaciente(paciente);
 		this.ventanaBusquedaUsuario.mostrar();
+		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Mostrando visualizador...",
   				InfoTraza.NivelTraza.debug));
@@ -106,18 +109,28 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 	
 	public void mostrarDatosMedicamentos(ArrayList<InfoMedicamento> m) {
 		this.ventanaBusquedaUsuario.mostrarDatos(m);
+		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Mostrando visualizador...",
   				InfoTraza.NivelTraza.debug));
 	}
  
-	public void cerrarVisualizadorMedicamentos() {
+	public void cerrarVisualizadorBusqueda() {
 		//this.ventanaAgendaUsuario.ocultar();
 		this.ventanaBusquedaUsuario.destruir();
+		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
-	}  
+		
+		reiniciaVisualizadorBusqueda();
+	}
+	
+	public void reiniciaVisualizadorBusqueda() {
+		ventanaBusquedaUsuario = new PanelBusqueda(this);
+  		ventanaBusquedaUsuario.start();
+  		System.out.println("Reiniciando...");
+	}
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/

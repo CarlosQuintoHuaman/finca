@@ -1,7 +1,10 @@
 package icaro.aplicaciones.agentes.agenteAplicacionMedicamentosReactivo.comportamiento;
 
 
+import java.sql.Timestamp;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
+import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.persistenciaMedicamentos.ItfUsoPersistenciaMedicamentos;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -19,6 +22,9 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	private ItfUsoPersistenciaMedicamentos persistencia;
 	private ItfUsoAgenteReactivo agenteMedicamentos;
 
+	// Variables especificas (no de icaro)
+	String paciente;
+	Timestamp fecha;
 	
 	// Ejemplo de accion semantica sencilla
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
@@ -26,15 +32,18 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	// de alguna accion definida en el automata
 
 
-	public void pintaVentanaBusqueda() {
+	public void pintaVentanaBusqueda(String paciente, Timestamp fecha) {
 		try {
+			this.paciente = paciente;
+			this.fecha = fecha;
+			
 			visualizacion = (ItfUsoVisualizadorMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionMedicamentos1");
 			
 			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
 			
-			visualizacion.mostrarVisualizadorBusqueda(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarVisualizadorBusqueda(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, paciente);
 			visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,10 +62,15 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
-	public void guardarMedicamento(String p, InfoMedicamento m) {
+	public void asignarMedicamento(String p, InfoMedicamento m) {
 		try {
-			persistencia.asignaMedicamento(p,m);
-			visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
+			ItfUsoVisualizadorHistorial vh = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			
+			persistencia.asignaMedicamento(p,m,fecha);
+			vh.mostrarDatosMed(persistencia.getMedicamentos(paciente, fecha));
+			//visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,14 +84,13 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//visualizacion.mostrarDatosMedicamentos(persistencia.getPruebas(p.getPaciente()));
 	}	
 	
 	// Los siguientes 3 metodos suelen estar siempre en todos los automatas
 	public void terminacion() {
 		try {
 			// Aqui se hacen las cosas, por ejemplo esto
-			visualizacion.cerrarVisualizadorMedicamentos();
+			//visualizacion.cerrarVisualizadorMedicamentos();
 			
 			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);

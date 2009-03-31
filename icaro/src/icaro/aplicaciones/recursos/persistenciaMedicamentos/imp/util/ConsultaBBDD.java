@@ -113,24 +113,31 @@ public class ConsultaBBDD {
 	 * @param p
 	 * @return
 	 */
-	public ArrayList<InfoMedicamento> getMedicamentos(String p, Timestamp f) {
+	public ArrayList<InfoMedicamento> getMedicamentos(String p, Timestamp fecha) {
 		ArrayList<InfoMedicamento> med = new ArrayList<InfoMedicamento>();
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM medicamentos M, TieneTratamientos T, Recetas R " +
-											"WHERE T.Nombre = R.Tratamiento AND R.CodigoMed = M.Codigo " +
-											"AND Paciente='"+p+"' AND  FechaVisita='"+f+"'");
+			resultado = query.executeQuery("SELECT * FROM Recetas WHERE Paciente='"+p+"' AND FechaVisita='"+fecha+"'");
 			
-			while (resultado.next()) {
-				InfoMedicamento m = new InfoMedicamento(resultado.getInt("Codigo"),
-										resultado.getString("Nombre"),
-										resultado.getString("PrincipioActivo"),
-										resultado.getString("Descripcion"),
-										resultado.getString("Indicaciones")
-				);
+			int r = 0;
+			if (resultado.next()) {
+				r = resultado.getInt("Codigo");
 				
-				med.add(m);
+				crearQuery();
+				resultado = query.executeQuery("SELECT * FROM MedPorReceta MR, Medicamentos M " +
+												"WHERE MR.CodigoRec = " + r + " AND M.Codigo = MR.CodigoMed");
+				
+				while (resultado.next()) {
+					InfoMedicamento m = new InfoMedicamento(resultado.getInt("CodigoMed"),
+											resultado.getString("Nombre"),
+											resultado.getString("PrincipioActivo"),
+											resultado.getString("Descripcion"),
+											resultado.getString("Indicaciones")
+					);
+					
+					med.add(m);
+				}
 			}
 				
 		} catch (Exception e) {
@@ -153,10 +160,31 @@ public class ConsultaBBDD {
 		}
 	}
 	
-	public void asignaMedicamento(String p, InfoMedicamento m) {
+	public void asignaMedicamento(String p, InfoMedicamento m, Timestamp fecha) {
 		try {
 			crearQuery();
-			query.executeUpdate("INSERT INTO recetas (Codigo) VALUES ('" + m.getCodigo() + "')");
+			resultado = query.executeQuery("SELECT * FROM Recetas WHERE Paciente='"+p+"' AND FechaVisita='"+fecha+"'");
+			
+			int r = 0;
+			if (resultado.next()) {
+				r = resultado.getInt("Codigo");
+			} else {
+				crearQuery();
+				query.executeUpdate("INSERT INTO Recetas (Paciente, FechaVisita, Notas) VALUES " +
+									"('"+p+"', '"+fecha+"', 'Receta para "+p+"')");
+				
+				resultado = query.getGeneratedKeys(); 
+				if (resultado.next())
+					r = resultado.getInt(1);
+			}
+			
+			if (r > 0) {
+				crearQuery();
+				query.executeUpdate("INSERT INTO MedPorReceta (CodigoRec,CodigoMed) VALUES ('" + r +
+					"', '"+m.getCodigo() +"')");
+			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

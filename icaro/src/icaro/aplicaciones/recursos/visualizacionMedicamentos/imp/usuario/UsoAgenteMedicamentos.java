@@ -50,7 +50,7 @@ public class UsoAgenteMedicamentos {
      * @param p Paciente
      * @param m Medicamento que se le receta
      */
-    public void guardarMed(String p, InfoMedicamento m) {
+    public void asignarMed(String p, InfoMedicamento m) {
     	getInformacionAgente();
     	
     	try {
@@ -62,9 +62,9 @@ public class UsoAgenteMedicamentos {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }
             
-            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
             
-            itfUsoMedicamentos.aceptaEvento(new EventoInput("guardarMedicamento", d, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("asignarMedicamento", d, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al guardar el Historial");
@@ -72,7 +72,9 @@ public class UsoAgenteMedicamentos {
         }
     }
     
-    
+    public void cerrarVentanaBusqueda() {
+    	visualizador.cerrarVisualizadorBusqueda();
+    }
     
     
     

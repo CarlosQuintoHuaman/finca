@@ -12,6 +12,7 @@ import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgen
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.ItfUsoRepositorioInterfaces;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -227,10 +228,12 @@ public class UsoAgenteHistorial {
         }
     }
     
-    public void mostrarVentanaBusquedaMed() {
+    public void mostrarVentanaBusquedaMed(String paciente, Timestamp fecha) {
     	getInformacionAgente();
     	
     	try {
+    		
+    		Object d[] = {paciente,fecha};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
@@ -238,7 +241,7 @@ public class UsoAgenteHistorial {
             
             ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
             
-            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaBusqueda", "AgenteAplicacionHistorial1", "VisualizacionMedicamentos1"));
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaBusqueda", d, "AgenteAplicacionHistorial1", "VisualizacionMedicamentos1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al guardar el Historial");

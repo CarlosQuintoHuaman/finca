@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -663,6 +664,7 @@ public class PanelHistorial extends Thread {
 	}
 	
 	public void mostrarDatos(final InfoVisita v) {
+		this.v = v;
 		
 		disp.asyncExec(new Runnable() {
             public void run() {
@@ -707,6 +709,6 @@ public class PanelHistorial extends Thread {
 	private void bMedNuevoWidgetSelected(SelectionEvent evt) {
 		System.out.println("bMedNuevo.widgetSelected, event="+evt);
 		//TODO add your code for bMedNuevo.widgetSelected
-		usoAgente.mostrarVentanaBusquedaMed();
+		usoAgente.mostrarVentanaBusquedaMed(v.getUsuario(), new Timestamp(v.getFecha().getTime()));
 	}
 }

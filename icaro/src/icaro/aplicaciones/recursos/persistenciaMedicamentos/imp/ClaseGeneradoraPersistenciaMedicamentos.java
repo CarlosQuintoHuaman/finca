@@ -73,8 +73,8 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 		
 	}
 	
-	public void asignaMedicamento(String p, InfoMedicamento m) throws Exception {
-		
+	public void asignaMedicamento(String p, InfoMedicamento m, Timestamp f) throws Exception {
+		consulta.asignaMedicamento(p, m,f);
 	}
 
 	@Override

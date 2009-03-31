@@ -45,6 +45,7 @@ public class PanelBusqueda extends Thread {
 	private PanelBusqueda este;
 	
 	private ArrayList<InfoMedicamento> medicamentos;
+	String paciente;
 
 	/**
 	 * 
@@ -190,7 +191,7 @@ public class PanelBusqueda extends Thread {
 			bAceptar.setText("Aceptar");
 			bAceptar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
-					bAceptarWidgetSelected(evt);
+					usoAgente.asignarMed(paciente, medicamentos.get(listaMed.getSelectionIndex()));
 				}
 			});
 		}
@@ -199,10 +200,10 @@ public class PanelBusqueda extends Thread {
 			GridData bCancelarLData = new GridData();
 			bCancelarLData.grabExcessHorizontalSpace = true;
 			bCancelar.setLayoutData(bCancelarLData);
-			bCancelar.setText("Cancelar");
+			bCancelar.setText("Cerrar");
 			bCancelar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
-					bCancelarWidgetSelected(evt);
+					usoAgente.cerrarVentanaBusqueda();
 				}
 			});
 		}
@@ -217,13 +218,9 @@ public class PanelBusqueda extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
-
-	private void bAceptarWidgetSelected(SelectionEvent evt) {
-		
-	}
 	
-	private void bCancelarWidgetSelected(SelectionEvent evt) {
-		
+	public void setPaciente(String paciente) {
+		this.paciente = paciente;
 	}
 	
 	public void mostrarDatos(final ArrayList<InfoMedicamento> m) {
