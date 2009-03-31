@@ -7,6 +7,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAcceso
 import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAccesoValidados;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
@@ -40,10 +41,12 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			String fecha=f.getStrDateSQL();
 			ArrayList<String> l=new ArrayList<String>();
 			l=persistencia.getMedicos(secretaria);
+			ArrayList<DatosMedico> lm1=persistencia.getCitas(fecha, l);
 			int num=l.size();
 			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha,l,num);
 			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
-			visualizacion.meteDatos(persistencia.getCitas(fecha),fecha,l,num);
+			//visualizacion.meteDatos(persistencia.getCitas(fecha),fecha,l,num);
+			visualizacion.meteDatos(fecha,lm1, num);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 

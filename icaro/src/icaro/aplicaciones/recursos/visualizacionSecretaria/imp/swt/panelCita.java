@@ -469,10 +469,10 @@ public class panelCita extends Thread {
 		String y=datos.tomaHora().substring(3);
 		int t=15;
 		int h2=0;
-		String aux2="0"+String.valueOf(h2)+":";
+		String aux2=String.valueOf(h2)+":";
 		String h= datos.tomaHora().substring(0,2);
 		int h1=Integer.valueOf(h);
-		String aux="0"+String.valueOf(h1)+":";
+		String aux=String.valueOf(h1)+":";
 		int x=Integer.valueOf(y);
 		while (c >0){
 			x= x+intervalo;

@@ -1,5 +1,6 @@
 package icaro.util;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,4 +75,9 @@ public class util {
 		 return (h < 10 ? "0" + hh : hh)+":"+(m < 10 ? "0" + mm : mm)+":"+(s < 10 ? "0" + ss : ss);
 		 
 		}
+	
+	public static String formatoHora(Timestamp h){
+		return String.valueOf(h).substring(11, 16);
+		 
+	}
 }

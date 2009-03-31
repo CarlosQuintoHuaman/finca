@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.persistenciaSecretaria.imp.util;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -114,14 +115,23 @@ public class ConsultaBBDD {
 		return pacientes;
 	}
 	
-	public ArrayList<DatosCitaSinValidar> getCitas(String fecha) {
-		ArrayList<DatosCitaSinValidar> citas = new ArrayList<DatosCitaSinValidar>();
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> lnombres) {
+		ArrayList<DatosMedico> medicos = new ArrayList<DatosMedico>();
 		
 		try {		
 			
 			Date f=util.StrToDateSQL(fecha);
-		
+			DatosMedico[]  datos=new DatosMedico[lnombres.size()];
 			String fecha2= util.getStrDateSQL(f);
+			
+			ArrayList[] arrayLists = new ArrayList[lnombres.size()];
+			ArrayList<DatosCitaSinValidar>[] citas = arrayLists;
+			
+			for(int i=0;i<lnombres.size();i++){
+				datos[i]=new DatosMedico(lnombres.get(i));
+				datos[i].setIntervalo(15);
+				citas[i]=new ArrayList<DatosCitaSinValidar>();
+			}
 			crearQuery();
 			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
 			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "'");
@@ -133,22 +143,28 @@ public class ConsultaBBDD {
 				for (int i=1;i<aux.length;i++){
 					apellido=apellido+aux[i]+" ";
 				}
-				DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412", resultado.getTimestamp("Fecha").toString(),1);
-				
-				citas.add(p);
+				String medico=resultado.getString("Medico");
+				 resultado.getTimestamp("Fecha").toString();
+
+				for(int i=0;i<lnombres.size();i++){
+					if (medico.equals(lnombres.get(i))){
+						
+						DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412",resultado.getTimestamp("Hora").toString(),1);
+						
+						citas[i].add(p);
+						datos[i].setDatos(citas[i]);
+					}
+				}
+			}
+			for(int i=0;i<lnombres.size();i++){
+				medicos.add(datos[i]);
 			}
 				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		citas = new ArrayList<DatosCitaSinValidar>();
-		DatosCitaSinValidar p = new DatosCitaSinValidar("pepo","apellido","918765412", "".toString(),1);
-		
-		citas.add(p);
-		citas.add(p);
-	
-		return citas;
+		return medicos;
 	}
 	
 	public ArrayList<String> getMedicos(String s) {

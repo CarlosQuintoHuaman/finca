@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
@@ -17,7 +18,7 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	
 	//public boolean compruebaNombreUsuario(String usuario) throws Exception;
 	//public void insertaUsuario (String usuario,String password) throws Exception;
-	public ArrayList<DatosCitaSinValidar> getCitas(String fecha);
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> l);
 	public ArrayList<String> getMedicos(String s);
 	
 }

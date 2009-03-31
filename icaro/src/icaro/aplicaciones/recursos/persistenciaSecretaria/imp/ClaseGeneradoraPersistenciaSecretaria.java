@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 //import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 
 import icaro.aplicaciones.recursos.persistenciaSecretaria.ItfUsoPersistenciaSecretaria;
@@ -76,8 +77,8 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 		return consulta.getPacientes();
 	}*/
 	
-	public ArrayList<DatosCitaSinValidar> getCitas(String fecha) {
-		return consulta.getCitas(fecha);
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> l) {
+		return consulta.getCitas(fecha, l);
 	}
 	public ArrayList<String> getMedicos(String s){
 		return consulta.getMedicos(s);

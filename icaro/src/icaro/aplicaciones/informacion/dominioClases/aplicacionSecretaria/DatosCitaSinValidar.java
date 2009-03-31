@@ -13,6 +13,7 @@ public class DatosCitaSinValidar implements Serializable {
 	private String nombre;
 	private String apell1;
 	private String telf;
+	private String fecha;
 	private String hora;
 	private int periodo;
 	
@@ -24,6 +25,17 @@ public class DatosCitaSinValidar implements Serializable {
 		this.hora= hora;
 		
 	}
+	
+	public DatosCitaSinValidar (String nombre, String apell1, String telf,String fecha, String hora) {
+		
+		this.nombre = nombre;
+		this.apell1 = apell1;
+		this.telf = telf;
+		this.fecha=fecha;
+		this.hora= hora;
+		
+	}
+	
 	
 public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora, int periodo) {
 		

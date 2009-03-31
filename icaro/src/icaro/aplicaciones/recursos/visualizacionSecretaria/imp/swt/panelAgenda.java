@@ -182,22 +182,30 @@ public class panelAgenda extends Thread {
 	}
 	
 	
-	public void meteDatos(final ArrayList<DatosCitaSinValidar> l1, String fecha, final ArrayList<String> lm1 ,final int numM){
-		
-		disp.asyncExec(new Runnable() {
+	//public void meteDatos(final ArrayList<DatosCitaSinValidar> l1, String fecha, final ArrayList<String> lm1 ,final int numM){
+	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM){
+		disp.syncExec(new Runnable() {
             public void run() {
             	
             	datos.setNumM(numM);
             	for(int i=0;i<lm1.size();i++){
-            		DatosMedico med=new DatosMedico(lm1.get(i),intervalo);
+            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos());
+ /*           		
+                	for(int j=0;j<l1.size();j++){
+                		DatosCitaSinValidar dat=new DatosCitaSinValidar(lm1.get(j).tomaNombre(), l1.get(j).tomaApell1(), 
+                								l1.get(j).tomaTelf(), l1.get(j).tomaHora(), l1.get(j).tomaPeriodo());
+                		l.add(dat);
+                	}*/
+                	//med.setDatos(l);
+            		
             		datos.getMedicos().add(med);
             		
             	}
-            	for(int i=0;i<l1.size();i++){
+/*            	for(int i=0;i<l1.size();i++){
             		DatosCitaSinValidar dat=new DatosCitaSinValidar(l1.get(i).tomaNombre(), l1.get(i).tomaApell1(), 
             								l1.get(i).tomaTelf(), l1.get(i).tomaHora(), l1.get(i).tomaPeriodo());
             		l.add(dat);
-            	}
+            	}*/
             	
             	generaTabla();
             
@@ -663,9 +671,6 @@ public class panelAgenda extends Thread {
 			telefono.setLayoutData(telefonoLData);
 			telefono.setAlignment(SWT.CENTER);
 		}
-		
-		//RELLENADO DE LA AGENDA DE JULIO
-		
 		iniMan.setMinutes(0);
 		iniMan.setHours(9);
 		
@@ -677,12 +682,6 @@ public class panelAgenda extends Thread {
 		
 		iniTar.setMinutes(30);
 		iniTar.setHours(16);
-		
-			
-/*		CTabItem aux=Agenda.getSelection();
-		aux.getText();
-		if (m>-1)
-			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);*/
 	}
 	
 
@@ -713,22 +712,57 @@ public class panelAgenda extends Thread {
 			
 			int m=Agenda.getSelectionIndex();
 			if (m>-1)
-				RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+				RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
 			huecoAgenda.layout();
 			Agenda.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					int m=Agenda.getSelectionIndex();
 					if (m>-1)
-						RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+						RellenaTabla(iniMan, iniTar, finMan, finTar, man, m);
 					huecoAgenda.layout();
 					disp.update();
 				}
 			});
 	}
 	}
+	
+	private void agendaPersistencia(String medico, int cc){
+/*		if (m<l.size()){
+			Nombres[c].setText(l.get(m).tomaNombre());
+			Telefonos[c].setText(l.get(m).tomaTelf());*/
+		int i=0;
+		boolean cu=false;
+		ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+		while(i<datos.getNumM() && !cu){
+			if (datos.getMedicos().get(i).getNombre().equals(medico)){
+				cu=true;
+				ll=datos.getMedicos().get(i).getDatos();
+				i--;
+			}
+			i++;	
+		}
+		
+		
+		for(i=0;i<ll.size();i++){
+			for(int j=0; j<cc; j++){
+			if (horas[j].getText().equals((ll.get(i).tomaHora().substring(11, 16)))){
+					Nombres[j].setText(ll.get(i).tomaNombre());
+					Telefonos[j].setText(ll.get(i).tomaTelf());
+				}
+			}
+		}
+		
+		/*			for(int j=0;j<c;j++){
+		if(l.get(i).tomaHora().equals(horas[j].getText())){
+			Nombres[j].setText(l.get(i).tomaNombre());
+			Telefonos[j].setText(l.get(i).tomaTelf());
+		}*/
+			
+		
+	}
 
 	// Aqui iran los metodos especificos de cada ventana
-	private void RellenaTabla(Time iniMan, Time iniTar, Time finMan, Time finTar, boolean man, boolean init, int k){
+	private void RellenaTabla(Time iniMan, Time iniTar, Time finMan, Time finTar, boolean man, int k){
 		if (man)
 			tablaAux(iniMan, finMan, k);
 		else
@@ -784,6 +818,15 @@ public class panelAgenda extends Thread {
 				
 				opciones = new Menu(shell,SWT.POP_UP);
 				Nombres[c].setMenu(opciones);
+				
+				Nombres[c].addMouseListener(new MouseAdapter() {
+					public void mouseDown(MouseEvent evt) {
+						
+						nombreMouseDown(evt);
+						
+						
+					}
+				});
 
 				MenuItem copiar = new MenuItem(opciones,SWT.PUSH);
 				copiar.setText("Copiar");
@@ -839,11 +882,11 @@ public class panelAgenda extends Thread {
 					Nombres[c].setText(l.get(m).tomaNombre());
 					Telefonos[c].setText(l.get(m).tomaTelf());
 					
-				}else{
+				}else{*/
 				
 				Nombres[c].setText("");
 				Telefonos[c].setText("");
-				}*/
+				//}
 				
 				Nombres[c].setBackground(SWTResourceManager.getColor(255, 255, 255));
 				Nombres[c].setAlignment(SWT.CENTER);
@@ -859,19 +902,14 @@ public class panelAgenda extends Thread {
 				aux3[c].horizontalAlignment = GridData.FILL;
 				aux3[c].grabExcessHorizontalSpace = true;
 				Telefonos[c].setLayoutData(aux3[c]);
-				Nombres[c].addMouseListener(new MouseAdapter() {
-					public void mouseDown(MouseEvent evt) {
-						
-						nombreMouseDown(evt);
-						
-						
-					}
-				});
+
 				c++;
 				m++;
 			}
 			
 		}
+		int cc=c;
+		agendaPersistencia(Agenda.getItem(k).getText(), cc);
 		this.init=false;
 		agendaDinamica[k].layout();
 	}
@@ -881,7 +919,7 @@ public class panelAgenda extends Thread {
 		man=true;
 		int m=Agenda.getSelectionIndex();
 		if (m>-1)
-			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+			RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
 		disp.update();
 	}
 	
@@ -889,7 +927,7 @@ public class panelAgenda extends Thread {
 		man=false;
 		int m=Agenda.getSelectionIndex();
 		if (m>-1)
-			RellenaTabla(iniMan, iniTar, finMan, finTar, man, init,m);
+			RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
 		disp.update();
 		
 		
@@ -952,7 +990,8 @@ public class panelAgenda extends Thread {
 	}
 	
 	private void DarCitaWidgetSelected(SelectionEvent evt){
-		DatosCitaSinValidar d= buscarSeleccionado(cNomSel.getText());
+		CLabel lsel=(CLabel)evt.getSource();
+		DatosCitaSinValidar d= buscarSeleccionado(lsel);
 		if (d.tomaNombre()=="")
 			usoAgente.mostrarVentanaCita();
 		else
@@ -989,10 +1028,11 @@ public class panelAgenda extends Thread {
 			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
-		if (cNomSel.getText()!=nombre){
+		//if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
+		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
-			DatosCitaSinValidar d= buscarSeleccionado(nombre);
+			DatosCitaSinValidar d= buscarSeleccionado(lsel);
 			cNomSel.setText(nombre);
 			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
 		}
@@ -1030,6 +1070,35 @@ public class panelAgenda extends Thread {
 		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre, apell1, Telf, Hora);
 		return d;
 		
+	}
+	
+	public DatosCitaSinValidar buscarSeleccionado(CLabel nombre){
+		int i=0;
+		int p=1;
+		boolean Es =false;
+		String apell1="";
+		String Telf="";
+		String Hora="";
+		String [] aux;
+		while (i<c & !Es){
+			if(Nombres[i]==nombre){
+				Telf=Telefonos[i].getText();
+				Hora=horas[i].getText();
+				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				aux=nombre.getText().split(" ");
+				while (p<aux.length){
+					if (p==1)
+						apell1=aux[p];
+					else
+						apell1=apell1+" "+aux[p];
+					p++;
+				}
+				Es=true;
+			}
+			i++;
+		}
+		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
+		return d;
 	}
 	
 	public DatosAgenda buscarSeleccionado2(String nombre){
@@ -1074,9 +1143,9 @@ public class panelAgenda extends Thread {
 	         while (j<datos.tomaPeriodo() && Nombres[i].getText()=="" && Telefonos[i].getText()==""){
 	        	 j++;
 	         }
-	         if(j==datos.tomaPeriodo()-1){
+	         if(j==datos.tomaPeriodo()){
 	         //Si acierto relleno la agenda con los datos y llamo a persistencia
-	        	 for(int k=i;k<i+datos.tomaPeriodo();k++){
+	        	 for(int k=i;k<=i+datos.tomaPeriodo()-1;k++){
 	        		 Nombres[i].setText(datos.tomaNombre());
 	        		 Telefonos[i].setText(datos.tomaTelf());
 	        	 }
