@@ -383,7 +383,8 @@ public class PanelMedico extends Thread {
 						opcion3.setSize(-1, 100);
 						opcion3.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								panelContenido.setSelection(1);
+								//panelContenido.setSelection(1);
+								usoAgente.abrirNuevoMedicamento();
 							}
 						});
 					}

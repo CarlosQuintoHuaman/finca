@@ -33,6 +33,7 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 	
 	//Ventana que gestiona este visualizador
 	private PanelBusqueda ventanaBusquedaUsuario;
+	private PanelNuevo ventanaNuevoUsuario;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
   	public ClaseGeneradoraVisualizacionMedicamentos(String id) throws Exception{
@@ -53,6 +54,9 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
   	private void inicializa() {
   		this.ventanaBusquedaUsuario = new PanelBusqueda(this);
   		ventanaBusquedaUsuario.start();
+  		
+  		ventanaNuevoUsuario = new PanelNuevo(this);
+  		ventanaNuevoUsuario.start();
   		/*
                  ventanaAgendaUsuario.setPosicion(850,100);
                  */
@@ -101,10 +105,27 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
-		this.ventanaBusquedaUsuario.mostrar();
+		this.ventanaNuevoUsuario.mostrar();
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Mostrando visualizador...",
   				InfoTraza.NivelTraza.debug));
+	}
+	
+	public void cerrarVisualizadorNuevo() {
+		//this.ventanaAgendaUsuario.ocultar();
+		this.ventanaBusquedaUsuario.destruir();
+		
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
+  				"Cerrando visualizador...",
+  				InfoTraza.NivelTraza.debug));
+		
+		reiniciaVisualizadorNuevo();
+	}
+	
+	public void reiniciaVisualizadorNuevo() {
+		ventanaNuevoUsuario = new PanelNuevo(this);
+  		ventanaNuevoUsuario.start();
+  		System.out.println("Reiniciando...");
 	}
 	
 	public void mostrarDatosMedicamentos(ArrayList<InfoMedicamento> m) {

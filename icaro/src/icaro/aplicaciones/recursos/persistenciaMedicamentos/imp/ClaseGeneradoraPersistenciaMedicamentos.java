@@ -69,8 +69,7 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 	}
 
 	public void insertaMedicamento(InfoMedicamento m) throws Exception {
-		// TODO Auto-generated method stub
-		
+		consulta.insertaMedicamento(m);
 	}
 	
 	public void asignaMedicamento(String p, InfoMedicamento m, Timestamp f) throws Exception {

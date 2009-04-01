@@ -1,12 +1,8 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSinValidar;
-import icaro.aplicaciones.recursos.visualizacionFicha.imp.*;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
-import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
-import icaro.infraestructura.patronAgenteCognitivo.ItfUsoAgenteCognitivo;
 import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgenteReactivo;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.ItfUsoRepositorioInterfaces;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
@@ -154,6 +150,25 @@ public class UsoAgenteMedico {
             System.out.println("Ha habido un error al activar el agente Visita desde el agente Medico");
             e.printStackTrace();
         }
-    }    
+    }
+    
+    public void abrirNuevoMedicamento() {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaNuevo", "VisualizacionMedico1", "AgenteAplicacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
 }
 

@@ -50,8 +50,11 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
-	public void pintaVentanaNuevo(String paciente) {
+	public void pintaVentanaNuevo() {
 		try {
+			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			
 			visualizacion = (ItfUsoVisualizadorMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionMedicamentos1");
 			
@@ -70,6 +73,16 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 			persistencia.asignaMedicamento(p,m,fecha);
 			vh.mostrarDatosMed(persistencia.getMedicamentos(paciente, fecha));
 			//visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void insertarMedicamento(InfoMedicamento m) {
+		try {
+			persistencia.insertaMedicamento(m);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

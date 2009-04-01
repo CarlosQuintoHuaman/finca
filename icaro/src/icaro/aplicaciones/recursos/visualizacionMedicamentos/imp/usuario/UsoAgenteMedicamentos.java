@@ -77,6 +77,27 @@ public class UsoAgenteMedicamentos {
     }
     
     
+    public void insertarMed(InfoMedicamento m) {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+    		// Agrupo los datos para enviarlos todos juntos en el evento
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("insertarMedicamento", m, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al guardar el Historial");
+            e.printStackTrace();
+        }
+    }
+    
     
     
     
