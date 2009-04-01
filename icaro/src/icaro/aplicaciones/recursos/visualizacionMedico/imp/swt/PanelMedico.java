@@ -34,6 +34,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.swt.PanelMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
@@ -50,7 +51,7 @@ public class PanelMedico extends Thread {
 	private Composite cBuscar;
 	private CTabItem cTabBuscar;
 	private Composite izquierda;
-	private CTabItem gestionConsulta;
+	private CTabItem cTabMed;
 	private CTabItem mensajeria;
 	private Button opcion1;
 	private Button opcion2;
@@ -74,6 +75,8 @@ public class PanelMedico extends Thread {
 	private MenuItem openFileMenuItem;
 	private Menu fileMenu;
 	private MenuItem fileMenuItem;
+	
+	private Composite cMedicamentos;
 
 	protected Date fecha;
 	private ArrayList<InfoPaciente> pacientes;
@@ -424,8 +427,18 @@ public class PanelMedico extends Thread {
 				mensajeria.setText("Mensajeria");
 			}
 			{
-				gestionConsulta = new CTabItem(panelContenido, SWT.CLOSE);
-				gestionConsulta.setText("Gestion de la consulta");
+				cTabMed = new CTabItem(panelContenido, SWT.CLOSE);
+				cTabMed.setText("Medicamentos");
+				{
+					//cMedicamentos = new Composite(panelContenido, SWT.NONE);
+					cMedicamentos = new PanelMedicamentos(null, panelContenido, SWT.NONE);
+					cTabMed.setControl(cMedicamentos);
+//					disp.syncExec(new Runnable() {
+//						public void run() {
+//							usoAgente.cargarTabMed((Composite)panelContenido, SWT.NONE);
+//						}
+//					});					
+				}
 			}
 			GridData cTabFolder1LData = new GridData();
 			cTabFolder1LData.verticalAlignment = GridData.FILL;
@@ -557,6 +570,16 @@ public class PanelMedico extends Thread {
 			listadoPacientes.add(horas + ":" + minutos + " " + t.getUsuario());
 		}
 			
+	}
+	
+	/**
+	 * Lee el contenido de la pestaña Medicamentos remotamente. El agente medicamentos
+	 * se ocupa de ella y aqui tan solo se muestra.
+	 * @param c Composite SWT con el contenido
+	 */
+	public void mostrarTabMed(Composite c) {
+		cMedicamentos = c;
+		cTabMed.setControl(cMedicamentos);
 	}
 
 }

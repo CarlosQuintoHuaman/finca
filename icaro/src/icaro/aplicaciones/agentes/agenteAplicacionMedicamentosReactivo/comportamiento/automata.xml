@@ -8,6 +8,7 @@
 		<transicion input="comenzar" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 	</estadoInicial>
 	<estado idIntermedio="esperaAccion">
+		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="mostrarVentanaBusqueda" accion="pintaVentanaBusqueda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="mostrarVentanaNuevo" accion="pintaVentanaNuevo" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="asignarMedicamento" accion="asignarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>

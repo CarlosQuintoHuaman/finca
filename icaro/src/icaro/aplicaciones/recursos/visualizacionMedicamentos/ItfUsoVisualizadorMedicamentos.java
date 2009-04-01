@@ -3,6 +3,8 @@ package icaro.aplicaciones.recursos.visualizacionMedicamentos;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Composite;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
@@ -13,7 +15,7 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
  */
 
 public interface ItfUsoVisualizadorMedicamentos extends ItfUsoRecursoSimple{
-
+	public void mostrarTabMed(String nombreAgente, String tipo, Composite c, int estilo);
 	public void mostrarVisualizadorBusqueda(String nombreAgente,String tipo, String paciente) throws Exception;
 	public void mostrarVisualizadorNuevo(String nombreAgente,String tipo) throws Exception;
 	

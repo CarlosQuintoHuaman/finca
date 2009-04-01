@@ -3,6 +3,10 @@ package icaro.aplicaciones.agentes.agenteAplicacionMedicamentosReactivo.comporta
 
 import java.sql.Timestamp;
 
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
@@ -32,6 +36,24 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	// de alguna accion definida en el automata
 
 
+	public void pintaTabMed(final CTabFolder c, final java.lang.Integer estilo) {
+		try {
+			visualizacion = (ItfUsoVisualizadorMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionMedicamentos1");
+			
+			System.out.println("AQUI ESTAMOS");
+			
+			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			
+			
+			visualizacion.mostrarTabMed("AgenteAplicacionMedicamentos1", NombresPredefinidos.TIPO_REACTIVO, c, estilo);
+			//visualizacion.mostrarDatosMedicamentos(persistencia.getMedicamentos());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void pintaVentanaBusqueda(String paciente, Timestamp fecha) {
 		try {
 			this.paciente = paciente;

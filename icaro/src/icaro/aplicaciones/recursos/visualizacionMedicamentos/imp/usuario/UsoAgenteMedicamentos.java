@@ -13,6 +13,8 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * 
  *@author     
@@ -45,6 +47,26 @@ public class UsoAgenteMedicamentos {
         return visualizador;
 
     }
+    
+    public void cargaFinalizada(Composite c) {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedico = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedico1");
+            
+            itfUsoMedico.aceptaEvento(new EventoInput("mostrarTabMed", c, "VisualizacionMedicamentos1", "AgenteAplicacionMedico1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al guardar el Historial");
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Asigna un medicamento a un determinado paciente
      * @param p Paciente
@@ -67,7 +89,7 @@ public class UsoAgenteMedicamentos {
             itfUsoMedicamentos.aceptaEvento(new EventoInput("asignarMedicamento", d, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
 
         } catch (Exception e) {
-            System.out.println("Ha habido un error al guardar el Historial");
+            System.out.println("Ha habido un error al asignar el medicamento");
             e.printStackTrace();
         }
     }
@@ -98,7 +120,9 @@ public class UsoAgenteMedicamentos {
         }
     }
     
-    
+    public void cerrarVentanaNuevo() {
+    	visualizador.cerrarVisualizadorNuevo();
+    }
     
     
     

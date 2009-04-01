@@ -13,6 +13,8 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
@@ -34,6 +36,7 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 	//Ventana que gestiona este visualizador
 	private PanelBusqueda ventanaBusquedaUsuario;
 	private PanelNuevo ventanaNuevoUsuario;
+	private PanelMedicamentos ventanaTabMed;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
   	public ClaseGeneradoraVisualizacionMedicamentos(String id) throws Exception{
@@ -57,6 +60,7 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
   		
   		ventanaNuevoUsuario = new PanelNuevo(this);
   		ventanaNuevoUsuario.start();
+  		
   		/*
                  ventanaAgendaUsuario.setPosicion(850,100);
                  */
@@ -86,6 +90,10 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 	}
 
 	//METODOS PROPIOS
+	
+	public void mostrarTabMed(String nombreAgente, String tipo, final Composite c, final int estilo) {
+				//ventanaTabMed = new PanelMedicamentos(this, c,estilo);
+	}
 	
 	public void mostrarVisualizadorBusqueda(String nombreAgente, String tipo, String paciente) {
 		this.nombreAgenteControlador = nombreAgente;

@@ -14,6 +14,7 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
@@ -116,7 +117,9 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		this.citas = citas;
 	}
 
-
+	public void mostrarTabMed(Composite c) throws Exception {
+		ventanaMedicoUsuario.mostrarTabMed(c);
+	}
 
 	// Metodos genericos
 	public String getNombreAgenteControlador() {

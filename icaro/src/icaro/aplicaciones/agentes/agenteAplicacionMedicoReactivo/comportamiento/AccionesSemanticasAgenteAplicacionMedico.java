@@ -1,9 +1,14 @@
 package icaro.aplicaciones.agentes.agenteAplicacionMedicoReactivo.comportamiento;
 
 
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.widgets.Composite;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoMedico;
+import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
+import icaro.aplicaciones.recursos.persistenciaMedicamentos.ItfUsoPersistenciaMedicamentos;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -63,7 +68,15 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
 		}
-	}	
+	}
+	
+	public void pintaTabMed(Composite c) {
+		try {
+			visualizacion.mostrarTabMed(c);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	// Ejemplo de otra accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch

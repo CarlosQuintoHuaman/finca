@@ -9,6 +9,8 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * 
  *@author     
@@ -167,6 +169,27 @@ public class UsoAgenteMedico {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    public void cargarTabMed(Composite c, int estilo) {
+    	//getInformacionAgente();
+    	
+    	try {
+    	
+    		Object d[] = {(Composite)c,estilo};
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarTabMed", d, "VisualizacionMedico1", "AgenteAplicacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Medicamentos desde el agente Medico");
             e.printStackTrace();
         }
     }

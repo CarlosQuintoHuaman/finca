@@ -1,6 +1,8 @@
 package icaro.aplicaciones.recursos.visualizacionMedico;
 
 
+import org.eclipse.swt.widgets.Composite;
+
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
@@ -12,6 +14,7 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 public interface ItfUsoVisualizadorMedico extends ItfUsoRecursoSimple{
 
 	public void mostrarVisualizadorMedico(String nombreAgente,String tipo) throws Exception;
+	public void mostrarTabMed(Composite c) throws Exception;
 
     public void cerrarVisualizadorMedico() throws Exception;
     
