@@ -132,12 +132,12 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 		ventanaListaUsuario.mostrarDatos(historial);
 	}
 	
-  	public void mostrarVisualizadorPrueba(String nombreAgente, String tipo, String paciente) {
+  	public void mostrarVisualizadorPrueba(String nombreAgente, String tipo, InfoVisita v) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
-		ventanaPruebaUsuario.setPaciente(paciente);
+		ventanaPruebaUsuario.setPaciente(v);
 		this.ventanaPruebaUsuario.mostrar();
 		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",

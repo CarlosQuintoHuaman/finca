@@ -44,7 +44,7 @@ public class PanelPrueba extends Thread {
 	
 	
 	// Otras variables
-	String paciente;
+	InfoVisita v;
 	
 	/**
 	 * comunicacion con el agente (control)
@@ -227,12 +227,12 @@ public class PanelPrueba extends Thread {
 
 	// Aqui iran los metodos especificos de cada ventana
 
-	public void setPaciente(String paciente) {
-		this.paciente = paciente;
+	public void setPaciente(InfoVisita v) {
+		this.v = v;
 	}
 	
 	private void bAceptarWidgetSelected(SelectionEvent evt) {        
-		InfoPrueba p = new InfoPrueba(paciente, tNombre.getText(), new Timestamp(new Date().getTime()), "prueba", tArchivo.getText(), tDescripcion.getText());
+		InfoPrueba p = new InfoPrueba(v.getUsuario(), tNombre.getText(), new Timestamp(v.getFecha().getTime()), "prueba", tArchivo.getText(), tDescripcion.getText());
 		usoAgente.guardarPrueba(p);
 		usoAgente.cerrarVentanaPrueba();
 	}

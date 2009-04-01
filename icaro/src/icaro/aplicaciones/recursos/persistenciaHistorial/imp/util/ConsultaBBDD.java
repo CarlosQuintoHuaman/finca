@@ -96,7 +96,8 @@ public class ConsultaBBDD {
 										resultado.getString("Motivo"),
 										resultado.getString("Descripcion"),
 										resultado.getString("Exploracion"),
-										resultado.getString("Diagnostico")
+										resultado.getString("Diagnostico"),
+										resultado.getString("Tratamiento")
 				);
 				
 				citas.add(p);
@@ -111,7 +112,7 @@ public class ConsultaBBDD {
 	}
 	
 	public InfoVisita getHistorial(String usuario, Timestamp fecha) {
-		InfoVisita p = null;
+		InfoVisita p = new InfoVisita(usuario,fecha,"","","","","");
 		
 		try {
 			crearQuery();
@@ -123,7 +124,8 @@ public class ConsultaBBDD {
 										resultado.getString("Motivo"),
 										resultado.getString("Descripcion"),
 										resultado.getString("Exploracion"),
-										resultado.getString("Diagnostico")
+										resultado.getString("Diagnostico"),
+										resultado.getString("Tratamiento")
 				);
 			}
 				
@@ -138,11 +140,23 @@ public class ConsultaBBDD {
 	public void setVisita(InfoVisita v) {
 		try {
 			crearQuery();
-			query.executeUpdate("UPDATE visita SET Motivo = '" + v.getMotivo() + 
+			resultado = query.executeQuery("SELECT * FROM Visita WHERE Paciente='"+ v.getUsuario() + 
+								"' AND Fecha='" + v.getFecha() + "'");
+			
+			if (resultado.next()) {
+				crearQuery();
+				query.executeUpdate("UPDATE visita SET Motivo = '" + v.getMotivo() + 
 								"' , Descripcion = '" + v.getDescripcion() +
 								"' , Exploracion = '" + v.getExploracion() +
 								"' , Diagnostico = '" + v.getDiagnostico() + 
-								"' WHERE Paciente = '" + v.getUsuario() + "'");
+								"' , Tratamiento = '" + v.getTratamiento() +
+								"' WHERE Paciente = '" + v.getUsuario() + "' AND Fecha='" + v.getFecha() + "'");
+			} else {
+				crearQuery();
+				query.executeUpdate("INSERT INTO Visita (Paciente, Fecha, Motivo, Descripcion, Exploracion, Diagnostico, Tratamiento) VALUES " +
+									"('" + v.getUsuario() + "', '" + v.getFecha() + "', '" + v.getMotivo() + "'," +
+											"'" + v.getDescripcion() + "','" + v.getExploracion() + "','" + v.getDiagnostico() + "', '" + v.getTratamiento() + "')");
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

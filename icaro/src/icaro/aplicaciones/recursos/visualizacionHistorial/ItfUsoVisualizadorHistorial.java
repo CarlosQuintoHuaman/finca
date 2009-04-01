@@ -24,7 +24,7 @@ public interface ItfUsoVisualizadorHistorial extends ItfUsoRecursoSimple{
     public void cerrarVisualizadorLista() throws Exception;
     public void mostrarDatosLista(ArrayList<InfoVisita> d) throws Exception;
     
-    public void mostrarVisualizadorPrueba(String nombreAgente,String tipo, String paciente) throws Exception;
+    public void mostrarVisualizadorPrueba(String nombreAgente,String tipo, InfoVisita v) throws Exception;
     public void cerrarVisualizadorPrueba() throws Exception;
 	public void mostrarDatosPrueba(ArrayList<InfoPrueba> p);
 	

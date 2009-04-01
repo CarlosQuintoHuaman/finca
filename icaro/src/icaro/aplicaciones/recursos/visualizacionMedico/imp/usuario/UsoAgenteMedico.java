@@ -1,11 +1,14 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgenteReactivo;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.ItfUsoRepositorioInterfaces;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
+
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -128,25 +131,25 @@ public class UsoAgenteMedico {
         }
     }
     
-    public void abrirVisita(String paciente) {
+    public void abrirVisita(InfoCita c) {
     	getInformacionAgente();
     	
     	try {
+            
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }
             
-            //ItfUsoAgenteReactivo itfUsoMedico = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            Timestamp t = new Timestamp(0);
             
-            //itfUsoFicha.aceptaEvento(new EventoInput("mostrarVentanaVisita", "VisualizacionMedico1", "AgenteAplicacionMedico1"));
+            t.setTime(c.getFecha().getTime() + c.getHora().getTime());
+            
+            Object d[] = {c.getUsuario(),t};
+            
+            ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", d, "VisualizacionMedico1", "AgenteAplicacionHistorial1"));
 
-/*            if (tipoAgenteMedico.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionMedico
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteMedico);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("darCita", "VisualizacionMedico1", nombreAgenteMedico));
-                }
-            }*/
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Visita desde el agente Medico");

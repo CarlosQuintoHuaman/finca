@@ -16,14 +16,16 @@ public class InfoVisita implements Serializable {
 	private String descripcion;
 	private String exploracion;
 	private String diagnostico;
+	private String tratamiento;
 
-	public InfoVisita (String p, Date f, String m, String d, String e, String diag) {
+	public InfoVisita (String p, Date f, String m, String d, String e, String diag, String t) {
 		setUsuario(p);
 		setFecha(f);
 		setMotivo(m);
 		setDescripcion(d);
 		setExploracion(e);
 		setDiagnostico(diag);
+		setTratamiento(t);
 	}
 
 	public void setUsuario(String usuario) {
@@ -72,6 +74,14 @@ public class InfoVisita implements Serializable {
 
 	public String getDiagnostico() {
 		return diagnostico;
+	}
+
+	public void setTratamiento(String tratamiento) {
+		this.tratamiento = tratamiento;
+	}
+
+	public String getTratamiento() {
+		return tratamiento;
 	}
 	
 	

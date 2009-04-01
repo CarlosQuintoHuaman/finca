@@ -82,12 +82,12 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 	}
 	
-	public void pintaVentanaPrueba(String paciente) {
+	public void pintaVentanaPrueba(InfoVisita v) {
 		try {
 			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
 			
-			visualizacion.mostrarVisualizadorPrueba(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, paciente);
+			visualizacion.mostrarVisualizadorPrueba(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, v);
 			//visualizacion.mostrarDatosLista(persistencia.getHistorial(paciente));
 		} catch (Exception e) {
 			e.printStackTrace();

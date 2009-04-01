@@ -8,6 +8,8 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -94,6 +96,8 @@ public class PanelHistorial extends Thread {
 	InfoVisita v = null;
 	ArrayList<InfoPrueba> pruebas = null;
 	ArrayList<InfoMedicamento> medicamentos = null;
+	
+	boolean cambios = false;
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -241,6 +245,11 @@ public class PanelHistorial extends Thread {
 								tMotivoLData.heightHint = 35;
 								tMotivo = new StyledText(gDatos, SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
 								tMotivo.setLayoutData(tMotivoLData);
+								tMotivo.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 							{
 								lEspacio = new CLabel(gDatos, SWT.NONE);
@@ -256,6 +265,11 @@ public class PanelHistorial extends Thread {
 								tDescripcionLData.heightHint = 51;
 								tDescripcion = new StyledText(gDatos, SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
 								tDescripcion.setLayoutData(tDescripcionLData);
+								tDescripcion.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 						}
 						{
@@ -283,6 +297,11 @@ public class PanelHistorial extends Thread {
 								tExploracionLData.grabExcessHorizontalSpace = true;
 								tExploracion = new StyledText(gPruebas, SWT.V_SCROLL | SWT.BORDER);
 								tExploracion.setLayoutData(tExploracionLData);
+								tExploracion.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 						}
 						{
@@ -309,6 +328,11 @@ public class PanelHistorial extends Thread {
 								tDiagnosticoLData.grabExcessHorizontalSpace = true;
 								tDiagnosticoLData.heightHint = 61;
 								tDiagnostico.setLayoutData(tDiagnosticoLData);
+								tDiagnostico.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 							{
 								lTratamiento = new CLabel(gDiagnostico, SWT.NONE);
@@ -323,6 +347,11 @@ public class PanelHistorial extends Thread {
 								tTratamientoLData.heightHint = 61;
 								tTratamiento.setLayoutData(tTratamientoLData);
 								tTratamiento.setSize(707, 61);
+								tTratamiento.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 						}
 					}
@@ -349,6 +378,11 @@ public class PanelHistorial extends Thread {
 							tExpDescLData.verticalAlignment = GridData.FILL;
 							tExpDesc = new StyledText(cExploracion, SWT.V_SCROLL | SWT.BORDER);
 							tExpDesc.setLayoutData(tExpDescLData);
+							tExpDesc.addModifyListener(new ModifyListener() {
+								public void modifyText(ModifyEvent arg0) {
+									cambios = true;
+								}
+							});
 						}
 						{
 							gExpFunciones = new Group(cExploracion, SWT.NONE);
@@ -469,6 +503,11 @@ public class PanelHistorial extends Thread {
 								tPruebasDescLData.grabExcessVerticalSpace = true;
 								tPruebasDesc = new StyledText(gPruebasDesc, SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
 								tPruebasDesc.setLayoutData(tPruebasDescLData);
+								tPruebasDesc.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 						}
 					}
@@ -552,6 +591,11 @@ public class PanelHistorial extends Thread {
 								tMedNotasLData.grabExcessVerticalSpace = true;
 								tMedNotasLData.verticalAlignment = GridData.FILL;
 								tMedNotas.setLayoutData(tMedNotasLData);
+								tMedNotas.addModifyListener(new ModifyListener() {
+									public void modifyText(ModifyEvent arg0) {
+										cambios = true;
+									}
+								});
 							}
 						}
 					}
@@ -589,6 +633,7 @@ public class PanelHistorial extends Thread {
 			
 		});
 		
+		cambios = false;
 		shell.layout();
 		
 		while (!shell.isDisposed()) {
@@ -604,8 +649,6 @@ public class PanelHistorial extends Thread {
 	 * Se comprueba que todos los campos esten rellandos con datos validos
 	 */
 	private void bGuardarWidgetSelected(SelectionEvent evt) {
-		System.out.println("bGuardar.widgetSelected, event="+evt);
-
 		boolean correcto = true;
 		String mensaje = "Faltan los siguientes campos por rellenar:\n\n";
 		
@@ -637,11 +680,16 @@ public class PanelHistorial extends Thread {
 		v.setMotivo(tMotivo.getText());
 		v.setDescripcion(tDescripcion.getText());
 		v.setExploracion(tExploracion.getText());
-		v.setDiagnostico(v.getDiagnostico());
+		v.setDiagnostico(tDiagnostico.getText());
+		v.setTratamiento(tTratamiento.getText());
 		
-		if (correcto)
+		if (correcto) {
 			//usoAgente.insertaDatos(tMotivo.getText(), tDescripcion.getText(), tExploracion.getText(), tDiagnostico.getText(), tTratamiento.getText());
 			usoAgente.guardarVisita(v);
+			usoAgente.mostrarMensajeInformacion("Visita procesada correctamente", "Visita");
+			usoAgente.cerrarVentanaHistorial();
+			cambios = false;
+		}
 		else
 			usoAgente.mostrarMensajeError(mensaje, "Faltan campos por rellenar");
 		
@@ -650,22 +698,23 @@ public class PanelHistorial extends Thread {
 	}
 	
 	private void bCerrarWidgetSelected(SelectionEvent evt) {
-		System.out.println("bCerrar.widgetSelected, event="+evt);
-		
-		usoAgente.cerrarVentanaHistorial();
+		if (cambios)
+			usoAgente.mostrarMensajeAviso("No ha guardado los cambios realizados.", "Atencion!");
+		else
+			usoAgente.cerrarVentanaHistorial();
 		//shell.close();
 	}
 	
 	private void bPruebaNuevaWidgetSelected(SelectionEvent evt) {
 		System.out.println("bCerrar.widgetSelected, event="+evt);
 		
-		usoAgente.mostrarVentanaPrueba(v.getUsuario());
+		usoAgente.mostrarVentanaPrueba(v);
 		//shell.close();
 	}
 	
 	public void mostrarDatos(final InfoVisita v) {
 		this.v = v;
-		
+			
 		disp.asyncExec(new Runnable() {
             public void run() {
             	tMotivo.setText(v.getMotivo());
@@ -674,8 +723,10 @@ public class PanelHistorial extends Thread {
             	tDiagnostico.setText(v.getDiagnostico());
             	
             	tExpDesc.setText(v.getExploracion());
+            	cambios = false;
 	       }
          });
+
 	}
 	
 	public void mostrarDatosPrueba(final ArrayList<InfoPrueba> p) {
@@ -688,8 +739,10 @@ public class PanelHistorial extends Thread {
 					listadoPruebas.add(p.get(i).getNombre());
 					tPruebasDesc.setText(p.get(i).getDescripcion());
 				}
+				cambios = false;
 			}
 		});
+		
 	}
 	
 	public void mostrarDatosMed(final ArrayList<InfoMedicamento> m) {
@@ -702,6 +755,7 @@ public class PanelHistorial extends Thread {
 					listaMedicamentos.add(m.get(i).getNombre());
 					tMedNotas.setText(m.get(i).getIndicaciones());
 				}
+				cambios = false;
 			}
 		});
 	}

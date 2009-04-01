@@ -147,7 +147,7 @@ public class UsoAgenteHistorial {
     	visualizador.cerrarVisualizadorLista();
     }
     
-    public void mostrarVentanaPrueba(String paciente) {
+    public void mostrarVentanaPrueba(InfoVisita v) {
     	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
     	getInformacionAgente();
     	
@@ -159,7 +159,7 @@ public class UsoAgenteHistorial {
             
             ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
             
-            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaPrueba", paciente, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaPrueba", v, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al mostrar el panel Prueba de Historial");

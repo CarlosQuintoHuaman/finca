@@ -355,10 +355,10 @@ public class PanelMedico extends Thread {
 						opcion1.setSize(180, 100);
 						opcion1.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								System.out.println("opcion1.widgetSelected, event="+evt);
+								opcion1WidgetSelected(evt);
 								
 								//Visita v = new Visita(shell, SWT.NONE);
-								usoAgente.abrirVisita(listadoPacientes.getSelection()[0]);
+								//usoAgente.abrirVisita(listadoPacientes.getSelection()[0]);
 							}
 						});
 					}
@@ -509,9 +509,31 @@ public class PanelMedico extends Thread {
 
 	// Aqui iran los metodos especificos de cada ventana
 	
+	private void opcion1WidgetSelected(SelectionEvent evt) {
+		if (listadoPacientes.getSelectionIndex() == -1) {
+			usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
+		} else {
+			String hora = listadoPacientes.getSelection()[0].substring(0,5) + ":00";
+			String dia = fecha.getYear() + 1900 + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+			
+			InfoCita c = null;
+			
+			for (int i=0; i<citas.size(); i++) {
+				c = citas.get(i);
+				
+				Date fecha = c.getFecha();
+				String d = fecha.getYear() + 1900 + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+				String h = c.getHora().toString();
+				
+				if (d.equals(dia) && h.equals(hora))
+					break;
+			}
+			
+			usoAgente.abrirVisita(c);
+		}
+	}
+	
 	private void opcion2WidgetSelected(SelectionEvent evt) {
-		System.out.println("opcion2.widgetSelected, event="+evt);
-		
 		if (listadoPacientes.getSelectionIndex() == -1) {
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
 		} else {
@@ -559,11 +581,11 @@ public class PanelMedico extends Thread {
 					|| t.getFecha().getMonth() != f.getMonth())
 				continue;
 			
-			String horas = String.valueOf(t.getFecha().getHours());
+			String horas = String.valueOf(t.getHora().getHours());
 			if (horas.length() == 1)
 				horas = "0"+horas;
 			
-			String minutos = String.valueOf(t.getFecha().getMinutes());
+			String minutos = String.valueOf(t.getHora().getMinutes());
 			if (minutos.length() == 1)
 				minutos = "0"+minutos;
 			

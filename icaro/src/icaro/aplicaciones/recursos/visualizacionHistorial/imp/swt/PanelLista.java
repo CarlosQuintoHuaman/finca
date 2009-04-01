@@ -193,7 +193,7 @@ public class PanelLista extends Thread {
 					GridData tLData = new GridData();
 					tLData.horizontalAlignment = GridData.FILL;
 					tLData.verticalAlignment = GridData.BEGINNING;
-					tLData.grabExcessVerticalSpace = true;
+					tLData.grabExcessVerticalSpace = false;
 					t.setLayoutData(tLData);
 					t.setBackground(SWTResourceManager.getColor(255, 255, 255));
 					
@@ -208,7 +208,10 @@ public class PanelLista extends Thread {
 					GridData t1LData = new GridData();
 					t1LData.horizontalAlignment = GridData.FILL;
 					t1LData.verticalAlignment = GridData.BEGINNING;
-					t1LData.grabExcessVerticalSpace = true;
+					
+					if (i == lista.size()-1)
+						t1LData.grabExcessVerticalSpace = true;
+					
 					t1.setLayoutData(t1LData);
 					t1.setBackground(SWTResourceManager.getColor(255, 255, 255));
 					
@@ -223,7 +226,7 @@ public class PanelLista extends Thread {
 					{
 						bCerrar = new Button(listado, SWT.PUSH | SWT.CENTER);
 						GridData bCerrarLData = new GridData();
-						bCerrarLData.verticalAlignment = GridData.FILL;
+						bCerrarLData.verticalAlignment = GridData.END;
 						bCerrarLData.horizontalSpan = 2;
 						bCerrarLData.horizontalAlignment = GridData.CENTER;
 						bCerrar.setLayoutData(bCerrarLData);
