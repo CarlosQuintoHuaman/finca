@@ -18,6 +18,15 @@ public class util {
 		 return "" +c.get(GregorianCalendar.YEAR)+"-"+(m < 10 ? "0" + mm : mm)+"-"+(d < 10 ? "0" + dd : dd)
 		 +" "+getStrTime();
 		}
+	
+	public static String getStrDateSQL2() {
+		GregorianCalendar c=new GregorianCalendar();
+		 int m = c.get(GregorianCalendar.MONTH) + 1;
+		 int d = c.get(GregorianCalendar.DATE);
+		 String mm = Integer.toString(m);
+		 String dd = Integer.toString(d);
+		 return ""+(d < 10 ? "0" + dd : dd)+"-"+(m < 10 ? "0" + mm : mm)+"-"+c.get(GregorianCalendar.YEAR);
+		}
 	public static String getStrDateSQL(Date c) {
 		
 		 int m = c.getMonth();

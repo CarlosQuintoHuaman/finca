@@ -46,7 +46,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			int num=l.size();
 			
 			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
-			visualizacion.meteDatos(fecha,lm1, num);
+			visualizacion.meteDatos(fecha,lm1, num, secretaria);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
 
@@ -56,6 +56,35 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
 														  "Ha habido un problema al abrir el visualizador de Secretaria en accion semantica 'pintaVentanaSecretaria()'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	
+	public void rellenaAgendaSecretaria(String fecha, String s){
+		
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			ArrayList<String> l=new ArrayList<String>();
+			l=persistencia.getMedicos(s);
+			ArrayList<DatosMedico> lm1=persistencia.getCitas(fecha, l);
+			int num=l.size();
+			visualizacion.meteDatos(fecha,lm1, num,s);
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al abrir el visualizador de Secretaria en accion semantica 'rellenaAgendaSecretaria'", 
 														  InfoTraza.NivelTraza.error));
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}

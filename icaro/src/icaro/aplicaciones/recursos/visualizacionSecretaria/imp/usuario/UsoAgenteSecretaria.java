@@ -382,6 +382,29 @@ public class UsoAgenteSecretaria {
         
     }
     
+    public void mostrarAgendaSecretaria(String fecha,String usuEste){
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+    	String[] datos={fecha,usuEste};
+        try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("agenda", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de la cita ");
+            e.printStackTrace();
+        }
+    }
+    
     public boolean estaLibre(HorasCita hora) {
         
  	   getInformacionAgente();

@@ -110,9 +110,9 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	}
 	
 
-	public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num){
+	public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num, String s){
 
-		this.ventanaAgendaUsuario.meteDatos(fecha, m, num);
+		this.ventanaAgendaUsuario.meteDatos(fecha, m, num, s);
 	}
 
 	public void cerrarVisualizadorSecretaria() {

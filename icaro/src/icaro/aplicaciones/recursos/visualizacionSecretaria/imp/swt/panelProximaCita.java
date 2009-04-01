@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Text;
 import com.cloudgarden.resource.SWTResourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -42,9 +44,13 @@ public class panelProximaCita extends Thread {
 	private Button bBuscar;
 	private Text tTelefono;
 	private Text tnombre;
-	private CLabel telefono;
-	private CLabel Nombre;
+	private CLabel medico;
+	private CLabel Fecha;
 	private CLabel Horas;
+	private CLabel[] horas;
+	private CLabel[] Fechas;
+	private CLabel[] Medicos;
+	private int c;
 	
 	
 	/**
@@ -86,13 +92,35 @@ public class panelProximaCita extends Thread {
          });
 	}
 	
-	public void meteDatos(ArrayList<DatosCita> l){
+	public void meteDatos(final ArrayList<DatosCita> l){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.syncExec(new Runnable() {
             public void run() {
          	   //general los labels correspondientes de hora, medico y dia para las citas
-	       }
+    			for (int i=0;i<c;i++){
+    				horas[i].dispose();
+    				Fechas[i].dispose();
+    				Medicos[i].dispose();
+    			}
+    			horas= new CLabel[l.size()];
+    			Fechas= new CLabel[l.size()];
+    			Medicos= new CLabel[l.size()];
+        		
+        		for (int i=0;i<l.size();i++){
+        			Fechas[i] = new CLabel(tabla, SWT.NONE);
+        			Fechas[i].setText(l.get(i).getFecha().substring(0, 10));
+        			Fechas[i].setAlignment(SWT.CENTER);
+        			horas[i] = new CLabel(tabla, SWT.NONE);
+        			horas[i].setText(l.get(i).getHora().substring(11, 16));
+        			horas[i].setAlignment(SWT.CENTER);
+        			Medicos[i]=new CLabel(tabla, SWT.NONE);
+        			Medicos[i].setText(l.get(i).getMedico());
+        			Medicos[i].setAlignment(SWT.CENTER);
+        		}
+        		tabla.layout();
+        		c=l.size();
+            }
          });
 	}
 
@@ -139,6 +167,7 @@ public class panelProximaCita extends Thread {
 			    }
 			});
 			{
+				c=0;
 				principal = new Composite(shell, SWT.NONE);
 				GridLayout principalLayout = new GridLayout();
 				principalLayout.numColumns = 2;
@@ -213,6 +242,12 @@ public class panelProximaCita extends Thread {
 					bCancelarLData.heightHint = 23;
 					bCancelar.setLayoutData(bCancelarLData);
 					bCancelar.setText("Cancelar");
+					bCancelar.addSelectionListener (new SelectionAdapter () {
+						public void widgetSelected (SelectionEvent evt) {
+							usoAgente.cerrarVentanaProximasCitas();
+							
+						}                               
+					});
 				}
 				{
 					tabla = new Composite(principal, SWT.BORDER);
@@ -233,17 +268,17 @@ public class panelProximaCita extends Thread {
 					tabla.setLayout(tablaLayout);
 				}
 				{
-					Nombre = new CLabel(tabla, SWT.NONE);
-					Nombre.setText("FECHA");
-					Nombre.setBackground(SWTResourceManager.getColor(220, 189, 224));
-					Nombre.setForeground(SWTResourceManager.getColor(255, 255, 255));
-					GridData NombreLData = new GridData();
-					NombreLData.widthHint = 84;
-					NombreLData.heightHint = 20;
-					NombreLData.grabExcessHorizontalSpace = true;
-					Nombre.setLayoutData(NombreLData);
-					Nombre.setFont(SWTResourceManager.getFont("Palatino Linotype", 8, 1, false, false));
-					Nombre.setAlignment(SWT.CENTER);
+					Fecha = new CLabel(tabla, SWT.NONE);
+					Fecha.setText("FECHA");
+					Fecha.setBackground(SWTResourceManager.getColor(220, 189, 224));
+					Fecha.setForeground(SWTResourceManager.getColor(255, 255, 255));
+					GridData FechaLData = new GridData();
+					FechaLData.widthHint = 84;
+					FechaLData.heightHint = 20;
+					FechaLData.grabExcessHorizontalSpace = true;
+					Fecha.setLayoutData(FechaLData);
+					Fecha.setFont(SWTResourceManager.getFont("Palatino Linotype", 8, 1, false, false));
+					Fecha.setAlignment(SWT.CENTER);
 				}
 				{
 					Horas = new CLabel(tabla, SWT.NONE);
@@ -258,16 +293,16 @@ public class panelProximaCita extends Thread {
 					Horas.setAlignment(SWT.CENTER);
 				}
 				{
-					telefono = new CLabel(tabla, SWT.NONE);
-					telefono.setText("MEDICO");
-					telefono.setBackground(SWTResourceManager.getColor(220, 189, 224));
-					telefono.setForeground(SWTResourceManager.getColor(255, 255, 255));
-					telefono.setFont(SWTResourceManager.getFont("Palatino Linotype", 8, 1, false, false));
-					GridData telefonoLData = new GridData();
-					telefonoLData.heightHint = 20;
-					telefonoLData.widthHint = 85;
-					telefono.setLayoutData(telefonoLData);
-					telefono.setAlignment(SWT.CENTER);
+					medico = new CLabel(tabla, SWT.NONE);
+					medico.setText("MEDICO");
+					medico.setBackground(SWTResourceManager.getColor(220, 189, 224));
+					medico.setForeground(SWTResourceManager.getColor(255, 255, 255));
+					medico.setFont(SWTResourceManager.getFont("Palatino Linotype", 8, 1, false, false));
+					GridData medicoLData = new GridData();
+					medicoLData.heightHint = 20;
+					medicoLData.widthHint = 85;
+					medico.setLayoutData(medicoLData);
+					medico.setAlignment(SWT.CENTER);
 				}
 			}
 			

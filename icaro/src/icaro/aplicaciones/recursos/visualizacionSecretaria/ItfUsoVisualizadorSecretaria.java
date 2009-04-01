@@ -23,7 +23,7 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 	//public void mostrarVisualizadorSecretaria(String nombreAgente,String tipo,String fecha, ArrayList<String> m, int num) throws Exception;
 
     public void cerrarVisualizadorSecretaria() throws Exception;
-    public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num) throws Exception;
+    public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num, String s) throws Exception;
     public void meteDatos(ArrayList<DatosCita> l)throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo) throws Exception;

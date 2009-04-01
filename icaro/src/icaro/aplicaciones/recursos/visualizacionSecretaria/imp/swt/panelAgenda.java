@@ -118,7 +118,7 @@ public class panelAgenda extends Thread {
 	private DatosAgenda copiado, pegado;
 	private ArrayList <DatosLlamada>extra=new ArrayList();
 	private ArrayList <DatosLlamada>llamada=new ArrayList();
-	protected Date fecha;
+	private Date fecha;
 	protected Date fechaAnt;
 	private int min;
 	//DatosLlamada
@@ -153,6 +153,8 @@ public class panelAgenda extends Thread {
 	private CTabItem[] TabNomMed;
 	private Composite[] agendaDinamica;
 	private ArrayList<Agenda> Ag;
+	private String usuEste;
+	private String fe;
 	/**
 	 * 
 	 * @param visualizador
@@ -181,7 +183,7 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM){
+	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM, final String s){
 		disp.syncExec(new Runnable() {
             public void run() {
             	
@@ -191,6 +193,7 @@ public class panelAgenda extends Thread {
             		datos.getMedicos().add(med);
             		
             	}
+            	usuEste=s;
             	generaTabla();
             
             }
@@ -243,7 +246,9 @@ public class panelAgenda extends Thread {
 			Ag= new ArrayList<Agenda>();
 			
 			shell.setLayout(new FillLayout());
-			shell.setText("Consulta de Hoy");
+			util f=new util();
+			fe=util.getStrDateSQL2();
+			shell.setText("Consulta de Hoy "+fe);
 			shell.setSize(800, 600);
 			{
 				principal = new Composite(shell, SWT.NONE);
@@ -1521,7 +1526,8 @@ public class panelAgenda extends Thread {
 		extra.clear();
 				
 		if(a.equals("AGENDA DE HOY")){
-		shell.setText("Consulta de Hoy");
+			
+			shell.setText("Agenda "+fe);
 		{
 
 		//inicializar tabla extras
@@ -1548,6 +1554,8 @@ public class panelAgenda extends Thread {
 					public void mouseDoubleClick(MouseEvent e) {
 						// TODO ¿Y esto por qué no va?
 								fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
+								fe=fecha.getDate()+"-"+fecha.getMonth()+"-"+(fecha.getYear()+1900);
+								shell.setText("Agenda "+fe);
 						//shell.dispose();
 					}
 					public void mouseUp(MouseEvent e) {};
@@ -1579,10 +1587,16 @@ public class panelAgenda extends Thread {
         calendario2.addMouseListener(new MouseListener () {
                 public void mouseDoubleClick(MouseEvent e) {
                         // TODO ¿Y esto por qué no va?
-                		int m=0;
+                		
                         fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(), calendario2.getDay());
+                		man=true;
+                		String a=fecha.toString();
+                		String f=fecha.getYear()+"-"+fecha.getMonth()+"-"+fecha.getDate()+" 00:00:00";
+                		fe=fecha.getDate()+"-"+fecha.getMonth()+"-"+(fecha.getYear()+1900);
+                		
+						shell.setText("Agenda "+fe);
+                		usoAgente.mostrarAgendaSecretaria(f,usuEste);
                         
-                        m++;
                         //shell.dispose();
                 }
                 public void mouseUp(MouseEvent e) {};
@@ -1604,7 +1618,10 @@ public class panelAgenda extends Thread {
 			tablaExtras.setLayoutData(tablaExtrasLData);
 			tablaExtras.setLayout(tablaExtrasLayout);
 			
-			shell.setText("Agenda");
+			util f=new util();
+			fe=util.getStrDateSQL2();
+			shell.setText("Consulta de Hoy  "+fe);
+			
 			anadirE = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
 			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);
 			AnadirL = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
