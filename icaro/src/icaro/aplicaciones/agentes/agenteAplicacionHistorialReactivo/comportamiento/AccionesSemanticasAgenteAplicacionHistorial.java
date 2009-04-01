@@ -6,6 +6,7 @@ import java.util.Date;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.visualizacionHistorial.ItfUsoVisualizadorHistorial;
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
 import icaro.aplicaciones.recursos.persistenciaMedicamentos.ItfUsoPersistenciaMedicamentos;
@@ -25,6 +26,8 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	private ItfUsoAgenteReactivo agenteHistorial;
 	private ItfUsoPersistenciaMedicamentos persistenciaMed;
 
+	String paciente;
+	Timestamp fecha;
 	
 	// Ejemplo de accion semantica sencilla
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
@@ -33,6 +36,9 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	public void pintaVentanaHistorial(String paciente, Timestamp fecha){
 		
 		try {
+			this.paciente = paciente;
+			this.fecha = fecha;
+			
 			//Se obtiene el visualizador
 			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
@@ -107,6 +113,11 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		persistencia.borrarPrueba(p);
 		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente(), p.getFecha()));
 	}
+	
+	public void borrarMedicamento(InfoMedicamento m) throws Exception {
+		persistencia.borrarMedicamento(m);
+		visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos(paciente, fecha));
+	}	
 	
 	// Los siguientes 3 metodos suelen estar siempre en todos los automatas
 	public void terminacion() {

@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,6 +46,7 @@ public class PanelPrueba extends Thread {
 	
 	// Otras variables
 	InfoVisita v;
+	Text archivo;
 	
 	/**
 	 * comunicacion con el agente (control)
@@ -171,6 +173,21 @@ public class PanelPrueba extends Thread {
 				bExaminarLData.horizontalAlignment = GridData.END;
 				bExaminar.setLayoutData(bExaminarLData);
 				bExaminar.setText("Examinar");
+				bExaminar.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
+				        FileDialog dialog = new FileDialog(shell, SWT.NULL);
+				        String path = dialog.open();
+				        if (path != null) {
+
+				          File file = new File(path);
+				          if (file.isFile())
+				            displayFiles(new String[] { file.toString()});
+				          else
+				            displayFiles(file.list());
+
+				        }
+					}
+				});
 			}
 			{
 				lDescripcion = new CLabel(cContenido, SWT.NONE);
@@ -226,6 +243,13 @@ public class PanelPrueba extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
+	
+	public void displayFiles(String[] files) {
+		for (int i = 0; files != null && i < files.length; i++) {
+			tArchivo.setText(files[i]);
+			tArchivo.setEditable(true);
+		}
+	}
 
 	public void setPaciente(InfoVisita v) {
 		this.v = v;

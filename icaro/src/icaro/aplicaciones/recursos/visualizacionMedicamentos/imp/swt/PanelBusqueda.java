@@ -47,6 +47,7 @@ public class PanelBusqueda extends Thread {
 	private PanelBusqueda este;
 	
 	private ArrayList<InfoMedicamento> medicamentos;
+	private ArrayList<InfoMedicamento> filtro;
 	String paciente;
 
 	/**
@@ -193,7 +194,7 @@ public class PanelBusqueda extends Thread {
 			bAceptar.setText("Aceptar");
 			bAceptar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
-					usoAgente.asignarMed(paciente, medicamentos.get(listaMed.getSelectionIndex()));
+					usoAgente.asignarMed(paciente, filtro.get(listaMed.getSelectionIndex()));
 				}
 			});
 		}
@@ -212,7 +213,7 @@ public class PanelBusqueda extends Thread {
 		
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent arg0) {
-				usoAgente.cerrarVentanaNuevo();
+				usoAgente.cerrarVentanaBusqueda();
 			}
 			
 		});
@@ -234,6 +235,7 @@ public class PanelBusqueda extends Thread {
 	
 	public void mostrarDatos(final ArrayList<InfoMedicamento> m) {
 		medicamentos = m;
+		filtro = m;
 
 		disp.asyncExec(new Runnable() {
 			public void run() {
@@ -247,6 +249,7 @@ public class PanelBusqueda extends Thread {
 	
 	public void actualizarLista() {
 		listaMed.removeAll();
+		filtro = new ArrayList<InfoMedicamento>();
 		
 		for (int i=0; i<medicamentos.size(); i++) {
 			InfoMedicamento m = medicamentos.get(i);
@@ -256,8 +259,10 @@ public class PanelBusqueda extends Thread {
 			
 			String filtroNombre = tNombre.getText().toLowerCase();
 			String filtroPA = tPActivo.getText().toLowerCase();
-			if (nombre.contains(filtroNombre) && pa.contains(filtroPA))
+			if (nombre.contains(filtroNombre) && pa.contains(filtroPA)) {
 				listaMed.add(m.getNombre() + " (Principio Activo: " + m.getPa() +")");
+				filtro.add(medicamentos.get(i));
+			}
 		}
 	}
 }

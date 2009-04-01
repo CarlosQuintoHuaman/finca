@@ -63,9 +63,8 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 		return consulta.getMedicamentos(p,f);
 	}
 	
-	public void borrarMedicamento(InfoMedicamento m) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) throws Exception {
+		consulta.borrarMedicamento(p, t, m);
 	}
 
 	public void insertaMedicamento(InfoMedicamento m) throws Exception {

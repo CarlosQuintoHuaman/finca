@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 public interface ItfUsoPersistenciaHistorial extends ItfUsoRecursoSimple {
@@ -16,4 +17,5 @@ public interface ItfUsoPersistenciaHistorial extends ItfUsoRecursoSimple {
 	public void setPrueba(InfoPrueba p);
 	
 	public void borrarPrueba(InfoPrueba p);
+	public void borrarMedicamento(InfoMedicamento p) throws Exception;
 }

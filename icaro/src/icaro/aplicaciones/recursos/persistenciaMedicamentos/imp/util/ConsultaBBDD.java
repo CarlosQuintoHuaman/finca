@@ -190,10 +190,14 @@ public class ConsultaBBDD {
 		}
 	}
 	
-	public void borrarMedicamento(InfoMedicamento p) {
+	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) {
 		try {
 			crearQuery();
-			//query.executeUpdate("DELETE FROM documentos WHERE Paciente='"+p.getPaciente()+"' AND Nombre='"+p.getNombre()+"' AND FechaVisita='"+p.getFecha()+"'");
+			resultado = query.executeQuery("SELECT Codigo FROM Recetas WHERE Paciente='" + p + "' AND FechaVisita='" + t + "'");
+			
+			if (resultado.next())
+				crearQuery();
+				query.executeUpdate("DELETE FROM MedPorReceta WHERE CodigoRec='"+resultado.getString("Codigo")+"' AND CodigoMed='"+m.getCodigo()+"'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

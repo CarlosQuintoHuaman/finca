@@ -112,9 +112,18 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
-	public void borrarMedicamento(InfoMedicamento m) {
+	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) {
 		try {
-			persistencia.borrarMedicamento(m);
+			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			
+			persistencia.borrarMedicamento(p, t, m);
+			
+			ItfUsoVisualizadorHistorial vh = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
+			
+			vh.mostrarDatosMed(persistencia.getMedicamentos(paciente, fecha));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

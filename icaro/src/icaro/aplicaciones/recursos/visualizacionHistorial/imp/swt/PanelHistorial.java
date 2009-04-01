@@ -567,7 +567,7 @@ public class PanelHistorial extends Thread {
 								bMedBorrar.setSize(124, 25);
 								bMedBorrar.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
-										usoAgente.borrarMed(medicamentos.get(listaMedicamentos.getSelectionIndex()));
+										usoAgente.borrarMed(v, medicamentos.get(listaMedicamentos.getSelectionIndex()));
 									}
 								});
 							}

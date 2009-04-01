@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.persistenciaHistorial.imp.util;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.persistenciaHistorial.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -208,6 +209,15 @@ public class ConsultaBBDD {
 		try {
 			crearQuery();
 			query.executeUpdate("DELETE FROM documentos WHERE Paciente='"+p.getPaciente()+"' AND Nombre='"+p.getNombre()+"' AND FechaVisita='"+p.getFecha()+"'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void borrarMedicamento(InfoMedicamento m) {
+		try {
+			crearQuery();
+			query.executeUpdate("DELETE FROM MedPorReceta WHERE CodigoRec='"+m.getCodigo()+"' AND CodigoMed='"+m.getNombre()+"'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -15,7 +15,6 @@ public class InfoMedicamento implements Serializable {
 	private String pa;
 	private String descripcion;
 	private String indicaciones;
-		
 	
 	public InfoMedicamento (int cod, String nombre, String pa, String desc, String ind) {
 		setCodigo(cod);

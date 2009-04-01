@@ -14,6 +14,7 @@
 		<transicion input="guardarVisita" accion="guardarVisita" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="guardarPrueba" accion="guardarPrueba" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="borrarPrueba" accion="borrarPrueba" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="borrarMedicamento" accion="borrarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

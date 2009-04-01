@@ -249,18 +249,19 @@ public class UsoAgenteHistorial {
         }
     }
     
-    public void borrarMed(InfoMedicamento m) {
+    public void borrarMed(InfoVisita v, InfoMedicamento m) {
     	getInformacionAgente();
     	
     	try {
+    		Object d[] = {v.getUsuario(), v.getFecha(), m};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }
             
-            ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
             
-            itfUsoHistorial.aceptaEvento(new EventoInput("borrarMedicamento", m, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("borrarMedicamento", d, "VisualizacionHistorial1", "AgenteAplicacionMedicamentos1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al guardar el Historial");

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
 import icaro.aplicaciones.recursos.persistenciaHistorial.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.persistenciaHistorial.imp.util.ConsultaBBDD;
@@ -93,6 +94,10 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 	
 	public void borrarPrueba(InfoPrueba p) {
 		consulta.borrarPrueba(p);
+	}
+	
+	public void borrarMedicamento(InfoMedicamento m) {
+		consulta.borrarMedicamento(m);
 	}
 
 	@Override
