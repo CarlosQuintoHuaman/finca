@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria.imp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
@@ -40,6 +41,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	private panelCita ventanaCitaAgenda;
 	private panelLlamada ventanaLlamada;
 	private panelExtra ventanaExtra;
+	private panelProximaCita ventanaPCita;
 	
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
@@ -67,7 +69,10 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   		ventanaLlamada.start();
   		this.ventanaExtra = new panelExtra(this);
   		ventanaExtra.start();
-
+  		this.ventanaPCita = new panelProximaCita(this);
+  		ventanaPCita.start();
+  		
+  		
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionAgenda",
   				"Inicializando recurso",
   				InfoTraza.NivelTraza.debug));
@@ -104,9 +109,9 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   				InfoTraza.NivelTraza.debug));
 	}
 	
-	//public void meteDatos(ArrayList<DatosCitaSinValidar> l, String fecha, ArrayList<DatosMedico> m, int num){
+
 	public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num){
-		//this.ventanaAgendaUsuario.meteDatos(l,fecha, m, num);
+
 		this.ventanaAgendaUsuario.meteDatos(fecha, m, num);
 	}
 
@@ -117,6 +122,10 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
 	}  
+	
+	public void meteDatos(ArrayList<DatosCita> l){
+		this.ventanaPCita.meteDatos(l);
+	}
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
@@ -195,6 +204,17 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		
 	}
 	
+	public void mostrarVisualizadorPCitas(String nombreAgente, String tipo){
+		this.nombreAgenteControlador = nombreAgente;
+		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+
+		this.ventanaPCita.mostrar();
+		//this.ventanaAgendaUsuario.mostrarCita();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+		"Mostrando visualizador...",
+		InfoTraza.NivelTraza.debug));
+	}
 	public void mostrarVisualizadorCita(String nombreAgente, String tipo){
 		
 			this.nombreAgenteControlador = nombreAgente;
@@ -290,6 +310,21 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     	ventanaLlamada = new panelLlamada(this);
     	ventanaLlamada.start();
     }
+    
+    public void cerrarVisualizadorProximasCita(){
+    	this.ventanaPCita.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionLlamada",
+                "Cerrando visualizador...",
+                InfoTraza.NivelTraza.debug));
+     
+      reiniciaVisualizadorPCitas();
+    }
+    
+    public void reiniciaVisualizadorPCitas() {
+    	ventanaPCita = new panelProximaCita(this);
+    	ventanaPCita.start();
+    }
+    
     
 	public void cerrarVisualizadorExtra() throws Exception {
 		this.ventanaExtra.destruir();

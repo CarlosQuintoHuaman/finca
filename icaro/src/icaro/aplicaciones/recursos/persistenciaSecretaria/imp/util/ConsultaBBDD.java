@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.persistenciaSecretaria.imp.util;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
@@ -187,6 +188,29 @@ public class ConsultaBBDD {
 
 	
 		return medicos;
+	}
+	
+	public ArrayList<DatosCita> getPaciente(String n ,String t, String fecha) {
+		ArrayList<DatosCita> p = new ArrayList<DatosCita>();
+		
+		try {	
+			
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Paciente = '" + n + "'");
+			//resultado = query.executeQuery("SELECT * FROM tieneagenda WHERE Secretaria = '" + s + "'");
+			while (resultado.next()) {
+				String m=resultado.getString("Medico");	
+				String f=resultado.getTimestamp("Fecha").toString();
+				String h=resultado.getTimestamp("Hora").toString();
+				DatosCita c=new DatosCita(n,t,m,f,h);
+				p.add(c);
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return p;
 	}
 	/**
 	 * EJEMPLO de como usar la BD

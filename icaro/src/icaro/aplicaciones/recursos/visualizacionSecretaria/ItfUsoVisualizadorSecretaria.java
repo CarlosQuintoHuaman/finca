@@ -4,6 +4,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
@@ -23,12 +24,14 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 
     public void cerrarVisualizadorSecretaria() throws Exception;
     public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num) throws Exception;
+    public void meteDatos(ArrayList<DatosCita> l)throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
     public void mostrarVisualizadorCita(String nombreAgente,String tipo) throws Exception;
     public void mostrarVisualizadorLlamada(String nombreAgente,String tipo) throws Exception;
     public void mostrarVisualizadorLlamada(String nombreAgente,String tipo, DatosLlamada datos) throws Exception;
     public void mostrarVisualizadorExtra(String nombreAgente,String tipo) throws Exception;
     public void mostrarVisualizadorExtra(String nombreAgente,String tipo, DatosLlamada datos) throws Exception;
+    public void mostrarVisualizadorPCitas(String nombreAgente, String tipo) throws Exception;
     public void comprobarInfoCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
     public void insertaLlamada(String nombreAgente,String tipo, DatosLlamada datos)throws Exception;
     public void modificaLlamada(String nombreAgente,String tipo, DatosLlamada datAnt, DatosLlamada datPost)throws Exception;
@@ -41,6 +44,7 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
     public void cerrarVisualizadorCita() throws Exception;
     public void cerrarVisualizadorLlamada() throws Exception;
     public void cerrarVisualizadorExtra() throws Exception;
+    public void cerrarVisualizadorProximasCita() throws Exception;
   	
     public boolean estaLibre(HorasCita hora)throws Exception;
     

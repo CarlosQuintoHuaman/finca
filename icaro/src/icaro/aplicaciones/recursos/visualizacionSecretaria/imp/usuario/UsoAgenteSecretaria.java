@@ -116,6 +116,29 @@ public class UsoAgenteSecretaria {
         }
     }
     
+    public void mostrarVentanaProximasCitas(){
+    	getInformacionAgente();
+    	//DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido, Telf, hora);
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("consultarPCitas", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al consultarPCitas ");
+            e.printStackTrace();
+        }
+    }
+    
     public void mostrarVentanaCita(){
     	getInformacionAgente();
     	
@@ -304,6 +327,30 @@ public class UsoAgenteSecretaria {
         }
     }
     
+    public void cerrarVentanaProximasCitas(){
+    	getInformacionAgente();
+    	
+    	try {
+    		visualizador.cerrarVisualizadorProximasCita();
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cancelarPCitas", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+            
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar evento cancelarExtra al agente secretaria");
+            e.printStackTrace();
+        }
+    }
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
@@ -355,6 +402,31 @@ public class UsoAgenteSecretaria {
          }
          
      }
+    
+    public void BuscarCitas(String nombre,String telf){
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+    	String[] datos={nombre,telf};
+    	try {
+       	 
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("buscarPaciente", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de buscarPaciente ");
+            e.printStackTrace();
+        }
+       
+    }
     
     public void anadeLlamada(DatosLlamada datos) {
         

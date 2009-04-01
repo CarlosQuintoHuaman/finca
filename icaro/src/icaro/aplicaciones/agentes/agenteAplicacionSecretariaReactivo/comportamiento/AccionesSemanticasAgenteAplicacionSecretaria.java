@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAccesoSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionAcceso.DatosAccesoValidados;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
@@ -34,7 +35,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
-			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
 			util f=new util(); 
@@ -43,9 +44,8 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			l=persistencia.getMedicos(secretaria);
 			ArrayList<DatosMedico> lm1=persistencia.getCitas(fecha, l);
 			int num=l.size();
-			//visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,persistencia.getCitas(fecha),fecha,l,num);
+			
 			visualizacion.mostrarVisualizadorSecretaria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
-			//visualizacion.meteDatos(persistencia.getCitas(fecha),fecha,l,num);
 			visualizacion.meteDatos(fecha,lm1, num);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
@@ -56,6 +56,32 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
 														  "Ha habido un problema al abrir el visualizador de Secretaria en accion semantica 'pintaVentanaSecretaria()'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	
+	public void buscaPaciente(String nom, String telf){
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			ArrayList<DatosCita> l=new ArrayList<DatosCita>();
+			util f=new util(); 
+			String fecha=f.getStrDateSQL();
+			l=persistencia.getPaciente(nom,telf, fecha);
+			visualizacion.meteDatos(l); 
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al buscarPaciente'", 
 														  InfoTraza.NivelTraza.error));
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
@@ -167,6 +193,27 @@ public void pintaVentanaExtra(){
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}
+
+public void pintaVentanaPCitas(){
+	
+	try {
+		visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+		(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+		visualizacion.mostrarVisualizadorPCitas(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+		
+		trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador extra",InfoTraza.NivelTraza.debug));
+	}
+
+	catch (Exception ex) {
+		try {
+		ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+				NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+				trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+													  "Ha habido un problema al abrir el visualizador de extra en accion semantica 'pintaVentanaExtra()'", 
+													  InfoTraza.NivelTraza.error));
+		}catch(Exception e){e.printStackTrace();}
+	}
+}
 	
 	public void pintaVentanaExtra(DatosLlamada datos){
 		

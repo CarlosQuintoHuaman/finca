@@ -13,7 +13,8 @@
 	<estado idIntermedio="esperaAccion">
 		<transicion input="darCita" accion="pintaVentanaCita" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/><transicion input="anadirLlamada" accion="pintaVentanaLlamada" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion></estado>
+		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="consultarPCitas" accion="pintaVentanaPCitas" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="esperaResultadoLlamada">
 		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
@@ -35,8 +36,9 @@
 	<estado idIntermedio="tratamientoErrores">
 		<transicion input="errorRecuperable" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
 		<transicion input="errorCritico" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
-	</estado>
+	</estado><estado idIntermedio="consultaPCitas">
+	<transicion input="cancelarPCitas" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="buscarPaciente" accion="buscaPaciente" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion></estado>
 	<estadoFinal idFinal="terminado"/>
 	<transicionUniversal input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
-	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/>
-	</tablaEstados>
+	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/></tablaEstados>

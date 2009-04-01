@@ -181,32 +181,16 @@ public class panelAgenda extends Thread {
          });
 	}
 	
-	
-	//public void meteDatos(final ArrayList<DatosCitaSinValidar> l1, String fecha, final ArrayList<String> lm1 ,final int numM){
 	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM){
 		disp.syncExec(new Runnable() {
             public void run() {
             	
             	datos.setNumM(numM);
             	for(int i=0;i<lm1.size();i++){
-            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos());
- /*           		
-                	for(int j=0;j<l1.size();j++){
-                		DatosCitaSinValidar dat=new DatosCitaSinValidar(lm1.get(j).tomaNombre(), l1.get(j).tomaApell1(), 
-                								l1.get(j).tomaTelf(), l1.get(j).tomaHora(), l1.get(j).tomaPeriodo());
-                		l.add(dat);
-                	}*/
-                	//med.setDatos(l);
-            		
+            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos());            		
             		datos.getMedicos().add(med);
             		
             	}
-/*            	for(int i=0;i<l1.size();i++){
-            		DatosCitaSinValidar dat=new DatosCitaSinValidar(l1.get(i).tomaNombre(), l1.get(i).tomaApell1(), 
-            								l1.get(i).tomaTelf(), l1.get(i).tomaHora(), l1.get(i).tomaPeriodo());
-            		l.add(dat);
-            	}*/
-            	
             	generaTabla();
             
             }
@@ -294,6 +278,12 @@ public class panelAgenda extends Thread {
 						ConsultarCitasLData.horizontalAlignment = GridData.FILL;
 						ConsultarCitas.setLayoutData(ConsultarCitasLData);
 						ConsultarCitas.setText("Consultar Citas");
+						ConsultarCitas.addSelectionListener (new SelectionAdapter () {
+							public void widgetSelected (SelectionEvent evt) {
+								usoAgente.mostrarVentanaProximasCitas();
+								
+							}                               
+						});
 
 					}
 					{
