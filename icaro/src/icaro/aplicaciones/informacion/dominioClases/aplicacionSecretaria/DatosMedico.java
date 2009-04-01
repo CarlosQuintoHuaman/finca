@@ -6,11 +6,27 @@ public class DatosMedico {
 private String nombre;
 private int intervalo;
 private ArrayList <DatosCitaSinValidar> datos;
+private ArrayList<DatosLlamada> extras;
+private ArrayList<DatosLlamada> llamadas;
 
+public ArrayList<DatosLlamada> getExtras() {
+	return extras;
+}
+public void setExtras(ArrayList<DatosLlamada> extras) {
+	this.extras = extras;
+}
+public ArrayList<DatosLlamada> getLlamadas() {
+	return llamadas;
+}
+public void setLlamadas(ArrayList<DatosLlamada> llamadas) {
+	this.llamadas = llamadas;
+}
 public DatosMedico(String nombre, int intervalo) {
 	this.nombre = nombre;
 	this.intervalo = intervalo;
 	this.datos = new ArrayList<DatosCitaSinValidar>();
+	this.extras = new ArrayList<DatosLlamada>();
+	this.llamadas = new ArrayList<DatosLlamada>();
 }
 public DatosMedico(String nombre){
 	this.datos=new ArrayList<DatosCitaSinValidar>();

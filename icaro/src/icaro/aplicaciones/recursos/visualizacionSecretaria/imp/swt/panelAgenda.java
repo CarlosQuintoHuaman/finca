@@ -186,7 +186,7 @@ public class panelAgenda extends Thread {
 	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM, final String s){
 		disp.syncExec(new Runnable() {
             public void run() {
-            	
+            	datos.getMedicos().clear();
             	datos.setNumM(numM);
             	for(int i=0;i<lm1.size();i++){
             		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos());            		
@@ -389,9 +389,10 @@ public class panelAgenda extends Thread {
 					{
 						agenda = new Button(Menu1, SWT.PUSH | SWT.CENTER);
 						GridData button1LData = new GridData();
-						button1LData.widthHint = 68;
-						button1LData.heightHint = 57;
-						button1LData.horizontalAlignment = GridData.CENTER;
+						button1LData.horizontalAlignment = GridData.FILL;
+//						button1LData.widthHint = 68;
+//						button1LData.heightHint = 57;
+						//button1LData.horizontalAlignment = GridData.CENTER;
 						agenda.setLayoutData(button1LData);
 						agenda.setText("AGENDA");
 						agenda.addSelectionListener(new SelectionAdapter() {
@@ -745,15 +746,7 @@ public class panelAgenda extends Thread {
 					Telefonos[j].setText(ll.get(i).tomaTelf());
 				}
 			}
-		}
-		
-		/*			for(int j=0;j<c;j++){
-		if(l.get(i).tomaHora().equals(horas[j].getText())){
-			Nombres[j].setText(l.get(i).tomaNombre());
-			Telefonos[j].setText(l.get(i).tomaTelf());
-		}*/
-			
-		
+		}		
 	}
 
 	// Aqui iran los metodos especificos de cada ventana
@@ -871,14 +864,7 @@ public class panelAgenda extends Thread {
 						
 						
 					}
-				});
-				// RELLENAR LA AGENDA
-/*				if (m<l.size()){
-					Nombres[c].setText(l.get(m).tomaNombre());
-					Telefonos[c].setText(l.get(m).tomaTelf());
-					
-				}else{*/
-				
+				});				
 				Nombres[c].setText("");
 				Telefonos[c].setText("");
 				//}
@@ -1502,11 +1488,13 @@ public class panelAgenda extends Thread {
 	}
 	private void agendaWidgetSelected(SelectionEvent evt){
 		if (agenda.getText().equals("AGENDA")){
-			agenda.setText("AGENDA DE HOY");
-			agenda.setSize(100, 57);
-		}else{
+			agenda.setText("AGENDA HOY");
+			GridData button1LData = new GridData();
+			button1LData.horizontalAlignment = GridData.FILL;
+			agenda.setLayoutData(button1LData);
+			//agenda.setSize(100, 57);
 			agenda.setText("AGENDA");
-			agenda.setSize(68, 57);
+			//agenda.setSize(68, 57);
 	}
 			inicializa(agenda.getText());
 	}
@@ -1525,7 +1513,7 @@ public class panelAgenda extends Thread {
 		llamada.clear();
 		extra.clear();
 				
-		if(a.equals("AGENDA DE HOY")){
+		if(a.equals("AGENDA HOY")){
 			
 			shell.setText("Agenda "+fe);
 		{
@@ -1545,6 +1533,7 @@ public class panelAgenda extends Thread {
 			tablaExtras.setLayout(tablaExtrasLayout);
 			
 				final DateTime calendario = new DateTime(tablaExtras, SWT.CALENDAR);
+				
 				GridData calendarioLData = new GridData();
 				calendarioLData.verticalAlignment = GridData.BEGINNING;
 				calendarioLData.horizontalSpan = 2;
@@ -1553,9 +1542,12 @@ public class panelAgenda extends Thread {
 				calendario.addMouseListener(new MouseListener () {
 					public void mouseDoubleClick(MouseEvent e) {
 						// TODO ¿Y esto por qué no va?
+								man=true;
 								fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
-								fe=fecha.getDate()+"-"+fecha.getMonth()+"-"+(fecha.getYear()+1900);
+								fe=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
 								shell.setText("Agenda "+fe);
+								String f=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
+								usoAgente.mostrarAgendaSecretaria(f,usuEste);
 						//shell.dispose();
 					}
 					public void mouseUp(MouseEvent e) {};
@@ -1583,16 +1575,15 @@ public class panelAgenda extends Thread {
         //Introducimos los valores y eventos de Fecha Inicio
         final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
         calendario2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
-        
+        calendario2.setMonth(4);
         calendario2.addMouseListener(new MouseListener () {
                 public void mouseDoubleClick(MouseEvent e) {
                         // TODO ¿Y esto por qué no va?
                 		
                         fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(), calendario2.getDay());
                 		man=true;
-                		String a=fecha.toString();
-                		String f=fecha.getYear()+"-"+fecha.getMonth()+"-"+fecha.getDate()+" 00:00:00";
-                		fe=fecha.getDate()+"-"+fecha.getMonth()+"-"+(fecha.getYear()+1900);
+                		String f=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
+                		fe=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
                 		
 						shell.setText("Agenda "+fe);
                 		usoAgente.mostrarAgendaSecretaria(f,usuEste);
