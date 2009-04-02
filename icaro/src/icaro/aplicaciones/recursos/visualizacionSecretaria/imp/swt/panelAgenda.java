@@ -158,6 +158,7 @@ public class panelAgenda extends Thread {
 	private String fd;
 	private String fy;
 	private String fant;
+	private CLabel seleccion;
 	/**
 	 * 
 	 * @param visualizador
@@ -253,7 +254,7 @@ public class panelAgenda extends Thread {
 			fd=util.getStrDateSQL2();
 			fy=util.getStrDateSQL();
 			fant=fy;
-			
+			seleccion=cNomSel;
 			shell.setText("Consulta de Hoy "+fd);
 			shell.setSize(800, 600);
 			{
@@ -358,7 +359,7 @@ public class panelAgenda extends Thread {
 						DarCita.setText("Dar Cita");
 						DarCita.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent e) {
-								DarCitaWidgetSelected(e);
+								DarCitaWidgetSelectedB(e);
 								
 							}                               
 						});
@@ -921,11 +922,12 @@ public class panelAgenda extends Thread {
 	}
 	private void CopiarWidgetSelected(SelectionEvent evt){
 		
-		if (cNomSel.getText()=="")
+		//if (cNomSel.getText()=="")
+		if(seleccion.getText().equals(""))
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
 		else
 			cNomSel.setBackground(SWTResourceManager.getColor(249, 120, 106));
-			copiado=buscarSeleccionado2(cNomSel.getText());
+			copiado=buscarSeleccionadoA(seleccion);
 			copiado.setCrear(true);
 	}
 	
@@ -935,19 +937,19 @@ public class panelAgenda extends Thread {
 			usoAgente.mostrarMensajeError("No hay ningun paciente copiado", "Atención");
 		else{
 			cNomSel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-			pegado=buscarSeleccionado2(cNomSel.getText());
-			String nombre=copiado.tomaNombre();
+			pegado=buscarSeleccionadoA(seleccion);
+			String nombre=pegado.tomaNombre();
 			copiado.setCrear(false);
 			int i=0;
 			boolean Es =false;
-/*			while (i<c & !Es){
-				if(Nombres[i].getText()==nombre){
-					Telefonos[i].setText(pegado.tomatelf());
-					Nombres[i].setText(pegado.tomaNombre());
+			while (i<c & !Es){
+				if(Nombres[i]==seleccion){
+					Telefonos[i].setText(copiado.tomatelf());
+					Nombres[i].setText(copiado.tomaNombre());
 					Es=true;
 				}
 				i++;
-			}*/
+			}
 			
 			
 		}
@@ -955,7 +957,7 @@ public class panelAgenda extends Thread {
 	}
 	
 	private void BorrarWidgetSelected(SelectionEvent e){
-		if (cNomSel.getText()=="")
+		if (seleccion.getText()=="")
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
 		else{
 			//mostrar mensaje confirmacion de borrado
@@ -963,7 +965,7 @@ public class panelAgenda extends Thread {
 			int i=0;
 			boolean Es =false;
 			while (i<c & !Es){
-				if(Nombres[i].getText()==cNomSel.getText()){
+				if(Nombres[i]==seleccion){
 					Telefonos[i].setText("");
 					Nombres[i].setText("");
 					Es=true;
@@ -998,7 +1000,7 @@ public class panelAgenda extends Thread {
 	}
 	
 	private void CrearFichaWidgetSelected(SelectionEvent evt){
-		DatosCitaSinValidar d= buscarSeleccionado(cNomSel.getText());
+		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
 		DatosAgenda a= new DatosAgenda(d.tomaNombre(), d.tomaTelf(), true);
 		usoAgente.mostrarVentanaFicha(a);
 	}
@@ -1011,6 +1013,18 @@ public class panelAgenda extends Thread {
 		else
 			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
 	
+	}
+	
+	private void DarCitaWidgetSelectedB(SelectionEvent evt){
+		if (!(seleccion==null)){
+		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
+/*		if (d.tomaNombre()=="")
+			usoAgente.mostrarVentanaCita();
+		else*/
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
+		}else{
+			usoAgente.mostrarMensajeError("Debe seleccionar una cita", "Atención");
+		}
 	}
 	
 	private void anadirEWidgetSelected(SelectionEvent evt){
@@ -1053,6 +1067,7 @@ public class panelAgenda extends Thread {
 		else{
 			cNomSel.setText("");
 		}
+		seleccion=lsel;
 		
 	}
 	
@@ -1112,6 +1127,37 @@ public class panelAgenda extends Thread {
 			i++;
 		}
 		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
+		return d;
+	}
+		
+		public DatosAgenda buscarSeleccionadoA(CLabel label){
+			int i=0;
+			int p=1;
+			boolean Es =false;
+			String nombre="";
+			String apell1="";
+			String Telf="";
+			String Hora="";
+			String fecha="";
+			String [] aux;
+			while (i<c & !Es){
+				if(Nombres[i]==label){
+					Telf=Telefonos[i].getText();
+					Hora=horas[i].getText();
+					Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+					aux=label.getText().split(" ");
+					while (p<aux.length){
+						if (p==1)
+							apell1=aux[p];
+						else
+							apell1=apell1+" "+aux[p];
+						p++;
+					}
+					Es=true;
+				}
+				i++;
+			}
+		DatosAgenda d= new DatosAgenda(label.getText(), Telf, Hora, fy);
 		return d;
 	}
 	
@@ -1484,11 +1530,13 @@ public class panelAgenda extends Thread {
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
 			DatosLlamada d= buscarSeleccionadoL(nombre);
 			cNomSel.setText(nombre);
+			
 			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
 		}
 		else{
 			cNomSel.setText("");
 		}
+		seleccion=lsel;
 	}
 	
 	public DatosLlamada buscarSeleccionadoE(String nombre){
@@ -1542,6 +1590,7 @@ public class panelAgenda extends Thread {
 		else{
 			cNomSel.setText("");
 		}
+		seleccion=lsel;
 	}
 	private void agendaWidgetSelected(SelectionEvent evt){
 		if (agenda.getText().equals("AGENDA")){
