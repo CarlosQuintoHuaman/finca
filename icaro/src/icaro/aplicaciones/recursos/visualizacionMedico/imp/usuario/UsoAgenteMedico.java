@@ -75,6 +75,14 @@ public class UsoAgenteMedico {
         //usoAgenteControlador.aceptaEvento(new Evento("peticion_terminacion_usuario"));
     }
     
+    public void mostrarMensajeAviso(String mensaje, String titulo){
+    	visualizador.mostrarMensajeAviso(titulo, mensaje);
+    }
+    
+    public void mostrarMensajeInformacion(String mensaje, String titulo){
+    	visualizador.mostrarMensajeInformacion(titulo, mensaje);
+    }
+    
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
@@ -172,6 +180,24 @@ public class UsoAgenteMedico {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    public void cargarMedicamentos() {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            // Como dato le paso el nombre de este agente para que me devuelva los datos
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("cargarMedicamentos", "AgenteAplicacionMedico1", "VisualizacionMedico1", "AgenteAplicacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Medicamentos desde el agente Medico");
             e.printStackTrace();
         }
     }

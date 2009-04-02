@@ -155,6 +155,14 @@ public class UsoAgenteMedicamentos {
         //usoAgenteControlador.aceptaEvento(new Evento("peticion_terminacion_usuario"));
     }
     
+    public void mostrarMensajeAviso(String mensaje, String titulo){
+    	visualizador.mostrarMensajeAviso(titulo, mensaje);
+    }
+    
+    public void mostrarMensajeInformacion(String mensaje, String titulo){
+    	visualizador.mostrarMensajeInformacion(titulo, mensaje);
+    }
+    
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }

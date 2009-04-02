@@ -27,14 +27,12 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-
-//import visualizacion.Visita;
-
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
-import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.swt.PanelMedicamentos;
+import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
@@ -92,8 +90,6 @@ public class PanelMedico extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelMedico este;
-	
 	PanelVisita v;
 	
 
@@ -104,8 +100,6 @@ public class PanelMedico extends Thread {
 	 */
 	public PanelMedico(ClaseGeneradoraVisualizacionMedico visualizador){
 		super("Medico");
-		este = this;
-		
 		this.visualizador = visualizador;
 		usoAgente = new UsoAgenteMedico(visualizador);
 		v = new PanelVisita(visualizador);
@@ -431,8 +425,10 @@ public class PanelMedico extends Thread {
 				cTabMed.setText("Medicamentos");
 				{
 					//cMedicamentos = new Composite(panelContenido, SWT.NONE);
-					cMedicamentos = new PanelMedicamentos(null, panelContenido, SWT.NONE);
+					cMedicamentos = new PanelMedicamentos(visualizador, panelContenido, SWT.NONE);
 					cTabMed.setControl(cMedicamentos);
+					
+					usoAgente.cargarMedicamentos();
 //					disp.syncExec(new Runnable() {
 //						public void run() {
 //							usoAgente.cargarTabMed((Composite)panelContenido, SWT.NONE);
@@ -602,6 +598,10 @@ public class PanelMedico extends Thread {
 	public void mostrarTabMed(Composite c) {
 		cMedicamentos = c;
 		cTabMed.setControl(cMedicamentos);
+	}
+	
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
+		((PanelMedicamentos) cMedicamentos).mostrarDatos(m);
 	}
 
 }

@@ -244,6 +244,9 @@ public class PanelPrueba extends Thread {
 
 	// Aqui iran los metodos especificos de cada ventana
 	
+	/**
+	 * Metodo para la seleccion de un archivo usando Examinar
+	 */
 	public void displayFiles(String[] files) {
 		for (int i = 0; files != null && i < files.length; i++) {
 			tArchivo.setText(files[i]);

@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionMedico.imp;
 
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
@@ -187,6 +188,14 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 			this.estadoAutomata.transita("error");
 			e.printStackTrace();
 		}
+	}
+
+
+
+
+	@Override
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) throws Exception {
+		ventanaMedicoUsuario.mostrarDatosMed(m);
 	}
 	
 	// Aqui van los metodos no genericos		

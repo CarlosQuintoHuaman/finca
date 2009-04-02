@@ -192,8 +192,7 @@ public class PanelNuevo extends Thread {
 			bAceptar.setText("Aceptar");
 			bAceptar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
-					InfoMedicamento m = new InfoMedicamento(0, tNombre.getText(), tPActivo.getText(), tDesc.getText(), tIndicaciones.getText());
-					usoAgente.insertarMed(m);
+					bAceptarWidgetSelected(evt);
 				}
 			});
 		}
@@ -227,4 +226,45 @@ public class PanelNuevo extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
+	
+	/**
+	 * Se comprueba que todos los campos esten rellandos con datos validos
+	 */
+	private void bAceptarWidgetSelected(SelectionEvent evt) {
+		boolean correcto = true;
+		String mensaje = "Faltan los siguientes campos por rellenar:\n\n";
+		
+		if (tNombre.getText() == "") {
+			correcto = false;
+			mensaje += "- Nombre del medicamento\n";
+		}
+		
+		if (tPActivo.getText() == "") {
+			correcto = false;
+			mensaje += "- Principio activo\n";
+		}
+		
+		if (tDesc.getText() == "") {
+			correcto = false;
+			mensaje += "- Descripcion\n";
+		}
+		
+		if (tIndicaciones.getText() == "") {
+			correcto = false;
+			mensaje += "- Indicaciones\n";
+		}
+
+		if (correcto) {
+			InfoMedicamento m = new InfoMedicamento(0, tNombre.getText(), tPActivo.getText(), tDesc.getText(), tIndicaciones.getText());
+			usoAgente.insertarMed(m);
+			usoAgente.cerrarVentanaNuevo();
+			
+			usoAgente.mostrarMensajeInformacion("Visita procesada correctamente", "Visita");
+		}
+		else
+			usoAgente.mostrarMensajeError(mensaje, "Faltan campos por rellenar");
+		
+		//usoAgente.validaHistorial();
+		
+	}
 }

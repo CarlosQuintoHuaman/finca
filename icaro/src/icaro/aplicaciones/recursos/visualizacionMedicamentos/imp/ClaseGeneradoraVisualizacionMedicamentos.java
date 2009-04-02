@@ -121,7 +121,7 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
 	
 	public void cerrarVisualizadorNuevo() {
 		//this.ventanaAgendaUsuario.ocultar();
-		this.ventanaBusquedaUsuario.destruir();
+		this.ventanaNuevoUsuario.destruir();
 		
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Cerrando visualizador...",

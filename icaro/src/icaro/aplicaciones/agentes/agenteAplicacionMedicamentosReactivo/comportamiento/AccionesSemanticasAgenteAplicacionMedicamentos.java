@@ -2,6 +2,7 @@ package icaro.aplicaciones.agentes.agenteAplicacionMedicamentosReactivo.comporta
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
@@ -105,6 +106,25 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	public void insertarMedicamento(InfoMedicamento m) {
 		try {
 			persistencia.insertaMedicamento(m);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void cargarMedicamentos(String origen) {
+		try {
+			
+			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			
+			ArrayList<InfoMedicamento> m = persistencia.getMedicamentos();
+			
+			ItfUsoAgenteReactivo agenteOrigen = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+origen);
+			
+			agenteOrigen.aceptaEvento(new EventoInput("mostrarDatosMed", m, this.nombreAgente, origen));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -1,9 +1,12 @@
 package icaro.aplicaciones.agentes.agenteAplicacionMedicoReactivo.comportamiento;
 
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoMedico;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
@@ -77,6 +80,16 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 			e.printStackTrace();
 		}
 	}
+	
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
+		try {
+			visualizacion.mostrarDatosMed(m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	// Ejemplo de otra accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
