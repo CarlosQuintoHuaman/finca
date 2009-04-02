@@ -6,6 +6,14 @@ public class DatosSecretaria {
 
 private ArrayList<DatosMedico> medicos;
 private int numM;
+private String fecha;
+
+public String getFecha() {
+	return fecha;
+}
+public void setFecha(String fecha) {
+	this.fecha = fecha;
+}
 public DatosSecretaria(ArrayList<DatosMedico> medicos, int numM) {
 	this.medicos = medicos;
 	this.numM = numM;

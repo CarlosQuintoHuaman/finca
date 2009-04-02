@@ -23,6 +23,7 @@ public class DatosCitaSinValidar implements Serializable {
 		this.apell1 = apell1;
 		this.telf = telf;
 		this.hora= hora;
+		periodo=1;
 		
 	}
 	
@@ -33,6 +34,7 @@ public class DatosCitaSinValidar implements Serializable {
 		this.telf = telf;
 		this.fecha=fecha;
 		this.hora= hora;
+		periodo=1;
 		
 	}
 	

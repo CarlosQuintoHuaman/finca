@@ -154,7 +154,10 @@ public class panelAgenda extends Thread {
 	private Composite[] agendaDinamica;
 	private ArrayList<Agenda> Ag;
 	private String usuEste;
-	private String fe;
+	//private String fe;
+	private String fd;
+	private String fy;
+	private String fant;
 	/**
 	 * 
 	 * @param visualizador
@@ -247,8 +250,11 @@ public class panelAgenda extends Thread {
 			
 			shell.setLayout(new FillLayout());
 			util f=new util();
-			fe=util.getStrDateSQL2();
-			shell.setText("Consulta de Hoy "+fe);
+			fd=util.getStrDateSQL2();
+			fy=util.getStrDateSQL();
+			fant=fy;
+			
+			shell.setText("Consulta de Hoy "+fd);
 			shell.setSize(800, 600);
 			{
 				principal = new Composite(shell, SWT.NONE);
@@ -391,7 +397,7 @@ public class panelAgenda extends Thread {
 						GridData button1LData = new GridData();
 						button1LData.horizontalAlignment = GridData.FILL;
 //						button1LData.widthHint = 68;
-//						button1LData.heightHint = 57;
+						button1LData.heightHint = 57;
 						//button1LData.horizontalAlignment = GridData.CENTER;
 						agenda.setLayoutData(button1LData);
 						agenda.setText("AGENDA");
@@ -741,7 +747,7 @@ public class panelAgenda extends Thread {
 		
 		for(i=0;i<ll.size();i++){
 			for(int j=0; j<cc; j++){
-			if (horas[j].getText().equals((ll.get(i).tomaHora().substring(11, 16)))){
+			if (horas[j].getText().equals((ll.get(i).tomaHora()))){
 					Nombres[j].setText(ll.get(i).tomaNombre());
 					Telefonos[j].setText(ll.get(i).tomaTelf());
 				}
@@ -934,15 +940,18 @@ public class panelAgenda extends Thread {
 			copiado.setCrear(false);
 			int i=0;
 			boolean Es =false;
-			while (i<c & !Es){
+/*			while (i<c & !Es){
 				if(Nombres[i].getText()==nombre){
 					Telefonos[i].setText(pegado.tomatelf());
 					Nombres[i].setText(pegado.tomaNombre());
 					Es=true;
 				}
 				i++;
-			}
+			}*/
+			
+			
 		}
+		copiado.setCrear(false);
 	}
 	
 	private void BorrarWidgetSelected(SelectionEvent e){
@@ -958,10 +967,34 @@ public class panelAgenda extends Thread {
 					Telefonos[i].setText("");
 					Nombres[i].setText("");
 					Es=true;
+					i--;
+					
 				}
 				i++;
 			}
+			String m=Agenda.getSelection().getText();
+			int w=0;
+			boolean cu=false;
+			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+			while(w<datos.getNumM() && !cu){
+				if (datos.getMedicos().get(w).getNombre().equals(m)){
+					cu=true;
+					ll=datos.getMedicos().get(w).getDatos();
+					w--;
+				}
+				w++;	
+			}
+			cu=false;
+			int v=0;
+			int g=0;
+			while(v<ll.size() &&!cu){
+				if(ll.get(v).tomaHora().equals(horas[i].getText())){
+					datos.getMedicos().get(w).getDatos().remove(v);
+				}
+				v++;
+				
 		}
+	}
 	}
 	
 	private void CrearFichaWidgetSelected(SelectionEvent evt){
@@ -1098,9 +1131,8 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
-		util f=new util(); 
-		String fecha=f.getStrDate();
-		DatosAgenda d= new DatosAgenda(nombre, Telf, Hora, fecha);
+
+		DatosAgenda d= new DatosAgenda(nombre, Telf, Hora, fy);
 		return d;
 		
 	}
@@ -1115,20 +1147,45 @@ public class panelAgenda extends Thread {
 		try{
 			disp.asyncExec(new Runnable() {
 	            public void run() {
-	         DatosCitaSinValidar datos=d;	   
+	         DatosCitaSinValidar d1=d;	   
 	         int i=0;
-	         while (i<c && !datos.tomaHora().equals(horas[i].getText())){
+	         while (i<c && !d1.tomaHora().equals(horas[i].getText())){
 	        	 i++;
 	         }
 	         int j=0;
-	         while (j<datos.tomaPeriodo() && Nombres[i].getText()=="" && Telefonos[i].getText()==""){
+	         while (j<d1.tomaPeriodo() && Nombres[i].getText()=="" && Telefonos[i].getText()==""){
 	        	 j++;
 	         }
-	         if(j==datos.tomaPeriodo()){
+	         if(j==d1.tomaPeriodo()){
 	         //Si acierto relleno la agenda con los datos y llamo a persistencia
-	        	 for(int k=i;k<=i+datos.tomaPeriodo()-1;k++){
-	        		 Nombres[i].setText(datos.tomaNombre());
-	        		 Telefonos[i].setText(datos.tomaTelf());
+	        	 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
+	        		 Nombres[i].setText(d1.tomaNombre());
+	        		 Telefonos[i].setText(d1.tomaTelf());
+	        		 String m=Agenda.getSelection().getText();
+	        			int w=0;
+	        			boolean cu=false;
+	        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+	        			while(w<datos.getNumM() && !cu){
+	        				if (datos.getMedicos().get(w).getNombre().equals(m)){
+	        					cu=true;
+	        					ll=datos.getMedicos().get(w).getDatos();
+	        					w--;
+	        				}
+	        				w++;	
+	        			}
+	        			cu=false;
+	        			int v=0;
+	        			int g=0;
+	        			while(v<ll.size() &&!cu){
+	        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
+	        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
+	        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
+	        				}
+	        			
+	        				v++;
+	        			}
+	        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),"", d1.tomaTelf(), fy, d1.tomaHora());
+	        			datos.getMedicos().get(w).getDatos().add(c);
 	        	 }
 	         }
 	         else{
@@ -1492,10 +1549,13 @@ public class panelAgenda extends Thread {
 			GridData button1LData = new GridData();
 			button1LData.horizontalAlignment = GridData.FILL;
 			agenda.setLayoutData(button1LData);
-			//agenda.setSize(100, 57);
+			
+			
+		}else{
 			agenda.setText("AGENDA");
-			//agenda.setSize(68, 57);
+			
 	}
+			fant=fy;
 			inicializa(agenda.getText());
 	}
 	
@@ -1515,7 +1575,7 @@ public class panelAgenda extends Thread {
 				
 		if(a.equals("AGENDA HOY")){
 			
-			shell.setText("Agenda "+fe);
+			shell.setText("Agenda "+fd);
 		{
 
 		//inicializar tabla extras
@@ -1544,10 +1604,13 @@ public class panelAgenda extends Thread {
 						// TODO ¿Y esto por qué no va?
 								man=true;
 								fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
-								fe=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
-								shell.setText("Agenda "+fe);
-								String f=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
-								usoAgente.mostrarAgendaSecretaria(f,usuEste);
+								fd=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
+								shell.setText("Agenda "+fd);
+								fy=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
+								datos.setFecha(fant);
+								usoAgente.guardarAgenda(datos);
+								usoAgente.mostrarAgendaSecretaria(fy,usuEste);
+								fant=fy;
 						//shell.dispose();
 					}
 					public void mouseUp(MouseEvent e) {};
@@ -1580,14 +1643,15 @@ public class panelAgenda extends Thread {
                 public void mouseDoubleClick(MouseEvent e) {
                         // TODO ¿Y esto por qué no va?
                 		
-                        fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(), calendario2.getDay());
-                		man=true;
-                		String f=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
-                		fe=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
-                		
-						shell.setText("Agenda "+fe);
-                		usoAgente.mostrarAgendaSecretaria(f,usuEste);
-                        
+                	man=true;
+					fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(),calendario2.getDay());
+					fd=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
+					shell.setText("Agenda "+fd);
+					fy=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
+					datos.setFecha(fant);
+					usoAgente.guardarAgenda(datos);
+					usoAgente.mostrarAgendaSecretaria(fy,usuEste);
+					fant=fy;    
                         //shell.dispose();
                 }
                 public void mouseUp(MouseEvent e) {};
@@ -1610,8 +1674,9 @@ public class panelAgenda extends Thread {
 			tablaExtras.setLayout(tablaExtrasLayout);
 			
 			util f=new util();
-			fe=util.getStrDateSQL2();
-			shell.setText("Consulta de Hoy  "+fe);
+			fd=util.getStrDateSQL2();
+			fy=util.getStrDateSQL();
+			shell.setText("Consulta de Hoy  "+fd);
 			
 			anadirE = new Button(tablasDerecha, SWT.PUSH | SWT.CENTER);
 			tablaLlamadas = new Composite(tablasDerecha, SWT.BORDER);

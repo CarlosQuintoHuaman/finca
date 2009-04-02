@@ -29,11 +29,11 @@ public class util {
 		}
 	public static String getStrDateSQL(Date c) {
 		
-		 int m = c.getMonth();
+		 int m = c.getMonth()+1;
 		 int d = c.getDate();
 		 String mm = Integer.toString(m);
 		 String dd = Integer.toString(d);
-		 return "" +c.getYear()+"-"+(m < 10 ? "0" + mm : mm)+"-"+(d < 10 ? "0" + dd : dd)
+		 return "" +(c.getYear()+1900)+"-"+(m < 10 ? "0" + mm : mm)+"-"+(d < 10 ? "0" + dd : dd)
 		 +" "+getStrTime();
 		}
 	public static String getStrDate() {

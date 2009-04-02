@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 //import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 
 import icaro.aplicaciones.recursos.persistenciaSecretaria.ItfUsoPersistenciaSecretaria;
@@ -87,6 +88,10 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 	
 	public ArrayList<DatosCita> getPaciente(String nom,String telf, String fecha){
 		return consulta.getPaciente(nom,telf,fecha);
+	}
+	
+	public boolean meteAgenda(DatosSecretaria s){
+		return consulta.meteAgenda(s);
 	}
 /*	public boolean compruebaNombreUsuario(String usuario)
 			throws ErrorEnRecursoException {

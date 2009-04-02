@@ -5,6 +5,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPacient
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -121,10 +122,12 @@ public class ConsultaBBDD {
 		
 		try {		
 			
-			Date f=util.StrToDateSQL(fecha);
+			Date f1=util.StrToDateSQL(fecha);
+			Date f2 = new Date();
 			DatosMedico[]  datos=new DatosMedico[lnombres.size()];
-			String fecha2= util.getStrDateSQL(f);
-			
+			f2.setTime(f1.getTime()+86400000);
+			String f11=util.getStrDateSQL(f1).substring(0, 10);
+			String f22=util.getStrDateSQL(f2).substring(0, 10);
 			ArrayList[] arrayLists = new ArrayList[lnombres.size()];
 			ArrayList<DatosCitaSinValidar>[] citas = arrayLists;
 			
@@ -135,7 +138,7 @@ public class ConsultaBBDD {
 			}
 			crearQuery();
 			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
-			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "'");
+			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
 			while (resultado.next()) {
 				
 				String paciente=resultado.getString("Paciente");
@@ -150,7 +153,7 @@ public class ConsultaBBDD {
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
 						
-						DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412",resultado.getTimestamp("Hora").toString(),1);
+						DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412",resultado.getTimestamp("Hora").toString().substring(11, 16),1);
 						
 						citas[i].add(p);
 						datos[i].setDatos(citas[i]);
@@ -211,6 +214,61 @@ public class ConsultaBBDD {
 			e.printStackTrace();
 		}
 		return p;
+	}
+	
+	public boolean meteAgenda(DatosSecretaria s) {
+		try {	
+			//borramos tabla medicoPaciente para los medicos de esa secretaria
+			for(int i=0; i<s.getNumM();i++){
+				String medico=s.getMedicos().get(i).getNombre();
+				Date f1=util.StrToDateSQL(s.getFecha());
+				Date f2 = new Date();
+				
+				f2.setTime(f1.getTime()+86400000);
+				String f11=util.getStrDateSQL(f1).substring(0, 10);
+				String f22=util.getStrDateSQL(f2).substring(0, 10);
+				
+				/*String f=s.getFecha();
+				String f1=f.substring(0, 10)+" 00:00:00";
+				String f2=f.substring(0, 10)+" 23:59:59";*/
+				crearQuery();
+				query.executeUpdate("DELETE FROM medicopaciente WHERE Medico = '" + medico + "' AND Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
+			}
+			//miramos si tenemos que insertar el paciente o si ya esta dado de alta en la tabla pacientes
+			for(int i=0; i<s.getNumM();i++){
+				for(int j=0;j<s.getMedicos().get(i).getDatos().size();j++){
+					String nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
+					String telf=s.getMedicos().get(i).getDatos().get(j).tomaTelf();
+					crearQuery();
+					//resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom + "' AND Telefono = '" + telf + "'");
+					resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom + "'");
+					//si no existe debe darse de alta el paciente como usuario y como paciente
+					if (!resultado.next()){
+						crearQuery();
+						query.executeUpdate("INSERT INTO usuario (NombreUsuario, Nombre, Telefono) VALUES " +"('"+nom+"', '"+nom+"', '"+telf+"')");
+						crearQuery();
+						query.executeUpdate("INSERT INTO paciente (Nombre, Telefono) VALUES " +"('"+nom+"', '"+telf+"')");
+					}
+				}
+			}
+			for(int i=0; i<s.getNumM();i++){
+				for(int j=0;j<s.getMedicos().get(i).getDatos().size();j++){
+					String nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
+					String f=s.getFecha().substring(0, 10);
+					String h=s.getMedicos().get(i).getDatos().get(j).tomaHora();
+					String medico=s.getMedicos().get(i).getNombre();
+				crearQuery();
+				query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora) VALUES " +"('"+medico+"', '"+nom+"', '"+f+"', '"+h+"')");
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+			
+		}
+		
 	}
 	/**
 	 * EJEMPLO de como usar la BD
