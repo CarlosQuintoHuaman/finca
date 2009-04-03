@@ -78,6 +78,7 @@ public class PanelMedico extends Thread {
 
 	protected Date fecha;
 	private ArrayList<InfoPaciente> pacientes;
+	private ArrayList<InfoPaciente> filtro = new ArrayList<InfoPaciente>();
 	private ArrayList<InfoCita> citas;
 	
 	
@@ -530,10 +531,19 @@ public class PanelMedico extends Thread {
 	}
 	
 	private void opcion2WidgetSelected(SelectionEvent evt) {
-		if (listadoPacientes.getSelectionIndex() == -1) {
-			usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
+		if (barraLateral.getSelectionIndex() == 0) {
+			if (listadoPacientes.getSelectionIndex() == -1) {
+				usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
+			} else {
+				String paciente = listadoPacientes.getSelection()[0].substring(6);
+				usoAgente.abrirHistorial(paciente);
+			}
 		} else {
-			usoAgente.abrirHistorial(listadoPacientes.getSelection()[0]);
+			if (listaBusPaciente.getSelectionIndex() == -1) {
+				usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
+			} else {
+				usoAgente.abrirHistorial(filtro.get(listaBusPaciente.getSelectionIndex()).getUsuario());
+			}
 		}
 	}
 	
@@ -552,6 +562,7 @@ public class PanelMedico extends Thread {
 	
 	private void actualizarLista() {
 		listaBusPaciente.removeAll();
+		filtro = new ArrayList<InfoPaciente>();
 		
 		for (int i=0; i<pacientes.size(); i++) {
 			InfoPaciente p = pacientes.get(i);
@@ -561,8 +572,10 @@ public class PanelMedico extends Thread {
 			
 			String filtroNombre = tBusNombre.getText().toLowerCase();
 			String filtroApellido = tBusApellido.getText().toLowerCase();
-			if (nombre.contains(filtroNombre) && apellidos.contains(filtroApellido))
+			if (nombre.contains(filtroNombre) && apellidos.contains(filtroApellido)) {
 				listaBusPaciente.add(p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2());
+				filtro.add(p);
+			}
 		}
 			
 	}

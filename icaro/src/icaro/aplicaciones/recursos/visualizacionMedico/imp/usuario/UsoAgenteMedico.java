@@ -122,9 +122,6 @@ public class UsoAgenteMedico {
     	getInformacionAgente();
     	
     	try {
-    		
-    		paciente = paciente.substring(6);
-    		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
             }

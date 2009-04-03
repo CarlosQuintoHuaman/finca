@@ -1,10 +1,9 @@
-package icaro.aplicaciones.agentes.agenteAplicacionLoginReactivo.comportamiento;
+package icaro.aplicaciones.agentes.agenteAplicacionAdminReactivo.comportamiento;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionLogin.InfoLogin;
-import icaro.aplicaciones.recursos.visualizacionLogin.ItfUsoVisualizadorLogin;
-import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
-import icaro.aplicaciones.recursos.persistenciaLogin.ItfUsoPersistenciaLogin; 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoAdmin;
+import icaro.aplicaciones.recursos.visualizacionAdmin.ItfUsoVisualizadorAdmin;
+import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -14,13 +13,10 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasAgenteReactivo {
+public class AccionesSemanticasAgenteAplicacionAdmin extends AccionesSemanticasAgenteReactivo {
 	
-	private ItfUsoVisualizadorLogin visualizacion;
-	private ItfUsoPersistenciaLogin persistencia;
-	private ItfUsoAgenteReactivo agenteLogin;
-	private ItfUsoAgenteReactivo agenteMedico;
-	private ItfUsoAgenteReactivo agenteSecretaria;
+	private ItfUsoVisualizadorAdmin visualizacion;
+	private ItfUsoPersistencia Persistencia1;
 	private ItfUsoAgenteReactivo agenteAdmin;
 
 	
@@ -28,19 +24,15 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
-	public void pintaVentanaLogin(){
+	public void pintaVentanaAdmin(){
 		
 		try {
 			//Se obtiene el visualizador
-			visualizacion = (ItfUsoVisualizadorLogin) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"VisualizacionLogin1");
+			visualizacion = (ItfUsoVisualizadorAdmin) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionAdmin1");
 			
 			// Ejemplo de algo que podemos hacer con el
-			visualizacion.mostrarVisualizadorLogin(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
-			
-			//Y la persistencia
-			persistencia = (ItfUsoPersistenciaLogin) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"PersistenciaLogin1");
+			visualizacion.mostrarVisualizadorAdmin(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
@@ -51,47 +43,12 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-														  "Ha habido un problema al abrir el visualizador de Login en accion semantica 'pintaVentanaLogin()'", 
+														  "Ha habido un problema al abrir el visualizador de Admin en accion semantica 'pintaVentanaAdmin()'", 
 														  InfoTraza.NivelTraza.error));
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
 		}
-	}
-	
-	public void compruebaUsuario(String u, String p) {
-		try {
-			agenteMedico = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"AgenteAplicacionMedico1");
-			
-			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"AgenteAplicacionSecretaria1");
-			
-			agenteAdmin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"AgenteAplicacionAdmin1");
-				
-			String tipo = persistencia.compruebaUsuario(u, p);
-			
-			if (tipo == "Secretaria") {
-				agenteSecretaria.aceptaEvento(new EventoInput("inicio", u,"AgenteAplicacionLogin1", "AgenteAplicacionSecretaria1"));
-				visualizacion.cerrarVisualizadorLogin();
-			}
-			else if (tipo == "Medico") {
-				agenteMedico.aceptaEvento(new EventoInput("inicio","AgenteAplicacionLogin1", "AgenteAplicacionMedico1"));
-				visualizacion.cerrarVisualizadorLogin();
-			}
-			else if (tipo == "Admin") {
-				agenteAdmin.aceptaEvento(new EventoInput("inicio","AgenteAplicacionLogin1", "AgenteAplicacionAdmin1"));
-				visualizacion.cerrarVisualizadorLogin();
-			}
-			else {
-				visualizacion.mostrarMensajeError("Fallo de Login", "Nombre de usuario o contraseña incorrectos");
-			}
-				
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	}	
 
 	// Ejemplo de otra accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
@@ -100,10 +57,10 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 		boolean ok = false;
 		
 		// Hay que crear un objeto con los datos para enviar con el evento
-		InfoLogin datos = new InfoLogin(nombre,apell1,telf);
+		InfoAdmin datos = new InfoAdmin(nombre,apell1,telf);
 		
 		try {
-			persistencia = (ItfUsoPersistenciaLogin) itfUsoRepositorio.obtenerInterfaz
+			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"Persistencia1");
 			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
@@ -128,14 +85,14 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 		}
 		try {
 			// Hay que coger la instancia del agente para poder enviarle eventos
-			agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			agenteAdmin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
 						
 			if(ok){
 				// Se envia el evento sin datos ya que no lo requiere
-				agenteLogin.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Login"));
+				agenteAdmin.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Admin"));
 				// Si hubiera que enviar datos con el evento se haria asi:
-				// agenteLogin.aceptaEvento(new EventoInput("correcto",infoLogin, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Login"));
+				// agenteAdmin.aceptaEvento(new EventoInput("correcto",infoAdmin, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Admin"));
 			}
 			
 			// Aqui se pueden seguir haciendo cosas con la visualizacion, trazas, etc
@@ -156,7 +113,7 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 	public void terminacion() {
 		try {
 			// Aqui se hacen las cosas, por ejemplo esto
-			visualizacion.cerrarVisualizadorLogin();
+			visualizacion.cerrarVisualizadorAdmin();
 			
 			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
 					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
@@ -175,9 +132,9 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 	 *En este caso la politica es que todos los errores son criticos.  
 	 */
 		try {
-			agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			agenteAdmin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
-			agenteLogin.aceptaEvento(new EventoInput("errorIrrecuperable",this.nombreAgente,this.nombreAgente));
+			agenteAdmin.aceptaEvento(new EventoInput("errorIrrecuperable",this.nombreAgente,this.nombreAgente));
 
 		}
 		catch (Exception e) {
@@ -203,9 +160,9 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 															  InfoTraza.NivelTraza.error));
 			}catch(Exception e2){e2.printStackTrace();}
 			try{
-				agenteLogin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+				agenteAdmin = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 				(NombresPredefinidos.ITF_USO+this.nombreAgente);
-				agenteLogin.aceptaEvento(new EventoInput("error",this.nombreAgente,this.nombreAgente));
+				agenteAdmin.aceptaEvento(new EventoInput("error",this.nombreAgente,this.nombreAgente));
 			}
 			catch(Exception exc){
 				try {
