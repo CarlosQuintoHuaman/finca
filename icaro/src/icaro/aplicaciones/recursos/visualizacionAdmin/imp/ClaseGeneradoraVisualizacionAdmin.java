@@ -15,10 +15,9 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2007
+ * @author Camilo Andres Benito Rojas
+ *
  */
-
 public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple implements ItfUsoVisualizadorAdmin{
 
 	private static final long serialVersionUID = 1L;
@@ -57,11 +56,6 @@ public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple impleme
   				InfoTraza.NivelTraza.debug));
   	}
   	
-
-
-	// NOTAS:
-	// - Vuelvo a recordar: Es solo un ejemplo con nombre de parametros y metodos que hay que cambiar
-	// - NO OLVIDAR inicializar ventanaAdminUsuario en el metodo inicializa() que esta mas arriba
 
   	public void mostrarVisualizadorAdmin(String nombreAgente, String tipo) {
 		this.nombreAgenteControlador = nombreAgente;

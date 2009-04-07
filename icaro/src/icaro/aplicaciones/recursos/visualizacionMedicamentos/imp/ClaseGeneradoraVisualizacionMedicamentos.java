@@ -3,7 +3,6 @@ package icaro.aplicaciones.recursos.visualizacionMedicamentos.imp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
-import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.PanelHistorial;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -14,15 +13,13 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2007
+ * @author Camilo Andres Benito Rojas
+ *
  */
 
 public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple implements ItfUsoVisualizadorMedicamentos{

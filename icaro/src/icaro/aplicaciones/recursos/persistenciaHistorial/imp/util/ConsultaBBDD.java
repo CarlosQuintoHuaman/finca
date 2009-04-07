@@ -18,7 +18,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ConsultaBBDD {
 	/**
 	 * Nombre de la BBDD con la que se trabaja
@@ -54,6 +58,11 @@ public class ConsultaBBDD {
 	
 	private String id;
 	
+	/**
+	 * Constructor
+	 * @param id Nombre del recurso de persistencia. Por ejemplo, PersistenciaAlgo1
+	 * @throws Exception
+	 */
 	public ConsultaBBDD(String id) throws Exception {
 		try {
 		ItfUsoConfiguracion config = (ItfUsoConfiguracion) RepositorioInterfaces.instance().obtenerInterfaz(NombresPredefinidos.ITF_USO+NombresPredefinidos.CONFIGURACION);
@@ -74,6 +83,10 @@ public class ConsultaBBDD {
 		}
 	}
 
+	/**
+	 * Se inicializa la variable query
+	 * @throws ErrorEnRecursoException
+	 */
 	public void crearQuery() throws ErrorEnRecursoException {
 
 		try	{
@@ -83,7 +96,12 @@ public class ConsultaBBDD {
 			throw new ErrorEnRecursoException("No se ha podido crear la sentencia SQL para acceder a la base de datos: " + e.getMessage());
 		}			
 	}
-		
+	
+	/**
+	 * Obtiene el historial completo de un paciente
+	 * @param usuario Nombre de usuario del paciente
+	 * @return ArrayList con las visitas que componen el historial
+	 */
 	public ArrayList<InfoVisita> getHistorial(String usuario) {
 		ArrayList<InfoVisita> citas = new ArrayList<InfoVisita>();
 		
@@ -112,6 +130,14 @@ public class ConsultaBBDD {
 		return citas;
 	}
 	
+	/**
+	 * Obtiene una visita en concreto
+	 * @param usuario Nombre de usuario del paciente
+	 * @param fecha Fecha de la visita
+	 * @return Un objeto InfoVisita con los datos
+	 * 		   Si no esta la visita en la BD el objeto visita tendra todos los campos vacios menos
+	 * 		   el nombre de usuario y la fecha
+	 */
 	public InfoVisita getHistorial(String usuario, Timestamp fecha) {
 		InfoVisita p = new InfoVisita(usuario,fecha,"","","","","");
 		
@@ -138,6 +164,11 @@ public class ConsultaBBDD {
 		return p;
 	}
 	
+	/**
+	 * Guarda una visita en la BD. Si la visita ya existe en la BD la actualiza con los nuevos datos.
+	 * Si no existe la crea nueva.
+	 * @param v Objeto InfoVisita con los datos
+	 */
 	public void setVisita(InfoVisita v) {
 		try {
 			crearQuery();
@@ -164,6 +195,12 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Obtiene todas las pruebas de un paciente para una visita concreta
+	 * @param usuario Nombre de usuario
+	 * @param fecha Fecha de la visita
+	 * @return ArrayList con todas las pruebas
+	 */
 	public ArrayList<InfoPrueba> getPruebas(String usuario, Timestamp fecha) {
 		ArrayList<InfoPrueba> pruebas = new ArrayList<InfoPrueba>();
 		
@@ -191,6 +228,10 @@ public class ConsultaBBDD {
 		return pruebas;
 	}
 	
+	/**
+	 * Guarda una prueba en la BD
+	 * @param p Objeto InfoPrueba con los datos
+	 */
 	public void setPrueba(InfoPrueba p) {
 		try {
 			crearQuery();
@@ -205,6 +246,10 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Borra una prueba de la BD
+	 * @param p Objeto InfoPrueba de la prueba a borrar
+	 */
 	public void borrarPrueba(InfoPrueba p) {
 		try {
 			crearQuery();
@@ -214,87 +259,16 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Borra un medicamento de la BD
+	 * @param m Objeto InfoMedicamento del medicamento a borrar
+	 */
 	public void borrarMedicamento(InfoMedicamento m) {
 		try {
 			crearQuery();
 			query.executeUpdate("DELETE FROM MedPorReceta WHERE CodigoRec='"+m.getCodigo()+"' AND CodigoMed='"+m.getNombre()+"'");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * EJEMPLO de como usar la BD
-	 */
-	public boolean compruebaUsuario(String usuario, String password) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-			// TODO Comprobar que la conexion este activa
-      		
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM usuario where NombreUsuario = '"
-      					+ usuario + "' and password = '" + password + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
-			
-			
-			// Esto es solo una prueba que he hecho para verificar que funciona
-			if (estado)
-				System.out.println("Resultado: " + resultado.getString("Direccion"));
-
-			resultado.close();
-			
-			return estado;	
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
-	}
-	
-	
-	// OJO: De aqui hacia abajo es probable que este mal. Se puede borrar. Solo lo dejo
-	// por si sirve de referencia. Asi es como estaba en el ejemplo de persistencia
-	
-	
-	
-	public boolean compruebaNombreUsuario(String usuario) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM "+ this.nombreBD +".tb_acceso U where U.user = '"
-      					+ usuario + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
-			resultado.close();
-			//desconectar();
-			return estado;	
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
-	}
-	
-	public void insertaUsuario (String usuario, String password) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		query.executeUpdate("INSERT INTO "+ this.nombreBD +".tb_acceso VALUES ('"+
-      				usuario+"','"+password+"')");
-			//desconectar();
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
 		}
 	}
 }

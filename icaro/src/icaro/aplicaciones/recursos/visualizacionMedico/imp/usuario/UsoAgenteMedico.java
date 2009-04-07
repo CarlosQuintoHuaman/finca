@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
- *@author     
- *@created    
+ * @author Camilo Andres Benito Rojas
+ *
  */
 public class UsoAgenteMedico {
 
@@ -86,36 +86,9 @@ public class UsoAgenteMedico {
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
-    
-    public void validaCita(String nombre, String apellido, String telf) {
-      
-	   getInformacionAgente();
-        //provoca la peticiï¿½n de autentificaciï¿½n
-    	
-        String[] datosEnvio = new String[]{nombre, apellido,telf};
-
-        try {
-            if (itfUsoRepositorioInterfaces == null) {
-                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-            }
-
-            if (tipoAgenteMedico.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionMedico
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteMedico);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("infoCita", datosEnvio, "VisualizacionMedico1", nombreAgenteMedico));
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar los datos de la cita ");
-            e.printStackTrace();
-        }
-        
-    }
-    
+   
     /**
-     * Activa el agente Historial
+     * Activa el agente Historial y abre la lista de visitas
      * @param paciente
      */
     public void abrirHistorial(String paciente) {
@@ -136,6 +109,10 @@ public class UsoAgenteMedico {
         }
     }
     
+    /**
+     * Abre una visita en concreto del historial
+     * @param c
+     */
     public void abrirVisita(InfoCita c) {
     	getInformacionAgente();
     	
@@ -162,6 +139,9 @@ public class UsoAgenteMedico {
         }
     }
     
+    /**
+     * Llama al agente Medicamentos para mostrar la ventana de añadir medicamento
+     */
     public void abrirNuevoMedicamento() {
     	getInformacionAgente();
     	
@@ -181,6 +161,9 @@ public class UsoAgenteMedico {
         }
     }
     
+    /**
+     * Envia un evento a Medicamentos para que cargue y envie de vuelta los medicamentos (asincrono)
+     */
     public void cargarMedicamentos() {
     	try {
     		
@@ -199,6 +182,11 @@ public class UsoAgenteMedico {
         }
     }
     
+    /**
+     * -En fase experimental- Aun no funciona
+     * @param c
+     * @param estilo
+     */
     public void cargarTabMed(Composite c, int estilo) {
     	//getInformacionAgente();
     	

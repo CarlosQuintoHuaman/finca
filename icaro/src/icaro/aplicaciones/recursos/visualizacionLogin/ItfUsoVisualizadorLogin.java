@@ -5,10 +5,9 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2008
+ * @author Camilo Andres Benito Rojas
+ *
  */
-
 public interface ItfUsoVisualizadorLogin extends ItfUsoRecursoSimple{
 
 	public void mostrarVisualizadorLogin(String nombreAgente,String tipo) throws Exception;

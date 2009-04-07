@@ -20,33 +20,20 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTra
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.InfoTraza;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorMedico visualizacion;
 	private ItfUsoPersistencia PersistenciaMedico;
 	private ItfUsoAgenteReactivo agenteMedico;
 
-	
-	
-	public void cargaDatos() {
-		try {
-			
-		} catch (Exception ex) {
-			try {
-				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
-						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
-						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-															  "Ha habido un problema al abrir el visualizador de Medico en accion semantica 'pintaVentanaMedico()'", 
-															  InfoTraza.NivelTraza.error));
-						ex.printStackTrace();
-			}catch(Exception e){e.printStackTrace();}
-		}
-	}
-	// Ejemplo de accion semantica sencilla
-	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
-	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
-	// de alguna accion definida en el automata
+	/**
+	 * Muestra la ventana del medico
+	 */
 	public void pintaVentanaMedico() {
 		
 		try {
@@ -73,6 +60,10 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 		}
 	}
 	
+	/**
+	 * - En fase experimental - Carga el contenido de una ventana usando un Composite externo
+	 * @param c Composite a mostrar
+	 */
 	public void pintaTabMed(Composite c) {
 		try {
 			visualizacion.mostrarTabMed(c);
@@ -81,71 +72,15 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 		}
 	}
 	
+	/**
+	 * Muestra los lista de medicamentos en el sistema
+	 * @param m
+	 */
 	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
 		try {
 			visualizacion.mostrarDatosMed(m);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-	
-	
-
-	// Ejemplo de otra accion semantica mas compleja
-	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
-	// tal como se ve aqui	
-	public void inserta(String nombre, String apell1, String telf) {
-		boolean ok = false;
-		
-		// Hay que crear un objeto con los datos para enviar con el evento
-		InfoMedico datos = new InfoMedico(nombre,apell1,telf);
-		
-		try {
-			PersistenciaMedico = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"Persistencia1");
-			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
-			ok=true;
-			
-			try {
-				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
-						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
-						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-															  "Comprobando usuario...", 
-															  InfoTraza.NivelTraza.debug));
-			}catch(Exception e){e.printStackTrace();}
-		}
-
-		catch (Exception ex){
-			try {
-				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
-						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
-						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-															  "Ha habido un problema en la Persistencia1 al comprobar cita", 
-															  InfoTraza.NivelTraza.error));
-				}catch(Exception e){e.printStackTrace();}
-		}
-		try {
-			// Hay que coger la instancia del agente para poder enviarle eventos
-			agenteMedico = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+this.nombreAgente);
-						
-			if(ok){
-				// Se envia el evento sin datos ya que no lo requiere
-				agenteMedico.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Medico"));
-				// Si hubiera que enviar datos con el evento se haria asi:
-				// agenteMedico.aceptaEvento(new EventoInput("correcto",infoMedico, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Medico"));
-			}
-			
-			// Aqui se pueden seguir haciendo cosas con la visualizacion, trazas, etc
-		}
-		catch (Exception e) {
-			try {
-				ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
-						NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
-						trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-															  "Ha habido un problema enviar el evento correcto al agente", 
-															  InfoTraza.NivelTraza.error));
-				}catch(Exception e2){e2.printStackTrace();}
 		}
 	}
 	

@@ -13,6 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class AccesoBBDD {
 	
 	// Los siguientes datos se van a leer del XML de configuracion

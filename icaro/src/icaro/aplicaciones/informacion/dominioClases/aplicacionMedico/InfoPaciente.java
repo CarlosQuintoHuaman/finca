@@ -19,6 +19,17 @@ public class InfoPaciente implements Serializable {
 	private String telefono;
 	private String seguro;
 
+	/**
+	 * Crea un objetivo nuevo donde almacenar los datos de un paciente
+	 * @param u Nombre de Usuario
+	 * @param p Password
+	 * @param n Nombre del paciente
+	 * @param ape1 Apellido1
+	 * @param ape2 Apellido2
+	 * @param dir Direccion
+	 * @param tel Telefono
+	 * @param seguro Seguro
+	 */
 	public InfoPaciente (String u, String p, String n, String ape1, String ape2, String dir, String tel, String seguro) {
 		setUsuario(u);
 		setPassword(p);

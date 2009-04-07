@@ -18,9 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * 
- *@author     
- *@created    
+ *
+ * @author Camilo Andres Benito Rojas
+ *
  */
 public class UsoAgenteHistorial {
 
@@ -48,33 +48,6 @@ public class UsoAgenteHistorial {
     public ClaseGeneradoraVisualizacionHistorial getVisualizador() {
         return visualizador;
 
-    }
-    
-    public void insertaDatos(String motivo, String descripcion, String exploracion, String diagnostico, String tratamiento) {
-        
- 	   getInformacionAgente();
-         //provoca la petici�n de autentificaci�n
-     	
-         String[] datosEnvio = new String[]{motivo, descripcion, exploracion, diagnostico, tratamiento};
-
-         try {
-             if (itfUsoRepositorioInterfaces == null) {
-                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-             }
-
-             if (tipoAgenteHistorial.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                 //AgenteAplicacionHistorial
-                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteHistorial);
-                 if (itfUsoAgente != null) {
-                     itfUsoAgente.aceptaEvento(new EventoInput("guardarDatos", datosEnvio, "VisualizacionHistorial1", nombreAgenteHistorial));
-                 }
-             }
-
-         } catch (Exception e) {
-             System.out.println("Ha habido un error al enviar los datos de la cita ");
-             e.printStackTrace();
-         }
-         
     }
 
     public void notificacionCierreSistema() {
@@ -117,6 +90,11 @@ public class UsoAgenteHistorial {
     	visualizador.mostrarMensajeInformacion(titulo, mensaje);
     }
 
+    /**
+     * Muestra la ventana de una visita
+     * @param paciente Paciente
+     * @param fecha Fecha de la visita
+     */
     public void mostrarVentanaHistorial(String paciente, Date fecha) {
     	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
     	getInformacionAgente();
@@ -147,8 +125,11 @@ public class UsoAgenteHistorial {
     	visualizador.cerrarVisualizadorLista();
     }
     
+    /**
+     * Muestra la ventana de una prueba
+     * @param v InfoVisita
+     */
     public void mostrarVentanaPrueba(InfoVisita v) {
-    	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
     	getInformacionAgente();
     	
     	try {
@@ -171,6 +152,10 @@ public class UsoAgenteHistorial {
     	visualizador.cerrarVisualizadorPrueba();
     }
     
+    /**
+     * Guarda una visita en la BD
+     * @param v Info Visita
+     */
     public void guardarVisita(InfoVisita v) {
     	getInformacionAgente();
     	
@@ -190,6 +175,10 @@ public class UsoAgenteHistorial {
         }
     }
     
+    /**
+     * Guarda una prueba
+     * @param p InfoPrueba
+     */
     public void guardarPrueba(InfoPrueba p) {
     	getInformacionAgente();
     	
@@ -209,6 +198,10 @@ public class UsoAgenteHistorial {
         }
     }
     
+    /**
+     * Borra una prueba
+     * @param p InfoPrueba
+     */
     public void borrarPrueba(InfoPrueba p) {
     	getInformacionAgente();
     	
@@ -228,6 +221,11 @@ public class UsoAgenteHistorial {
         }
     }
     
+    /**
+     * Muestra la ventana de busqueda de medicamentos
+     * @param paciente
+     * @param fecha Fecha de la visita
+     */
     public void mostrarVentanaBusquedaMed(String paciente, Timestamp fecha) {
     	getInformacionAgente();
     	
@@ -249,6 +247,11 @@ public class UsoAgenteHistorial {
         }
     }
     
+    /**
+     * Borra un medicamento de una visita
+     * @param v InfoVisita
+     * @param m InfoMedicamento
+     */
     public void borrarMed(InfoVisita v, InfoMedicamento m) {
     	getInformacionAgente();
     	

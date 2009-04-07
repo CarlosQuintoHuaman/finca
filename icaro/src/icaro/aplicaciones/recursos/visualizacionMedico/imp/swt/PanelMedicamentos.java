@@ -8,8 +8,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -17,12 +15,14 @@ import org.eclipse.swt.widgets.*;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
-import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.ClaseGeneradoraVisualizacionMedicamentos;
-import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.usuario.UsoAgenteMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelMedicamentos extends Composite {
 
 	// Variables

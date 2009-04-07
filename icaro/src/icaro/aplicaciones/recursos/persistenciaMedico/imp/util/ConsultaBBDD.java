@@ -15,7 +15,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ConsultaBBDD {
 	/**
 	 * Nombre de la BBDD con la que se trabaja
@@ -81,6 +85,10 @@ public class ConsultaBBDD {
 		}			
 	}
 	
+	/**
+	 * Obtiene la lista de todos los pacientes
+	 * @return ArrayList con objetos InfoPaciente
+	 */
 	public ArrayList<InfoPaciente> getPacientes() {
 		ArrayList<InfoPaciente> pacientes = new ArrayList<InfoPaciente>();
 		
@@ -110,6 +118,10 @@ public class ConsultaBBDD {
 		return pacientes;
 	}
 	
+	/**
+	 * Obtiene las citas de un medico
+	 * @return ArrayList con objetos InfoCita
+	 */
 	public ArrayList<InfoCita> getCitas() {
 		ArrayList<InfoCita> citas = new ArrayList<InfoCita>();
 		
@@ -132,80 +144,5 @@ public class ConsultaBBDD {
 		}
 		
 		return citas;
-	}
-	
-	/**
-	 * EJEMPLO de como usar la BD
-	 */
-	public boolean compruebaUsuario(String usuario, String password) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-			// TODO Comprobar que la conexion este activa
-      		
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM usuario where NombreUsuario = '"
-      					+ usuario + "' and password = '" + password + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
-			
-			
-			// Esto es solo una prueba que he hecho para verificar que funciona
-			if (estado)
-				System.out.println("Resultado: " + resultado.getString("Direccion"));
-
-			resultado.close();
-			
-			return estado;	
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
-	}
-	
-	
-	// OJO: De aqui hacia abajo es probable que este mal. Se puede borrar. Solo lo dejo
-	// por si sirve de referencia. Asi es como estaba en el ejemplo de persistencia
-	
-	
-	
-	public boolean compruebaNombreUsuario(String usuario) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM "+ this.nombreBD +".tb_acceso U where U.user = '"
-      					+ usuario + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
-			resultado.close();
-			//desconectar();
-			return estado;	
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
-	}
-	
-	public void insertaUsuario (String usuario, String password) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		query.executeUpdate("INSERT INTO "+ this.nombreBD +".tb_acceso VALUES ('"+
-      				usuario+"','"+password+"')");
-			//desconectar();
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
 	}
 }

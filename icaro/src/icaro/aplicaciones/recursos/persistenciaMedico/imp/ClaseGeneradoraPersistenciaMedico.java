@@ -15,7 +15,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple implements
 		ItfUsoPersistenciaMedico {
 
@@ -55,21 +59,6 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 
 	}
 
-	public boolean compruebaUsuario(String usuario, String password)
-			throws ErrorEnRecursoException {
-		try {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaMedico",
-  				"Comprobando usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		return consulta.compruebaUsuario(usuario, password);
-		} catch (Exception e) {
-			this.estadoAutomata.transita("error");
-			
-			return false;
-		}
-
-	}
-	
 	public ArrayList<InfoPaciente> getPacientes() {
 		return consulta.getPacientes();
 	}
@@ -77,25 +66,6 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 	public ArrayList<InfoCita> getCitas() {
 		return consulta.getCitas();
 	}
-
-	public boolean compruebaNombreUsuario(String usuario)
-			throws ErrorEnRecursoException {
-			trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaMedico",
-  				"Comprobando nombre de usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		return consulta.compruebaNombreUsuario(usuario);
-
-	}
-
-	public void insertaUsuario(String usuario, String password)
-			throws ErrorEnRecursoException {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaMedico",
-  				"Insertando usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		consulta.insertaUsuario(usuario, password);
-
-	}
-
 
 	@Override
 	public void termina() {

@@ -36,6 +36,11 @@ import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedicamentos
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelMedico extends Thread {
 
 	// Variables

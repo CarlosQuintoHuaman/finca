@@ -10,16 +10,38 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2008
+ * @author Camilo Andres Benito Rojas
+ *
  */
-
 public interface ItfUsoVisualizadorMedico extends ItfUsoRecursoSimple{
 
+	/**
+	 * 
+	 * @param nombreAgente
+	 * @param tipo
+	 * @throws Exception
+	 */
 	public void mostrarVisualizadorMedico(String nombreAgente,String tipo) throws Exception;
+	
+	/**
+	 * - En fase experimental - Aun no funciona
+	 * @param c
+	 * @throws Exception
+	 */
 	public void mostrarTabMed(Composite c) throws Exception;
+	
+	/**
+	 * Se usa para avisar asincronamente de que los datos de medicamentos ya estan
+	 * listos para ser mostrados por pantalla
+	 * @param m
+	 * @throws Exception
+	 */
 	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) throws Exception;
 
+	/**
+	 * 
+	 * @throws Exception
+	 */
     public void cerrarVisualizadorMedico() throws Exception;
     
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;

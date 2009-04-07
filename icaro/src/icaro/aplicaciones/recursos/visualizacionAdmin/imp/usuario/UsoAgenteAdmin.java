@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 
 /**
  * 
- *@author     
- *@created    
+ * @author Camilo Andres Benito Rojas
+ *
  */
 public class UsoAgenteAdmin {
 
@@ -47,14 +47,13 @@ public class UsoAgenteAdmin {
     }
 
 
-    // Al ser un metodo de EJEMPLO hay muchos nombres que cambiar (parametros, evento, etc).
-    public void mostrarVentanaAdmin(String paciente, Date fecha) {
-    	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
+    /**
+     * Muestra la ventana de administrador
+     */
+    public void mostrarVentanaAdmin() {
     	getInformacionAgente();
     	
     	try {
-    		
-    		Object datos[] = {paciente,fecha};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
@@ -62,7 +61,7 @@ public class UsoAgenteAdmin {
             
             ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
             
-            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", datos, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+            itfUsoHistorial.aceptaEvento(new EventoInput("mostrarVentanaHistorial", "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al mostrar el agente Historial");
@@ -70,6 +69,9 @@ public class UsoAgenteAdmin {
         }
     }
     
+    /**
+     * Cierra la ventana de administrador
+     */
     public void cerrarVentanaAdmin() {
     	visualizador.cerrarVisualizadorAdmin();
     }
@@ -105,61 +107,6 @@ public class UsoAgenteAdmin {
     
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
-    }
-    
-
-    // Este metodo esta aqui SOLO COMO EJEMPLO
-    public void validaCita(String nombre, String apellido, String telf) {
-      
-	   getInformacionAgente();
-        //provoca la petici�n de autentificaci�n
-    	
-        String[] datosEnvio = new String[]{nombre, apellido,telf};
-
-        try {
-            if (itfUsoRepositorioInterfaces == null) {
-                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-            }
-
-            if (tipoAgenteAdmin.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionAdmin
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteAdmin);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("infoCita", datosEnvio, "VisualizacionAdmin1", nombreAgenteAdmin));
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar los datos de la cita ");
-            e.printStackTrace();
-        }
-        
-    }
-    
-    public void crearAgenteFicha() {
-    	getInformacionAgente();
-    	
-    	try {
-            if (itfUsoRepositorioInterfaces == null) {
-                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-            }
-            
-            ItfUsoAgenteReactivo itfUsoFicha = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionFicha1");
-            
-            itfUsoFicha.aceptaEvento(new EventoInput("comenzar", "VisualizacionAdmin1", "AgenteAplicacionFicha1"));
-
-/*            if (tipoAgenteAdmin.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionAdmin
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteAdmin);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("darCita", "VisualizacionAdmin1", nombreAgenteAdmin));
-                }
-            }*/
-
-        } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
-            e.printStackTrace();
-        }
     }
 }
 

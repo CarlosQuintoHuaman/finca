@@ -2,22 +2,10 @@ package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -29,6 +17,11 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisi
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario.UsoAgenteHistorial;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelPrueba extends Thread {
 
 	// Variables SWT
@@ -58,16 +51,12 @@ public class PanelPrueba extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelPrueba este;
-
 	/**
 	 * 
 	 * @param visualizador
 	 */
 	public PanelPrueba(ClaseGeneradoraVisualizacionHistorial visualizador){
 		super("Prueba Historial");
-		este = this;
-		
 		usoAgente = new UsoAgenteHistorial(visualizador);
 		this.visualizador = visualizador;
 	}

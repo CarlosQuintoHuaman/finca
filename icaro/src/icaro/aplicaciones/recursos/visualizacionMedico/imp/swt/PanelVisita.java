@@ -19,6 +19,11 @@ import com.cloudgarden.resource.SWTResourceManager;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelVisita extends Thread {
 
 	// Variables
@@ -72,16 +77,12 @@ public class PanelVisita extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelVisita este;
-
 	/**
 	 * 
 	 * @param visualizador
 	 */
 	public PanelVisita(ClaseGeneradoraVisualizacionMedico visualizador){
 		super("Agenda");
-		este = this;
-		
 		usoAgente = new UsoAgenteMedico(visualizador);
 	}
 

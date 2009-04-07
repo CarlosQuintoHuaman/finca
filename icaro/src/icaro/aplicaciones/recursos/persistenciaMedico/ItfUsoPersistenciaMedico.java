@@ -6,13 +6,22 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public interface ItfUsoPersistenciaMedico extends ItfUsoRecursoSimple {
+	/**
+	 * Obtiene la lista de todos los pacientes
+	 * @return ArrayList con objetos InfoPaciente
+	 */
 	public ArrayList<InfoPaciente> getPacientes();
+	
+	/**
+	 * Obtiene las citas de un medico
+	 * @return ArrayList con objetos InfoCita
+	 */
 	public ArrayList<InfoCita> getCitas();
-	
-	
-	public boolean compruebaUsuario(String usuario, String password) throws Exception;
-	public boolean compruebaNombreUsuario(String usuario) throws Exception;
-	public void insertaUsuario (String usuario,String password) throws Exception;
 	
 }

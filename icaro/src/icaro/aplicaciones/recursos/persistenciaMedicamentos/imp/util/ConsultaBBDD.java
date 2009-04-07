@@ -1,6 +1,5 @@
 package icaro.aplicaciones.recursos.persistenciaMedicamentos.imp.util;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoPrueba;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.recursos.persistenciaMedicamentos.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -9,14 +8,17 @@ import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfigurac
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ConsultaBBDD {
 	/**
 	 * Nombre de la BBDD con la que se trabaja
@@ -82,6 +84,11 @@ public class ConsultaBBDD {
 		}			
 	}
 	
+	/**
+	 * Obtiene todos los medicamentos de la BD
+	 * @return ArrayList con todos los medicamentos
+	 * @throws Exception
+	 */
 	public ArrayList<InfoMedicamento> getMedicamentos() {
 		ArrayList<InfoMedicamento> med = new ArrayList<InfoMedicamento>();
 		
@@ -148,6 +155,11 @@ public class ConsultaBBDD {
 		return med;
 	}
 	
+	/**
+	 * Inserta un medicamento en la BD
+	 * @param m InfoMedicamento con los datos del medicamento
+	 * @throws Exception
+	 */
 	public void insertaMedicamento(InfoMedicamento m) {
 		try {
 			crearQuery();
@@ -160,6 +172,14 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Asigna un medicamento a un paciente en una visita. Es decir, añade un medicamento
+	 * a la receta de una visita
+	 * @param p Nombre de ususario
+	 * @param m Medicamento
+	 * @param f Fecha de la visita
+	 * @throws Exception
+	 */
 	public void asignaMedicamento(String p, InfoMedicamento m, Timestamp fecha) {
 		try {
 			crearQuery();
@@ -190,6 +210,13 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Borra un medicamento de la BD
+	 * @param p Nombre de usaurio
+	 * @param t Fecha de la visita
+	 * @param m Datos Medicamento
+	 * @throws Exception
+	 */
 	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) {
 		try {
 			crearQuery();

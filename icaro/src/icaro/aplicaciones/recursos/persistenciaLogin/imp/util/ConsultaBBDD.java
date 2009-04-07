@@ -8,13 +8,15 @@ import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfigurac
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ConsultaBBDD {
 	/**
 	 * Nombre de la BBDD con la que se trabaja
@@ -82,7 +84,11 @@ public class ConsultaBBDD {
 
 	
 	/**
-	 * EJEMPLO de como usar la BD
+	 * 
+	 * @param usuario
+	 * @param password
+	 * @return
+	 * @throws ErrorEnRecursoException
 	 */
 	public boolean compruebaUsuario(String usuario, String password) throws ErrorEnRecursoException {
 
@@ -112,6 +118,11 @@ public class ConsultaBBDD {
 		}
 	}
 	
+	/**
+	 * Detecta el tipo de usuario
+	 * @param usuario Nombre de usuario
+	 * @return Medico, Secretaria o Admin. False en caso de no encontrar el usuario
+	 */
 	public String tipoUsuario(String usuario) {
 		try {
 			// TODO Comprobar que la conexion este activa
@@ -142,49 +153,5 @@ public class ConsultaBBDD {
 		}
 		
 		return "false";
-	}
-	
-	
-	// OJO: De aqui hacia abajo es probable que este mal. Se puede borrar. Solo lo dejo
-	// por si sirve de referencia. Asi es como estaba en el ejemplo de persistencia
-	
-	
-	
-	public boolean compruebaNombreUsuario(String usuario) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM "+ this.nombreBD +".tb_acceso U where U.user = '"
-      					+ usuario + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
-			resultado.close();
-			//desconectar();
-			return estado;	
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
-	}
-	
-	public void insertaUsuario (String usuario, String password) throws ErrorEnRecursoException {
-
-		boolean estado = false;
-		
-		try {
-      		//conectar();
-      		crearQuery();
-      		query.executeUpdate("INSERT INTO "+ this.nombreBD +".tb_acceso VALUES ('"+
-      				usuario+"','"+password+"')");
-			//desconectar();
-		}
-		
-		catch (Exception e) {
-			throw new ErrorEnRecursoException(e.getMessage());
-		}
 	}
 }

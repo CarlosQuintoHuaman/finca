@@ -13,6 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class AccesoBBDD {
 	
 	// Los siguientes datos se van a leer del XML de configuracion
@@ -49,9 +54,6 @@ public class AccesoBBDD {
 	 public static Connection conectar(String id) throws ErrorEnRecursoException {
 		
 		try	{
-			//System.out.println("IIIIIIIIIDDDDDDD: "+id);
-			//id = "PersistenciaHistorial1";
-			
 			// MUY IMPORTANTE: El id que se pasa como parametro deberia ser algo del estilo "PersistenciaAlgo1"
 			// Si este nombre esta mal va a petar
 			

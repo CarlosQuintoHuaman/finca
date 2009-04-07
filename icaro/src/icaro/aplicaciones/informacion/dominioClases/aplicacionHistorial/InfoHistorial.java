@@ -2,6 +2,11 @@ package icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class InfoHistorial implements Serializable {
 	
 	/**
@@ -16,7 +21,14 @@ public class InfoHistorial implements Serializable {
 	private String diagnostico;
 	private String tratamiento;
 		
-	
+	/**
+	 * Crea un objetivo nuevo donde almacenar los datos de una visita para el historial de un paciente
+	 * @param motivo
+	 * @param descripcion
+	 * @param exploracion
+	 * @param diagnostico
+	 * @param tratamiento
+	 */
 	public InfoHistorial (String motivo, String descripcion, String exploracion, String diagnostico, String tratamiento) {
 		this.motivo = motivo;
 		this.descripcion = descripcion;

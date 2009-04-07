@@ -20,7 +20,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTra
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.InfoTraza;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorMedicamentos visualizacion;
@@ -31,12 +35,12 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	String paciente;
 	Timestamp fecha;
 	
-	// Ejemplo de accion semantica sencilla
-	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
-	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
-	// de alguna accion definida en el automata
-
-
+	/**
+	 * - En fase experimental - Metodo que muestra un Composite con el contenido de una ventana
+	 * para que pueda ser usado en ventanas nuevas, pestañas, etc.
+	 * @param c
+	 * @param estilo
+	 */
 	public void pintaTabMed(final CTabFolder c, final java.lang.Integer estilo) {
 		try {
 			visualizacion = (ItfUsoVisualizadorMedicamentos) itfUsoRepositorio.obtenerInterfaz
@@ -55,6 +59,11 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Muestra la ventana de busqueda de medicamento
+	 * @param paciente Paciente al que se le va asignar el medicamento
+	 * @param fecha Fecha de la visita
+	 */
 	public void pintaVentanaBusqueda(String paciente, Timestamp fecha) {
 		try {
 			this.paciente = paciente;
@@ -73,6 +82,9 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Muestra la ventana de añadir un medicamento nuevo
+	 */
 	public void pintaVentanaNuevo() {
 		try {
 			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
@@ -88,6 +100,11 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Asigna un medicamento a un paciente
+	 * @param p Paciente
+	 * @param m Medicamento
+	 */
 	public void asignarMedicamento(String p, InfoMedicamento m) {
 		try {
 			ItfUsoVisualizadorHistorial vh = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
@@ -103,6 +120,10 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Inserta un medicamento en la BD
+	 * @param m Medicamento a insertar
+	 */
 	public void insertarMedicamento(InfoMedicamento m) {
 		try {
 			persistencia.insertaMedicamento(m);
@@ -113,6 +134,10 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Carga los medicamentos de la BD y devuelve los datos al agente que lo ha llamado
+	 * @param origen Agente desde el que se ha invocado esta accion semantica.
+	 */
 	public void cargarMedicamentos(String origen) {
 		try {
 			
@@ -132,6 +157,12 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 		}
 	}
 	
+	/**
+	 * Metodo para quitar un medicamento de la receta de un paciente
+	 * @param p Paciente
+	 * @param t Fecha de la visita
+	 * @param m Medicamento a quitar
+	 */
 	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) {
 		try {
 			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz

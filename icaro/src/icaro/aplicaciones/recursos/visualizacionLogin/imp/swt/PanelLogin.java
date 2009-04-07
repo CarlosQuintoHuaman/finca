@@ -13,6 +13,11 @@ import com.cloudgarden.resource.SWTResourceManager;
 import icaro.aplicaciones.recursos.visualizacionLogin.imp.ClaseGeneradoraVisualizacionLogin;
 import icaro.aplicaciones.recursos.visualizacionLogin.imp.usuario.UsoAgenteLogin;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelLogin extends Thread {
 
 	// Variables
@@ -36,16 +41,12 @@ public class PanelLogin extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelLogin este;
-
 	/**
 	 * 
 	 * @param visualizador
 	 */
 	public PanelLogin(ClaseGeneradoraVisualizacionLogin visualizador){
 		super("Login");
-		este = this;
-		
 		usoAgente = new UsoAgenteLogin(visualizador);
 	}
 

@@ -1,10 +1,12 @@
 package icaro.aplicaciones.recursos.persistenciaLogin.imp;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ErrorEnRecursoException extends Exception {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public ErrorEnRecursoException(){
 		super();

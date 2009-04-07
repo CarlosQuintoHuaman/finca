@@ -3,11 +3,13 @@ package icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class InfoVisita implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	private String usuario;
@@ -18,6 +20,16 @@ public class InfoVisita implements Serializable {
 	private String diagnostico;
 	private String tratamiento;
 
+	/**
+	 * Crea un objetivo nuevo donde almacenar los datos de una visita
+	 * @param p Nombre de usuario
+	 * @param f Fecha de la visita
+	 * @param m Motivo
+	 * @param d Descripcion
+	 * @param e Exploracion
+	 * @param diag Diagnostico
+	 * @param t Tratamiento
+	 */
 	public InfoVisita (String p, Date f, String m, String d, String e, String diag, String t) {
 		setUsuario(p);
 		setFecha(f);

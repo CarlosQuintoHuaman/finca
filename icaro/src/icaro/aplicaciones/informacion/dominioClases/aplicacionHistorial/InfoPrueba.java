@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class InfoPrueba implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	private String paciente;
@@ -18,6 +20,15 @@ public class InfoPrueba implements Serializable {
 	private String archivo;
 	private String descripcion;
 
+	/**
+	 * Crea un objetivo nuevo donde almacenar los datos de una Prueba
+	 * @param p Nombre de usuario
+	 * @param n Nombre de la prueba
+	 * @param f Fecha de la visita en donde esta la prueba
+	 * @param t Tipo de prueba
+	 * @param a Archivo del documento
+	 * @param d Descripcion
+	 */
 	public InfoPrueba (String p, String n, Date f, String t, String a, String d) {
 		paciente = p;
 		nombre = n;

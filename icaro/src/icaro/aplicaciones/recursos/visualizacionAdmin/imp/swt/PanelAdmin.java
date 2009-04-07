@@ -17,6 +17,11 @@ import com.cloudgarden.resource.SWTResourceManager;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.ClaseGeneradoraVisualizacionAdmin;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.usuario.UsoAgenteAdmin;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelAdmin extends Thread {
 
 	// Variables
@@ -49,16 +54,12 @@ public class PanelAdmin extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelAdmin este;
-
 	/**
 	 * 
 	 * @param visualizador
 	 */
 	public PanelAdmin(ClaseGeneradoraVisualizacionAdmin visualizador){
-		super("Agenda");
-		este = this;
-		
+		super("Admin");
 		usoAgente = new UsoAgenteAdmin(visualizador);
 	}
 
@@ -310,6 +311,7 @@ public class PanelAdmin extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
+	
 	private void bAceptarWidgetSelected(SelectionEvent evt) {
 		System.out.println("bAceptar.widgetSelected, event="+evt);
 		//TODO add your code for bAceptar.widgetSelected

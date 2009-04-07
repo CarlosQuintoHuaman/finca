@@ -17,10 +17,14 @@ import org.eclipse.swt.widgets.*;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.ClaseGeneradoraVisualizacionMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.usuario.UsoAgenteMedicamentos;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelBusqueda extends Thread {
 
 	// Variables
@@ -44,8 +48,6 @@ public class PanelBusqueda extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelBusqueda este;
-	
 	private ArrayList<InfoMedicamento> medicamentos;
 	private ArrayList<InfoMedicamento> filtro;
 	String paciente;
@@ -56,8 +58,6 @@ public class PanelBusqueda extends Thread {
 	 */
 	public PanelBusqueda(ClaseGeneradoraVisualizacionMedicamentos visualizador){
 		super("Busqueda medicamentos");
-		este = this;
-		
 		usoAgente = new UsoAgenteMedicamentos(visualizador);
 	}
 

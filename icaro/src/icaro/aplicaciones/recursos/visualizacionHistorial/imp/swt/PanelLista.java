@@ -5,9 +5,6 @@ import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -24,13 +21,16 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisi
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.ClaseGeneradoraVisualizacionHistorial;
 import icaro.aplicaciones.recursos.visualizacionHistorial.imp.usuario.UsoAgenteHistorial;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelLista extends Thread {
 
 	// Variables
 	private Composite listado;
 	private Button bCerrar;
-	private CLabel lMotivo1;
-	private CLabel lFecha1;
 	private CLabel lMotivoTitulo;
 	private CLabel lFechaTitulo;
 	private CLabel lTitulo;
@@ -50,16 +50,12 @@ public class PanelLista extends Thread {
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
-	private PanelLista este;
-
 	/**
 	 * 
 	 * @param visualizador
 	 */
 	public PanelLista(ClaseGeneradoraVisualizacionHistorial visualizador){
 		super("Lista Historial");
-		este = this;
-		
 		usoAgente = new UsoAgenteHistorial(visualizador);
 		this.visualizador = visualizador;
 	}

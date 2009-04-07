@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 
 /**
  * 
- *@author     
- *@created    
+ * @author Camilo Andres Benito Rojas
+ *
  */
 public class UsoAgenteLogin {
 
@@ -72,57 +72,8 @@ public class UsoAgenteLogin {
         //usoAgenteControlador.aceptaEvento(new Evento("peticion_terminacion_usuario"));
     }
 
-    public void mostrarVentanaCita(){
-    	getInformacionAgente();
-    	
-    	try {
-            if (itfUsoRepositorioInterfaces == null) {
-                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-            }
-
-            if (tipoAgenteLogin.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionLogin
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteLogin);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("darCita", "VisualizacionLogin1", nombreAgenteLogin));
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
-            e.printStackTrace();
-        }
-    }
-    
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
-    }
-    
-    public void validaCita(String nombre, String apellido, String telf) {
-      
-	   getInformacionAgente();
-        //provoca la petici�n de autentificaci�n
-    	
-        String[] datosEnvio = new String[]{nombre, apellido,telf};
-
-        try {
-            if (itfUsoRepositorioInterfaces == null) {
-                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
-            }
-
-            if (tipoAgenteLogin.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionLogin
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteLogin);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("infoCita", datosEnvio, "VisualizacionLogin1", nombreAgenteLogin));
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar los datos de la cita ");
-            e.printStackTrace();
-        }
-        
     }
     
     public void validaUsuario(String u, String p) {

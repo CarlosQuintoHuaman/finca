@@ -4,12 +4,8 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -17,10 +13,14 @@ import org.eclipse.swt.widgets.*;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.ClaseGeneradoraVisualizacionMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.imp.usuario.UsoAgenteMedicamentos;
 
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class PanelMedicamentos extends Composite {
 
 	// Variables
@@ -59,8 +59,10 @@ public class PanelMedicamentos extends Composite {
 	String paciente;
 
 	/**
-	 * 
+	 * - En fase de pruebas -
 	 * @param visualizador
+	 * @param padre
+	 * @param estilo
 	 */
 	public PanelMedicamentos(ClaseGeneradoraVisualizacionMedicamentos visualizador, Composite padre, final int estilo){
 		super(padre, estilo);

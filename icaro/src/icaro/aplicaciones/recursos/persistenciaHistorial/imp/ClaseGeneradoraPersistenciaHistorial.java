@@ -17,7 +17,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple implements
 		ItfUsoPersistenciaHistorial {
 
@@ -27,6 +31,11 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 
 	private Connection c;
 	
+	/**
+	 * Constructor
+	 * @param id
+	 * @throws Exception
+	 */
 	public ClaseGeneradoraPersistenciaHistorial(String id) throws Exception {
 		
 		super(id);
@@ -57,21 +66,6 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 
 	}
 
-	public boolean compruebaUsuario(String usuario, String password)
-			throws ErrorEnRecursoException {
-		try {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaHistorial",
-  				"Comprobando usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		return consulta.compruebaUsuario(usuario, password);
-		} catch (Exception e) {
-			this.estadoAutomata.transita("error");
-			
-			return false;
-		}
-
-	}
-	
 	public ArrayList<InfoVisita> getHistorial(String paciente) {
 		return consulta.getHistorial(paciente);
 	}

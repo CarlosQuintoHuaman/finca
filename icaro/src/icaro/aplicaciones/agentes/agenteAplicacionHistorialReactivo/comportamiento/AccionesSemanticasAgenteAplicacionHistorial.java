@@ -18,7 +18,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTra
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.InfoTraza;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorHistorial visualizacion;
@@ -29,10 +33,11 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	String paciente;
 	Timestamp fecha;
 	
-	// Ejemplo de accion semantica sencilla
-	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
-	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
-	// de alguna accion definida en el automata
+	/**
+	 * Muestra la ventana historial para una visita concreta 
+	 * @param paciente
+	 * @param fecha Fecha de la visita
+	 */
 	public void pintaVentanaHistorial(String paciente, Timestamp fecha){
 		
 		try {
@@ -73,6 +78,10 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 	}
 	
+	/**
+	 * Muestra la lista de visitas en el historial de un paciente
+	 * @param paciente
+	 */
 	public void pintaVentanaLista(String paciente) {
 		try {
 			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
@@ -88,6 +97,10 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 	}
 	
+	/**
+	 * Muestra la ventana para añadir una Prueba nueva al historial de un paciente
+	 * @param v Visita a la cual se va a añadir la prueba
+	 */
 	public void pintaVentanaPrueba(InfoVisita v) {
 		try {
 			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
@@ -100,20 +113,37 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 		}
 	}
 	
+	/**
+	 * Guarda una visita en la BD
+	 * @param v Datos a guardar
+	 */
 	public void guardarVisita(InfoVisita v) {
 		persistencia.setVisita(v);
 	}
 	
+	/**
+	 * Guarda una Prueba en la BD
+	 * @param p Datos a guardar
+	 */
 	public void guardarPrueba(InfoPrueba p) {
 		persistencia.setPrueba(p);
 		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente(), p.getFecha()));
 	}
 	
+	/**
+	 * Borra una prueba de la BD
+	 * @param p Prueba a borrar
+	 */
 	public void borrarPrueba(InfoPrueba p) {
 		persistencia.borrarPrueba(p);
 		visualizacion.mostrarDatosPrueba(persistencia.getPruebas(p.getPaciente(), p.getFecha()));
 	}
 	
+	/**
+	 * Borra un medicamento de la BD
+	 * @param m Medicamento a borrar
+	 * @throws Exception
+	 */
 	public void borrarMedicamento(InfoMedicamento m) throws Exception {
 		persistencia.borrarMedicamento(m);
 		visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos(paciente, fecha));

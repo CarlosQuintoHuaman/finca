@@ -18,7 +18,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple implements ItfUsoVisualizadorHistorial{
 
 	private static final long serialVersionUID = 1L;

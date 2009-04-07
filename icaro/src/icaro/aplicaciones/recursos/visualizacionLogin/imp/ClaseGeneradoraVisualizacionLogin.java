@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2007
+ * @author Camilo Andres Benito Rojas
+ *
  */
 
 public class ClaseGeneradoraVisualizacionLogin extends ImplRecursoSimple implements ItfUsoVisualizadorLogin{

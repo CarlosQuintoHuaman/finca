@@ -15,7 +15,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple implements
 		ItfUsoPersistenciaMedicamentos {
 

@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
- *@author     
- *@created    
+ * @author Camilo Andres Benito Rojas
+ *
  */
 public class UsoAgenteMedicamentos {
 
@@ -48,6 +48,11 @@ public class UsoAgenteMedicamentos {
 
     }
     
+    /**
+     * - En fase experimental - Metodo para indicar cuando se termina de cargar una
+     * ventana para saber cuando se debe obtener una interfaz de otro agente 
+     * @param c Composite indicando el que va a ser el "container" de la interfaz externa
+     */
     public void cargaFinalizada(Composite c) {
     	getInformacionAgente();
     	
@@ -99,6 +104,10 @@ public class UsoAgenteMedicamentos {
     }
     
     
+    /**
+     * Inserta un medicamento en la BD
+     * @param m InfoMedicamento
+     */
     public void insertarMed(InfoMedicamento m) {
     	getInformacionAgente();
     	

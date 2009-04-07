@@ -5,15 +5,24 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
  * 
- *@author     F Garijo
- *@created    20 de noviembre de 2008
+ * @author Camilo Andres Benito Rojas
+ *
  */
-
 public interface ItfUsoVisualizadorAdmin extends ItfUsoRecursoSimple{
 
+	/**
+	 * Muestra la ventana de administrador
+	 * @param nombreAgente
+	 * @param tipo
+	 * @throws Exception
+	 */
 	public void mostrarVisualizadorAdmin(String nombreAgente,String tipo) throws Exception;
 
-      public void cerrarVisualizadorAdmin() throws Exception;
+	/**
+	 * Cierra la ventana de administrador
+	 * @throws Exception
+	 */
+	public void cerrarVisualizadorAdmin() throws Exception;
     
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;
   	public void mostrarMensajeAviso(String titulo,String mensaje) throws Exception;

@@ -1,8 +1,6 @@
 package icaro.aplicaciones.recursos.persistenciaLogin.imp;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-
 import icaro.aplicaciones.recursos.persistenciaLogin.ItfUsoPersistenciaLogin;
 import icaro.aplicaciones.recursos.persistenciaLogin.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.persistenciaLogin.imp.util.ConsultaBBDD;
@@ -13,7 +11,11 @@ import icaro.infraestructura.recursosOrganizacion.recursoTrazas.imp.componentes.
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
 
-
+/**
+ * 
+ * @author Camilo Andres Benito Rojas
+ *
+ */
 public class ClaseGeneradoraPersistenciaLogin extends ImplRecursoSimple implements
 		ItfUsoPersistenciaLogin {
 
@@ -71,25 +73,6 @@ public class ClaseGeneradoraPersistenciaLogin extends ImplRecursoSimple implemen
 		}
 
 	}
-
-	public boolean compruebaNombreUsuario(String usuario)
-			throws ErrorEnRecursoException {
-			trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaLogin",
-  				"Comprobando nombre de usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		return consulta.compruebaNombreUsuario(usuario);
-
-	}
-
-	public void insertaUsuario(String usuario, String password)
-			throws ErrorEnRecursoException {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaLogin",
-  				"Insertando usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-		consulta.insertaUsuario(usuario, password);
-
-	}
-
 
 	@Override
 	public void termina() {
