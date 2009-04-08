@@ -7,6 +7,14 @@ public class DatosCita {
 	private String fecha;
 	private String hora;
 	
+	/**
+	 * Crea un objeto nuevo donde almacenar los datos de una cita de la agenda con medico
+	 * @param nombre
+	 * @param telf
+	 * @param medico
+	 * @param fecha
+	 * @param hora
+	 */
 	public DatosCita(String nombre, String telf, String medico, String fecha,
 			String hora) {
 		this.nombre = nombre;

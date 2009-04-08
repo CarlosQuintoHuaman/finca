@@ -20,10 +20,14 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 	private ItfUsoAgenteReactivo agenteFicha;
 
 	
-	// Ejemplo de accion semantica sencilla
+
 	// NOTA: Recordar que estas acciones estan definidas en el automata y son llamadas al
 	// recibir un EventoInput. El nombre de este metodo debe corresponder con el nombre
 	// de alguna accion definida en el automata
+	/**
+	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
+     * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
+     */
 	public void pintaVentanaFicha(DatosAgenda datos){
 		
 		try {
@@ -50,7 +54,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 		}
 	}	
 
-	// Ejemplo de otra accion semantica mas compleja
+	// Ejemplo de accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
 	// tal como se ve aqui	
 	public void inserta(String nombre, String apell1, String telf) {

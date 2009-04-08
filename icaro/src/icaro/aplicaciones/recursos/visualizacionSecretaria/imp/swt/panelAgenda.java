@@ -65,7 +65,8 @@ public class panelAgenda extends Thread {
 	 */
 	final UsoAgenteSecretaria usoAgente;
 	
-	// Variables de inicializacion de SWT
+	
+	//componentes de la ventana
 	private Button Manana;
 	private Composite seleccionado;
 	private CLabel cNomSel;
@@ -99,28 +100,15 @@ public class panelAgenda extends Thread {
 	private Composite Menu1;
 	private Composite principal;
 	private Composite huecoAgenda;
-	private boolean man=true;
-	private int intervalo=15;
-	
-	private Time iniMan = new java.sql.Time(0000000);
-	private Time iniTar=new java.sql.Time(0000000);
-	private Time finMan=new java.sql.Time(0000000);
-	private Time finTar=new java.sql.Time(0000000);
 	private Button[] horas;
 	private GridData[] aux1;
 	private GridData[] aux2;
 	private GridData[] aux3;
 	private CLabel[] Nombres;
 	private CLabel[] Telefonos;
-	private boolean init=true;
-	private int k=0;
-	private int c=0;
-	private DatosAgenda copiado, pegado;
-	private ArrayList <DatosLlamada>extra=new ArrayList();
-	private ArrayList <DatosLlamada>llamada=new ArrayList();
-	private Date fecha;
-	protected Date fechaAnt;
-	private int min;
+	private CTabItem[] TabNomMed;
+	private Composite[] agendaDinamica;
+	
 	//DatosLlamada
 	private CLabel[] NombresL;
 	private String[] TelefonosL;
@@ -134,33 +122,53 @@ public class panelAgenda extends Thread {
 	private String[] MensajeE;
 	private boolean[] PacienteE;
 	private CLabel[] horasE;
+	private Menu opciones;
 	
+	//variables globales
+	private boolean man=true;
+	private int intervalo=15;
+	//hora de inicio,fin, mañana y tarde
+	private Time iniMan = new java.sql.Time(0000000);
+	private Time iniTar=new java.sql.Time(0000000);
+	private Time finMan=new java.sql.Time(0000000);
+	private Time finTar=new java.sql.Time(0000000);
+
+	private boolean init=true;
+	private int k=0;
+	private int c=0;
+	private DatosAgenda copiado, pegado;
+	private ArrayList <DatosLlamada>extra=new ArrayList();
+	private ArrayList <DatosLlamada>llamada=new ArrayList();
+	private Date fecha;
+	protected Date fechaAnt;
+	private int min;
+
+	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
 	private panelAgenda este;
 	private ClaseGeneradoraVisualizacionSecretaria vis;
-	//Datos persistencia
+	
 	private ArrayList<DatosCitaSinValidar> l;
 	private String fechaAgenda;
 	
-	private Menu opciones;
+	
 	private boolean cumple;
-
-
+	//Datos persistencia
+	//datos :: Variable que contiene todos los datos de la agenda del usuario(secretaria) para el dia consultado. Por defecto la fecha actual
 	private DatosSecretaria datos;
 	private ArrayList<DatosMedico> medatos;
 	private int numM;
-	private CTabItem[] TabNomMed;
-	private Composite[] agendaDinamica;
+
 	private ArrayList<Agenda> Ag;
 	private String usuEste;
-	//private String fe;
+
 	private String fd;
 	private String fy;
 	private String fant;
 	private CLabel seleccion;
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelAgenda(ClaseGeneradoraVisualizacionSecretaria visualizador){
@@ -186,7 +194,13 @@ public class panelAgenda extends Thread {
 	       }
          });
 	}
-	
+	/**
+	 * Funcion que una vez mostrada la ventana (vacia) nos rellena la ventana con los datos sacados de la persistencia
+	 * @param fecha :: fecha de la agenda que se muestra
+	 * @param lm1	:: Lista de citas de todos los medicos a los que les corresponde esta secretaria
+	 * @param numM  :: Numero de medicos para los que tiene agenda este usuario (secretaria)
+	 * @param s		:: Nombre del usuario actual
+	 */
 	public void meteDatos(String fecha, final ArrayList<DatosMedico> lm1 ,final int numM, final String s){
 		disp.syncExec(new Runnable() {
             public void run() {
@@ -198,6 +212,7 @@ public class panelAgenda extends Thread {
             		
             	}
             	usuEste=s;
+            	//Genera la agenda dinamicamente segun medicos (en pestañas) y pacientes (en horas)
             	generaTabla();
             
             }
@@ -225,15 +240,14 @@ public class panelAgenda extends Thread {
 		return usoAgente;
 	}
 
-	/**
+	/** Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){
 		// Lo primero es inicializar el Shell
 		shell = new Shell(disp);
 		
-		// Ahora va el codigo de la ventana.
-		// ¡Ojo! Las variables de SWT deberian ser globales
+
 		try {
 			{
 				//Register as a resource user - SWTResourceManager will
@@ -245,11 +259,12 @@ public class panelAgenda extends Thread {
 			medatos=new ArrayList<DatosMedico>();
 			numM=0;
 			datos=new DatosSecretaria(medatos, numM);
-//			Medicos =new ArrayList<String>();
+
 			l=new ArrayList<DatosCitaSinValidar> ();
 			Ag= new ArrayList<Agenda>();
 			
 			shell.setLayout(new FillLayout());
+			//Genera fecha actual
 			util f=new util();
 			fd=util.getStrDateSQL2();
 			fy=util.getStrDateSQL();
@@ -630,6 +645,13 @@ public class panelAgenda extends Thread {
 			e.printStackTrace();
 		}
 	}
+	// Aqui iran los metodos especificos de cada ventana
+	/**
+	 * Se llama desde generaTabla.
+	 * genera la agenda (horas y pacientes) del medico que se le pasa por paramentro
+	 * @param i :: indice del medico del que se quiere generar la agenda.
+	 * Se generan las 'cabeceras' que indican las columnas de Horas, Nombre y Telefono para el medico que se especifica como parametro
+	 */
 	public void agendaMedico(int i){
 		TabNomMed[i].setControl(agendaDinamica[i]);
 		{
@@ -674,6 +696,8 @@ public class panelAgenda extends Thread {
 			telefono.setLayoutData(telefonoLData);
 			telefono.setAlignment(SWT.CENTER);
 		}
+		
+		//por defecto hasta que se rellene BBDD
 		iniMan.setMinutes(0);
 		iniMan.setHours(9);
 		
@@ -687,7 +711,11 @@ public class panelAgenda extends Thread {
 		iniTar.setHours(16);
 	}
 	
-
+	/**
+	 * Genera la agenda dinamicamente segun los datos obtenidos de la persistencia y que se alamacenan el a variable 'datos'
+	 * TabNomMed		:: genera una pestaña para cada medico
+	 * agendaDinamica 	:: Dentro de cada pestaña se genera la tabla de horas y pacientes segun corresponda
+	 */
 	public void generaTabla(){
 		TabNomMed= new CTabItem[datos.getNumM()];
 		agendaDinamica= new Composite[datos.getNumM()];
@@ -702,6 +730,8 @@ public class panelAgenda extends Thread {
 					GridLayout AgendaDinamicaLayout = new GridLayout();
 					AgendaDinamicaLayout.numColumns = 3;
 					agendaDinamica[i].setLayout(AgendaDinamicaLayout);
+					
+					//genera la agenda (horas y pacientes) del medico que se le pasa por paramentro
 					agendaMedico(i);
 				}
 
@@ -728,11 +758,15 @@ public class panelAgenda extends Thread {
 			});
 	}
 	}
-	
+	/**
+	 * Se llama desde RellenaTabla.
+	 * Con esta funcion se rellenan los campos de nombre y telefono que correspondan segun lo extraido de la persistencia para el medico 
+	 * pasado como parametrom y la fecha consultada
+	 * @param medico	:: Medico que se consulta
+	 * @param cc		:: longitud de la tabla
+	 */
 	private void agendaPersistencia(String medico, int cc){
-/*		if (m<l.size()){
-			Nombres[c].setText(l.get(m).tomaNombre());
-			Telefonos[c].setText(l.get(m).tomaTelf());*/
+
 		int i=0;
 		boolean cu=false;
 		ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
@@ -755,8 +789,18 @@ public class panelAgenda extends Thread {
 			}
 		}		
 	}
+	
+	/**
+	 * * Se genera la tabla vacia de las horas (segun lo indicado en la persistencia para su intervalo de consulta, hora inicio y hora fin para mañana y tarde),
+	 *  los nombres y los telefonos de la agenda de ese medico para el dia que se ha consultado
+	 * @param iniMan	:: hora de inicio de la mañana
+	 * @param iniTar	:: hora de inicio de la tarde
+	 * @param finMan	:: Hora de fin de la mañana
+	 * @param finTar	:: Hora de fin de la tarde
+	 * @param man		:: indica si se esta rellenando el horario de mañana o de tarde
+	 * @param k			:: Indica la agenda del medico que se esta rellenando
+	 */
 
-	// Aqui iran los metodos especificos de cada ventana
 	private void RellenaTabla(Time iniMan, Time iniTar, Time finMan, Time finTar, boolean man, int k){
 		if (man)
 			tablaAux(iniMan, finMan, k);
@@ -823,6 +867,7 @@ public class panelAgenda extends Thread {
 					}
 				});
 
+				//se contruye un menu contextual asociado a cada campo nombre de la agenda
 				MenuItem copiar = new MenuItem(opciones,SWT.PUSH);
 				copiar.setText("Copiar");
 				copiar.addSelectionListener(new SelectionAdapter() {
@@ -902,7 +947,12 @@ public class panelAgenda extends Thread {
 		agendaDinamica[k].layout();
 	}
 
-	
+	/**
+	 * Accion del evento asociado al boton 'mañana'
+	 * resetea el rellenado de la agenda con la previa actualizacion de la variable global que indica si se consulta
+	 * el horario de mañana o de tarde
+	 * @param evt
+	 */
 	private void MananaWidgetSelected(SelectionEvent evt) {
 		man=true;
 		int m=Agenda.getSelectionIndex();
@@ -911,6 +961,12 @@ public class panelAgenda extends Thread {
 		disp.update();
 	}
 	
+	/**
+	 * Accion del evento asociado al boton 'tarde'
+	 * resetea el rellenado de la agenda con la previa actualizacion de la variable global que indica si se consulta
+	 * el horario de mañana o de tarde
+	 * @param evt
+	 */
 	private void TardeWidgetSelected(SelectionEvent evt) {
 		man=false;
 		int m=Agenda.getSelectionIndex();
@@ -918,7 +974,11 @@ public class panelAgenda extends Thread {
 			RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
 		disp.update();
 		
-		
+		/**
+		 * Accion del evento asociado al boton 'copiar'
+		 * Copia el contenido del paciente seleccionado para posibilidad de pegado posterior usando la variable global 'copiado'
+		 * @param evt
+		 */	
 	}
 	private void CopiarWidgetSelected(SelectionEvent evt){
 		
@@ -930,7 +990,11 @@ public class panelAgenda extends Thread {
 			copiado=buscarSeleccionadoA(seleccion);
 			copiado.setCrear(true);
 	}
-	
+	/**
+	 * Accion del evento asociado al boton 'pegar'
+	 * pega el contenido del paciente copiado previamente en el lugar seleccionado'
+	 * @param evt
+	 */	
 	private void PegarWidgetSelected(SelectionEvent evt){
 		
 		if (!copiado.tomaCrear())
@@ -955,7 +1019,11 @@ public class panelAgenda extends Thread {
 		}
 		copiado.setCrear(false);
 	}
-	
+	/**
+	 * Accion del evento asociado al boton 'borrar'
+	 * borra el contenido del paciente seleccionado tanto visualmente de la ventana como de la variable que contiene los datos de la persistencia (datos)
+	 * @param evt
+	 */	
 	private void BorrarWidgetSelected(SelectionEvent e){
 		if (seleccion.getText()=="")
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
@@ -999,22 +1067,35 @@ public class panelAgenda extends Thread {
 	}
 	}
 	
+	/**
+	 * Accion del evento asociado al boton 'crear Ficha'
+	 * Muestra la ventana ficha. Si hay algun paciente seleccionado, rellena la nueva ventana con esos datos, si no, vacia.
+	 * @param evt
+	 */	
 	private void CrearFichaWidgetSelected(SelectionEvent evt){
+		//busqueda del paciente que se le pasa como parametro para recoger todos sus datos
 		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
 		DatosAgenda a= new DatosAgenda(d.tomaNombre(), d.tomaTelf(), true);
 		usoAgente.mostrarVentanaFicha(a);
 	}
 	
-	private void DarCitaWidgetSelected(SelectionEvent evt){
+
+/*	private void DarCitaWidgetSelected(SelectionEvent evt){
 		CLabel lsel=(CLabel)evt.getSource();
+		//busqueda del paciente que se le pasa como parametro para recoger todos sus datos
 		DatosCitaSinValidar d= buscarSeleccionado(lsel);
 		if (d.tomaNombre()=="")
 			usoAgente.mostrarVentanaCita();
 		else
 			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
 	
-	}
+	}*/
 	
+	/**
+	 * Accion del evento asociado al boton 'Dar Cita'
+	* Muestra la ventana cita. Si hay algun paciente seleccionado, rellena la nueva ventana con esos datos, si no, vacia.
+	 * @param evt
+	 */	
 	private void DarCitaWidgetSelectedB(SelectionEvent evt){
 		if (!(seleccion==null)){
 		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
@@ -1027,13 +1108,29 @@ public class panelAgenda extends Thread {
 		}
 	}
 	
+	/**
+	 * Accion del evento asociado al boton 'añadir extra'
+	* Muestra la ventana extra. Si hay algun paciente seleccionado, rellena la nueva ventana con esos datos, si no, vacia.
+	 * @param evt
+	 */	
 	private void anadirEWidgetSelected(SelectionEvent evt){
 		usoAgente.mostrarVentanaExtra();
 	}
 	
+	/**
+	 * Accion del evento asociado al boton 'añadir Llamada'
+	* Muestra la ventana Llamada. Si hay algun paciente seleccionado, rellena la nueva ventana con esos datos, si no, vacia.
+	 * @param evt
+	 */	
 	private void anadirLWidgetSelected(SelectionEvent evt){
 		usoAgente.mostrarVentanaLlamadas();
 	}
+	/**
+	 * Accion del evento asociado al hacer click sobre alguno de los nombres de la tabla, tanto si esta vacio como si no
+	* Muestra la ventana Cita. Si hay algun paciente inscrito, rellena la nueva ventana con esos datos, si no, vacia.
+	* Ademas muestra que se ha seleccionado cambiando de color dicha fila de la tabla
+	 * @param evt
+	 */	
 	private void nombreMouseDown(MouseEvent evt) {
 		String nombre=""; 
 		String apellido="";
@@ -1070,6 +1167,13 @@ public class panelAgenda extends Thread {
 		seleccion=lsel;
 		
 	}
+
+	/**
+	 * Busca el paciente seleccionado de la agenda visible actualmente buscandolo en la tabla.
+	 * Normalmente esta funcion se usa para poder acceder a sus otros datos (hora de cita, telefono)
+	 * @param nombre 	:: nombre del paciente a buscar
+	 * @return d 	:: nos da informacion sobre el nombre, apellidos, telf, hora del paciente consultado
+	 */
 	
 	public DatosCitaSinValidar buscarSeleccionado(String nombre){
 		int i=0;
@@ -1101,6 +1205,12 @@ public class panelAgenda extends Thread {
 		
 	}
 	
+	/**
+	 * Busca el paciente seleccionado de la agenda visible actualmente buscandolo en la tabla.
+	 * Normalmente esta funcion se usa para poder acceder a sus otros datos (hora de cita, telefono)
+	 * @param nombre 	:: nombre del paciente a buscar
+	 * @return d	 	:: nos da informacion sobre el nombre, apellidos, telf, hora del paciente consultado
+	 */
 	public DatosCitaSinValidar buscarSeleccionado(CLabel nombre){
 		int i=0;
 		int p=1;
@@ -1129,38 +1239,50 @@ public class panelAgenda extends Thread {
 		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
 		return d;
 	}
-		
-		public DatosAgenda buscarSeleccionadoA(CLabel label){
-			int i=0;
-			int p=1;
-			boolean Es =false;
-			String nombre="";
-			String apell1="";
-			String Telf="";
-			String Hora="";
-			String fecha="";
-			String [] aux;
-			while (i<c & !Es){
-				if(Nombres[i]==label){
-					Telf=Telefonos[i].getText();
-					Hora=horas[i].getText();
-					Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
-					aux=label.getText().split(" ");
-					while (p<aux.length){
-						if (p==1)
-							apell1=aux[p];
-						else
-							apell1=apell1+" "+aux[p];
-						p++;
-					}
-					Es=true;
+	
+	/**
+	 * Busca el paciente seleccionado de la agenda visible actualmente buscandolo en la tabla.
+	 * Normalmente esta funcion se usa para poder acceder a sus otros datos (hora de cita, telefono)
+	 * @param nombre 	:: nombre del paciente a buscar
+	 * @return d		:: nos da informacion sobre nombre, telefono, hora y fecha del paciente buscado
+	 */
+	public DatosAgenda buscarSeleccionadoA(CLabel label){
+		int i=0;
+		int p=1;
+		boolean Es =false;
+		String nombre="";
+		String apell1="";
+		String Telf="";
+		String Hora="";
+		String fecha="";
+		String [] aux;
+		while (i<c & !Es){
+			if(Nombres[i]==label){
+				Telf=Telefonos[i].getText();
+				Hora=horas[i].getText();
+				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
+				aux=label.getText().split(" ");
+				while (p<aux.length){
+					if (p==1)
+						apell1=aux[p];
+					else
+						apell1=apell1+" "+aux[p];
+					p++;
 				}
-				i++;
+				Es=true;
 			}
-		DatosAgenda d= new DatosAgenda(label.getText(), Telf, Hora, fy);
-		return d;
+			i++;
+		}
+	DatosAgenda d= new DatosAgenda(label.getText(), Telf, Hora, fy);
+	return d;
 	}
 	
+	/**
+	 * Busca el paciente seleccionado de la agenda visible actualmente buscandolo en la tabla.
+	 * Normalmente esta funcion se usa para poder acceder a sus otros datos (hora de cita, telefono, fecha)
+	 * @param nombre 	:: nombre del paciente a buscar
+	 * @return d		:: nos da informacion sobre nombre, telefono, hora y fecha del paciente buscado
+	 */
 	public DatosAgenda buscarSeleccionado2(String nombre){
 		int i=0;
 		boolean Es =false;
@@ -1187,7 +1309,15 @@ public class panelAgenda extends Thread {
 		Nombres[1].setText(nombre+" "+apellido);
 		
 	}
-
+	/**
+	 * Esta funcion se llama desde fuera (Cita) para comprobar a la hora de ampliar el periodo de una cita, si la agenda tiene hueco libre posterior para que sea
+	 * factible.
+	 * Ejemplo: Sea el intervalo= 15 min 
+	 * 			Sea un paciente con cita de 9:00 a 9:15 (por defecto con duracion de un intervalo)
+	 * 			Si hacemos click en la ventana de la cita en el boton '+' se aumenta el horario de cita en un intervalo (de 9:00 a 9:30) pero para
+	 * 			que ello sea factible la cita de 9:15 a 9:30 debe estar libre. De esta comprobacion es de lo que se encarga esta funcion  
+	 * @param d		:: datos de la cita que se quiere comprobar con los datos que se tienen de la agenda
+	 */
 	public void comprobarCita(final DatosCitaSinValidar d) {
 		
 		try{
@@ -1236,9 +1366,6 @@ public class panelAgenda extends Thread {
 	         }
 	         else{
 			//Si fallo muestro la cita otra vez y mensaje error
-/*	        	 f=new panelCita(vis);
-	        	 f.meteDatos(datos);
-	        	 f.mostrar();*/
 	         }
 	         
 			       }
@@ -1250,6 +1377,12 @@ public class panelAgenda extends Thread {
 		}
 		
 	}
+	
+	/**
+	 * Funcion que se llama externamente (ventana de llamadas tras darle al boton 'aceptar')que se encarga de insertar una nueva llamada en la tabla 
+	 * de llamadas de la agenda
+	 * @param d		:: llamada que se quiere insertar
+	 */
 	public void insertaLlamada(final DatosLlamada d){
 		
 		try{
@@ -1279,6 +1412,11 @@ public class panelAgenda extends Thread {
 	            
 	}
 	
+	/**
+	 * Funcion que se llama externamente (ventana de llamadas)que se encarga de modificar una llamada de la tabla 
+	 * de llamadas de la agenda
+	 * @param d		:: llamada que se quiere modificar
+	 */
 	public void modificaLlamada(final DatosLlamada dA, final DatosLlamada dP){
 		
 		try{
@@ -1297,8 +1435,7 @@ public class panelAgenda extends Thread {
 	            			}
 	            		}
 	            	}
-	            	
-	            	//Y ESTO QUE HAGO?????
+	    
             		if(!esta){
             			llamada.add(dP);
             		}
@@ -1312,7 +1449,11 @@ public class panelAgenda extends Thread {
 		}
 	            
 	}
-	
+	/**
+	 * Funcion que se llama externamente (ventana de llamadas)que se encarga de borrar unallamada en la tabla 
+	 * de llamadas de la agenda
+	 * @param d		:: llamada que se quiere borrar
+	 */
 	public void borraLlamada(final DatosLlamada d){
 		try{
 			disp.asyncExec(new Runnable() {
@@ -1341,8 +1482,13 @@ public class panelAgenda extends Thread {
 		}
 	            
 	}
-
-		public void insertaExtra(final DatosLlamada d){
+	
+	/**
+	 * Funcion que se llama externamente (ventana de Extras tras darle al boton 'aceptar')que se encarga de insertar un nuevo extra en la tabla 
+	 * de extras de la agenda
+	 * @param d		:: extra que se quiere insertar
+	 */
+	public void insertaExtra(final DatosLlamada d){
 		
 		try{
 			disp.asyncExec(new Runnable() {
@@ -1372,41 +1518,51 @@ public class panelAgenda extends Thread {
 	            
 	}
 		
-		public void modificaExtra(final DatosLlamada dA, final DatosLlamada dP){
-			
-			try{
-				disp.asyncExec(new Runnable() {
-		            public void run() {
-		            	boolean esta=false;
-		            	if (!extra.isEmpty()){
-		            		for (int i=0;i<extra.size();i++){	            		
-		            			NombresE[i].dispose();
-		            			horasE[i].dispose();
-		            			if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getNombre().equals(dA.getNombre())){
-		            				esta=true;
-		            				extra.get(i).setNombre(dP.getNombre());
-		            				extra.get(i).setMensaje(dP.getMensaje());
-		            				extra.get(i).setTelf(dP.getTelf());
-		            				extra.get(i).setPaciente(dP.getPaciente());
-		            			}
-		            		}
-		            	}
-		            	
-		            	//Y ESTO QUE HAGO?????
-	            		if(!esta){
-	            			extra.add(dP);
+	/**
+	 * Funcion que se llama externamente (ventana de extras)que se encarga de modificar un extra en la tabla 
+	 * de extras de la agenda
+	 * @param d		:: extra que se quiere modificar
+	 */
+	public void modificaExtra(final DatosLlamada dA, final DatosLlamada dP){
+		
+		try{
+			disp.asyncExec(new Runnable() {
+	            public void run() {
+	            	boolean esta=false;
+	            	if (!extra.isEmpty()){
+	            		for (int i=0;i<extra.size();i++){	            		
+	            			NombresE[i].dispose();
+	            			horasE[i].dispose();
+	            			if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getNombre().equals(dA.getNombre())){
+	            				esta=true;
+	            				extra.get(i).setNombre(dP.getNombre());
+	            				extra.get(i).setMensaje(dP.getMensaje());
+	            				extra.get(i).setTelf(dP.getTelf());
+	            				extra.get(i).setPaciente(dP.getPaciente());
+	            			}
 	            		}
-		            	listaLlamadasE();
-		            }
-		         });
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			
-			}
-		            
+	            	}
+	            	
+	            	//Y ESTO QUE HAGO?????
+            		if(!esta){
+            			extra.add(dP);
+            		}
+	            	listaLlamadasE();
+	            }
+	         });
 		}
+		catch(Exception e){
+			e.printStackTrace();
+		
+		}
+	            
+	}
 	
+	/**
+	 * Funcion que se llama externamente (ventana de extras)que se encarga de borrar un extra en la tabla 
+	 * de extras de la agenda
+	 * @param d		:: extra que se quiere insertar
+	 */
 	public void borraExtra(final DatosLlamada d){
 		try{
 			disp.asyncExec(new Runnable() {
@@ -1436,6 +1592,10 @@ public class panelAgenda extends Thread {
 		}
 	            
 	}
+	
+	/**
+	 * Funcion que genera y rellena la tabla de llamadas de la agenda
+	 */
 	public void listaLlamadasL(){
 
 		NombresL= new CLabel[llamada.size()];
@@ -1460,7 +1620,10 @@ public class panelAgenda extends Thread {
 		}
 	}
 	
-		public void listaLlamadasE(){
+	/**
+	 * Funcion que genera y rellena la tabla de extras de la agenda
+	 */
+	public void listaLlamadasE(){
 
 		NombresE= new CLabel[extra.size()];
 		TelefonosE= new String[extra.size()];
@@ -1486,6 +1649,11 @@ public class panelAgenda extends Thread {
 		}
 	}
 	
+	/**
+	 * Busca el elemento que se le pasa (paciente) en la tabla de llamadas
+	 * @param nombre
+	 * @return d	:: devuelve los datos asociados al paciente buscado
+	 */
 	public DatosLlamada buscarSeleccionadoL(String nombre){
 		int i=0;
 		boolean Es =false;
@@ -1509,6 +1677,11 @@ public class panelAgenda extends Thread {
 		
 	}
 	
+	/**
+	 * Funcion del evento asociado al seleccionar un paciente de la tabla de llamadas
+	 * Como resultados mostramos una ventana de llamadas con los datos del paciente seleccionado
+	 * @param evt
+	 */
 	private void nombreLMouseDown(MouseEvent evt) {
 		CLabel lsel=(CLabel)evt.getSource();
 		String nombre=lsel.getText();
@@ -1539,6 +1712,11 @@ public class panelAgenda extends Thread {
 		seleccion=lsel;
 	}
 	
+	/**
+	 * Busca el elemento que se le pasa (paciente) en la tabla de extras
+	 * @param nombre
+	 * @return d	:: devuelve los datos asociados al paciente buscado
+	 */
 	public DatosLlamada buscarSeleccionadoE(String nombre){
 		int i=0;
 		boolean Es =false;
@@ -1563,6 +1741,11 @@ public class panelAgenda extends Thread {
 		
 	}
 	
+	/**
+	 * Funcion del evento asociado al seleccionar un paciente de la tabla de llamadas
+	 * Como resultados mostramos una ventana de llamadas con los datos del paciente seleccionado
+	 * @param evt
+	 */
 	private void nombreEMouseDown(MouseEvent evt) {
 		CLabel lsel=(CLabel)evt.getSource();
 		String nombre=lsel.getText();
@@ -1592,22 +1775,32 @@ public class panelAgenda extends Thread {
 		}
 		seleccion=lsel;
 	}
+	
+	
+	/**
+	 * Funcion asociada al evento del boton 'agenda'
+	 * Cambia el boton de nombre
+	 * Cambiar el titulo del shell
+	 * regenera la parte derecha de la ventana con los calendarios o las tablas de llamadas y extras segun corresponda
+	 * @param evt
+	 */
 	private void agendaWidgetSelected(SelectionEvent evt){
 		if (agenda.getText().equals("AGENDA")){
 			agenda.setText("AGENDA HOY");
 			GridData button1LData = new GridData();
 			button1LData.horizontalAlignment = GridData.FILL;
-			agenda.setLayoutData(button1LData);
-			
-			
+			agenda.setLayoutData(button1LData);	
 		}else{
-			agenda.setText("AGENDA");
-			
+			agenda.setText("AGENDA");	
+		}
+		fant=fy;
+		//Regenera la parte derecha de la ventana de la agenda segun corresponda
+		inicializa(agenda.getText());
 	}
-			fant=fy;
-			inicializa(agenda.getText());
-	}
-	
+	/**
+	 * Regenera la parte derecha de la ventana de la agenda segun corresponda
+	 * @param a		:: su valor nos identifica si se deben mostrar los calendarios ('agenda hoy') o las tablas de llamadas y extras ('agenda')
+	 */
 	public void inicializa(String a){
 		
 		//BORRAR
@@ -1684,14 +1877,12 @@ public class panelAgenda extends Thread {
 		tablaLlamadas.setLayoutData(tablaLlamadasLData);
 		tablaLlamadas.setLayout(tablaLlamadasLayout);
 
-        //Introducimos los valores y eventos de Fecha Inicio
+        
         final DateTime calendario2 = new DateTime (tablaLlamadas, SWT.CALENDAR);
         calendario2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 2, 1));
         calendario2.setMonth(4);
         calendario2.addMouseListener(new MouseListener () {
                 public void mouseDoubleClick(MouseEvent e) {
-                        // TODO ¿Y esto por qué no va?
-                		
                 	man=true;
 					fecha = new Date(calendario2.getYear()-1900,calendario2.getMonth(),calendario2.getDay());
 					fd=fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+(fecha.getYear()+1900);
@@ -1701,7 +1892,6 @@ public class panelAgenda extends Thread {
 					usoAgente.guardarAgenda(datos);
 					usoAgente.mostrarAgendaSecretaria(fy,usuEste);
 					fant=fy;    
-                        //shell.dispose();
                 }
                 public void mouseUp(MouseEvent e) {};
                 public void mouseDown(MouseEvent e) {};
@@ -1858,6 +2048,11 @@ public class panelAgenda extends Thread {
 		tablasDerecha.layout();
 	}
 	
+	/**
+	 * Codigo asociado al evento del menu contextual 'sala de espera'
+	 * EN PRUEBAS
+	 * @param evt
+	 */
 	private void EsperaWidgetSelected(SelectionEvent evt){
 /*		MenuItem lsel=(MenuItem)evt.getSource();
 		Menu m=lsel.getParent();
@@ -1876,6 +2071,12 @@ public class panelAgenda extends Thread {
 				Nombres[i].setBackground(SWTResourceManager.getColor(116, 193, 30));
 		}*/
 	}
+	
+	/**
+	 * Codigo asociado al evento del menu contextual 'cobrado'
+	 * EN PRUEBAS
+	 * @param evt
+	 */
 	private void CobradoWidgetSelected(SelectionEvent evt){
 		CLabel lsel=(CLabel)evt.getSource();
 		String nombre=lsel.getText();
@@ -1887,6 +2088,12 @@ public class panelAgenda extends Thread {
 		}
 		
 	}
+	
+	/**
+	 * Codigo asociado al evento del menu contextual 'el siguiente'
+	 * EN PRUEBAS
+	 * @param evt
+	 */
 	private void SiguienteWidgetSelected(SelectionEvent evt){
 		CLabel lsel=(CLabel)evt.getSource();
 		String nombre=lsel.getText();
@@ -1899,6 +2106,11 @@ public class panelAgenda extends Thread {
 		
 	}
 	
+	/**
+	 * Funcion auxiliar en PRUEBAS
+	 * @param hora
+	 * @return
+	 */
 	public boolean estaLibre(final HorasCita hora){
 		
 		cumple=true;

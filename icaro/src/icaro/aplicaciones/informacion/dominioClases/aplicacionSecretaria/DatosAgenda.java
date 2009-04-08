@@ -6,12 +6,19 @@ public class DatosAgenda {
 	private String hora;
 	private String fecha;
 	private boolean crear;
+
 	public DatosAgenda (String nombre, String telf, Boolean crear){
 		this.nombre = nombre;
 		this.telf = telf;
 		this.crear = crear;
 	}
-	
+	/**
+	 * Crea un objeto nuevo donde almacenar la entrada de una cita de la agenda
+	 * @param nombre
+	 * @param telf
+	 * @param hora
+	 * @param fecha
+	 */
 	public DatosAgenda (String nombre, String telf, String hora, String fecha){
 		this.nombre = nombre;
 		this.telf = telf;

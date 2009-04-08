@@ -6,6 +6,7 @@ public class DatosMedico {
 private String nombre;
 private int intervalo;
 private ArrayList <DatosCitaSinValidar> datos;
+//Pendiente de añadir
 private ArrayList<DatosLlamada> extras;
 private ArrayList<DatosLlamada> llamadas;
 
@@ -32,7 +33,12 @@ public DatosMedico(String nombre){
 	this.datos=new ArrayList<DatosCitaSinValidar>();
 	this.nombre=nombre;
 }
-
+/**
+ * Crea un objeto nuevo donde almacenar los datos de las citas de un de la agenda
+ * @param nombre		:: nombre medico
+ * @param intervalo 	:: intervalo interconsulta
+ * @param datos			::Lista de citas de ese medico
+ */
 public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar> datos) {
 	this.nombre = nombre;
 	this.intervalo = intervalo;

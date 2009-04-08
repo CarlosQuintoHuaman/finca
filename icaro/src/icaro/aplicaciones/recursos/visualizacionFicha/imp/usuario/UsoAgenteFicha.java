@@ -71,9 +71,16 @@ public class UsoAgenteFicha {
             System.out.println("Ha habido un error al enviar el evento termina al agente");
             e.printStackTrace();
         }
-        //usoAgenteControlador.aceptaEvento(new Evento("peticion_terminacion_usuario"));
+        
     }
 
+    /**
+     * METODO ANTIGUO  DE CUANDO NO TENIAMOS LA SECRETARIA
+     * Generamos un evento para el automataFicha con input: 'darCita', con 'datos' como parametro para la accion semantica 
+     * que le corresponde: 'pintaVentanaCita'. Este es un evento con origen VisualizacionFicha1 y destino AgenteFicha.
+     * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
+     * @param datos		:: Datos con los que rellenar la cita(nombre, apellido, telefono, hora)
+     */
     public void mostrarVentanaCita(String nombre, String apellido, String telf){
     	getInformacionAgente();
     	String[] datosEnvio = new String[]{nombre, apellido,telf};
@@ -91,12 +98,16 @@ public class UsoAgenteFicha {
             }
 
         } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            System.out.println("Ha habido un error al mostrar Ficha ");
             e.printStackTrace();
         }
     }
     
-
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'cerrarVentanaFicha', para la accion semantica 
+     * que le corresponde: 'nula'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es cerrar la ventana
+      */
     public void cerrarVentanaFicha(){
     	getInformacionAgente();
     	try {
@@ -114,13 +125,13 @@ public class UsoAgenteFicha {
             }
 
         } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            System.out.println("Ha habido un error al cerrar la Ficha ");
             e.printStackTrace();
         }
     }
     
     
-
+    //metodos para mostrar mensajes de aviso/error
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
@@ -134,6 +145,12 @@ public class UsoAgenteFicha {
     	visualizador.mostrarMensajeAvisoConfirmacion(titulo, mensaje);
     }
     
+    /** METODO ANTIGUO DE CUANDO NO TENIAMOS A LA SECRETARIA
+     * Generamos un evento para el automataFicha con input: 'infoCita', para la accion semantica 
+     * que le corresponde: 'inserta'. Este es un evento con origen VisualizacionFicha y destino AgenteFicha.
+     * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora
+     * @param datos 	:: Datos a insertar en la agenda (nombre, apellido1, telefono,fecha, hora, periodo)
+      */
     public void validaCita(String nombre, String apellido, String telf) {
       
 	   getInformacionAgente();
@@ -160,7 +177,11 @@ public class UsoAgenteFicha {
         }
         
     }
-    
+    /**
+     * Generamos un evento para el automataFicha con input: 'comenzar', para la accion semantica 
+     * que le corresponde: 'nula'. Este es un evento con origen VisualizacionFicha y destino AgenteFicha.
+     * Su proposito es crear el agente ficha al arrancar la aplicacion
+     */
     public void crearAgenteFicha() {
     	getInformacionAgente();
     	
@@ -173,16 +194,8 @@ public class UsoAgenteFicha {
             
             itfUsoFicha.aceptaEvento(new EventoInput("comenzar", "VisualizacionFicha1", "AgenteAplicacionFicha1"));
 
-/*            if (tipoAgenteFicha.equals(NombresPredefinidos.TIPO_REACTIVO)) {
-                //AgenteAplicacionFicha
-                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteFicha);
-                if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("darCita", "VisualizacionFicha1", nombreAgenteFicha));
-                }
-            }*/
-
         } catch (Exception e) {
-            System.out.println("Ha habido un error al enviar el usuario y el password al agente de Ficha ");
+            System.out.println("Ha habido un error al crear agente de Ficha ");
             e.printStackTrace();
         }
     }

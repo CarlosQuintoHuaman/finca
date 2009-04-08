@@ -43,6 +43,7 @@ import icaro.util.util;
 public class panelLlamada extends Thread {
 
 	// Variables
+	//componentes de la ventana
     private Text tNombre;
     private Button bBorrar;
     private Composite compoBotones;
@@ -55,10 +56,14 @@ public class panelLlamada extends Thread {
     private CLabel cMensaje;
     private CLabel cTelefono;
     private CLabel cNombre;
+    private Button bEditar;
+    
+    //variables globales
     private String hora;
     private util f;
-    private Button bEditar;
-
+	private DatosLlamada llamada;
+	private DatosLlamada llamadaAnterior;
+	
 	final UsoAgenteSecretaria usoAgente;
 	
 	// Variables de inicializacion de SWT
@@ -66,12 +71,10 @@ public class panelLlamada extends Thread {
 	private Display disp;
 	private Shell shell;
 	private panelLlamada este;
-	private DatosLlamada llamada;
-	private DatosLlamada llamadaAnterior;
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelLlamada(ClaseGeneradoraVisualizacionSecretaria visualizador){
@@ -97,7 +100,10 @@ public class panelLlamada extends Thread {
 	       }
          });
 	}
-	
+	/**
+	 * Muestra la ventana igual que la funcion anterior pero mostrando los datos en los campos correspondientes
+	 * @param dat contiene los datos que se deben mostrar en la ventana
+	 */
 	public void mostrar(final DatosLlamada dat){
 		disp.asyncExec(new Runnable() {
             public void run() {   
@@ -132,7 +138,7 @@ public class panelLlamada extends Thread {
 		return usoAgente;
 	}
 
-	/**
+	/** Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){
@@ -299,8 +305,12 @@ public class panelLlamada extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
+	
+	/**
+	 * Evento del boton aceptar de la ventana
+	 */
 	private void bAceptarWidgetSelected(SelectionEvent evt){
-		//llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),indice);
+		
 		if (hora==null){
 			 f=new util(); 
 			hora=f.getStrTime();
@@ -315,6 +325,11 @@ public class panelLlamada extends Thread {
 		usoAgente.cerrarVentanaLlamada();
 		}
 	}
+	
+	/**
+	 * Evento del boton borrar de la ventana
+	 * @param evt
+	 */
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		//llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),indice);
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
@@ -322,6 +337,10 @@ public class panelLlamada extends Thread {
 		usoAgente.cerrarVentanaLlamada();
 	}
 	
+	/**
+	 * Evento del boton editar de la ventana
+	 * @param evt
+	 */
 	private void bEditarWidgetSelected(SelectionEvent evt){
 		if(bEditar.getText().equals("Editar"))
 			bEditar.setText("Guardar");

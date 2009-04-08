@@ -1,9 +1,15 @@
 package icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria;
 
+//Clase pendiente de añadir
 public class HorasCita {
 
 	private String hInicio;
 	private String hFin;
+	/**
+	  * Crea un objeto nuevo donde almacenar los horarios de los medicos
+	 * @param inicio
+	 * @param fin
+	 */
 	public HorasCita(String inicio, String fin) {
 		hInicio = inicio;
 		hFin = fin;

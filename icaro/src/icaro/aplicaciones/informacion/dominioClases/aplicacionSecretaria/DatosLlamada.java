@@ -7,6 +7,14 @@ public class DatosLlamada {
 	private boolean paciente;
 	private String hora;
 	
+	/**
+	  * Crea un objeto nuevo donde almacenar los datos de una Llamada de la agenda
+	 * @param n
+	 * @param m
+	 * @param t
+	 * @param p
+	 * @param i
+	 */
 	public DatosLlamada(String n, String m, String t, boolean p, String i){
 		nombre=n;
 		mensaje=m;

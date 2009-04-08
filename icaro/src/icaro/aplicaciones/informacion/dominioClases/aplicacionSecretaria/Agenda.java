@@ -3,6 +3,7 @@ package icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Button;
 
+//Clase Provisional
 public class Agenda {
 	private String nombre;
 	private CLabel[] Nombres;

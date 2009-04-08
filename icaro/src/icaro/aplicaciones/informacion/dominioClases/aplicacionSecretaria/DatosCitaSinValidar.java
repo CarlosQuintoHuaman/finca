@@ -38,7 +38,14 @@ public class DatosCitaSinValidar implements Serializable {
 		
 	}
 	
-	
+	/**
+	 * Crea un objeto nuevo donde almacenar los datos de una cita de la ventana Cita
+	 * @param nombre
+	 * @param apell1
+	 * @param telf
+	 * @param hora
+	 * @param periodo
+	 */
 public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora, int periodo) {
 		
 		this.nombre = nombre;

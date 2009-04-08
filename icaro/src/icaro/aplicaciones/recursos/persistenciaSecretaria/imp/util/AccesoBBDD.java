@@ -49,8 +49,8 @@ public class AccesoBBDD {
 	 public static Connection conectar(String id) throws ErrorEnRecursoException {
 		
 		try	{
-			//System.out.println("IIIIIIIIIDDDDDDD: "+id);
-			//id = "PersistenciaMedico1";
+			
+			//id = "PersistenciaSecretaria1";
 			
 			// MUY IMPORTANTE: El id que se pasa como parametro deberia ser algo del estilo "PersistenciaAlgo1"
 			// Si este nombre esta mal va a petar

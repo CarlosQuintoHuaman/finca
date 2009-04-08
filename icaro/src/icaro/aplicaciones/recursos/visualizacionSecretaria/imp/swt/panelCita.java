@@ -28,6 +28,7 @@ import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgente
 public class panelCita extends Thread {
 
 	// Variables
+	//componentes de la ventana
 	private Composite compoPrincipal;
 	private Composite compoLinea1;
 	private Composite compoLinea2;
@@ -53,13 +54,12 @@ public class panelCita extends Thread {
 	private CLabel cHoraA;
 	private CLabel cHoraCita;
 	private CLabel cFechaCita;
+
+	//Variables globales
 	private int intervalo=15;
 	private int periodo;
 	private HorasCita hora;
-	/**
-	 * comunicacion con el agente (control)
-	 * Hay que cambiar "Template" por el nombre del agente.
-	 */
+
 	final UsoAgenteSecretaria usoAgente;
 	
 	// Variables de inicializacion de SWT
@@ -69,8 +69,9 @@ public class panelCita extends Thread {
 	private panelAgenda p;
 	private DatosCitaSinValidar datos;
 	private ClaseGeneradoraVisualizacionSecretaria vis;
+	
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelCita(ClaseGeneradoraVisualizacionSecretaria visualizador){
@@ -79,7 +80,11 @@ public class panelCita extends Thread {
 		vis=visualizador;
 		usoAgente = new UsoAgenteSecretaria(visualizador);
 	}
-	
+	/**
+	 *  Contructor de la ventana que icorpora los datos que se deben mostrar en la ventana
+	 * @param visualizador
+	 * @param da
+	 */
 	public panelCita(ClaseGeneradoraVisualizacionSecretaria visualizador, DatosCitaSinValidar da){
 		super("Agenda");
 		este = this;
@@ -106,6 +111,10 @@ public class panelCita extends Thread {
          });
 	}
 	
+	/**
+	 *  Muestra la ventana con los datos que se le pasan como parametro en los campos que le corresponden
+	 * @param dat datos a mostrar en la ventana
+	 */
 	public void mostrar(final DatosCitaSinValidar dat){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
@@ -154,7 +163,7 @@ public class panelCita extends Thread {
 		return usoAgente;
 	}
 
-	/**
+	/** Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){
@@ -341,11 +350,7 @@ public class panelCita extends Thread {
 						tTelefono1 = new Text(compoLinea2, SWT.BORDER);
 						tTelefono1.setLayoutData(tTelefono1LData);
 					}
-/*					if (datos != null){
-						tPaciente.setText(datos.tomaNombre());
-						tApellidos.setText(datos.tomaApell1());
-						tTelefono1.setText(datos.tomaTelf());
-					}*/
+
 					{
 						GridData tTelefono2LData = new GridData();
 						tTelefono2LData.verticalAlignment = GridData.BEGINNING;
@@ -416,11 +421,6 @@ public class panelCita extends Thread {
 
 
 			shell.layout();
-
-			
-			
-			
-			//shell.open();
 			
 			while (!shell.isDisposed()) {
 				if (!disp.readAndDispatch())
@@ -430,16 +430,24 @@ public class panelCita extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// Ahora va el codigo de la ventana.
-		// ¡Ojo! Las variables de SWT deberian ser globales
-	}
 
+	}
+	
+	// Metodos especificos de la ventana
+	
+	/**
+	 * Evento del boton '-' de la ventana
+	 * @param evt
+	 */
 	private void bmenosWidgetSelected(SelectionEvent evt){
 		if (periodo>1)
 			periodo--;
 		calculaPeriodo();
 	}
+	/**
+	 * Evento del boton '+' de la ventana
+	 * @param evt
+	 */
 	private void bMasWidgetSelected(SelectionEvent evt) {
 		periodo=periodo+1;
 		
@@ -450,6 +458,10 @@ public class panelCita extends Thread {
 		l=false;
 	}
 
+	/**
+	 * Evento del boton aceptar de la ventana
+	 * @param evt
+	 */
 	private void bAceptarWidgetSelected(SelectionEvent evt){
 		datos.setNombre(tPaciente.getText());
 		datos.setApell1(tApellidos.getText());
@@ -464,6 +476,12 @@ public class panelCita extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Funcion auxiliar que nos ayuda a calcular cuantas franjas horarias de la agenda ocupa un paciente a traves del periodo.
+	 * Ejemplo: Si intervalo interconsulta= 15 min, periodo=2 y hora inicio cita paciente=9:00 entonces el paciente estara 
+	 * 2 intervalos de 15 min en la consulta luego de 9:00 a 9:30.  
+	 */
 	public void calculaPeriodo(){
 		int c=periodo;
 		String y=datos.tomaHora().substring(3);
@@ -514,10 +532,8 @@ public class panelCita extends Thread {
 		datos.setPeriodo(periodo);
 	}
 
-	// Aqui iran los metodos especificos de cada ventana
+	
     public void cerrar() {
-    	System.out.println("CERRANNNNNDOOOOOOOOOOOO CITAAAAAAAA");
-    	//dialogShell.close();
     	disp.asyncExec(new Runnable() {
             public void run() {
             	shell.dispose();

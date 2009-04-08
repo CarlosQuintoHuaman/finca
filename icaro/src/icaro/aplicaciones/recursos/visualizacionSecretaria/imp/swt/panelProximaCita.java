@@ -32,6 +32,7 @@ import org.eclipse.swt.layout.GridData;
 public class panelProximaCita extends Thread {
 
 	// Variables
+	//Componentes de la ventana
 	private Composite principal;
 	private CLabel cNombre;
 	private CLabel cTelefono;
@@ -50,6 +51,7 @@ public class panelProximaCita extends Thread {
 	private CLabel[] horas;
 	private CLabel[] Fechas;
 	private CLabel[] Medicos;
+	//variables globales
 	private int c;
 	
 	
@@ -65,7 +67,7 @@ public class panelProximaCita extends Thread {
 	private panelProximaCita este;
 
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelProximaCita(ClaseGeneradoraVisualizacionSecretaria visualizador){
@@ -92,6 +94,11 @@ public class panelProximaCita extends Thread {
          });
 	}
 	
+	/**
+	 * Despues de mostrar la ventana (sin datos) llamamos a esta funcion desde fuera de la clase para
+	 * que cargue los datos que se deben mostrar en esta ventana
+	 * @param l
+	 */
 	public void meteDatos(final ArrayList<DatosCita> l){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
@@ -145,7 +152,7 @@ public class panelProximaCita extends Thread {
 		return usoAgente;
 	}
 
-	/**
+	/** Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){

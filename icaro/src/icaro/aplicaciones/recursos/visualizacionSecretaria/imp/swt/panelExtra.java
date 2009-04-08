@@ -30,6 +30,7 @@ import icaro.util.util;
 public class panelExtra extends Thread {
 
 	// Variables
+	// Componentes de la ventana
     private Text tNombre;
     private Button bBorrar;
     private Composite compoBotones;
@@ -43,9 +44,12 @@ public class panelExtra extends Thread {
     private CLabel cMensaje;
     private CLabel cTelefono;
     private CLabel cNombre;
+    
+    // Variables globales
     private String hora;
     private util f;
-
+	private DatosLlamada llamada;
+	private DatosLlamada llamadaAnterior;
 
 	final UsoAgenteSecretaria usoAgente;
 	
@@ -54,11 +58,10 @@ public class panelExtra extends Thread {
 	private Display disp;
 	private Shell shell;
 	private panelExtra este;
-	private DatosLlamada llamada;
-	private DatosLlamada llamadaAnterior;
+
 	private ClaseGeneradoraVisualizacionSecretaria vis;
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelExtra(ClaseGeneradoraVisualizacionSecretaria visualizador){
@@ -85,6 +88,10 @@ public class panelExtra extends Thread {
          });
 	}
 	
+	/**
+	 * Muestra la ventana rellenando los campos que corresponda con los datos que se le pasa por parametro
+	 * @param dat	:: DatosLlamada(nombre, mensaje, telefono,EsPaciente, hora)
+	 */
 	public void mostrar(final DatosLlamada dat){
 		disp.asyncExec(new Runnable() {
             public void run() {   
@@ -119,16 +126,13 @@ public class panelExtra extends Thread {
 		return usoAgente;
 	}
 
-	/**
+	/** Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){
 		// Lo primero es inicializar el Shell
 		try {
 			shell = new Shell(disp);
-		
-		// Ahora va el codigo de la ventana.
-		// ¡Ojo! Las variables de SWT deberian ser globales
 			GridLayout shellLayout = new GridLayout();
 			shellLayout.makeColumnsEqualWidth = true;
 			shell.setText("Extra");
@@ -290,6 +294,10 @@ public class panelExtra extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
+	/**
+	 * Accion asociada al evento del boton 'aceptar'
+	 * Nos permite inserta un nuevo extra en la tabla de extras de la ventana 'agenda'
+	 */
 	private void bAceptarWidgetSelected(SelectionEvent evt){
 		
 		if (hora==null){
@@ -302,17 +310,28 @@ public class panelExtra extends Thread {
 		else{
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
 		if(!tNombre.getEditable())
+			//llamada al agente para mandar un evento que añada el extra que se le pasa por parametro a la tabla de extras
 			usoAgente.anadeExtra(llamada);
 		usoAgente.cerrarVentanaExtra();
 		}
 	}
+	/**
+	 * Accion asociada al evento del boton 'borrar'
+	 * Nos permite borrar un extra en la tabla de extras de la ventana 'agenda'
+	 */
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+		
+		//llama al agente para enviar un evento que le permita borrar el extra que se le pasa por parametro
 		usoAgente.borraExtra(llamada);
 		usoAgente.cerrarVentanaExtra();
 	}
 	
+	/**
+	 * Accion asociada al evento del boton 'Editar'
+	 * Nos permite editar un extra de la tabla de extras de la ventana 'agenda'
+	 */
 	private void bEditarWidgetSelected(SelectionEvent evt){
 		if(bEditar.getText().equals("Editar"))
 			bEditar.setText("Guardar");
@@ -340,8 +359,9 @@ public class panelExtra extends Thread {
 			}
 			else{
 			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+			//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
 			usoAgente.modificaExtra(llamadaAnterior, llamada);
-			//usoAgente.cerrarVentanaLlamada();
+
 			}
 		}
 

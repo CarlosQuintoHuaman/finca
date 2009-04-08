@@ -87,7 +87,10 @@ public class ConsultaBBDD {
 			throw new ErrorEnRecursoException("No se ha podido crear la sentencia SQL para acceder a la base de datos: " + e.getMessage());
 		}			
 	}
-	
+	/**
+	 * Consulta para obtener los pacientes con todos sus datos
+	 * @return ArrayList de infoPaciente (nomUsuario, password, nombre, telefono, apellido1, apellido2, direccion, telefono, seguro)
+	 */
 	public ArrayList<InfoPaciente> getPacientes() {
 		ArrayList<InfoPaciente> pacientes = new ArrayList<InfoPaciente>();
 		
@@ -117,6 +120,13 @@ public class ConsultaBBDD {
 		return pacientes;
 	}
 	
+	/**
+	 * Consulta con la que obtenemos la lista de pacientes para cada medico de la lista que se le pasa por parametro en una fecha determinada
+	 *  que se le pasa por parametro
+	 * @param fecha		:: fecha concreta de las citas que queremos consultar
+	 * @param lnombres	:: Lista de nombres de todos los medicos cuyas citas queremos obtener
+	 * @return medicos	:: devuelve una arrayList de datosmedicos (nomMedico,Citas para ese medico especificando la fecha) 
+	 */
 	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> lnombres) {
 		ArrayList<DatosMedico> medicos = new ArrayList<DatosMedico>();
 		
@@ -171,6 +181,11 @@ public class ConsultaBBDD {
 		return medicos;
 	}
 	
+	/**
+	 * Consulta con la que se obtiene la lista de medicos que tienen como secretaria la que se pasa por parametro
+	 * @param s			:: Nombre de la secretaria de la que se quiere consultar sus medicos asociados
+	 * @return medicos	:: ArrayList nombresMedicos
+	 */
 	public ArrayList<String> getMedicos(String s) {
 		ArrayList<String> medicos = new ArrayList<String>();
 		
@@ -193,6 +208,13 @@ public class ConsultaBBDD {
 		return medicos;
 	}
 	
+	/**
+	 * Esta consulta nos sirve para obtener las citas posteriores al dia de hoy de un determinado paciente que se le pasa por parametro
+	 * @param n			:: nombre del paciente
+	 * @param t			:: telefono => pasara a ser de la persistencia mas adelante
+	 * @param fecha		:: fecha concreta sobre la q deseamos hacer la consulta que suele ser la fecha actual
+	 * @return p 		:: ArrayList DatosCita (nombre Paciente, telefono, medico, fecha, hora)
+	 */
 	public ArrayList<DatosCita> getPaciente(String n ,String t, String fecha) {
 		ArrayList<DatosCita> p = new ArrayList<DatosCita>();
 		
@@ -215,7 +237,12 @@ public class ConsultaBBDD {
 		}
 		return p;
 	}
-	
+	/**
+	 *  Con esta consulta pretendemos guardar los cambios que hayamos hecho en la agenda para el dia actual 
+	 * @param s			:: parametro que contiene toda la informacion de una una agenda para una secretaria y un dia concreto(fecha actual).
+	 * OJO: hay que añadir parametro fecha!!!
+	 * @return boolean	:: devuelve cierto si ha ido bien y falso en caso contrario
+	 */
 	public boolean meteAgenda(DatosSecretaria s) {
 		try {	
 			//borramos tabla medicoPaciente para los medicos de esa secretaria
@@ -227,10 +254,7 @@ public class ConsultaBBDD {
 				f2.setTime(f1.getTime()+86400000);
 				String f11=util.getStrDateSQL(f1).substring(0, 10);
 				String f22=util.getStrDateSQL(f2).substring(0, 10);
-				
-				/*String f=s.getFecha();
-				String f1=f.substring(0, 10)+" 00:00:00";
-				String f2=f.substring(0, 10)+" 23:59:59";*/
+
 				crearQuery();
 				query.executeUpdate("DELETE FROM medicopaciente WHERE Medico = '" + medico + "' AND Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
 			}
@@ -270,6 +294,8 @@ public class ConsultaBBDD {
 		}
 		
 	}
+	
+	// OJO: De aqui hacia abajo se uso como ejemplo para empezar; no es codigo fiable
 	/**
 	 * EJEMPLO de como usar la BD
 	 */
@@ -302,9 +328,7 @@ public class ConsultaBBDD {
 	}
 	
 	
-	// OJO: De aqui hacia abajo es probable que este mal. Se puede borrar. Solo lo dejo
-	// por si sirve de referencia. Asi es como estaba en el ejemplo de persistencia
-	
+	// OJO: De aqui hacia abajo se uso como ejemplo inicial; no es codigo fiable
 	
 	
 	public boolean compruebaNombreUsuario(String usuario) throws ErrorEnRecursoException {

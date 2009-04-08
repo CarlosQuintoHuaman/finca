@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
 public class panelFicha extends Thread {
 
 	// Variables
-	
+	//Componentes de la ventana
 	private Composite compoLinea2;
     private Button bCerrar;
     private Button bBorrar;
@@ -136,6 +136,7 @@ public class panelFicha extends Thread {
     private CTabFolder cTablaFicha;
     private Composite composite1;
     private CCombo cCombo1;
+    //Variables globales
     private Boolean nuevo;
 
 	/**
@@ -150,7 +151,7 @@ public class panelFicha extends Thread {
 	private panelFicha este;
 
 	/**
-	 * 
+	 * Constructor de la ventana
 	 * @param visualizador
 	 */
 	public panelFicha(ClaseGeneradoraVisualizacionFicha visualizador){
@@ -176,7 +177,10 @@ public class panelFicha extends Thread {
 	       }
          });
 	}
-	
+	/**
+	 * Muestra la ventana y añade a los campos que corresponda los datos pasados por parametro
+	 * @param d		:: datos que se deben mostrar en la ventana (nombre,telefono, hora, fecha, crear)
+	 */
 	public void mostrar(final DatosAgenda d){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
@@ -214,6 +218,7 @@ public class panelFicha extends Thread {
 	}
 
 	/**
+	 * Codigo de la ventana
 	 * Initializes the GUI.
 	 */
 	private void initGUI(){
@@ -236,10 +241,7 @@ public class panelFicha extends Thread {
 		});
         nuevo=true;
         GridLayout layout = new GridLayout(2,false);
-		
-		// Ahora va el codigo de la ventana.
-		// ¡Ojo! Las variables de SWT deberian ser globales
-		
+
 		shell.setText("Crear Ficha");
         shell.setSize(765, 532);
 		shell.setLayout(layout);
@@ -1018,7 +1020,12 @@ public class panelFicha extends Thread {
     	
     }
     
-	
+	/**
+	 * Funcion que se encarga de activar o desactivar todos los campos de panelficha segun el
+	 * valor booleano que se le pasa por parametro. Uso esta funcion como auxiliar a la accion
+	 * del evento de modificar y guardar
+	 * @param n
+	 */
 	public void Edicion(boolean n){
 		tNif.setEditable(n);
 		tNombre.setEditable(n);
@@ -1057,20 +1064,41 @@ public class panelFicha extends Thread {
 	    tTratPrevioLaser.setEditable(n);
 	    tNotas.setEditable(n);
 	}
+	/**
+	 * Accion asociada al evento del boton 'modificar'
+	 * activamos todos los componentes de la ventana
+	 * @param evt
+	 */
 	private void bModificarWidgetSelected(SelectionEvent evt) {
 		Edicion(true);
 		shell.layout();
 	}
 	
+	/**
+	 * Accion asociada al evento del boton 'guardar'
+	 * desactivamos todos los componentes de la ventana
+	 * @param evt
+	 */
 	private void bGuardarWidgetSelected(SelectionEvent evt) {
 		Edicion(false);
 		shell.layout();
 	}
-
+	
+	/**
+	 * Accion asociada al evento del boton 'borrar'
+	 * se borra la ficha de la bbdd
+	 * @param evt
+	 */
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		usoAgente.mostrarMensajeAvisoConfirmacion("¿Esta seguro que desea borrar la ficha de este paciente?", "Borrar Ficha");
+		//Pendiente de preguntar confirmacion
 		shell.dispose();
 	}
+	/**
+	 * Accion asociada al evento del boton 'cerrar'
+	 * Cierra la ventana
+	 * @param evt
+	 */
 	private void bCerrarWidgetSelected(SelectionEvent evt){
 		
 		shell.dispose();
