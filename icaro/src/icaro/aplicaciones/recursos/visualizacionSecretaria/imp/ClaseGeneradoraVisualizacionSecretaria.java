@@ -152,7 +152,22 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		}
 		*/
 	}
-  
+	
+	public boolean mostrarMensajeAvisoC(String titulo,String mensaje) {
+      	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
+  				"Mostrando mensaje de aviso",
+  				InfoTraza.NivelTraza.debug));
+      	
+      	MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK |SWT.CANCEL| SWT.ICON_WARNING);
+		messageBox.setText (titulo);
+		messageBox.setMessage (mensaje);
+		if (messageBox.open() == SWT.OK){
+			return true;
+		}else
+			return false;
+
+	}
+	
 	public void mostrarMensajeAviso(String titulo,String mensaje) {
       	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
   				"Mostrando mensaje de aviso",

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.cloudgarden.resource.SWTResourceManager;
 import icaro.util.util;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
@@ -132,6 +133,7 @@ public class panelCita extends Thread {
           		
           		tApellidos.setText(dat.tomaApell1());
           	}
+          	tFecha.setText(dat.getFecha());
       		tTelefono1.setText(dat.tomaTelf());
       		tHoraD.setText(dat.tomaHora());
       		hora= new HorasCita(dat.tomaHora(),"");
@@ -225,7 +227,7 @@ public class panelCita extends Thread {
 						tFecha = new Text(compoLinea1, SWT.BORDER);
 						tFecha.setLayoutData(tFechaLData);
 						util f=new util(); 
-						tFecha.setText(f.getStrDate());
+						tFecha.setText("");
 					}
 					{
 						cHoraCita = new CLabel(compoLinea1, SWT.NONE);
@@ -415,6 +417,17 @@ public class panelCita extends Thread {
 						bNuevoLData.widthHint = 105;
 						bNuevo.setLayoutData(bNuevoLData);
 						bNuevo.setText("Nuevo Paciente");
+						bNuevo.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+//								if (!tPaciente.getText().equals("")){
+									DatosCita d=new DatosCita(tPaciente.getText()+" "+tApellidos.getText(),tTelefono1.getText(),true,0);
+									usoAgente.mostrarVentanaFicha(d);
+/*								}
+								else{
+									usoAgente.mostrarVentanaFicha();
+								}*/
+							}
+						});
 					}
 				}
 			}

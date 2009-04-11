@@ -2,7 +2,8 @@ package icaro.aplicaciones.recursos.visualizacionFicha.imp.swt;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.ClaseGeneradoraVisualizacionFicha;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.usuario.UsoAgenteFicha;
@@ -181,16 +182,20 @@ public class panelFicha extends Thread {
 	 * Muestra la ventana y añade a los campos que corresponda los datos pasados por parametro
 	 * @param d		:: datos que se deben mostrar en la ventana (nombre,telefono, hora, fecha, crear)
 	 */
-	public void mostrar(final DatosAgenda d){
+	public void mostrar(final DatosCita d){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.asyncExec(new Runnable() {
             public void run() {
-            	DatosAgenda datos=d;
-            	nuevo=datos.tomaCrear();
-            	tNombre.setText(datos.tomaNombre());
-            	tTelefono1.setText(datos.tomatelf());
-            	
+            	DatosCita datos=d;
+            	nuevo=datos.getCrear();
+            	tNombre.setText(datos.getNombre());
+            	tTelefono1.setText(datos.getTelf());
+            	if (datos.getUsuario()==0){
+            	    cAntDepilacion.dispose();
+            	    cAntPersonales.dispose();
+            	    cAntFamiliares.dispose();
+            	}
          	   shell.open();
 	       }
          });

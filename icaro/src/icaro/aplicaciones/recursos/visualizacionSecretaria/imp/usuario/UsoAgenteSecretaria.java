@@ -1,7 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSinValidar;
-import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
@@ -56,7 +56,7 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-    public void mostrarVentanaFicha(DatosAgenda datos){
+    public void mostrarVentanaFicha(DatosCita datos){
     	getInformacionAgente();
     	
         try {
@@ -66,6 +66,22 @@ public class UsoAgenteSecretaria {
     	ItfUsoAgenteReactivo itfUsoFicha = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionFicha1");
         
         itfUsoFicha.aceptaEvento(new EventoInput("mostrarVentanaFicha", datos, "VisualizacionSecretaria1", "AgenteAplicacionFicha1"));
+    } catch (Exception e) {
+        System.out.println("Ha habido un error al activar el agente Ficha desde la visualizacion Secretaria");
+        e.printStackTrace();
+    }
+    }
+    
+    public void mostrarVentanaFicha(){
+    	getInformacionAgente();
+    	
+        try {
+        if (itfUsoRepositorioInterfaces == null) {
+            itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+        }
+    	ItfUsoAgenteReactivo itfUsoFicha = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionFicha1");
+        
+        itfUsoFicha.aceptaEvento(new EventoInput("mostrarVentanaFicha", "VisualizacionSecretaria1", "AgenteAplicacionFicha1"));
     } catch (Exception e) {
         System.out.println("Ha habido un error al activar el agente Ficha desde la visualizacion Secretaria");
         e.printStackTrace();
@@ -104,9 +120,9 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la cita(nombre, apellido, telefono, hora)
      */
-    public void mostrarVentanaCita(String nombre, String apellido, String Telf, String hora){
+    public void mostrarVentanaCita(String nombre, String apellido, String Telf, String hora, String fecha){
     	getInformacionAgente();
-    	DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido, Telf, hora);
+    	DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido, Telf,fecha, hora);
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();

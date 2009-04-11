@@ -1,7 +1,8 @@
 package icaro.aplicaciones.recursos.visualizacionFicha;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
@@ -21,7 +22,7 @@ public interface ItfUsoVisualizadorFicha extends ItfUsoRecursoSimple{
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-	public void mostrarVisualizadorFicha(String nombreAgente,String tipo, DatosAgenda datos) throws Exception;
+	public void mostrarVisualizadorFicha(String nombreAgente,String tipo, DatosCita datos) throws Exception;
 	/**
 	 * Su proposito es cerrar la ventana
 	 */

@@ -1,7 +1,8 @@
 package icaro.aplicaciones.agentes.agenteAplicacionFichaReactivo.comportamiento;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -28,7 +29,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-	public void pintaVentanaFicha(DatosAgenda datos){
+	public void pintaVentanaFicha(DatosCita datos){
 		
 		try {
 			//Se obtiene el visualizador
@@ -53,6 +54,35 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}	
+	
+	/**
+	 * Pinta la ventana de ficha vacia
+	 */
+	public void pintaVentanaFicha(){
+		
+		try {
+			//Se obtiene el visualizador
+			visualizacion = (ItfUsoVisualizadorFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionFicha1");
+			
+			// Ejemplo de algo que podemos hacer con el
+			visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			
+			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al abrir el visualizador de Ficha en accion semantica 'pintaVentanaFicha()'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
 
 	// Ejemplo de accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch

@@ -92,5 +92,14 @@ public DatosCitaSinValidar (String nombre, String apell1, String telf, String ho
 		periodo=p;;
 	}
 
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+	
+
 }
 

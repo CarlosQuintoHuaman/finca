@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionFicha.imp;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosAgenda;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 
 import icaro.aplicaciones.recursos.visualizacionFicha.*;
@@ -92,7 +93,7 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
   				InfoTraza.NivelTraza.debug));
 	}
 	
-	public void mostrarVisualizadorFicha(String nombreAgente, String tipo, DatosAgenda datos) {
+	public void mostrarVisualizadorFicha(String nombreAgente, String tipo, DatosCita datos) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;

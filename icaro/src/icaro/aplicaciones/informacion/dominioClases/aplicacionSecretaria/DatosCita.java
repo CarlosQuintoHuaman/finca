@@ -6,7 +6,10 @@ public class DatosCita {
 	private String medico;
 	private String fecha;
 	private String hora;
+	private Boolean crear;
+	private int usuario;
 	
+
 	/**
 	 * Crea un objeto nuevo donde almacenar los datos de una cita de la agenda con medico
 	 * @param nombre
@@ -22,6 +25,33 @@ public class DatosCita {
 		this.medico = medico;
 		this.fecha = fecha;
 		this.hora = hora;
+	}
+	public DatosCita(String nombre, String telf, Boolean crear, int usu){
+		this.nombre = nombre;
+		this.telf = telf;
+		this.usuario = usu;
+		this.crear=crear;
+	}
+	public DatosCita(String nombre, String telf, String fecha,
+			String hora, Boolean crear) {
+		this.nombre = nombre;
+		this.telf = telf;
+		this.fecha = fecha;
+		this.hora = hora;
+		this.crear = crear;
+	}
+	
+	public DatosCita(String nombre, String telf, String hora,
+			String fecha){
+		this.nombre = nombre;
+		this.telf = telf;
+		this.fecha = fecha;
+		this.hora = hora;
+	}
+	public DatosCita(String nombre, String telf, Boolean crear){
+		this.nombre = nombre;
+		this.telf = telf;
+		this.crear = crear;
 	}
 	public String getNombre() {
 		return nombre;
@@ -53,4 +83,17 @@ public class DatosCita {
 	public void setHora(String hora) {
 		this.hora = hora;
 	}	
+	public Boolean getCrear() {
+		return crear;
+	}
+	public void setCrear(Boolean crear) {
+		this.crear = crear;
+	}
+	public int getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(int usuario) {
+		this.usuario = usuario;
+	}
+	
 }

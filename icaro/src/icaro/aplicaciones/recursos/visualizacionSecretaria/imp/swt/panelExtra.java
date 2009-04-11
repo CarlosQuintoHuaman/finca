@@ -322,10 +322,12 @@ public class panelExtra extends Thread {
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
-		
+		boolean cc=vis.mostrarMensajeAvisoC("Atención", "¿Esta seguro que desea borrar esta cita?");
+		if (cc){
 		//llama al agente para enviar un evento que le permita borrar el extra que se le pasa por parametro
-		usoAgente.borraExtra(llamada);
-		usoAgente.cerrarVentanaExtra();
+			usoAgente.borraExtra(llamada);
+			usoAgente.cerrarVentanaExtra();
+		}
 	}
 	
 	/**

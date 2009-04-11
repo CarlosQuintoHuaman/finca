@@ -333,8 +333,11 @@ public class panelLlamada extends Thread {
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		//llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),indice);
 		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
-		usoAgente.borraLlamada(llamada);
-		usoAgente.cerrarVentanaLlamada();
+		boolean cc=vis.mostrarMensajeAvisoC("Atención", "¿Esta seguro que desea borrar esta cita?");
+		if (cc){
+			usoAgente.borraLlamada(llamada);
+			usoAgente.cerrarVentanaLlamada();
+		}
 	}
 	
 	/**
