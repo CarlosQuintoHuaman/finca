@@ -1,6 +1,6 @@
-package icaro.aplicaciones.recursos.persistenciaAdmin.imp.util;
+package icaro.aplicaciones.recursos.persistenciaLogin.imp.util;
 
-import icaro.aplicaciones.recursos.persistenciaAdmin.imp.ErrorEnRecursoException;
+import icaro.aplicaciones.recursos.persistenciaLogin.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
 import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfiguracion;
@@ -55,7 +55,7 @@ public class AccesoBBDD {
 		
 		try	{
 			//System.out.println("IIIIIIIIIDDDDDDD: "+id);
-			//id = "PersistenciaAdmin1";
+			//id = "PersistenciaLogin1";
 			
 			// MUY IMPORTANTE: El id que se pasa como parametro deberia ser algo del estilo "PersistenciaAlgo1"
 			// Si este nombre esta mal va a petar

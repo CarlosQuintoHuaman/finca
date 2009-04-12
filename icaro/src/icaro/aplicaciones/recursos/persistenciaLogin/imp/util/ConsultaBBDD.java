@@ -1,4 +1,4 @@
-package icaro.aplicaciones.recursos.persistenciaAdmin.imp.util;
+package icaro.aplicaciones.recursos.persistenciaLogin.imp.util;
 
 
 import icaro.aplicaciones.recursos.persistenciaAdmin.imp.ErrorEnRecursoException;

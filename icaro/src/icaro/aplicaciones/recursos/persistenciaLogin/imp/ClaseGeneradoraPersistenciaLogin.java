@@ -1,9 +1,9 @@
-package icaro.aplicaciones.recursos.persistenciaAdmin.imp;
+package icaro.aplicaciones.recursos.persistenciaLogin.imp;
 
 import java.sql.Connection;
-import icaro.aplicaciones.recursos.persistenciaAdmin.ItfUsoPersistenciaAdmin;
-import icaro.aplicaciones.recursos.persistenciaAdmin.imp.util.AccesoBBDD;
-import icaro.aplicaciones.recursos.persistenciaAdmin.imp.util.ConsultaBBDD;
+import icaro.aplicaciones.recursos.persistenciaLogin.ItfUsoPersistenciaLogin;
+import icaro.aplicaciones.recursos.persistenciaLogin.imp.util.AccesoBBDD;
+import icaro.aplicaciones.recursos.persistenciaLogin.imp.util.ConsultaBBDD;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.patronRecursoSimple.imp.ImplRecursoSimple;
 import icaro.infraestructura.recursosOrganizacion.recursoTrazas.ItfUsoRecursoTrazas;
@@ -16,8 +16,8 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
  * @author Camilo Andres Benito Rojas
  *
  */
-public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implements
-		ItfUsoPersistenciaAdmin {
+public class ClaseGeneradoraPersistenciaLogin extends ImplRecursoSimple implements
+		ItfUsoPersistenciaLogin {
 
 	private static final long serialVersionUID = 1L;
 	private ItfUsoRecursoTrazas trazas;
@@ -25,7 +25,7 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 
 	private Connection c;
 	
-	public ClaseGeneradoraPersistenciaAdmin(String id) throws Exception {
+	public ClaseGeneradoraPersistenciaLogin(String id) throws Exception {
 		
 		super(id);
 		
@@ -46,8 +46,8 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 			// MUY IMPORTANTE: El id que se pasa como parametro deberia ser algo del estilo "PersistenciaAlgo1"
 			// Si este nombre esta mal va a petar
 			
-			c = AccesoBBDD.conectar("PersistenciaAdmin1");
-			consulta = new ConsultaBBDD("PersistenciaAdmin1");
+			c = AccesoBBDD.conectar("PersistenciaLogin1");
+			consulta = new ConsultaBBDD("PersistenciaLogin1");
 		} catch (Exception e) {
 			this.estadoAutomata.transita("error");
 			throw e;
@@ -58,7 +58,7 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 	public String compruebaUsuario(String usuario, String password)
 			throws ErrorEnRecursoException {
 		try {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaAdmin",
+		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaLogin",
   				"Comprobando usuario "+usuario,
   				InfoTraza.NivelTraza.debug));
 			if (consulta.compruebaUsuario(usuario, password))
@@ -76,7 +76,7 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 
 	@Override
 	public void termina() {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaAdmin",
+		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaLogin",
   				"Terminando recurso",
   				InfoTraza.NivelTraza.debug));
 		AccesoBBDD.desconectar();
