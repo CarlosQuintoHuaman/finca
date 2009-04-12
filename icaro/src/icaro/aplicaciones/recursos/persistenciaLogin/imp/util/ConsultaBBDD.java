@@ -135,10 +135,19 @@ public class ConsultaBBDD {
 
 			resultado.close();
 			
+			crearQuery();
       		resultado = query.executeQuery("SELECT * FROM medico WHERE NombreUsuario = '"
   					+ usuario + "'");	
       		if (resultado.next()) 
       			return "Medico";
+
+      		resultado.close();
+      		
+      		crearQuery();
+      		resultado = query.executeQuery("SELECT * FROM administrador WHERE NombreUsuario = '"
+  					+ usuario + "'");	
+      		if (resultado.next()) 
+      			return "Admin";
 
       		resultado.close();
 		}

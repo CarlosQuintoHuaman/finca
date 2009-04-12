@@ -1,9 +1,7 @@
 package icaro.aplicaciones.agentes.agenteAplicacionLoginReactivo.comportamiento;
 
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionLogin.InfoLogin;
 import icaro.aplicaciones.recursos.visualizacionLogin.ItfUsoVisualizadorLogin;
-import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
 import icaro.aplicaciones.recursos.persistenciaLogin.ItfUsoPersistenciaLogin; 
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
