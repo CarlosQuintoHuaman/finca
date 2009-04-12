@@ -1,4 +1,4 @@
-package icaro.aplicaciones.recursos.persistenciaLogin.imp;
+package icaro.aplicaciones.recursos.persistenciaAdmin.imp;
 
 /**
  * 

@@ -1,7 +1,7 @@
-package icaro.aplicaciones.recursos.persistenciaLogin.imp.util;
+package icaro.aplicaciones.recursos.persistenciaAdmin.imp.util;
 
 
-import icaro.aplicaciones.recursos.persistenciaLogin.imp.ErrorEnRecursoException;
+import icaro.aplicaciones.recursos.persistenciaAdmin.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
 import icaro.infraestructura.recursosOrganizacion.configuracion.ItfUsoConfiguracion;
@@ -26,7 +26,7 @@ public class ConsultaBBDD {
 	 * Nombre de usuario de acceso (con privilegios de root) a la bbdd
 	 */
 	static private   String login;//= Configuracion.obtenerParametro("MYSQL_USER");
-	//static private  final String LOGIN="root";
+	//static private  final String Admin="root";
 	/**
 	 * Clave de acceso correspondiente con el usuario indicado
 	 */
