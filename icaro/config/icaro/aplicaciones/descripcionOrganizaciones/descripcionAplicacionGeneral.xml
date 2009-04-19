@@ -48,6 +48,9 @@
 				<icaro:DescComportamientoAgente
 					nombreComportamiento="AgenteAplicacionFicha" rol="AgenteAplicacion"
 					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionAdmin" rol="AgenteAplicacion"
+					tipo="Reactivo" />
 			</icaro:DescComportamientoAgentesAplicacion>
 		</icaro:DescComportamientoAgentes>
 	<!--******************************************************************************************************
@@ -59,12 +62,14 @@
 			<icaro:DescRecursoAplicacion nombre="PersistenciaMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionMedico"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionHistorial"/>
-			<icaro:DescRecursoAplicacion nombre="VisualizacionMedicamentos"/>
 			<icaro:DescRecursoAplicacion nombre="PersistenciaHistorial"/>
-			<icaro:DescRecursoAplicacion nombre="PersistenciaSecretaria"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionMedicamentos"/>
 			<icaro:DescRecursoAplicacion nombre="PersistenciaMedicamentos"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaSecretaria"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionSecretaria"/>
 			<icaro:DescRecursoAplicacion nombre="VisualizacionFicha"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionAdmin"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaAdmin"/>
 		</icaro:DescRecursosAplicacion>
 	</icaro:DescripcionComponentes>
 	<icaro:Instancias>
@@ -86,6 +91,7 @@
 				  <icaro:componenteGestionado refId="AgenteAplicacionMedicamentos1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionSecretaria1" tipoComponente="AgenteAplicacion"/>
 				  <icaro:componenteGestionado refId="AgenteAplicacionFicha1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionAdmin1" tipoComponente="AgenteAplicacion"/>
 				</icaro:componentesGestionados>
 			</icaro:InstanciaGestor>
 			
@@ -102,6 +108,8 @@
 					<icaro:componenteGestionado refId="PersistenciaSecretaria1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionSecretaria1" tipoComponente="RecursoAplicacion"/>
 					<icaro:componenteGestionado refId="VisualizacionFicha1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionAdmin1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaAdmin1" tipoComponente="RecursoAplicacion"/>
 				</icaro:componentesGestionados>
 			</icaro:InstanciaGestor>
 		</icaro:Gestores>
@@ -135,6 +143,11 @@
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
 			<icaro:Instancia id="AgenteAplicacionFicha1" refDescripcion="AgenteAplicacionFicha">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionAdmin1" refDescripcion="AgenteAplicacionAdmin">
 				<icaro:listaPropiedades>
 					<icaro:propiedad atributo="" valor=""/>
 				</icaro:listaPropiedades>
@@ -176,10 +189,6 @@
 					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
-			<icaro:Instancia id="VisualizacionLogin1" refDescripcion="VisualizacionLogin" xsi:type="icaro:Instancia"/>
-			<icaro:Instancia id="VisualizacionMedico1" refDescripcion="VisualizacionMedico" xsi:type="icaro:Instancia"/>
-			<icaro:Instancia id="VisualizacionHistorial1" refDescripcion="VisualizacionHistorial" xsi:type="icaro:Instancia"/>
-			<icaro:Instancia id="VisualizacionMedicamentos1" refDescripcion="VisualizacionMedicamentos" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="PersistenciaSecretaria1" refDescripcion="PersistenciaSecretaria" xsi:type="icaro:Instancia">
 				<icaro:listaPropiedades>
 					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
@@ -188,8 +197,21 @@
 					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
 				</icaro:listaPropiedades>
 			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaAdmin1" refDescripcion="PersistenciaAdmin" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="VisualizacionLogin1" refDescripcion="VisualizacionLogin" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionMedico1" refDescripcion="VisualizacionMedico" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionHistorial1" refDescripcion="VisualizacionHistorial" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionMedicamentos1" refDescripcion="VisualizacionMedicamentos" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="VisualizacionSecretaria1" refDescripcion="VisualizacionSecretaria" xsi:type="icaro:Instancia"/>
 			<icaro:Instancia id="VisualizacionFicha1" refDescripcion="VisualizacionFicha" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionAdmin1" refDescripcion="VisualizacionAdmin" xsi:type="icaro:Instancia"/>
 		</icaro:RecursosAplicacion>
 	<!--******************************************************************************************************
 	******************   Descripción común del nodo en el que se despliegan las instancias	******************
