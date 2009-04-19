@@ -4,6 +4,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
@@ -138,14 +139,22 @@ public class ConsultaBBDD {
 			f2.setTime(f1.getTime()+86400000);
 			String f11=util.getStrDateSQL(f1).substring(0, 10);
 			String f22=util.getStrDateSQL(f2).substring(0, 10);
-			ArrayList[] arrayLists = new ArrayList[lnombres.size()];
-			ArrayList<DatosCitaSinValidar>[] citas = arrayLists;
+			ArrayList[] arrayLists1 = new ArrayList[lnombres.size()];
+			ArrayList<DatosCitaSinValidar>[] citas = arrayLists1;
+			ArrayList[] arrayLists2 = new ArrayList[lnombres.size()];
+			ArrayList<DatosLlamada>[] llamadas =arrayLists2;
+			ArrayList[] arrayLists3 = new ArrayList[lnombres.size()];
+			ArrayList<DatosLlamada>[] extras =arrayLists3;
 			
 			for(int i=0;i<lnombres.size();i++){
 				datos[i]=new DatosMedico(lnombres.get(i));
 				datos[i].setIntervalo(15);
 				citas[i]=new ArrayList<DatosCitaSinValidar>();
+				llamadas[i]=new ArrayList<DatosLlamada>();
+				extras[i]=new ArrayList<DatosLlamada>();
 			}
+			
+			// Consulta que nos devuelve los datos de la citas de todos los medicos que posteriormente filtramos
 			crearQuery();
 			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
 			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
@@ -159,7 +168,8 @@ public class ConsultaBBDD {
 				}
 				String medico=resultado.getString("Medico");
 				 resultado.getTimestamp("Fecha").toString();
-
+				 
+				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
 						
@@ -170,6 +180,39 @@ public class ConsultaBBDD {
 					}
 				}
 			}
+			
+			// Consulta que nos devuelve los datos de los extras y llamadas de todos los medicos que posteriormente filtramos
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM extras WHERE Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
+			while (resultado.next()) {
+				
+				String nombre =resultado.getString("Nombre");
+				String medico=resultado.getString("Medico");
+				 String f=resultado.getTimestamp("Fecha").toString();
+				 String mensaje =resultado.getString("Mensaje");
+				 String telf=String.valueOf(resultado.getInt("Telefono"));
+				 String tipo=resultado.getString("Tipo");
+				 
+				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
+				for(int i=0;i<lnombres.size();i++){
+					if (medico.equals(lnombres.get(i))){
+						if(tipo.equals("llamada")){
+						DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19));
+						
+						llamadas[i].add(p);
+						datos[i].setLlamadas(llamadas[i]);
+						}
+						if(tipo.equals("extra")){
+							DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19));
+							
+							extras[i].add(p);
+							datos[i].setExtras(extras[i]);
+						}
+					}
+				}
+			}
+			
+			
 			for(int i=0;i<lnombres.size();i++){
 				medicos.add(datos[i]);
 			}
@@ -245,7 +288,7 @@ public class ConsultaBBDD {
 	 */
 	public boolean meteAgenda(DatosSecretaria s) {
 		try {	
-			//borramos tabla medicoPaciente para los medicos de esa secretaria
+			//borramos tabla medicoPaciente y extras para los medicos de esa secretaria
 			for(int i=0; i<s.getNumM();i++){
 				String medico=s.getMedicos().get(i).getNombre();
 				Date f1=util.StrToDateSQL(s.getFecha());
@@ -257,6 +300,8 @@ public class ConsultaBBDD {
 
 				crearQuery();
 				query.executeUpdate("DELETE FROM medicopaciente WHERE Medico = '" + medico + "' AND Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
+				crearQuery();
+				query.executeUpdate("DELETE FROM extras WHERE Medico = '" + medico + "' AND Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
 			}
 			//miramos si tenemos que insertar el paciente o si ya esta dado de alta en la tabla pacientes
 			for(int i=0; i<s.getNumM();i++){
@@ -271,18 +316,48 @@ public class ConsultaBBDD {
 						crearQuery();
 						query.executeUpdate("INSERT INTO usuario (NombreUsuario, Nombre, Telefono) VALUES " +"('"+nom+"', '"+nom+"', '"+telf+"')");
 						crearQuery();
-						query.executeUpdate("INSERT INTO paciente (Nombre, Telefono) VALUES " +"('"+nom+"', '"+telf+"')");
+						query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+nom+"', '"+telf+"')");
 					}
 				}
 			}
+			
+			String medico="";
+			
 			for(int i=0; i<s.getNumM();i++){
+				String f=s.getFecha().substring(0, 10);
 				for(int j=0;j<s.getMedicos().get(i).getDatos().size();j++){
 					String nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
-					String f=s.getFecha().substring(0, 10);
 					String h=s.getMedicos().get(i).getDatos().get(j).tomaHora();
-					String medico=s.getMedicos().get(i).getNombre();
+					medico=s.getMedicos().get(i).getNombre();
 				crearQuery();
 				query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora) VALUES " +"('"+medico+"', '"+nom+"', '"+f+"', '"+h+"')");
+				}
+				f=s.getFecha();
+				String tipo="llamada";
+				if(!(s.getMedicos().get(i).getLlamadas()==null)){
+					for(int j=0;j<s.getMedicos().get(i).getLlamadas().size();j++){
+						String nom=s.getMedicos().get(i).getLlamadas().get(j).getNombre();
+						String telf=s.getMedicos().get(i).getLlamadas().get(j).getTelf();
+						String men=s.getMedicos().get(i).getLlamadas().get(j).getMensaje();
+						medico=s.getMedicos().get(i).getNombre();
+						
+						crearQuery();
+						query.executeUpdate("INSERT INTO extras (Nombre, Medico, Fecha, Mensaje, Telefono, Tipo) VALUES " +"('"+nom+"', '"+medico+"', '"+f+"', '"+men+"'," +
+															" '"+telf+"', '"+tipo+"')");
+					}
+				}
+				tipo="extra";
+				if(!(s.getMedicos().get(i).getExtras()==null)){
+					for(int j=0;j<s.getMedicos().get(i).getExtras().size();j++){
+						String nom=s.getMedicos().get(i).getExtras().get(j).getNombre();
+						String telf=s.getMedicos().get(i).getExtras().get(j).getTelf();
+						String men=s.getMedicos().get(i).getExtras().get(j).getMensaje();
+						medico=s.getMedicos().get(i).getNombre();
+						
+						crearQuery();
+						query.executeUpdate("INSERT INTO extras (Nombre, Medico, Fecha, Mensaje, Telefono, Tipo) VALUES " +"('"+nom+"', '"+medico+"', '"+f+"', '"+men+"'," +
+															" '"+telf+"', '"+tipo+"')");
+					}
 				}
 			}
 			return true;

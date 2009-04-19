@@ -1,6 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSinValidar;
+
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;

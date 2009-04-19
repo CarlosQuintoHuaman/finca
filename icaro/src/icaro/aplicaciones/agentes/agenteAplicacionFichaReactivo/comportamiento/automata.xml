@@ -9,7 +9,7 @@
 	</estadoInicial>
 	<estado idIntermedio="esperaInicial">
 		<transicion input="mostrarVentanaFicha" accion="pintaVentanaFicha" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaFicha">
-		<transicion input="infoFicha" accion="darAlta" estadoSiguiente="esperaResultadoAlta" modoDeTransicion="bloqueante"/>
+		<transicion input="guardarFicha" accion="guardaFicha" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 		<transicion input="cerrarVentanaFicha" accion="nula" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="esperandoTerminacion">

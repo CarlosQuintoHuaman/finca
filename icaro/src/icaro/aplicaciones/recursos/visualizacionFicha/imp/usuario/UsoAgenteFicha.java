@@ -1,8 +1,8 @@
 package icaro.aplicaciones.recursos.visualizacionFicha.imp.usuario;
 
-import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFichaSinValidar;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.*;
-import icaro.aplicaciones.recursos.visualizacionFicha.imp.ClaseGeneradoraVisualizacionFicha;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -104,7 +104,34 @@ public class UsoAgenteFicha {
     }
     
     /**
-     * Generamos un evento para el automataSecretaria con input: 'cerrarVentanaFicha', para la accion semantica 
+     * Generamos un evento para el automataFicha con input: 'guardarFicha', para la accion semantica 
+     * que le corresponde: 'guardaFicha'. Este es un evento con origen VisualizacionFicha y destino AgenteFicha.
+     * Su proposito guardar los datos de la ficha que se le pasan por parametro
+     * @param ficha
+      */
+    public void guardarFicha(DatosFicha ficha){
+    	getInformacionAgente();
+    	
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteFicha.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionFicha
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteFicha);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("guardarFicha", ficha, "VisualizacionFicha1", nombreAgenteFicha));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al mostrar Ficha ");
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Generamos un evento para el automataFicha con input: 'cerrarVentanaFicha', para la accion semantica 
      * que le corresponde: 'nula'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es cerrar la ventana
       */

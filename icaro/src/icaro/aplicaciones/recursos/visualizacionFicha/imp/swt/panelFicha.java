@@ -1,12 +1,17 @@
 package icaro.aplicaciones.recursos.visualizacionFicha.imp.swt;
 
+import java.text.ParseException;
+
 import com.cloudgarden.resource.SWTResourceManager;
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.ClaseGeneradoraVisualizacionFicha;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.usuario.UsoAgenteFicha;
+import icaro.util.util;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -1085,7 +1090,23 @@ public class panelFicha extends Thread {
 	 * @param evt
 	 */
 	private void bGuardarWidgetSelected(SelectionEvent evt) {
-		Edicion(false);
+		
+		DatosFicha ficha;
+		try {
+			ficha = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(tFNacimiento.getText()),
+			Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
+			tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
+			text1.getText());
+			usoAgente.guardarFicha(ficha);
+			Edicion(false);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		shell.layout();
 	}
 	

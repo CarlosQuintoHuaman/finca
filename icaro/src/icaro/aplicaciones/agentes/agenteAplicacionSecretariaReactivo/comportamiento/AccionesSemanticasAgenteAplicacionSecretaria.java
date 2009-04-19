@@ -572,7 +572,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 	 */
 	public void insertaExtra(DatosLlamada datos) {
 		boolean ok = false;
-		
+		ok=true;
 		//Se lo mando a panel agenda para que lo compruebe
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz

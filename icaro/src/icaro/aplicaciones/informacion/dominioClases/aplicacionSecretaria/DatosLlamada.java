@@ -34,6 +34,13 @@ public class DatosLlamada {
 		mensaje=m;
 		telefono=t;
 	}
+	
+	public DatosLlamada(String n, String m, String t, String f){
+		nombre=n;
+		mensaje=m;
+		telefono=t;
+		hora=f;
+	}
 	public String getNombre(){
 		return  nombre;
 	}

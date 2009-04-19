@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.persistenciaFicha.imp;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.recursos.persistenciaFicha.ItfUsoPersistenciaFicha;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.ErrorEnRecursoException;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.util.AccesoBBDD;
@@ -53,12 +54,10 @@ public class ClaseGeneradoraPersistenciaFicha extends ImplRecursoSimple implemen
 		}
 
 	}
-
 	
-/*	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> l) {
-		return consulta.getCitas(fecha, l);
+	public boolean meteFicha(DatosFicha ficha){
+		return consulta.meteFicha(ficha);
 	}
-
 
 
 	@Override
@@ -72,5 +71,5 @@ public class ClaseGeneradoraPersistenciaFicha extends ImplRecursoSimple implemen
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 }

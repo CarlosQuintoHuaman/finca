@@ -44,6 +44,14 @@ public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar>
 	this.intervalo = intervalo;
 	this.datos = datos;
 }
+
+public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar> datos, ArrayList<DatosLlamada> llamadas, ArrayList<DatosLlamada> extras) {
+	this.nombre = nombre;
+	this.intervalo = intervalo;
+	this.datos = datos;
+	this.llamadas=llamadas;
+	this.extras=extras;
+}
 public ArrayList<DatosCitaSinValidar> getDatos() {
 	return datos;
 }

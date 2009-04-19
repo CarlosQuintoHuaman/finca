@@ -2,9 +2,14 @@ package icaro.aplicaciones.agentes.agenteAplicacionFichaReactivo.comportamiento;
 
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
+import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
+import icaro.aplicaciones.recursos.persistenciaFicha.ItfUsoPersistenciaFicha;
+import icaro.aplicaciones.recursos.persistenciaSecretaria.ItfUsoPersistenciaSecretaria;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.componentesBasicos.acciones.AccionesSemanticasAgenteReactivo;
@@ -17,7 +22,7 @@ import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.Reposito
 public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasAgenteReactivo {
 	
 	private ItfUsoVisualizadorFicha visualizacion;
-	private ItfUsoPersistencia Persistencia1;
+	private ItfUsoPersistenciaFicha Persistencia;
 	private ItfUsoAgenteReactivo agenteFicha;
 
 	
@@ -83,6 +88,40 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}
+	
+	/**
+	 * Guarda todos los datos de una ficha de un determinado paciente
+	 * @param datos		:: contiene todos los datos de una ficha
+	 */
+	public void guardaFicha(DatosFicha ficha){
+		
+		try {
+			visualizacion = (ItfUsoVisualizadorFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionFicha1");
+			
+			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
+			
+			//Manda los datos a la persistencia
+			boolean b=Persistencia.meteFicha(ficha);
+			if (!b){
+				visualizacion.mostrarMensajeError("Error en base de datos", "Los datos modificados no se han guardado");
+			}
+			
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba guardar datos del visualizador",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al guardar datos el visualizador de Secretaria en accion semantica 'guardaAgenda'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
 
 	// Ejemplo de accion semantica mas compleja
 	// OJO: Cada vez que se quiera enviar una traza hay que meterla en un bloque try catch
@@ -94,8 +133,8 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 		//infoFicha datos = new infoFicha(nombre,apell1,telf);
 		
 		try {
-			Persistencia1 = (ItfUsoPersistencia) itfUsoRepositorio.obtenerInterfaz
-			(NombresPredefinidos.ITF_USO+"Persistencia1");
+			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
 			//ok = Persistencia1.compruebaUsuario(datos.tomaUsuario(),datos.tomaPassword());
 			ok=true;
 			

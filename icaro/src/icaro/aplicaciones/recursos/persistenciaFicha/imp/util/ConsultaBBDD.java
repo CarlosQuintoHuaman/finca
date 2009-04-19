@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaFicha.imp.util;
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -83,6 +84,69 @@ public class ConsultaBBDD {
 		}			
 	}
 
+	public boolean meteFicha(DatosFicha ficha){
+		try {
+			
+			String[] aux=ficha.getApellidos().split(" ");
+			String ape1=aux[0];
+			String ape2="";
+			for(int i=1;i<=aux.length;i++)
+				ape2=ape2+aux[i];
+			
+			
+			String desc=ficha.getNIF()+'/'+ficha.getNombre()+'/'+ficha.getApellidos()+'/'+ficha.getFNacimiento().toString()+'/'+Integer.valueOf(ficha.getEdad())+'/'
+			+ficha.getDireccion()+'/'+ficha.getCP()+'/'+ficha.getProvincia()+'/'+ficha.getTelf1()+'/'+ficha.getTelf2()+'/'+ficha.getMail()+'/'+ficha.getProfesion()
+			+'/'+ficha.getAseguradora()+'/'+ficha.getOtros()+'/'+ficha.getPestOtros();
+			
+			int id=1;
+			//Compruebo si esta dado de alta en la bbdd
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre >= '" + ficha.getNombre() +"' AND Apellido1 <= '" + ape1 +
+					"' AND Telefono <= '" + ficha.getTelf1() + "'");
+			
+			
+			if (resultado.next()){
+				String usuario=resultado.getString("NombreUsuario");
+				String pass=resultado.getString("Password");
+				crearQuery();
+				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
+				crearQuery();
+				query.executeUpdate("DELETE FROM paciente WHERE NombreUsuario = '" + usuario +"'");
+				crearQuery();
+				query.executeUpdate("DELETE FROM usuario WHERE NombreUsuario = '" + usuario +"'");
+				
+				crearQuery();
+				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
+						"VALUES " +"('"+usuario+"', '"+pass+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
+								", '"+ficha.getTelf1()+"')");
+				crearQuery();
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+usuario+"', '"+ficha.getAseguradora()+"')");
+				
+				crearQuery();
+				query.executeUpdate("INSERT INTO antecendente (Id, Paciente, Descripcion) VALUES " +"('"+id+"', '"+usuario+"', '"+desc+"')");
+				
+			}
+			else{
+			//Si no esta dado de alta se inserta en la bbdd
+				id=4;
+				crearQuery();
+				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
+						"VALUES " +"('"+ficha.getNombre()+"', '"+ficha.getNombre()+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
+								", '"+ficha.getTelf1()+"')");
+				crearQuery();
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+ficha.getNombre()+"', '"+ficha.getAseguradora()+"')");
+				
+				crearQuery();
+				query.executeUpdate("INSERT INTO antecendente (Id, Paciente, Descripcion) VALUES " +"('"+id+"', '"+ficha.getNombre()+"', '"+desc+"')");
+			}
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
 	
 	/**
 	 * Consulta con la que obtenemos la lista de pacientes para cada medico de la lista que se le pasa por parametro en una fecha determinada
