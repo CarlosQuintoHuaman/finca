@@ -86,15 +86,15 @@ public class ConsultaBBDD {
 	}
 	
 	/**
-	 * Obtiene la lista de todos los pacientes
+	 * Obtiene la lista de todos los pacientes de un medico
 	 * @return ArrayList con objetos InfoPaciente
 	 */
-	public ArrayList<InfoPaciente> getPacientes() {
+	public ArrayList<InfoPaciente> getPacientes(String usuario) {
 		ArrayList<InfoPaciente> pacientes = new ArrayList<InfoPaciente>();
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario U, paciente P WHERE P.NombreUsuario = U.NombreUsuario");
+			resultado = query.executeQuery("SELECT DISTINCT * FROM medicopaciente M, usuario U, paciente P WHERE M.Medico='" + usuario + "' AND U.NombreUsuario = M.Paciente AND P.NombreUsuario = M.Paciente");
 			
 			while (resultado.next()) {
 				InfoPaciente p = new InfoPaciente(resultado.getString("NombreUsuario"),
@@ -122,12 +122,12 @@ public class ConsultaBBDD {
 	 * Obtiene las citas de un medico
 	 * @return ArrayList con objetos InfoCita
 	 */
-	public ArrayList<InfoCita> getCitas() {
+	public ArrayList<InfoCita> getCitas(String usuario) {
 		ArrayList<InfoCita> citas = new ArrayList<InfoCita>();
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM medicopaciente");
+			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Medico='"+usuario+"'");
 			
 			while (resultado.next()) {
 				InfoCita p = new InfoCita(resultado.getString("Paciente"),

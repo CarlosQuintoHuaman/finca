@@ -34,15 +34,15 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 	/**
 	 * Muestra la ventana del medico
 	 */
-	public void pintaVentanaMedico() {
-		
+	public void pintaVentanaMedico(String usuario) {
+
 		try {
 			//Se obtiene el visualizador
 			visualizacion = (ItfUsoVisualizadorMedico) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionMedico1");
 			
 			// Ejemplo de algo que podemos hacer con el
-			visualizacion.mostrarVisualizadorMedico(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarVisualizadorMedico(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, usuario);
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));

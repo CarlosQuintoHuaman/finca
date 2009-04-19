@@ -54,9 +54,6 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		// Si este nombre esta mal va a petar
 	    p = (ItfUsoPersistenciaMedico)RepositorioInterfaces.instance().obtenerInterfaz(
 	      			NombresPredefinidos.ITF_USO+"PersistenciaMedico1");
-	    
-	    pacientes = p.getPacientes();
-		citas = p.getCitas();
 		
   		this.inicializa();
 	}
@@ -76,12 +73,15 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 
 	
 
-	public void mostrarVisualizadorMedico(String nombreAgente, String tipo) {
+	public void mostrarVisualizadorMedico(String nombreAgente, String tipo, String usuario) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
-		this.ventanaMedicoUsuario.mostrar();
+		pacientes = p.getPacientes(usuario);
+		citas = p.getCitas(usuario);
+		
+		this.ventanaMedicoUsuario.mostrar(usuario);
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedico",
   				"Mostrando visualizador...",
   				InfoTraza.NivelTraza.debug));
@@ -100,11 +100,11 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
   		ventanaMedicoUsuario.start();
 	}
   
-	public ArrayList<InfoPaciente> getPacientes() {
+	public ArrayList<InfoPaciente> getPacientes(String medico) {
 		return pacientes;
 	}
 	
-	public ArrayList<InfoCita> getCitas() {
+	public ArrayList<InfoCita> getCitas(String medico) {
 		return citas;
 	}
 
@@ -116,6 +116,10 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		ventanaMedicoUsuario.mostrarTabMed(c);
 	}
 
+	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) throws Exception {
+		ventanaMedicoUsuario.mostrarDatosMed(m);
+	}
+	
 	// Metodos genericos
 	public String getNombreAgenteControlador() {
 		return nombreAgenteControlador;
@@ -182,14 +186,6 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 			this.estadoAutomata.transita("error");
 			e.printStackTrace();
 		}
-	}
-
-
-
-
-	@Override
-	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) throws Exception {
-		ventanaMedicoUsuario.mostrarDatosMed(m);
 	}
 	
 	// Aqui van los metodos no genericos		

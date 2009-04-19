@@ -21,7 +21,7 @@ public interface ItfUsoVisualizadorMedico extends ItfUsoRecursoSimple{
 	 * @param tipo
 	 * @throws Exception
 	 */
-	public void mostrarVisualizadorMedico(String nombreAgente,String tipo) throws Exception;
+	public void mostrarVisualizadorMedico(String nombreAgente,String tipo, String usuario) throws Exception;
 	
 	/**
 	 * - En fase experimental - Aun no funciona

@@ -82,7 +82,7 @@ public class AccionesSemanticasAgenteAplicacionLogin extends AccionesSemanticasA
 				visualizacion.cerrarVisualizadorLogin();
 			}
 			else if (tipo == "Medico") {
-				agenteMedico.aceptaEvento(new EventoInput("inicio","AgenteAplicacionLogin1", "AgenteAplicacionMedico1"));
+				agenteMedico.aceptaEvento(new EventoInput("inicio", u, "AgenteAplicacionLogin1", "AgenteAplicacionMedico1"));
 				visualizacion.cerrarVisualizadorLogin();
 			}
 			else if (tipo == "Admin") {

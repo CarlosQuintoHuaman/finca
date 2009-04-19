@@ -59,12 +59,12 @@ public class ClaseGeneradoraPersistenciaMedico extends ImplRecursoSimple impleme
 
 	}
 
-	public ArrayList<InfoPaciente> getPacientes() {
-		return consulta.getPacientes();
+	public ArrayList<InfoPaciente> getPacientes(String usuario) {
+		return consulta.getPacientes(usuario);
 	}
 	
-	public ArrayList<InfoCita> getCitas() {
-		return consulta.getCitas();
+	public ArrayList<InfoCita> getCitas(String usuario) {
+		return consulta.getCitas(usuario);
 	}
 
 	@Override

@@ -119,18 +119,21 @@ public class PanelMedico extends Thread {
 		// Es decir, no debe haber un shell.open en initGUI()
 		disp = new Display();
 		
-		pacientes = visualizador.getPacientes();
-		citas = visualizador.getCitas();
+		pacientes = new ArrayList<InfoPaciente>();
+		citas = new ArrayList<InfoCita>();
 		
 		initGUI();
 	}
 
-	public void mostrar(){
+	public void mostrar(final String usuario){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.asyncExec(new Runnable() {
             public void run() {
-         	   shell.open();
+            	pacientes = visualizador.getPacientes(usuario);
+            	citas = visualizador.getCitas(usuario);
+            	shell.setText("Bienvenido Dr."+usuario);
+            	shell.open();
 	       }
          });
 	}
