@@ -144,6 +144,7 @@ public class panelFicha extends Thread {
     private CCombo cCombo1;
     //Variables globales
     private Boolean nuevo;
+    private DatosFicha original;
 
 	/**
 	 * comunicacion con el agente (control)
@@ -201,6 +202,7 @@ public class panelFicha extends Thread {
             	    cAntPersonales.dispose();
             	    cAntFamiliares.dispose();
             	}
+            	Edicion(false);
          	   shell.open();
 	       }
          });
@@ -250,6 +252,7 @@ public class panelFicha extends Thread {
 		    }
 		});
         nuevo=true;
+        original=new DatosFicha();
         GridLayout layout = new GridLayout(2,false);
 
 		shell.setText("Crear Ficha");
@@ -975,7 +978,15 @@ public class panelFicha extends Thread {
 					bModificar.setText("Modificar");
 					bModificar.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							bModificarWidgetSelected(evt);
+							try {
+								bModificarWidgetSelected(evt);
+							} catch (NumberFormatException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					});
 				}
@@ -1078,9 +1089,20 @@ public class panelFicha extends Thread {
 	 * Accion asociada al evento del boton 'modificar'
 	 * activamos todos los componentes de la ventana
 	 * @param evt
+	 * @throws ParseException 
+	 * @throws NumberFormatException 
 	 */
-	private void bModificarWidgetSelected(SelectionEvent evt) {
+	private void bModificarWidgetSelected(SelectionEvent evt) throws NumberFormatException, ParseException {
 		Edicion(true);
+		util u=new util();
+		String f=u.getStrDateSQL2();
+		
+		if (!tFNacimiento.getText().equals(""))
+			f=tFNacimiento.getText();
+		original=new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(f),
+				Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
+				tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
+				text1.getText());
 		shell.layout();
 	}
 	
@@ -1091,13 +1113,13 @@ public class panelFicha extends Thread {
 	 */
 	private void bGuardarWidgetSelected(SelectionEvent evt) {
 		
-		DatosFicha ficha;
+		DatosFicha fichaN;
 		try {
-			ficha = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(tFNacimiento.getText()),
+			fichaN = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(tFNacimiento.getText()),
 			Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
 			tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
 			text1.getText());
-			usoAgente.guardarFicha(ficha);
+			usoAgente.guardarFicha( original,fichaN);
 			Edicion(false);
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block

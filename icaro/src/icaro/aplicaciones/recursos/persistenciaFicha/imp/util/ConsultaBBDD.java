@@ -84,46 +84,48 @@ public class ConsultaBBDD {
 		}			
 	}
 
-	public boolean meteFicha(DatosFicha ficha){
+	public boolean meteFicha(DatosFicha original, DatosFicha fichaN){
 		try {
 			
-			String[] aux=ficha.getApellidos().split(" ");
+			String[] aux=fichaN.getApellidos().split(" ");
 			String ape1=aux[0];
 			String ape2="";
-			for(int i=1;i<=aux.length;i++)
+			for(int i=1;i<aux.length;i++)
 				ape2=ape2+aux[i];
 			
 			
-			String desc=ficha.getNIF()+'/'+ficha.getNombre()+'/'+ficha.getApellidos()+'/'+ficha.getFNacimiento().toString()+'/'+Integer.valueOf(ficha.getEdad())+'/'
-			+ficha.getDireccion()+'/'+ficha.getCP()+'/'+ficha.getProvincia()+'/'+ficha.getTelf1()+'/'+ficha.getTelf2()+'/'+ficha.getMail()+'/'+ficha.getProfesion()
-			+'/'+ficha.getAseguradora()+'/'+ficha.getOtros()+'/'+ficha.getPestOtros();
+			String desc=fichaN.getNIF()+'/'+fichaN.getNombre()+'/'+fichaN.getApellidos()+'/'+fichaN.getFNacimiento().toString()+'/'+Integer.valueOf(fichaN.getEdad())+'/'
+			+fichaN.getDireccion()+'/'+fichaN.getCP()+'/'+fichaN.getProvincia()+'/'+fichaN.getTelf1()+'/'+fichaN.getTelf2()+'/'+fichaN.getMail()+'/'+fichaN.getProfesion()
+			+'/'+fichaN.getAseguradora()+'/'+fichaN.getOtros()+'/'+fichaN.getPestOtros();
 			
 			int id=1;
 			//Compruebo si esta dado de alta en la bbdd
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre >= '" + ficha.getNombre() +"' AND Apellido1 <= '" + ape1 +
-					"' AND Telefono <= '" + ficha.getTelf1() + "'");
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre>= '" + original.getNombre() +"' AND Apellido1 <= '" + ape1 +
+					"' AND Telefono <= '" + original.getTelf1() + "'");
 			
 			
 			if (resultado.next()){
 				String usuario=resultado.getString("NombreUsuario");
-				String pass=resultado.getString("Password");
 				crearQuery();
 				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
-				crearQuery();
-				query.executeUpdate("DELETE FROM paciente WHERE NombreUsuario = '" + usuario +"'");
-				crearQuery();
-				query.executeUpdate("DELETE FROM usuario WHERE NombreUsuario = '" + usuario +"'");
+//				crearQuery();
+//				query.executeUpdate("DELETE FROM paciente WHERE NombreUsuario = '" + usuario +"'");
+//				crearQuery();
+//				query.executeUpdate("DELETE FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				
 				crearQuery();
-				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
-						"VALUES " +"('"+usuario+"', '"+pass+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
-								", '"+ficha.getTelf1()+"')");
-				crearQuery();
-				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+usuario+"', '"+ficha.getAseguradora()+"')");
+//				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
+//						"VALUES " +"('"+usuario+"', '"+pass+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
+//								", '"+ficha.getTelf1()+"')");
+				//UPDATE `doctoris`.`usuario` SET `Nombre` = 'Secreetaria1' WHERE `usuario`.`NombreUsuario` = 'sec1' LIMIT 1 ;
+				query.executeUpdate("UPDATE usuario SET Nombre = '" + fichaN.getNombre() +"' AND Apellido1 <= '" + ape1 +"' AND Apellido2 <= '" + ape2 +
+						"' AND Direccion <= '" + fichaN.getDireccion() +"' AND Telefono <= '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+usuario+"'");
+//				crearQuery();
+//				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+usuario+"', '"+ficha.getAseguradora()+"')");
 				
 				crearQuery();
-				query.executeUpdate("INSERT INTO antecendente (Id, Paciente, Descripcion) VALUES " +"('"+id+"', '"+usuario+"', '"+desc+"')");
+				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+usuario+"', '"+desc+"')");
 				
 			}
 			else{
@@ -131,13 +133,13 @@ public class ConsultaBBDD {
 				id=4;
 				crearQuery();
 				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
-						"VALUES " +"('"+ficha.getNombre()+"', '"+ficha.getNombre()+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
-								", '"+ficha.getTelf1()+"')");
+						"VALUES " +"('"+fichaN.getNombre()+"', '"+fichaN.getNombre()+"', '"+fichaN.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+fichaN.getDireccion()+"'" +
+								", '"+fichaN.getTelf1()+"')");
 				crearQuery();
-				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+ficha.getNombre()+"', '"+ficha.getAseguradora()+"')");
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+fichaN.getNombre()+"', '"+fichaN.getAseguradora()+"')");
 				
 				crearQuery();
-				query.executeUpdate("INSERT INTO antecendente (Id, Paciente, Descripcion) VALUES " +"('"+id+"', '"+ficha.getNombre()+"', '"+desc+"')");
+				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+fichaN.getNombre()+"', '"+desc+"')");
 			}
 			return true;
 		} catch (Exception e) {

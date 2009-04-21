@@ -934,7 +934,7 @@ public class panelAgenda extends Thread {
 				Nombres[c].setMenu(opciones);
 				
 				Nombres[c].addMouseListener(new MouseAdapter() {
-					public void mouseDown(MouseEvent evt) {
+					public void mouseDoubleClick(MouseEvent evt) {
 						
 						nombreMouseDown(evt);
 						
@@ -1351,7 +1351,6 @@ public class panelAgenda extends Thread {
 			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
-		//if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));

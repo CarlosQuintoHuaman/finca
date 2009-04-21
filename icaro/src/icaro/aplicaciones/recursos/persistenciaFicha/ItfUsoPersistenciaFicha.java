@@ -12,7 +12,7 @@ public interface ItfUsoPersistenciaFicha extends ItfUsoRecursoSimple {
 	 * @param s		:: Datos que incluye la ficha de un paciente
 	 * @return 		:: devuelve cierto si todo ha ido bien y fallo en caso contrario
 	 */
-	public boolean meteFicha(DatosFicha ficha);
+	public boolean meteFicha(DatosFicha original, DatosFicha fichaN);
 	
 	
 

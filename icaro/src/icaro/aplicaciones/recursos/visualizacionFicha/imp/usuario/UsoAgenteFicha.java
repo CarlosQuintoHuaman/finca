@@ -109,9 +109,9 @@ public class UsoAgenteFicha {
      * Su proposito guardar los datos de la ficha que se le pasan por parametro
      * @param ficha
       */
-    public void guardarFicha(DatosFicha ficha){
+    public void guardarFicha(DatosFicha original, DatosFicha fichaN){
     	getInformacionAgente();
-    	
+    	DatosFicha[] fichas={original,fichaN};
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
@@ -121,7 +121,7 @@ public class UsoAgenteFicha {
                 //AgenteAplicacionFicha
                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteFicha);
                 if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoInput("guardarFicha", ficha, "VisualizacionFicha1", nombreAgenteFicha));
+                    itfUsoAgente.aceptaEvento(new EventoInput("guardarFicha", fichas, "VisualizacionFicha1", nombreAgenteFicha));
                 }
             }
 

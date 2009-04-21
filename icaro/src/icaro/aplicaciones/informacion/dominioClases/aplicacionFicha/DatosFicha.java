@@ -1,6 +1,9 @@
 package icaro.aplicaciones.informacion.dominioClases.aplicacionFicha;
 
+import icaro.util.util;
+
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 public class DatosFicha implements Serializable {
@@ -47,6 +50,12 @@ public class DatosFicha implements Serializable {
 		this.aseguradora=seguro;
 		this.otros=otros;
 		this.PestOtros=pOtros;
+	}
+	
+	public DatosFicha () throws ParseException{
+		util d=new util();
+		String f=d.getStrDateSQL2();
+		this.fNacimiento=d.StrToDate(f);
 	}
 
 	public String getNombre() {

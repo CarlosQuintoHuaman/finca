@@ -93,7 +93,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 	 * Guarda todos los datos de una ficha de un determinado paciente
 	 * @param datos		:: contiene todos los datos de una ficha
 	 */
-	public void guardaFicha(DatosFicha ficha){
+	public void guardaFicha(DatosFicha original, DatosFicha fichaN){
 		
 		try {
 			visualizacion = (ItfUsoVisualizadorFicha) itfUsoRepositorio.obtenerInterfaz
@@ -103,7 +103,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
 			
 			//Manda los datos a la persistencia
-			boolean b=Persistencia.meteFicha(ficha);
+			boolean b=Persistencia.meteFicha(original,fichaN);
 			if (!b){
 				visualizacion.mostrarMensajeError("Error en base de datos", "Los datos modificados no se han guardado");
 			}

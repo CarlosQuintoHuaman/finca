@@ -55,8 +55,8 @@ public class ClaseGeneradoraPersistenciaFicha extends ImplRecursoSimple implemen
 
 	}
 	
-	public boolean meteFicha(DatosFicha ficha){
-		return consulta.meteFicha(ficha);
+	public boolean meteFicha(DatosFicha original, DatosFicha fichaN){
+		return consulta.meteFicha(original,fichaN);
 	}
 
 
