@@ -119,8 +119,8 @@ public class ConsultaBBDD {
 //						"VALUES " +"('"+usuario+"', '"+pass+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
 //								", '"+ficha.getTelf1()+"')");
 				//UPDATE `doctoris`.`usuario` SET `Nombre` = 'Secreetaria1' WHERE `usuario`.`NombreUsuario` = 'sec1' LIMIT 1 ;
-				query.executeUpdate("UPDATE usuario SET Nombre = '" + fichaN.getNombre() +"' AND Apellido1 <= '" + ape1 +"' AND Apellido2 <= '" + ape2 +
-						"' AND Direccion <= '" + fichaN.getDireccion() +"' AND Telefono <= '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+usuario+"'");
+				query.executeUpdate("UPDATE usuario SET Nombre = '" + fichaN.getNombre() +"', Apellido1 = '" + ape1 +"', Apellido2 = '" + ape2 +
+						"', Direccion = '" + fichaN.getDireccion() +"', Telefono = '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+usuario+"'");
 //				crearQuery();
 //				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+usuario+"', '"+ficha.getAseguradora()+"')");
 				
