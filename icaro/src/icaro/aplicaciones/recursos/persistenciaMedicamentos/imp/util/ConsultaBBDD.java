@@ -211,7 +211,7 @@ public class ConsultaBBDD {
 	}
 	
 	/**
-	 * Borra un medicamento de la BD
+	 * Borra un medicamento de la receta de un usuario
 	 * @param p Nombre de usaurio
 	 * @param t Fecha de la visita
 	 * @param m Datos Medicamento
@@ -222,9 +222,23 @@ public class ConsultaBBDD {
 			crearQuery();
 			resultado = query.executeQuery("SELECT Codigo FROM Recetas WHERE Paciente='" + p + "' AND FechaVisita='" + t + "'");
 			
-			if (resultado.next())
+			if (resultado.next()) {
 				crearQuery();
 				query.executeUpdate("DELETE FROM MedPorReceta WHERE CodigoRec='"+resultado.getString("Codigo")+"' AND CodigoMed='"+m.getCodigo()+"'");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Borra un medicamento completamente de la BD
+	 * @param m
+	 */
+	public void eliminarMedicamento(InfoMedicamento m) {
+		try {
+			crearQuery();
+			query.executeUpdate("DELETE FROM Medicamentos WHERE Codigo='"+m.getCodigo()+"'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -108,7 +108,7 @@ public class UsoAgenteMedicamentos {
      * Inserta un medicamento en la BD
      * @param m InfoMedicamento
      */
-    public void insertarMed(InfoMedicamento m) {
+    public void insertarMed(String origen, InfoMedicamento m) {
     	getInformacionAgente();
     	
     	try {
@@ -120,8 +120,12 @@ public class UsoAgenteMedicamentos {
             }
             
             ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
-            
             itfUsoMedicamentos.aceptaEvento(new EventoInput("insertarMedicamento", m, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
+            
+            itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("cargarMedicamentos", origen, "VisualizacionMedicamentos1", "AgenteAplicacionMedicamentos1"));
+            
+            
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al guardar el Historial");

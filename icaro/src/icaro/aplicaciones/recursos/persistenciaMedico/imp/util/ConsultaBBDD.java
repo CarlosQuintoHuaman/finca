@@ -127,7 +127,7 @@ public class ConsultaBBDD {
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Medico='"+usuario+"'");
+			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Medico='"+usuario+"' ORDER BY Hora ASC");
 			
 			while (resultado.next()) {
 				InfoCita p = new InfoCita(resultado.getString("Paciente"),

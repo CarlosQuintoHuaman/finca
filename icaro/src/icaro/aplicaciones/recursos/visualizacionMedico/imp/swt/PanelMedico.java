@@ -62,6 +62,7 @@ public class PanelMedico extends Thread {
 	private Button opcion4;
 	private Button opcion5;
 	private Button opcion6;
+	private Button bActualizar;
 	private Composite composite1;
 	private CTabItem cTabItem2;
 	private CTabFolder panelContenido;
@@ -100,6 +101,9 @@ public class PanelMedico extends Thread {
 	
 
 	private ClaseGeneradoraVisualizacionMedico visualizador;
+	private String usuario;
+	private Date fechaActual;
+	
 	/**
 	 * 
 	 * @param visualizador
@@ -128,11 +132,16 @@ public class PanelMedico extends Thread {
 	public void mostrar(final String usuario){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
+		this.usuario = usuario;
+		
 		disp.asyncExec(new Runnable() {
             public void run() {
             	pacientes = visualizador.getPacientes(usuario);
             	citas = visualizador.getCitas(usuario);
+            	usoAgente.cargarMedicamentos();
+            	
             	shell.setText("Bienvenido Dr."+usuario);
+            	actualizarLista();
             	shell.open();
 	       }
          });
@@ -195,7 +204,8 @@ public class PanelMedico extends Thread {
 					{
 						listadoPacientes = new List(barraLateral, SWT.NONE);
 						
-						actualizarCitas(new Date());
+						fechaActual = new Date();
+						actualizarCitas(fechaActual);
 						cTabItem1.setControl(listadoPacientes);
 					}
 				}
@@ -268,6 +278,22 @@ public class PanelMedico extends Thread {
 				//barraLateral.setBackground(new Color(display, 255, 255, 255));
 				barraLateral.setSelection(0);
 			}
+			
+			{
+				bActualizar = new Button(izquierda, SWT.PUSH | SWT.CENTER);
+				GridData bActualizarLData = new GridData();
+				bActualizarLData.horizontalAlignment = GridData.FILL;
+				bActualizarLData.heightHint = 20;
+				bActualizar.setLayoutData(bActualizarLData);
+				bActualizar.setText("Actualizar");
+				//opcion2.setSize(180, 100);
+				bActualizar.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						citas = visualizador.getCitas(usuario);
+						actualizarCitas(fechaActual);
+					}
+				});
+			}
 
 			// Calendario
 			{
@@ -283,24 +309,7 @@ public class PanelMedico extends Thread {
 
 				
 				final DateTime calendario = new DateTime (cAcepCanc, SWT.CALENDAR);
-				
-				final Button bEnviar    = new Button(cAcepCanc, SWT.PUSH);
-				bEnviar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-				bEnviar.setText("Seleccionar");
-				//Introducimos los valores y eventos de Fecha Inicio
-				bEnviar.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-						// TODO ¿Se puede evitar usar métodos obsoletos?
-								fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());							
-						shell.dispose();
-					}                               
-				});
-				
-				final Button bCancelar  = new Button(cAcepCanc, SWT.PUSH);
-				bCancelar.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-				bCancelar.setText("Cancelar");
 				{
-					//calendario = new DateTime(cAcepCanc, SWT.CALENDAR);
 					GridData calendarioLData = new GridData();
 					calendarioLData.verticalAlignment = GridData.BEGINNING;
 					calendarioLData.horizontalAlignment = GridData.BEGINNING;
@@ -310,27 +319,13 @@ public class PanelMedico extends Thread {
 					calendario.addMouseListener(new MouseListener () {
 						public void mouseDoubleClick(MouseEvent e) {
 							// TODO ¿Y esto por qué no va?
-									fecha = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
-									listadoPacientes.removeAll();
-									listadoPacientes.add("Pacientes del dia " + fecha.toString());
-									actualizarCitas(fecha);
+									fechaActual = new Date(calendario.getYear()-1900,calendario.getMonth(),calendario.getDay());
+									actualizarCitas(fechaActual);
 						}
 						public void mouseUp(MouseEvent e) {};
 						public void mouseDown(MouseEvent e) {};
 					});
 				}
-				//Introducimos los valores y eventos de Fecha Inicio
-				bCancelar.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-						/*              if (fechaAnt!=null)
-							fecha=fechaAnt;
-						else*/
-						fecha = null;
-						shell.dispose();
-					}                               
-				});
-				
-				
 			}
 		}
 		{
@@ -359,9 +354,6 @@ public class PanelMedico extends Thread {
 						opcion1.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 								opcion1WidgetSelected(evt);
-								
-								//Visita v = new Visita(shell, SWT.NONE);
-								//usoAgente.abrirVisita(listadoPacientes.getSelection()[0]);
 							}
 						});
 					}
@@ -436,8 +428,7 @@ public class PanelMedico extends Thread {
 					//cMedicamentos = new Composite(panelContenido, SWT.NONE);
 					cMedicamentos = new PanelMedicamentos(visualizador, panelContenido, SWT.NONE);
 					cTabMed.setControl(cMedicamentos);
-					
-					usoAgente.cargarMedicamentos();
+										
 //					disp.syncExec(new Runnable() {
 //						public void run() {
 //							usoAgente.cargarTabMed((Composite)panelContenido, SWT.NONE);
@@ -544,7 +535,16 @@ public class PanelMedico extends Thread {
 				usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
 			} else {
 				String paciente = listadoPacientes.getSelection()[0].substring(6);
-				usoAgente.abrirHistorial(paciente);
+				
+				int j;
+				
+				for (j=0; j<pacientes.size(); j++) {
+					InfoPaciente p = pacientes.get(j);
+					if (paciente.equals(p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2()))
+						break;
+				}
+				
+				usoAgente.abrirHistorial(pacientes.get(j).getUsuario());
 			}
 		} else {
 			if (listaBusPaciente.getSelectionIndex() == -1) {
@@ -556,15 +556,10 @@ public class PanelMedico extends Thread {
 	}
 	
 	private void tBusNombreModifyText(ModifyEvent evt) {
-		System.out.println("tBusNombre.modifyText, event="+evt);
-		//TODO add your code for tBusNombre.modifyText
 		actualizarLista();
-		
 	}
 	
 	private void tBusApellidoModifyText(ModifyEvent evt) {
-		System.out.println("tBusApellido.modifyText, event="+evt);
-		//TODO add your code for tBusNombre.modifyText
 		actualizarLista();
 	}
 	
@@ -590,6 +585,12 @@ public class PanelMedico extends Thread {
 	
 	private void actualizarCitas(Date f) {
 		//citas = visualizador.getCitas();
+		if (f == null)
+			f = fechaActual;
+		
+		listadoPacientes.removeAll();
+		String fe = fechaActual.getDate() + "-" + (fechaActual.getMonth()+1) + "-" + (fechaActual.getYear()+1900);
+		listadoPacientes.add("Pacientes del dia " + fe);
 		
 		for (int i=0; i<citas.size(); i++) {
 			InfoCita t = citas.get(i);
@@ -606,7 +607,14 @@ public class PanelMedico extends Thread {
 			if (minutos.length() == 1)
 				minutos = "0"+minutos;
 			
-			listadoPacientes.add(horas + ":" + minutos + " " + t.getUsuario());
+			int j;
+			
+			for (j=0; j<pacientes.size(); j++)
+				if (pacientes.get(j).getUsuario().equals(t.getUsuario()))
+					break;
+			
+			InfoPaciente p = pacientes.get(j);
+			listadoPacientes.add(horas + ":" + minutos + " " + p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2());
 		}
 			
 	}

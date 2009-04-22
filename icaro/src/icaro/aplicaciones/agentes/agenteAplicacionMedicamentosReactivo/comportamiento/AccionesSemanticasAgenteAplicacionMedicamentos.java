@@ -85,7 +85,7 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	/**
 	 * Muestra la ventana de añadir un medicamento nuevo
 	 */
-	public void pintaVentanaNuevo() {
+	public void pintaVentanaNuevo(String origen) {
 		try {
 			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
@@ -93,7 +93,7 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 			visualizacion = (ItfUsoVisualizadorMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionMedicamentos1");
 			
-			visualizacion.mostrarVisualizadorNuevo(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarVisualizadorNuevo(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, origen);
 			//visualizacion.mostrarDatosLista(persistencia.getMedicamentos(paciente));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,7 +127,6 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 	public void insertarMedicamento(InfoMedicamento m) {
 		try {
 			persistencia.insertaMedicamento(m);
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,7 +178,28 @@ public class AccionesSemanticasAgenteAplicacionMedicamentos extends AccionesSema
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	/**
+	 * Elimina un medicamento completamente de la BD
+	 * @param m InfoMedicamento
+	 */
+	public void eliminarMedicamento(String origen, InfoMedicamento m) {
+		try {
+			persistencia = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
+			
+			persistencia.eliminarMedicamento(m);
+			
+			ItfUsoAgenteReactivo agenteOrigen = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+origen);
+			agenteOrigen.aceptaEvento(new EventoInput("mostrarDatosMed", persistencia.getMedicamentos(), this.nombreAgente,origen));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	// Los siguientes 3 metodos suelen estar siempre en todos los automatas
 	public void terminacion() {

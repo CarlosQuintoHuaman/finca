@@ -70,6 +70,10 @@ public class ClaseGeneradoraPersistenciaMedicamentos extends ImplRecursoSimple i
 	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) throws Exception {
 		consulta.borrarMedicamento(p, t, m);
 	}
+	
+	public void eliminarMedicamento(InfoMedicamento m) throws Exception {
+		consulta.eliminarMedicamento(m);
+	}
 
 	public void insertaMedicamento(InfoMedicamento m) throws Exception {
 		consulta.insertaMedicamento(m);

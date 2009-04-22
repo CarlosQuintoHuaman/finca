@@ -1,5 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -153,7 +155,7 @@ public class UsoAgenteMedico {
             
             ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
             
-            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaNuevo", "VisualizacionMedico1", "AgenteAplicacionMedicamentos1"));
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("mostrarVentanaNuevo", "AgenteAplicacionMedico1", "VisualizacionMedico1", "AgenteAplicacionMedicamentos1"));
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Historial desde el agente Medico");
@@ -178,6 +180,31 @@ public class UsoAgenteMedico {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al activar el agente Medicamentos desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Borra un medicamento de una visita
+     * @param v InfoVisita
+     * @param m InfoMedicamento
+     */
+    public void borrarMed(InfoMedicamento m) {
+    	getInformacionAgente();
+    	
+    	try {
+    		Object d[] = {"AgenteAplicacionMedico1",m};
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMedicamentos = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedicamentos1");
+            
+            itfUsoMedicamentos.aceptaEvento(new EventoInput("eliminarMedicamento", d, "VisualizacionHistorial1", "AgenteAplicacionMedicamentos1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al guardar el Historial");
             e.printStackTrace();
         }
     }

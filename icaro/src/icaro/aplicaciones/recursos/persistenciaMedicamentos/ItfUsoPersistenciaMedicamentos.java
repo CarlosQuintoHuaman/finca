@@ -46,11 +46,18 @@ public interface ItfUsoPersistenciaMedicamentos extends ItfUsoRecursoSimple {
 	public void asignaMedicamento(String p, InfoMedicamento m, Timestamp f) throws Exception;
 	
 	/**
-	 * Borra un medicamento de la BD
+	 * Borra un medicamento de una receta de un usuarios
 	 * @param p Nombre de usaurio
 	 * @param t Fecha de la visita
 	 * @param m Datos Medicamento
 	 * @throws Exception
 	 */
 	public void borrarMedicamento(String p, Timestamp t, InfoMedicamento m) throws Exception;
+	
+	/**
+	 * Elimina un medicamento completamente de la BD
+	 * @param m
+	 * @throws Exception
+	 */
+	public void eliminarMedicamento(InfoMedicamento m) throws Exception;
 }

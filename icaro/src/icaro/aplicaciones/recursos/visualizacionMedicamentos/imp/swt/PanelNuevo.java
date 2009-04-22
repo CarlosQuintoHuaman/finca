@@ -51,6 +51,7 @@ public class PanelNuevo extends Thread {
 	
 	private ArrayList<InfoMedicamento> medicamentos;
 	String paciente;
+	String origen;
 
 	/**
 	 * 
@@ -69,9 +70,10 @@ public class PanelNuevo extends Thread {
 		initGUI();
 	}
 
-	public void mostrar(){
+	public void mostrar(String origen){
+		this.origen = origen;
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
-		// rodeando el codigo de esta manera
+		// rodeando el codigo de esta manera		
 		disp.asyncExec(new Runnable() {
             public void run() {
          	   shell.open();
@@ -258,7 +260,7 @@ public class PanelNuevo extends Thread {
 
 		if (correcto) {
 			InfoMedicamento m = new InfoMedicamento(0, tNombre.getText(), tPActivo.getText(), tDesc.getText(), tIndicaciones.getText());
-			usoAgente.insertarMed(m);
+			usoAgente.insertarMed(origen, m);
 			usoAgente.cerrarVentanaNuevo();
 			
 			usoAgente.mostrarMensajeInformacion("Visita procesada correctamente", "Visita");

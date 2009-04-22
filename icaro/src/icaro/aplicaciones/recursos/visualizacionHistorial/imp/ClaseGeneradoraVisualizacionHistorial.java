@@ -230,7 +230,7 @@ public class ClaseGeneradoraVisualizacionHistorial extends ImplRecursoSimple imp
 	
 	public boolean mostrarMensajePregunta(String titulo,String mensaje) {
       	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionHistorial",
-  				"Mostrando mensaje de error",
+  				"Mostrando mensaje de pregunta",
   				InfoTraza.NivelTraza.debug));
       	
       	MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);

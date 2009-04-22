@@ -14,6 +14,7 @@
 		<transicion input="asignarMedicamento" accion="asignarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="insertarMedicamento" accion="insertarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="borrarMedicamento" accion="borrarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="eliminarMedicamento" accion="eliminarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="cargarMedicamentos" accion="cargarMedicamentos" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>

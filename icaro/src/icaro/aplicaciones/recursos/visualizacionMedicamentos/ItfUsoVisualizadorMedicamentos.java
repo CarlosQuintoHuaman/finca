@@ -39,7 +39,7 @@ public interface ItfUsoVisualizadorMedicamentos extends ItfUsoRecursoSimple{
 	 * @param tipo
 	 * @throws Exception
 	 */
-	public void mostrarVisualizadorNuevo(String nombreAgente,String tipo) throws Exception;
+	public void mostrarVisualizadorNuevo(String nombreAgente, String tipo, String origen) throws Exception;
 	
 	/**
 	 * Enviar los datos de los medicamentos asincronamente a otro agente

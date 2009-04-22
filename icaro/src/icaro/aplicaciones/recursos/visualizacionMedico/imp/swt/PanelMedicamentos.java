@@ -142,10 +142,12 @@ public class PanelMedicamentos extends Composite {
 			listaMed.setLayoutData(listaMedLData);
 			listaMed.addSelectionListener(new SelectionAdapter(){
 				public void widgetSelected(SelectionEvent evt) {
-					InfoMedicamento t =filtro.get(listaMed.getSelectionIndex()); 
-					tPActivo.setText(t.getPa());
-					tDesc.setText(t.getDescripcion());
-					tIndicaciones.setText(t.getIndicaciones());
+					if (listaMed.getSelectionIndex() != -1) {
+						InfoMedicamento t =filtro.get(listaMed.getSelectionIndex()); 
+						tPActivo.setText(t.getPa());
+						tDesc.setText(t.getDescripcion());
+						tIndicaciones.setText(t.getIndicaciones());
+					}
 				}
 			});
 		}
@@ -207,7 +209,7 @@ public class PanelMedicamentos extends Composite {
 				bNuevo.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						usoAgente.abrirNuevoMedicamento();
-						usoAgente.cargarMedicamentos();
+						//usoAgente.cargarMedicamentos();
 					}
 				});
 			}
@@ -216,8 +218,7 @@ public class PanelMedicamentos extends Composite {
 				bBorrar.setText("Borrar Medicamento");
 				bBorrar.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						System.out.println("bBorrar.widgetSelected, event="+evt);
-						//TODO add your code for bBorrar.widgetSelected
+						usoAgente.borrarMed(filtro.get(listaMed.getSelectionIndex()));
 					}
 				});
 			}
@@ -295,13 +296,15 @@ public class PanelMedicamentos extends Composite {
 	public void mostrarDatos(final ArrayList<InfoMedicamento> m) {
 		medicamentos = m;
 		filtro = m;
-
+		
+		
 		this.getDisplay().syncExec(new Runnable() {
 			public void run() {
-				listaMed.removeAll();
-				for (int i=0; i<m.size(); i++) {
-					listaMed.add(m.get(i).getNombre());
-				}
+				actualizarLista();
+//				listaMed.removeAll();
+//				for (int i=0; i<m.size(); i++) {
+//					listaMed.add(m.get(i).getNombre());
+//				}
 			}
 		});
 	}
@@ -323,5 +326,9 @@ public class PanelMedicamentos extends Composite {
 				filtro.add(medicamentos.get(i));
 			}
 		}
+		
+		tPActivo.setText("");
+		tDesc.setText("");
+		tIndicaciones.setText("");
 	}
 }

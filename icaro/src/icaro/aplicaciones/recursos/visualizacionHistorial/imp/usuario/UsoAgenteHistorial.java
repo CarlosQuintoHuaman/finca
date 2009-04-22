@@ -89,6 +89,10 @@ public class UsoAgenteHistorial {
     public void mostrarMensajeInformacion(String mensaje, String titulo){
     	visualizador.mostrarMensajeInformacion(titulo, mensaje);
     }
+    
+    public boolean mostrarMensajePregunta(String mensaje, String titulo){
+    	return visualizador.mostrarMensajePregunta(titulo, mensaje);
+    }
 
     /**
      * Muestra la ventana de una visita

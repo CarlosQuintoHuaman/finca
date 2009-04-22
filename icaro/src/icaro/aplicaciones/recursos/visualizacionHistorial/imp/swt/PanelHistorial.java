@@ -450,6 +450,7 @@ public class PanelHistorial extends Thread {
 								bPruebaBorrar.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
 										usoAgente.borrarPrueba(pruebas.get(listadoPruebas.getSelectionIndex()));
+										tPruebasDesc.setText("");
 									}
 								});
 							}
@@ -561,6 +562,7 @@ public class PanelHistorial extends Thread {
 								bMedBorrar.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
 										usoAgente.borrarMed(v, medicamentos.get(listaMedicamentos.getSelectionIndex()));
+										tMedNotas.setText("");
 									}
 								});
 							}
@@ -691,16 +693,16 @@ public class PanelHistorial extends Thread {
 	}
 	
 	private void bCerrarWidgetSelected(SelectionEvent evt) {
-		if (cambios)
-			usoAgente.mostrarMensajeAviso("No ha guardado los cambios realizados.", "Atencion!");
+		if (cambios) {
+			if (usoAgente.mostrarMensajePregunta("No ha guardado los cambios realizados. ¿Desea cerrar el historial sin guardar los cambios?", "Atencion!"))
+				usoAgente.cerrarVentanaHistorial();
+		}
 		else
 			usoAgente.cerrarVentanaHistorial();
 		//shell.close();
 	}
 	
 	private void bPruebaNuevaWidgetSelected(SelectionEvent evt) {
-		System.out.println("bCerrar.widgetSelected, event="+evt);
-		
 		usoAgente.mostrarVentanaPrueba(v);
 		//shell.close();
 	}
@@ -714,8 +716,10 @@ public class PanelHistorial extends Thread {
             	tDescripcion.setText(v.getDescripcion());
             	tExploracion.setText(v.getExploracion());
             	tDiagnostico.setText(v.getDiagnostico());
+            	tTratamiento.setText(v.getTratamiento());
             	
             	tExpDesc.setText(v.getExploracion());
+            	
             	cambios = false;
 	       }
          });
@@ -754,8 +758,6 @@ public class PanelHistorial extends Thread {
 	}
 	
 	private void bMedNuevoWidgetSelected(SelectionEvent evt) {
-		System.out.println("bMedNuevo.widgetSelected, event="+evt);
-		//TODO add your code for bMedNuevo.widgetSelected
 		usoAgente.mostrarVentanaBusquedaMed(v.getUsuario(), new Timestamp(v.getFecha().getTime()));
 	}
 }

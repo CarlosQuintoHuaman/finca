@@ -104,7 +104,8 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		return pacientes;
 	}
 	
-	public ArrayList<InfoCita> getCitas(String medico) {
+	public ArrayList<InfoCita> getCitas(String usuario) {
+		citas = p.getCitas(usuario);
 		return citas;
 	}
 

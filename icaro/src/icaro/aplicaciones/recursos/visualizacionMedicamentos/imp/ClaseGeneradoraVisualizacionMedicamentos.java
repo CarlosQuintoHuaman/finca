@@ -105,12 +105,12 @@ public class ClaseGeneradoraVisualizacionMedicamentos extends ImplRecursoSimple 
   				InfoTraza.NivelTraza.debug));
 	}
 	
-	public void mostrarVisualizadorNuevo(String nombreAgente, String tipo) {
+	public void mostrarVisualizadorNuevo(String nombreAgente, String tipo, String origen) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
-		this.ventanaNuevoUsuario.mostrar();
+		this.ventanaNuevoUsuario.mostrar(origen);
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedicamentos",
   				"Mostrando visualizador...",
   				InfoTraza.NivelTraza.debug));
