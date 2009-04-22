@@ -15,6 +15,7 @@
 		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="mostrarDatosMed" accion="mostrarDatosMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="cerrarSesion" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

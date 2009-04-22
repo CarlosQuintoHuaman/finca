@@ -234,5 +234,31 @@ public class UsoAgenteMedico {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Desconecta al usuario
+     */
+    public void cerrarSesion() {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoLogin = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionLogin1");
+            
+            itfUsoLogin.aceptaEvento(new EventoInput("cerrarSesion", "VisualizacionMedico1", "AgenteAplicacionLogin1"));
+            
+            visualizador.cerrarVisualizadorMedico();
+            
+            ItfUsoAgenteReactivo itfUsoMedico = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMedico1");
+            
+            itfUsoMedico.aceptaEvento(new EventoInput("cerrarSesion", "VisualizacionMedico1", "AgenteAplicacionMedico1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al cerrar la sesion del Medico");
+            e.printStackTrace();
+        }
+    }
 }
 

@@ -234,7 +234,7 @@ public class ConsultaBBDD {
 	 */
 	public void setPrueba(InfoPrueba p) {
 		try {
-			crearQuery();
+			crearQuery();			
 			query.executeUpdate("INSERT INTO documentos (paciente,nombre,fechavisita,tipo,archivo,descripcion) VALUES ('" + p.getPaciente() + 
 								"', '" + p.getNombre() +
 								"', '" + p.getFecha() +

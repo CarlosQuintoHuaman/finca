@@ -6,6 +6,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoM
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
+import icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt.PanelHistorial;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -93,11 +94,13 @@ public class ClaseGeneradoraVisualizacionMedico extends ImplRecursoSimple implem
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMedico",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
+		reiniciaVisualizadorMedico();
 	}
 	
 	public void reiniciaVisualizadorMedico() {
 		ventanaMedicoUsuario = new PanelMedico(this);
   		ventanaMedicoUsuario.start();
+  		System.out.println("Reiniciando...");
 	}
   
 	public ArrayList<InfoPaciente> getPacientes(String medico) {

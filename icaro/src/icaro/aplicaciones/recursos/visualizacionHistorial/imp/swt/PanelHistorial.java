@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionHistorial.imp.swt;
 
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -10,10 +11,15 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -91,6 +97,7 @@ public class PanelHistorial extends Thread {
 	ArrayList<InfoMedicamento> medicamentos = null;
 	
 	boolean cambios = false;
+	private String imagen = "";
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -426,7 +433,11 @@ public class PanelHistorial extends Thread {
 								listadoPruebas.setLayoutData(listadoPruebasLData);
 								listadoPruebas.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
-										tPruebasDesc.setText(pruebas.get(listadoPruebas.getSelectionIndex()).getDescripcion());
+										if (listadoPruebas.getSelectionIndex() != -1) {
+											tPruebasDesc.setText(pruebas.get(listadoPruebas.getSelectionIndex()).getDescripcion());
+											imagen = pruebas.get(listadoPruebas.getSelectionIndex()).getArchivo();
+											canvasPruebas.redraw();
+										}
 									}
 								});
 							}
@@ -469,12 +480,22 @@ public class PanelHistorial extends Thread {
 							cPruebasVista.setLayoutData(cPruebasVistaLData);
 							cPruebasVista.setText("Vista Previa");
 							{
+								
+								
 								GridData canvasPruebasLData = new GridData();
 								canvasPruebasLData.grabExcessHorizontalSpace = true;
 								canvasPruebasLData.horizontalAlignment = GridData.FILL;
+								canvasPruebasLData.grabExcessVerticalSpace = true;
+								canvasPruebasLData.verticalAlignment = GridData.FILL;
+								
 								canvasPruebas = new Canvas(cPruebasVista, SWT.NONE);
 								canvasPruebas.setLayoutData(canvasPruebasLData);
-								canvasPruebas.setBackground(SWTResourceManager.getColor(128, 255, 128));
+
+								canvasPruebas.addPaintListener(new PaintListener() {
+									public void paintControl(PaintEvent e) {
+										mostrarImagen(e);
+									}
+								});
 							}
 						}
 						{
@@ -704,7 +725,6 @@ public class PanelHistorial extends Thread {
 	
 	private void bPruebaNuevaWidgetSelected(SelectionEvent evt) {
 		usoAgente.mostrarVentanaPrueba(v);
-		//shell.close();
 	}
 	
 	public void mostrarDatos(final InfoVisita v) {
@@ -759,5 +779,14 @@ public class PanelHistorial extends Thread {
 	
 	private void bMedNuevoWidgetSelected(SelectionEvent evt) {
 		usoAgente.mostrarVentanaBusquedaMed(v.getUsuario(), new Timestamp(v.getFecha().getTime()));
+	}
+	
+	private void mostrarImagen(PaintEvent e) {
+		try {
+			Image image = new Image(disp, imagen);
+			e.gc.drawImage(image, 0, 0);
+		} catch(Exception ex) {
+			System.out.println("Ruta incorrecta para la imagen");
+		}
 	}
 }

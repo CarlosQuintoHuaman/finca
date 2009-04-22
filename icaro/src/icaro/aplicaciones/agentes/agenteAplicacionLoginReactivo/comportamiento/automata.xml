@@ -9,6 +9,7 @@
 	</estadoInicial>
 	<estado idIntermedio="esperaAccion">
 		<transicion input="validaUsuario" accion="compruebaUsuario" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="cerrarSesion" accion="pintaVentanaLogin" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

@@ -412,8 +412,13 @@ public class PanelMedico extends Thread {
 						opcion6LData.horizontalAlignment = GridData.FILL;
 						opcion6LData.heightHint = 100;
 						opcion6.setLayoutData(opcion6LData);
-						opcion6.setText("Opcion6");
+						opcion6.setText("CERRAR SESION");
 						opcion6.setSize(-1, 100);
+						opcion6.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.cerrarSesion();
+							}
+						});
 					}
 				}
 			}
@@ -613,8 +618,10 @@ public class PanelMedico extends Thread {
 				if (pacientes.get(j).getUsuario().equals(t.getUsuario()))
 					break;
 			
-			InfoPaciente p = pacientes.get(j);
-			listadoPacientes.add(horas + ":" + minutos + " " + p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2());
+			if (j < pacientes.size()) {
+				InfoPaciente p = pacientes.get(j);
+				listadoPacientes.add(horas + ":" + minutos + " " + p.getNombre() + " " + p.getApellido1() + " " + p.getApellido2());
+			}
 		}
 			
 	}

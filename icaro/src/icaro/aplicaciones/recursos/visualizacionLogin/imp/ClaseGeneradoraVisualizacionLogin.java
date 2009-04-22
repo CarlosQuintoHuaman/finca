@@ -95,7 +95,14 @@ public class ClaseGeneradoraVisualizacionLogin extends ImplRecursoSimple impleme
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionLogin",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
-	}  
+		reiniciaVisualizadorLogin();
+	}
+	
+	public void reiniciaVisualizadorLogin() {
+		ventanaLoginUsuario = new PanelLogin(this);
+  		ventanaLoginUsuario.start();
+  		System.out.println("Reiniciando...");
+	}
   
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/

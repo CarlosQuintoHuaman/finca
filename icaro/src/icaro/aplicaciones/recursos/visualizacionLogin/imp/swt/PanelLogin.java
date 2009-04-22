@@ -170,6 +170,7 @@ public class PanelLogin extends Thread {
 				tPasswordLData.horizontalAlignment = GridData.FILL;
 				tPassword = new Text(cDatos, SWT.BORDER);
 				tPassword.setLayoutData(tPasswordLData);
+				tPassword.setEchoChar('+');
 			}
 		}
 		{

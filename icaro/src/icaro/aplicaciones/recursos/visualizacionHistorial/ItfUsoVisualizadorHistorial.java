@@ -54,6 +54,11 @@ public interface ItfUsoVisualizadorHistorial extends ItfUsoRecursoSimple{
      * @throws Exception
      */
     public void mostrarVisualizadorPrueba(String nombreAgente,String tipo, InfoVisita v) throws Exception;
+    
+    /**
+     * Cierra la ventana de añadir pruebas
+     * @throws Exception
+     */
     public void cerrarVisualizadorPrueba() throws Exception;
     /**
      * Rellena una ventana con los datos de las pruebas
