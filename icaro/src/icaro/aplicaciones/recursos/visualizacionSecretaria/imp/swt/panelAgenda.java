@@ -359,7 +359,7 @@ public class panelAgenda extends Thread {
 						GridData CrearFichaLData = new GridData();
 						CrearFichaLData.horizontalAlignment = GridData.FILL;
 						CrearFicha.setLayoutData(CrearFichaLData);
-						CrearFicha.setText("Crear Ficha");
+						CrearFicha.setText("Ficha");
 						CrearFicha.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent e) {
 								CrearFichaWidgetSelected(e);
@@ -858,7 +858,7 @@ public class panelAgenda extends Thread {
 		for(i=0;i<ll.size();i++){
 			for(int j=0; j<cc; j++){
 			if (horas[j].getText().equals((ll.get(i).tomaHora()))){
-					Nombres[j].setText(ll.get(i).tomaNombre());
+					Nombres[j].setText(ll.get(i).tomaNombre()+" "+ll.get(i).tomaApell1());
 					Telefonos[j].setText(ll.get(i).tomaTelf());
 				}
 			}
@@ -941,6 +941,13 @@ public class panelAgenda extends Thread {
 						
 					}
 				});
+				
+				Nombres[c].addMouseListener(new MouseAdapter() {
+					public void mouseDown(MouseEvent evt) {
+						nombreMouseDown2(evt);
+					}
+				});
+					
 
 				//se contruye un menu contextual asociado a cada campo nombre de la agenda
 				MenuItem copiar = new MenuItem(opciones,SWT.PUSH);
@@ -1274,7 +1281,10 @@ public class panelAgenda extends Thread {
 		//busqueda del paciente que se le pasa como parametro para recoger todos sus datos
 		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
 		DatosCita a= new DatosCita(d.tomaNombre(), d.tomaTelf(), true);
-		usoAgente.mostrarVentanaFicha(a);
+		if (!d.tomaNombre().equals(""))
+			usoAgente.mostrarVentanaFicha(a);
+		else
+			usoAgente.mostrarVentanaFicha();
 	}
 	
 
@@ -1338,31 +1348,39 @@ public class panelAgenda extends Thread {
 		CLabel lsel=(CLabel)evt.getSource();
 		nombre=lsel.getText();
 
-		int i;
-		for (i=0;i<c;i++){
+		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
+			DatosCitaSinValidar d= buscarSeleccionado(lsel);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora(),fd);
+		}
+		seleccion=lsel;
+		
+	}
+	
+	private void nombreMouseDown2(MouseEvent evt) {
+		CLabel lsel=(CLabel)evt.getSource();
+		String nombre=lsel.getText();
+		for (int i=0;i<c;i++){
 			Nombres[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			Telefonos[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
-		for(i=0;i<llamada.size();i++){
+		for(int i=0;i<llamada.size();i++){
 			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
 		
-		for(i=0;i<extra.size();i++){
+		for(int i=0;i<extra.size();i++){
 			NombresE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			horasE[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 		}
+		
 		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
-			DatosCitaSinValidar d= buscarSeleccionado(lsel);
 			cNomSel.setText(nombre);
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora(),fd);
 		}
 		else{
 			cNomSel.setText("");
 		}
 		seleccion=lsel;
-		
 	}
 
 	/**
@@ -1433,7 +1451,11 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
-		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
+		DatosCitaSinValidar d;
+		if (c==i)
+			d= new DatosCitaSinValidar("", apell1, Telf, Hora);
+		else
+		    d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
 		return d;
 	}
 	

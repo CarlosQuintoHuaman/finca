@@ -72,6 +72,28 @@ public class UsoAgenteSecretaria {
     }
     }
     
+    /**
+     * Generamos un evento para el automataFicha con input: 'mostrarVentanaFicha1', con 'datos' como parametro para la accion semantica 
+     * que le corresponde 'pintaVentanaFicha1'. Este es un evento con origen VisualizacionSecretaria y destino AgenteFicha.
+     * Su proposito es pintar la ventana con los datos que se le pasan por parametro buscando la informacion de la ficha en la bbdd
+     * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
+     */
+    public void mostrarVentanaFicha1(DatosCita datos){
+    	getInformacionAgente();
+    	
+        try {
+        if (itfUsoRepositorioInterfaces == null) {
+            itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+        }
+    	ItfUsoAgenteReactivo itfUsoFicha = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionFicha1");
+        
+        itfUsoFicha.aceptaEvento(new EventoInput("mostrarVentanaFichaBD", datos, "VisualizacionSecretaria1", "AgenteAplicacionFicha1"));
+    } catch (Exception e) {
+        System.out.println("Ha habido un error al activar el agente Ficha desde la visualizacion Secretaria");
+        e.printStackTrace();
+    }
+    }
+    
     public void mostrarVentanaFicha(){
     	getInformacionAgente();
     	

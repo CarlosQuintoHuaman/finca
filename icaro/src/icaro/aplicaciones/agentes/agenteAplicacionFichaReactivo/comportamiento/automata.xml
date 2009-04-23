@@ -8,10 +8,12 @@
 		<transicion input="comenzar" accion="nula" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"/>
 	</estadoInicial>
 	<estado idIntermedio="esperaInicial">
-		<transicion input="mostrarVentanaFicha" accion="pintaVentanaFicha" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaFicha">
+		<transicion input="mostrarVentanaFicha" accion="pintaVentanaFicha" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="mostrarVentanaFichaBD" accion="pintaVentanaFichaBD" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaFicha">
 		<transicion input="guardarFicha" accion="guardaFicha" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
-		<transicion input="cerrarVentanaFicha" accion="nula" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"></transicion></estado>
+		<transicion input="cerrarVentanaFicha" accion="nula" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="borrarFicha" accion="borraFicha" estadoSiguiente="esperaInicial" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="esperandoTerminacion">
 		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
 	</estado>

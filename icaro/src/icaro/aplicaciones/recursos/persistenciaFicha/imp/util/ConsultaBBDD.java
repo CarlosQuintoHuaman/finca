@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.persistenciaFicha.imp.util;
 
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -83,6 +84,30 @@ public class ConsultaBBDD {
 			throw new ErrorEnRecursoException("No se ha podido crear la sentencia SQL para acceder a la base de datos: " + e.getMessage());
 		}			
 	}
+	
+	public boolean borraFicha(DatosFicha ficha){
+		try {
+			String[] aux=ficha.getApellidos().split(" ");
+			String ape1=aux[0];
+			
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + ficha.getNombre() +"' AND Apellido1 = '" + ape1 +
+					"' AND Telefono = '" + ficha.getTelf1() + "'");
+			
+			if (resultado.next()){
+				String usuario=resultado.getString("NombreUsuario");
+				crearQuery();
+				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
+			}
+			else
+				return false;
+		return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public boolean meteFicha(DatosFicha original, DatosFicha fichaN){
 		try {
@@ -93,16 +118,20 @@ public class ConsultaBBDD {
 			for(int i=1;i<aux.length;i++)
 				ape2=ape2+aux[i];
 			
+			String[] aux2=original.getApellidos().split(" ");
+			String ape1o=aux2[0];
+
 			
-			String desc=fichaN.getNIF()+'/'+fichaN.getNombre()+'/'+fichaN.getApellidos()+'/'+fichaN.getFNacimiento().toString()+'/'+Integer.valueOf(fichaN.getEdad())+'/'
-			+fichaN.getDireccion()+'/'+fichaN.getCP()+'/'+fichaN.getProvincia()+'/'+fichaN.getTelf1()+'/'+fichaN.getTelf2()+'/'+fichaN.getMail()+'/'+fichaN.getProfesion()
-			+'/'+fichaN.getAseguradora()+'/'+fichaN.getOtros()+'/'+fichaN.getPestOtros();
+			
+			String desc=fichaN.getNIF()+'/'+fichaN.getNombre()+'/'+fichaN.getApellidos()+'/'+util.getStrDateSQL2(fichaN.getFNacimiento())+'/'+Integer.valueOf(fichaN.getEdad())+'/'
+			+fichaN.getDireccion()+'/'+fichaN.getCP()+'/'+fichaN.getProvincia()+'/'+fichaN.getLocalidad()+'/'+fichaN.getTelf1()+'/'+fichaN.getTelf2()+'/'+fichaN.getMail()+'/'+fichaN.getProfesion()
+			+'/'+fichaN.getAseguradora()+'/'+fichaN.getOtros()+'/'+fichaN.getPestOtros()+"/c";
 			
 			int id=1;
 			//Compruebo si esta dado de alta en la bbdd
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre>= '" + original.getNombre() +"' AND Apellido1 <= '" + ape1 +
-					"' AND Telefono <= '" + original.getTelf1() + "'");
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + original.getNombre() +"' AND Apellido1 = '" + ape1o +
+					"' AND Telefono = '" + original.getTelf1() + "'");
 			
 			
 			if (resultado.next()){
@@ -149,6 +178,63 @@ public class ConsultaBBDD {
 		}
 		
 	}
+	
+	public DatosFicha getFicha(DatosCita datos){
+		try {
+			DatosFicha ficha= new DatosFicha();
+			String[] aux=datos.getNombre().split(" ");
+			String nom=aux[0];
+			String ape1="";
+			String desc="";
+			if (aux.length>1)
+				ape1=aux[1];
+			
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom +"'");
+			
+			
+			if (resultado.next()){
+				String usuario=resultado.getString("NombreUsuario");
+				crearQuery();
+				resultado = query.executeQuery("SELECT * FROM Antecedentes WHERE Paciente = '" + usuario +"'");
+				if (resultado.next()){
+					desc=resultado.getString("Descripcion");
+				}
+			}
+			if (!desc.equals("")){
+			String[] aux2=desc.split("/");
+			ficha.setNIF(aux2[0]);
+			ficha.setNombre(aux2[1]);
+			ficha.setApellidos(aux2[2]);
+			ficha.setFNacimiento(util.StrToDate(aux2[3]));
+
+			ficha.setDireccion(aux2[5]);
+			ficha.setCP(aux2[6]);
+			ficha.setProvincia(aux2[7]);
+			ficha.setLocalidad(aux2[8]);
+			ficha.setTelf1(aux2[9]);
+			ficha.setTelf2(aux2[10]);
+			ficha.setMail(aux2[11]);
+			ficha.setProfesion(aux2[12]);
+			ficha.setAseguradora(aux2[13]);
+			ficha.setOtros(aux2[14]);
+			ficha.setEsta(true);
+			if (aux2.length>15)
+				ficha.setPestOtros(aux2[15]);
+			else
+				ficha.setPestOtros("");
+			}
+			else
+				ficha.setEsta(false);
+			return ficha;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		}
 	
 	/**
 	 * Consulta con la que obtenemos la lista de pacientes para cada medico de la lista que se le pasa por parametro en una fecha determinada

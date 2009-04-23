@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.recursos.persistenciaFicha.ItfUsoPersistenciaFicha;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.ErrorEnRecursoException;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.util.AccesoBBDD;
@@ -58,7 +59,14 @@ public class ClaseGeneradoraPersistenciaFicha extends ImplRecursoSimple implemen
 	public boolean meteFicha(DatosFicha original, DatosFicha fichaN){
 		return consulta.meteFicha(original,fichaN);
 	}
+	
+	public boolean borraFicha(DatosFicha ficha){
+		return consulta.borraFicha(ficha);
+	}
 
+	public DatosFicha getFicha(DatosCita datos){
+		return consulta.getFicha(datos);
+	}
 
 	@Override
 	public void termina() {

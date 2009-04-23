@@ -160,25 +160,28 @@ public class ConsultaBBDD {
 			resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
 			while (resultado.next()) {
 				
-				String paciente=resultado.getString("Paciente");
-				String aux[]= paciente.split(" ");
-				String apellido = "";
-				for (int i=1;i<aux.length;i++){
-					apellido=apellido+aux[i]+" ";
-				}
+				String usuario=resultado.getString("Paciente");
 				String medico=resultado.getString("Medico");
 				 resultado.getTimestamp("Fecha").toString();
+				 String h=resultado.getTimestamp("Hora").toString().substring(11, 16);
+				crearQuery();
+				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
+				while (resultado1.next()) {
+				String paciente=resultado1.getString("Nombre");
+				String apellido=resultado1.getString("Apellido1")+resultado1.getString("Apellido2");
+				String telf =resultado1.getString("Telefono");
 				 
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
 						
-						DatosCitaSinValidar p = new DatosCitaSinValidar(aux[0],apellido,"918765412",resultado.getTimestamp("Hora").toString().substring(11, 16),1);
+						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido,telf,h,1,usuario);
 						
 						citas[i].add(p);
 						datos[i].setDatos(citas[i]);
 					}
 				}
+			}
 			}
 			
 			// Consulta que nos devuelve los datos de los extras y llamadas de todos los medicos que posteriormente filtramos

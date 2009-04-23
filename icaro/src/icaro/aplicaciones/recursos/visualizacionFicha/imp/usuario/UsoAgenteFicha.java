@@ -130,6 +130,34 @@ public class UsoAgenteFicha {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Generamos un evento para el automataFicha con input: 'borrarFicha', para la accion semantica 
+     * que le corresponde: 'borraFicha'. Este es un evento con origen VisualizacionFicha y destino AgenteFicha.
+     * Su proposito borra una ficha que se le pasa por parametro
+     * @param ficha
+      */
+    public void borrarFicha(DatosFicha ficha){
+    	getInformacionAgente();
+
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteFicha.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionFicha
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteFicha);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("borrarFicha", ficha, "VisualizacionFicha1", nombreAgenteFicha));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al mostrar Ficha ");
+            e.printStackTrace();
+        }
+    }
     /**
      * Generamos un evento para el automataFicha con input: 'cerrarVentanaFicha', para la accion semantica 
      * que le corresponde: 'nula'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
@@ -165,6 +193,10 @@ public class UsoAgenteFicha {
     
     public void mostrarMensajeAviso(String mensaje, String titulo){
     	visualizador.mostrarMensajeAviso(titulo, mensaje);
+    }
+    
+    public boolean mostrarMensajeAvisoC(String mensaje, String titulo){
+    	return visualizador.mostrarMensajeAvisoC(titulo, mensaje);
     }
     
     

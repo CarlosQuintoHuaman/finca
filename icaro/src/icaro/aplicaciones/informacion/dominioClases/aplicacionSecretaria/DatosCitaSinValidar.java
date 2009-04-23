@@ -9,7 +9,7 @@ public class DatosCitaSinValidar implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
+	private String usuario;
 	private String nombre;
 	private String apell1;
 	private String telf;
@@ -55,6 +55,15 @@ public DatosCitaSinValidar (String nombre, String apell1, String telf, String ho
 		this.periodo=periodo;
 	}
 	
+public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora, int periodo, String usuario) {
+	
+	this.nombre = nombre;
+	this.apell1 = apell1;
+	this.telf = telf;
+	this.hora= hora;
+	this.periodo=periodo;
+	this.usuario=usuario;
+}
 	public String tomaNombre() {
 		return nombre;
 	}
@@ -63,6 +72,14 @@ public DatosCitaSinValidar (String nombre, String apell1, String telf, String ho
 		return apell1;
 	}
 	
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
 	public String tomaTelf() {
 		return telf;
 	}

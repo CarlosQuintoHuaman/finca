@@ -2,6 +2,7 @@ package icaro.aplicaciones.recursos.visualizacionFicha;
 
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
@@ -23,6 +24,14 @@ public interface ItfUsoVisualizadorFicha extends ItfUsoRecursoSimple{
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
 	public void mostrarVisualizadorFicha(String nombreAgente,String tipo, DatosCita datos) throws Exception;
+	
+	   /**
+     * Generamos un evento para el automataFicha con input: 'mostrarVentanaFicha', con 'datos' como parametro para la accion semantica 
+     * que le corresponde 'pintaVentanaFicha'. Este es un evento con origen VisualizacionSecretaria y destino AgenteFicha.
+     * Su proposito es pintar la ventana con los datos que se le pasan por parametro buscando la informacion de la ficha en la BBDD 
+     * @param datos		:: Datos con los que rellenar la ficha (Paciente y descripcion)
+     */
+	public void mostrarVisualizadorFichaBD(String nombreAgente,String tipo, DatosFicha datos) throws Exception;
 	/**
 	 * Su proposito es cerrar la ventana
 	 */

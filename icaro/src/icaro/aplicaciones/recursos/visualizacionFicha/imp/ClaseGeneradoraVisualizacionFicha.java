@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionFicha.imp;
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 
@@ -93,6 +94,17 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
   				InfoTraza.NivelTraza.debug));
 	}
 	
+	public void mostrarVisualizadorFichaBD(String nombreAgente, String tipo, DatosFicha ficha) {
+		this.nombreAgenteControlador = nombreAgente;
+        System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+   
+		this.ventanaFichaUsuario.mostrar(ficha);
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
+  				"Mostrando visualizador...",
+  				InfoTraza.NivelTraza.debug));
+	}
+	
 	public void mostrarVisualizadorFicha(String nombreAgente, String tipo, DatosCita datos) {
 		this.nombreAgenteControlador = nombreAgente;
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
@@ -131,6 +143,21 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
 		messageBox.setMessage (mensaje);
 	    messageBox.open();
 	    
+	}
+	
+	public boolean mostrarMensajeAvisoC(String titulo,String mensaje) {
+      	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
+  				"Mostrando mensaje de aviso",
+  				InfoTraza.NivelTraza.debug));
+      	
+      	MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK |SWT.CANCEL| SWT.ICON_WARNING);
+		messageBox.setText (titulo);
+		messageBox.setMessage (mensaje);
+		if (messageBox.open() == SWT.OK){
+			return true;
+		}else
+			return false;
+
 	}
   
 	public void mostrarMensajeAviso(String titulo,String mensaje) {

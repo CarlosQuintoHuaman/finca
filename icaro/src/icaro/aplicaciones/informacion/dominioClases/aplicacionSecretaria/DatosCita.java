@@ -1,6 +1,7 @@
 package icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria;
 
 public class DatosCita {
+	private String nombreUsuario;
 	private String nombre;
 	private String telf;
 	private String medico;
@@ -55,6 +56,12 @@ public class DatosCita {
 	}
 	public String getNombre() {
 		return nombre;
+	}
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;

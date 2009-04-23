@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionFicha.imp.swt;
 
+import java.util.Date;
 import java.text.ParseException;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -10,6 +11,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCi
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.ClaseGeneradoraVisualizacionFicha;
 import icaro.aplicaciones.recursos.visualizacionFicha.imp.usuario.UsoAgenteFicha;
+import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.util.util;
 
 import org.eclipse.swt.SWT;
@@ -151,7 +153,7 @@ public class panelFicha extends Thread {
 	 * Hay que cambiar "Template" por el nombre del agente.
 	 */
 	final UsoAgenteFicha usoAgente;
-	
+	private ClaseGeneradoraVisualizacionFicha vis;
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
@@ -164,7 +166,7 @@ public class panelFicha extends Thread {
 	public panelFicha(ClaseGeneradoraVisualizacionFicha visualizador){
 		super("Ficha");
 		este = this;
-		
+		vis=visualizador;
 		usoAgente = new UsoAgenteFicha(visualizador);
 	}
 
@@ -180,6 +182,9 @@ public class panelFicha extends Thread {
 		// rodeando el codigo de esta manera
 		disp.asyncExec(new Runnable() {
             public void run() {
+        	    cAntDepilacion.dispose();
+        	    cAntPersonales.dispose();
+        	    cAntFamiliares.dispose();
          	   shell.open();
 	       }
          });
@@ -195,13 +200,58 @@ public class panelFicha extends Thread {
             public void run() {
             	DatosCita datos=d;
             	nuevo=datos.getCrear();
-            	tNombre.setText(datos.getNombre());
+            	String[] aux=datos.getNombre().split(" ");
+            	String a="";
+            	for(int i=1;i<aux.length;i++){
+            		a=a+aux[i];
+            	}
+            	tNombre.setText(aux[0]);
+            	tApellidos.setText(a);
             	tTelefono1.setText(datos.getTelf());
             	if (datos.getUsuario()==0){
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();
             	    cAntFamiliares.dispose();
             	}
+            	Edicion(false);
+         	   shell.open();
+	       }
+         });
+	}
+	
+	/**
+	 * Muestra la ventana y añade a los campos que corresponda los datos pasados por parametro
+	 * @param d		:: datos que se deben mostrar en la ventana (nombre,telefono, hora, fecha, crear)
+	 */
+	public void mostrar(final DatosFicha d){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	DatosFicha datos=d;
+            	nuevo=false;
+            	util u=new util();
+            	tNombre.setText(datos.getNombre());
+            	tTelefono1.setText(datos.getTelf1());
+            	tApellidos.setText(datos.getApellidos());
+            	tAseguradora.setText(datos.getAseguradora());
+            	tCP.setText(datos.getCP());
+            	tDireccion.setText(datos.getDireccion());
+            	tFNacimiento.setText(u.getStrDateSQL2(datos.getFNacimiento()));
+            	tLocalidad.setText(datos.getLocalidad());
+            	tmail.setText(datos.getMail());
+            	tNif.setText(datos.getNIF());
+            	tProfesion.setText(datos.getProfesion());
+            	tProvincia.setText(datos.getProvincia());
+            	tOtros.setText(datos.getOtros());
+            	tNotas.setText(datos.getPestOtros());
+        
+            	tTelefono2.setText(datos.getTelf2());
+            	
+            	    cAntDepilacion.dispose();
+            	    cAntPersonales.dispose();
+            	    cAntFamiliares.dispose();
+            	
             	Edicion(false);
          	   shell.open();
 	       }
@@ -966,6 +1016,11 @@ public class panelFicha extends Thread {
 					bCancelarLData.heightHint = 56;
 					bCancelar.setLayoutData(bCancelarLData);
 					bCancelar.setText("Cancelar");
+					bCancelar.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							usoAgente.cerrarVentanaFicha();
+						}
+					});
 				}
 				{
 					bModificar = new Button(compoMenu, SWT.PUSH | SWT.CENTER);
@@ -1115,7 +1170,12 @@ public class panelFicha extends Thread {
 		
 		DatosFicha fichaN;
 		try {
-			fichaN = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(tFNacimiento.getText()),
+			Date f;
+			if (tFNacimiento.getText().equals("")){
+				f=util.StrToDate(util.getStrDateSQL2());
+			}else
+				f=util.StrToDate(tFNacimiento.getText());
+			fichaN = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),f,
 			Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
 			tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
 			text1.getText());
@@ -1138,9 +1198,25 @@ public class panelFicha extends Thread {
 	 * @param evt
 	 */
 	private void bBorrarWidgetSelected(SelectionEvent evt){
-		usoAgente.mostrarMensajeAvisoConfirmacion("¿Esta seguro que desea borrar la ficha de este paciente?", "Borrar Ficha");
-		//Pendiente de preguntar confirmacion
-		shell.dispose();
+		boolean c=usoAgente.mostrarMensajeAvisoC("¿Esta seguro que desea borrar la ficha de este paciente?", "Borrar Ficha");
+		if (c){
+			DatosFicha ficha;
+			try {
+				ficha = new DatosFicha();
+		       	util u=new util();
+	        	ficha.setNombre(tNombre.getText());
+	        	ficha.setTelf1(tTelefono1.getText());
+	        	ficha.setApellidos(tApellidos.getText());
+	        	
+				usoAgente.borrarFicha(ficha);
+				usoAgente.cerrarVentanaFicha();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+ 
+		}
+
 	}
 	/**
 	 * Accion asociada al evento del boton 'cerrar'
@@ -1148,8 +1224,7 @@ public class panelFicha extends Thread {
 	 * @param evt
 	 */
 	private void bCerrarWidgetSelected(SelectionEvent evt){
-		
-		shell.dispose();
+
 		usoAgente.cerrarVentanaFicha();
 	}
 	

@@ -30,6 +30,7 @@ public class DatosFicha implements Serializable {
 	private String aseguradora;
 	private String otros;
 	private String PestOtros;
+	private boolean esta;
 	
 	public DatosFicha (String nombre, String apell1, String NIF, Date fNacimiento, int edad, String direccion, String CP, String prov, 
 						String loc, String telf1, String telf2, String mail, String prof, String seguro, String otros, String pOtros) {
@@ -52,6 +53,27 @@ public class DatosFicha implements Serializable {
 		this.PestOtros=pOtros;
 	}
 	
+	public DatosFicha (String nombre, String apell1, String NIF, Date fNacimiento, int edad, String direccion, String CP, String prov, 
+			String loc, String telf1, String telf2, String mail, String prof, String seguro, String otros, String pOtros, boolean esta) {
+
+		this.nombre = nombre;
+		this.apellidos = apell1;
+		this.NIF=NIF;
+		this.fNacimiento=fNacimiento;
+		this.edad=edad;
+		this.direccion=direccion;
+		this.CP=CP;
+		this.provincia=prov;
+		this.localidad=loc;
+		this.telf1=telf1;
+		this.telf2=telf2;
+		this.mail=mail;
+		this.profesion=prof;
+		this.aseguradora=seguro;
+		this.otros=otros;
+		this.PestOtros=pOtros;
+		this.esta=esta;
+	}
 	public DatosFicha () throws ParseException{
 		util d=new util();
 		String f=d.getStrDateSQL2();
@@ -60,6 +82,14 @@ public class DatosFicha implements Serializable {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public boolean isEsta() {
+		return esta;
+	}
+
+	public void setEsta(boolean esta) {
+		this.esta = esta;
 	}
 
 	public void setNombre(String nombre) {

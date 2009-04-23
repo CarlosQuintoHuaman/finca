@@ -27,6 +27,14 @@ public class util {
 		 String dd = Integer.toString(d);
 		 return ""+(d < 10 ? "0" + dd : dd)+"-"+(m < 10 ? "0" + mm : mm)+"-"+c.get(GregorianCalendar.YEAR);
 		}
+	
+	public static String getStrDateSQL2(Date c) {
+		int m = c.getMonth()+1;
+		 int d = c.getDate();
+		 String mm = Integer.toString(m);
+		 String dd = Integer.toString(d);
+		 return ""+(d < 10 ? "0" + dd : dd)+"-"+(m < 10 ? "0" + mm : mm)+"-"+(c.getYear()+1900);
+		}
 	public static String getStrDateSQL(Date c) {
 		
 		 int m = c.getMonth()+1;

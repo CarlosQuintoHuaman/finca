@@ -41,9 +41,17 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			visualizacion = (ItfUsoVisualizadorFicha) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionFicha1");
 			
-			// Ejemplo de algo que podemos hacer con el
-			visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
 			
+			//Manda los datos a la persistencia
+			DatosFicha ficha=Persistencia.getFicha(datos);
+			if (!ficha.isEsta())
+			
+			// Pinta la ficha con datos de la cita pq no esta en la bbdd
+				visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			else
+				visualizacion.mostrarVisualizadorFichaBD(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, ficha);
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));
 		}
@@ -59,6 +67,8 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}	
+	
+	
 	
 	/**
 	 * Pinta la ventana de ficha vacia
@@ -106,6 +116,40 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			boolean b=Persistencia.meteFicha(original,fichaN);
 			if (!b){
 				visualizacion.mostrarMensajeError("Error en base de datos", "Los datos modificados no se han guardado");
+			}
+			
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba guardar datos del visualizador",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)RepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al guardar datos el visualizador de Secretaria en accion semantica 'guardaAgenda'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	
+	/**
+	 * borra todos los datos de una ficha de un determinado paciente
+	 * @param datos		:: contiene  los datos de una ficha
+	 */
+	public void borraFicha(DatosFicha ficha){
+		
+		try {
+			visualizacion = (ItfUsoVisualizadorFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionFicha1");
+			
+			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
+			
+			//Manda los datos a la persistencia
+			boolean b=Persistencia.borraFicha(ficha);
+			if (!b){
+				visualizacion.mostrarMensajeError("Error en base de datos", "La ficha no se ha borrado o no existe");
 			}
 			
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba guardar datos del visualizador",InfoTraza.NivelTraza.debug));
