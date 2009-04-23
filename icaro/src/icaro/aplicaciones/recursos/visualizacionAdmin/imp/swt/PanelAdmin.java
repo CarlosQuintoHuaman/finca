@@ -1,5 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionAdmin.imp.swt;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
@@ -14,6 +16,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoUsuario;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.ClaseGeneradoraVisualizacionAdmin;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.usuario.UsoAgenteAdmin;
 
@@ -51,6 +54,8 @@ public class PanelAdmin extends Thread {
 	 */
 	final UsoAgenteAdmin usoAgente;
 	
+	ArrayList<InfoUsuario> usuarios = new ArrayList<InfoUsuario>();
+	
 	// Variables de inicializacion de SWT
 	private Display disp;
 	private Shell shell;
@@ -73,9 +78,12 @@ public class PanelAdmin extends Thread {
 	public void mostrar(){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
+		usuarios = usoAgente.getUsuarios();
+		
 		disp.asyncExec(new Runnable() {
             public void run() {
-         	   shell.open();
+            	actualizarLista();
+            	shell.open();
 	       }
          });
 	}
@@ -150,6 +158,7 @@ public class PanelAdmin extends Thread {
 						lUsuariosLData.horizontalAlignment = GridData.FILL;
 						lUsuarios = new List(cUsuarios, SWT.V_SCROLL | SWT.BORDER);
 						lUsuarios.setLayoutData(lUsuariosLData);
+						actualizarLista();
 					}
 					{
 						cAcciones = new Composite(cUsuarios, SWT.NONE);
@@ -253,6 +262,11 @@ public class PanelAdmin extends Thread {
 						bOptimizar = new Button(cBase, SWT.PUSH | SWT.CENTER);
 						bOptimizar.setText("Optimizar");
 						bOptimizar.setSize(146, 25);
+						bOptimizar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.optimizar();
+							}
+						});
 					}
 				}
 			}
@@ -320,5 +334,11 @@ public class PanelAdmin extends Thread {
 	private void bCancelarWidgetSelected(SelectionEvent evt) {
 		System.out.println("bCancelar.widgetSelected, event="+evt);
 		//TODO add your code for bCancelar.widgetSelected
+	}
+	
+	private void actualizarLista() {
+		for (int i=0; i<usuarios.size(); i++) {
+			lUsuarios.add(usuarios.get(i).getUsuario());
+		}
 	}
 }

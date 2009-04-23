@@ -1,6 +1,7 @@
 package icaro.aplicaciones.recursos.persistenciaAdmin.imp.util;
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoUsuario;
 import icaro.aplicaciones.recursos.persistenciaAdmin.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * 
@@ -83,34 +85,30 @@ public class ConsultaBBDD {
 	}
 
 	
-	/**
-	 * 
-	 * @param usuario
-	 * @param password
-	 * @return
-	 * @throws ErrorEnRecursoException
-	 */
-	public boolean compruebaUsuario(String usuario, String password) throws ErrorEnRecursoException {
+	public ArrayList<InfoUsuario> getUsuarios() throws ErrorEnRecursoException {
 
-		boolean estado = false;
-		
 		try {
 			// TODO Comprobar que la conexion este activa
       		
       		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM usuario where NombreUsuario = '"
-      					+ usuario + "' and password = '" + password + "'");	
-			if (resultado.next()) estado = true;
-			else estado = false;
+      		resultado = query.executeQuery("SELECT * FROM usuario");	
 			
-			
-			// Esto es solo una prueba que he hecho para verificar que funciona
-			if (estado)
-				System.out.println("Resultado: " + resultado.getString("Direccion"));
+      		ArrayList<InfoUsuario> usuarios = new ArrayList<InfoUsuario>();
+      		
+      		while (resultado.next()) {
+      			InfoUsuario u = new InfoUsuario(resultado.getString("NombreUsuario"),
+      											resultado.getString("Password"),
+      											resultado.getString("Nombre"),
+      											resultado.getString("Apellido1"),
+      											resultado.getString("Apellido2"),
+      											resultado.getString("Direccion"),
+      											resultado.getString("Telefono"));
+      			usuarios.add(u);
+      		}
 
 			resultado.close();
 			
-			return estado;	
+			return usuarios;	
 		}
 		
 		catch (Exception e) {
@@ -118,49 +116,13 @@ public class ConsultaBBDD {
 		}
 	}
 	
-	/**
-	 * Detecta el tipo de usuario
-	 * @param usuario Nombre de usuario
-	 * @return Medico, Secretaria o Admin. False en caso de no encontrar el usuario
-	 */
-	public String tipoUsuario(String usuario) {
+	public void optimizar() throws ErrorEnRecursoException {
 		try {
-			// TODO Comprobar que la conexion este activa
-      		
       		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM secretaria WHERE NombreUsuario = '"
-      					+ usuario + "'");	
-			if (resultado.next()) 
-				return "Secretaria";
-
-			resultado.close();
+      		resultado = query.executeQuery("OPTIMIZE TABLE usuario");	
 			
-			crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM medico WHERE NombreUsuario = '"
-  					+ usuario + "'");	
-      		if (resultado.next()) 
-      			return "Medico";
-
-      		resultado.close();
-      		
-      		crearQuery();
-      		resultado = query.executeQuery("SELECT * FROM administrador WHERE NombreUsuario = '"
-  					+ usuario + "'");	
-      		if (resultado.next()) 
-      			return "Admin";
-
-      		resultado.close();
+      	} catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
 		}
-		
-		catch (Exception e) {
-			try {
-				throw new ErrorEnRecursoException(e.getMessage());
-			} catch (ErrorEnRecursoException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		
-		return "false";
 	}
 }

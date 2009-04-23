@@ -1,5 +1,10 @@
 package icaro.aplicaciones.recursos.visualizacionAdmin.imp;
 
+import java.util.ArrayList;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoUsuario;
+import icaro.aplicaciones.recursos.persistenciaAdmin.ItfUsoPersistenciaAdmin;
+import icaro.aplicaciones.recursos.persistenciaMedico.ItfUsoPersistenciaMedico;
 import icaro.aplicaciones.recursos.visualizacionAdmin.ItfUsoVisualizadorAdmin;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -29,6 +34,8 @@ public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple impleme
 	//Ventana que gestiona este visualizador
 	private PanelAdmin ventanaAdminUsuario;
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
+	
+	private ItfUsoPersistenciaAdmin p;
 	
   	public ClaseGeneradoraVisualizacionAdmin(String id) throws Exception{
   		super(id);
@@ -85,7 +92,19 @@ public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple impleme
   		System.out.println("Reiniciando...");
 	}
   	
-
+	public ArrayList<InfoUsuario> getUsuarios() {
+		try {
+			p = (ItfUsoPersistenciaAdmin)RepositorioInterfaces.instance().obtenerInterfaz(
+	      			NombresPredefinidos.ITF_USO+"PersistenciaAdmin1");
+			
+			return p.getUsuarios();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	
 	public String getNombreAgenteControlador() {
@@ -153,6 +172,14 @@ public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple impleme
 			this.estadoAutomata.transita("error");
 			e.printStackTrace();
 		}
+	}
+
+
+
+
+	
+	public void optimizar() throws Exception {
+		p.optimizar();
 	}
 	
 	// Aqui van los metodos no genericos		

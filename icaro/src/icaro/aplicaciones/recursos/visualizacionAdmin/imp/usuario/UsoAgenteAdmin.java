@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionAdmin.imp.usuario;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoUsuario;
 import icaro.aplicaciones.recursos.visualizacionAdmin.imp.ClaseGeneradoraVisualizacionAdmin;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
 import icaro.infraestructura.entidadesBasicas.EventoInput;
@@ -9,6 +10,7 @@ import icaro.infraestructura.patronAgenteReactivo.factoriaEInterfaces.ItfUsoAgen
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.ItfUsoRepositorioInterfaces;
 import icaro.infraestructura.recursosOrganizacion.repositorioInterfaces.RepositorioInterfaces;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +77,10 @@ public class UsoAgenteAdmin {
     public void cerrarVentanaAdmin() {
     	visualizador.cerrarVisualizadorAdmin();
     }
+    
+    public ArrayList<InfoUsuario> getUsuarios() {
+    	return visualizador.getUsuarios();
+    }
 
 
     public void notificacionCierreSistema() {
@@ -107,6 +113,15 @@ public class UsoAgenteAdmin {
     
     public void mostrarMensajeError(String mensaje, String titulo){
     	visualizador.mostrarMensajeError(titulo, mensaje);
+    }
+    
+    public void optimizar() {
+    	try {
+			visualizador.optimizar();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
 

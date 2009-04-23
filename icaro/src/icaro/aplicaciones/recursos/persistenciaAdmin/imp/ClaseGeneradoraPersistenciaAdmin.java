@@ -1,6 +1,9 @@
 package icaro.aplicaciones.recursos.persistenciaAdmin.imp;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+
+import icaro.aplicaciones.informacion.dominioClases.aplicacionAdmin.InfoUsuario;
 import icaro.aplicaciones.recursos.persistenciaAdmin.ItfUsoPersistenciaAdmin;
 import icaro.aplicaciones.recursos.persistenciaAdmin.imp.util.AccesoBBDD;
 import icaro.aplicaciones.recursos.persistenciaAdmin.imp.util.ConsultaBBDD;
@@ -55,25 +58,6 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 
 	}
 
-	public String compruebaUsuario(String usuario, String password)
-			throws ErrorEnRecursoException {
-		try {
-		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaAdmin",
-  				"Comprobando usuario "+usuario,
-  				InfoTraza.NivelTraza.debug));
-			if (consulta.compruebaUsuario(usuario, password))
-				return consulta.tipoUsuario(usuario);
-		
-			return "false";
-		
-		} catch (Exception e) {
-			this.estadoAutomata.transita("error");
-			
-			return "false";
-		}
-
-	}
-
 	@Override
 	public void termina() {
 		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaAdmin",
@@ -85,5 +69,14 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	public ArrayList<InfoUsuario> getUsuarios() throws Exception {
+		return consulta.getUsuarios();
+	}
+
+	public void optimizar() throws Exception {
+		consulta.optimizar();
 	}
 }
