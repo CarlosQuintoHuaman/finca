@@ -13,6 +13,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -74,6 +76,8 @@ public class panelAgenda extends Thread {
 	private CLabel nombreL;
 	private Button Tarde;
 	private Button agenda;
+	private Button actualizar;
+	private Button cerrar;
 	private Button anadirE;
 	private Button AnadirL;
 	private CLabel llamadas;
@@ -256,7 +260,12 @@ public class panelAgenda extends Thread {
 				SWTResourceManager.registerResourceUser(shell);
 			}
 			//VARIABLES
-
+			shell.addShellListener(new ShellAdapter() {
+			    public void shellClosed(ShellEvent event) {
+			    	usoAgente.guardarAgenda(datos);
+			    	usoAgente.cerrarVentanaSecretaria();
+			    }
+			});
 			medatos=new ArrayList<DatosMedico>();
 			numM=0;
 			datos=new DatosSecretaria(medatos, numM);
@@ -439,6 +448,40 @@ public class panelAgenda extends Thread {
 							public void widgetSelected(SelectionEvent evt) {
 								agendaHoyWidgetSelected(evt);
 								
+							}
+						});
+					}
+
+					{
+						actualizar = new Button(Menu1, SWT.PUSH | SWT.CENTER);
+						GridData button1LData = new GridData();
+						button1LData.horizontalAlignment = GridData.FILL;
+	//					button1LData.widthHint = 68;
+						button1LData.heightHint = 57;
+						//button1LData.horizontalAlignment = GridData.CENTER;
+						actualizar.setLayoutData(button1LData);
+						actualizar.setText("Actualizar");
+						actualizar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.guardarAgenda(datos);
+								usoAgente.mostrarAgendaSecretaria(fy, usuEste);
+							}
+						});
+					}
+					
+					{
+						cerrar = new Button(Menu1, SWT.PUSH | SWT.CENTER);
+						GridData button1LData = new GridData();
+						button1LData.horizontalAlignment = GridData.FILL;
+	//					button1LData.widthHint = 68;
+						button1LData.heightHint = 57;
+						//button1LData.horizontalAlignment = GridData.CENTER;
+						cerrar.setLayoutData(button1LData);
+						cerrar.setText("Cerrar");
+						cerrar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.guardarAgenda(datos);
+								usoAgente.cerrarVentanaSecretaria();
 							}
 						});
 					}

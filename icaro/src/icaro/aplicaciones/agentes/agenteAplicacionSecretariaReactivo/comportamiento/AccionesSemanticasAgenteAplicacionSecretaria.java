@@ -75,6 +75,8 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}
 	}
 	
+	
+	
 	/**
 	 * Esta funcion rellena la agenda de una secretaria  para una fecha concreta
 	 * @param fecha		:: fecha sobre la que queremos hacer la consulta

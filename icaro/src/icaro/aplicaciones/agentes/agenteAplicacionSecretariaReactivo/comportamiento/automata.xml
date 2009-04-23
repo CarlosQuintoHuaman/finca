@@ -16,7 +16,8 @@
 		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="consultarPCitas" accion="pintaVentanaPCitas" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="agenda" accion="rellenaAgendaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="guardarAgenda" accion="guardaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado>
+		<transicion input="guardarAgenda" accion="guardaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="cerrarAgenda" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="esperaResultadoLlamada">
 		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>

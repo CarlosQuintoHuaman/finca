@@ -519,6 +519,41 @@ public class UsoAgenteSecretaria {
     }
     
     /**
+     * Generamos un evento para el automataSecretaria con input: 'agenda', con 'datos' como parametro para la accion semantica 
+     * que le corresponde: 'rellenaAgendaSecretaria'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
+     * @param datos		:: Datos con los que rellenar la llamada(nombre, mensaje, telefono, Espaciente, hora)
+     */
+    public void cerrarVentanaSecretaria(){
+
+    
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+        try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoLogin = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionLogin1");
+            
+            itfUsoLogin.aceptaEvento(new EventoInput("cerrarSesion", "VisualizacionSecretaria1", "AgenteAplicacionLogin1"));
+            
+            visualizador.cerrarVisualizadorSecretaria();
+            
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoInput("cerrarAgenda","VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al cerrar la agenda ");
+            e.printStackTrace();
+        }
+    }
+    /**
      * Generamos un evento para el automataSecretaria con input: 'guardarAgenda', con 'datos' como parametro para la accion semantica 
      * que le corresponde: 'guardaAgenda'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es guardar los datos que se le pasan por parametro enviandoselos a la persistencia 

@@ -121,7 +121,14 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
   				"Cerrando visualizador...",
   				InfoTraza.NivelTraza.debug));
+		reiniciaVisualizadorSecretaria();
 	}  
+
+	
+    public void reiniciaVisualizadorSecretaria() {
+    	ventanaAgendaUsuario = new panelAgenda(this);
+    	ventanaAgendaUsuario.start();
+    }
 	
 	public void meteDatos(ArrayList<DatosCita> l){
 		this.ventanaPCita.meteDatos(l);
