@@ -94,7 +94,8 @@ public class ConsultaBBDD {
 		
 		try {
 			crearQuery();
-			resultado = query.executeQuery("SELECT DISTINCT * FROM medicopaciente M, usuario U, paciente P WHERE M.Medico='" + usuario + "' AND U.NombreUsuario = M.Paciente AND P.NombreUsuario = M.Paciente");
+			//resultado = query.executeQuery("SELECT DISTINCT * FROM medicopaciente M, usuario U, paciente P WHERE M.Medico='" + usuario + "' AND U.NombreUsuario = M.Paciente AND P.NombreUsuario = M.Paciente");
+			resultado = query.executeQuery("SELECT * FROM usuario U, paciente P WHERE EXISTS (SELECT * FROM medicopaciente M WHERE M.Medico='"+usuario+"' AND M.Paciente = U.NombreUsuario AND M.Paciente = P.NombreUsuario)");
 			
 			while (resultado.next()) {
 				InfoPaciente p = new InfoPaciente(resultado.getString("NombreUsuario"),
