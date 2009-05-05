@@ -1221,10 +1221,14 @@ public class panelAgenda extends Thread {
 						String n=copiado.getNombre();
 						String[]aux=n.split(" ");
 						String mm="";
-						for(int k=1;i<aux.length;i++){
-							mm=mm+aux[i];
+						String ape1="";
+						if (aux.length>1){
+							ape1=aux[1];
 						}
-						DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],mm,copiado.getTelf(), fd, pegado.getHora());
+						for(int k=2;k<aux.length;k++){
+							mm=mm+aux[k];
+						}
+						DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fd, pegado.getHora());
 						datos.getMedicos().get(w).getDatos().add(d);
 					}
 					//Si el expacio de la cita esta libre
@@ -1254,10 +1258,14 @@ public class panelAgenda extends Thread {
 					String n=copiado.getNombre();
 					String[]aux=n.split(" ");
 					String mm="";
-					for(int k=1;i<aux.length;i++){
-						mm=mm+aux[i];
+					String ape1="";
+					if (aux.length>1){
+						ape1=aux[1];
 					}
-					DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],mm,copiado.getTelf(), fd, horas[i].getText());
+					for(int k=2;k<aux.length;k++){
+						mm=mm+aux[k];
+					}
+					DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fd, horas[i].getText());
 					datos.getMedicos().get(w).getDatos().add(d);
 				}
 				
@@ -1353,7 +1361,7 @@ public class panelAgenda extends Thread {
 /*		if (d.tomaNombre()=="")
 			usoAgente.mostrarVentanaCita();
 		else*/
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora(),fd);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd);
 		}else{
 			usoAgente.mostrarMensajeError("Debe seleccionar una cita", "Atención");
 		}
@@ -1393,7 +1401,7 @@ public class panelAgenda extends Thread {
 
 		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			DatosCitaSinValidar d= buscarSeleccionado(lsel);
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora(),fd);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd);
 		}
 		seleccion=lsel;
 		
@@ -1437,7 +1445,8 @@ public class panelAgenda extends Thread {
 		int i=0;
 		int p=1;
 		boolean Es =false;
-		String apell1="";
+		String apell2="";
+		String ap1="";;
 		String Telf="";
 		String Hora="";
 		String [] aux;
@@ -1447,18 +1456,17 @@ public class panelAgenda extends Thread {
 				Hora=horas[i].getText();
 				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
 				aux=nombre.split(" ");
-				while (p<aux.length){
-					if (p==1)
-						apell1=aux[p];
-					else
-						apell1=apell1+" "+aux[p];
-					p++;
+				if (aux.length>1){
+					ap1=aux[1];
+				}
+				for(int k=2;k<aux.length;k++){
+						apell2=apell2+aux[k];
 				}
 				Es=true;
 			}
 			i++;
 		}
-		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre, apell1, Telf, Hora);
+		DatosCitaSinValidar d= new DatosCitaSinValidar(nombre, ap1,apell2, Telf, Hora);
 		return d;
 		
 	}
@@ -1471,9 +1479,9 @@ public class panelAgenda extends Thread {
 	 */
 	public DatosCitaSinValidar buscarSeleccionado(CLabel nombre){
 		int i=0;
-		int p=1;
 		boolean Es =false;
-		String apell1="";
+		String apell2="";
+		String ap1="";
 		String Telf="";
 		String Hora="";
 		String [] aux;
@@ -1483,12 +1491,12 @@ public class panelAgenda extends Thread {
 				Hora=horas[i].getText();
 				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
 				aux=nombre.getText().split(" ");
-				while (p<aux.length){
-					if (p==1)
-						apell1=aux[p];
-					else
-						apell1=apell1+" "+aux[p];
-					p++;
+				
+				if (aux.length>1){
+					ap1=aux[1];
+				}
+				for(int k=2;k<aux.length;k++){
+						apell2=apell2+aux[k];
 				}
 				Es=true;
 			}
@@ -1496,9 +1504,9 @@ public class panelAgenda extends Thread {
 		}
 		DatosCitaSinValidar d;
 		if (c==i)
-			d= new DatosCitaSinValidar("", apell1, Telf, Hora);
+			d= new DatosCitaSinValidar("", ap1,apell2, Telf, Hora);
 		else
-		    d= new DatosCitaSinValidar(nombre.getText(), apell1, Telf, Hora);
+		    d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora);
 		return d;
 	}
 	
@@ -1622,7 +1630,7 @@ public class panelAgenda extends Thread {
 	        			
 	        				v++;
 	        			}
-	        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),"", d1.tomaTelf(), fy, d1.tomaHora());
+	        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora());
 	        			datos.getMedicos().get(w).getDatos().add(c);
 	        	 }
 	         }

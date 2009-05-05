@@ -12,12 +12,13 @@ public class DatosCitaSinValidar implements Serializable {
 	private String usuario;
 	private String nombre;
 	private String apell1;
+	private String apell2;
 	private String telf;
 	private String fecha;
 	private String hora;
 	private int periodo;
 	
-	public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora) {
+	public DatosCitaSinValidar (String nombre, String apell1, String apell2,String telf, String hora) {
 		
 		this.nombre = nombre;
 		this.apell1 = apell1;
@@ -27,10 +28,11 @@ public class DatosCitaSinValidar implements Serializable {
 		
 	}
 	
-	public DatosCitaSinValidar (String nombre, String apell1, String telf,String fecha, String hora) {
+	public DatosCitaSinValidar (String nombre, String apell1, String apell2, String telf,String fecha, String hora) {
 		
 		this.nombre = nombre;
 		this.apell1 = apell1;
+		this.apell2 = apell2;
 		this.telf = telf;
 		this.fecha=fecha;
 		this.hora= hora;
@@ -46,19 +48,21 @@ public class DatosCitaSinValidar implements Serializable {
 	 * @param hora
 	 * @param periodo
 	 */
-public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora, int periodo) {
+public DatosCitaSinValidar (String nombre, String apell1,String apell2, String telf, String hora, int periodo) {
 		
 		this.nombre = nombre;
 		this.apell1 = apell1;
+		this.apell2 = apell2;
 		this.telf = telf;
 		this.hora= hora;
 		this.periodo=periodo;
 	}
 	
-public DatosCitaSinValidar (String nombre, String apell1, String telf, String hora, int periodo, String usuario) {
+public DatosCitaSinValidar (String nombre, String apell1, String apell2, String telf, String hora, int periodo, String usuario) {
 	
 	this.nombre = nombre;
 	this.apell1 = apell1;
+	this.apell2 = apell2;
 	this.telf = telf;
 	this.hora= hora;
 	this.periodo=periodo;
@@ -84,6 +88,14 @@ public DatosCitaSinValidar (String nombre, String apell1, String telf, String ho
 		return telf;
 	}
 	
+	public String getApell2() {
+		return apell2;
+	}
+
+	public void setApell2(String apell2) {
+		this.apell2 = apell2;
+	}
+
 	public String tomaHora() {
 		return hora;
 	}

@@ -405,7 +405,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		try {
 			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
-			Object[] datosEnvio = new Object[]{datos.tomaNombre(), datos.tomaApell1(),datos.tomaTelf()};
+			Object[] datosEnvio = new Object[]{datos.tomaNombre(), datos.tomaApell1(),datos.getApell2(),datos.tomaTelf()};
 			if(ok){
 				agenteSecretaria.aceptaEvento(new EventoInput("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
 			}

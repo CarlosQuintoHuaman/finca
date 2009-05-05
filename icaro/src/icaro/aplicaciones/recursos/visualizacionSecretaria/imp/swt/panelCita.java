@@ -138,7 +138,7 @@ public class panelCita extends Thread {
       		tHoraD.setText(dat.tomaHora());
       		hora= new HorasCita(dat.tomaHora(),"");
       	
-      		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(), dat.tomaTelf(), dat.tomaHora(),periodo);
+      		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(),dat.getApell2(), dat.tomaTelf(), dat.tomaHora(),periodo);
       		calculaPeriodo(); 
 	       }
          });

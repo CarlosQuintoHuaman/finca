@@ -168,14 +168,15 @@ public class ConsultaBBDD {
 				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				while (resultado1.next()) {
 				String paciente=resultado1.getString("Nombre");
-				String apellido=resultado1.getString("Apellido1")+resultado1.getString("Apellido2");
+				String apellido1=resultado1.getString("Apellido1");
+				String apellido2=resultado1.getString("Apellido2");
 				String telf =resultado1.getString("Telefono");
 				 
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
 						
-						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido,telf,h,1,usuario);
+						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido1,apellido2,telf,h,1,usuario);
 						
 						citas[i].add(p);
 						datos[i].setDatos(citas[i]);
@@ -189,13 +190,18 @@ public class ConsultaBBDD {
 			resultado = query.executeQuery("SELECT * FROM extras WHERE Fecha >= '" + f11 +"' AND Fecha <= '" + f22 + "'");
 			while (resultado.next()) {
 				
-				String nombre =resultado.getString("Nombre");
+				String usuario =resultado.getString("Nombre");
 				String medico=resultado.getString("Medico");
 				 String f=resultado.getTimestamp("Fecha").toString();
 				 String mensaje =resultado.getString("Mensaje");
 				 String telf=String.valueOf(resultado.getInt("Telefono"));
 				 String tipo=resultado.getString("Tipo");
 				 
+				crearQuery();
+				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
+				if (resultado1.next()) {
+					
+					String nombre =resultado1.getString("Nombre");
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
@@ -214,7 +220,7 @@ public class ConsultaBBDD {
 					}
 				}
 			}
-			
+			}
 			
 			for(int i=0;i<lnombres.size();i++){
 				medicos.add(datos[i]);
@@ -309,7 +315,7 @@ public class ConsultaBBDD {
 			//miramos si tenemos que insertar el paciente o si ya esta dado de alta en la tabla pacientes
 			for(int i=0; i<s.getNumM();i++){
 				for(int j=0;j<s.getMedicos().get(i).getDatos().size();j++){
-					String nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
+					String nom=s.getMedicos().get(i).getDatos().get(j).getUsuario();
 					String telf=s.getMedicos().get(i).getDatos().get(j).tomaTelf();
 					crearQuery();
 					//resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom + "' AND Telefono = '" + telf + "'");
@@ -329,7 +335,7 @@ public class ConsultaBBDD {
 			for(int i=0; i<s.getNumM();i++){
 				String f=s.getFecha().substring(0, 10);
 				for(int j=0;j<s.getMedicos().get(i).getDatos().size();j++){
-					String nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
+					String nom=s.getMedicos().get(i).getDatos().get(j).getUsuario();
 					String h=s.getMedicos().get(i).getDatos().get(j).tomaHora();
 					medico=s.getMedicos().get(i).getNombre();
 				crearQuery();
@@ -343,6 +349,28 @@ public class ConsultaBBDD {
 						String telf=s.getMedicos().get(i).getLlamadas().get(j).getTelf();
 						String men=s.getMedicos().get(i).getLlamadas().get(j).getMensaje();
 						medico=s.getMedicos().get(i).getNombre();
+						f=f.substring(0, 10)+" "+s.getMedicos().get(i).getLlamadas().get(j).getHora();
+						
+						String[]aux=nom.split(" ");
+						nom=aux[0];
+						String mm="";
+						String ape1="";
+						if (aux.length>1){
+							ape1=aux[1];
+						}
+						for(int k=2;k<aux.length;k++){
+							mm=mm+aux[k];
+						}
+						crearQuery();
+						resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + nom + "' AND Apellido1 = '" +ape1+ "' AND Apellido2 = '"+mm+"'");
+						//si no existe debe darse de alta el paciente como usuario y como paciente
+						if (!resultado.next()){
+							crearQuery();
+							query.executeUpdate("INSERT INTO usuario (NombreUsuario, Nombre, Telefono) VALUES " +"('"+nom+"', '"+nom+"', '"+telf+"')");
+							crearQuery();
+							query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+nom+"', '"+telf+"')");
+						}else
+							nom=resultado.getString("NombreUsuario");
 						
 						crearQuery();
 						query.executeUpdate("INSERT INTO extras (Nombre, Medico, Fecha, Mensaje, Telefono, Tipo) VALUES " +"('"+nom+"', '"+medico+"', '"+f+"', '"+men+"'," +
@@ -356,6 +384,28 @@ public class ConsultaBBDD {
 						String telf=s.getMedicos().get(i).getExtras().get(j).getTelf();
 						String men=s.getMedicos().get(i).getExtras().get(j).getMensaje();
 						medico=s.getMedicos().get(i).getNombre();
+						f=f.substring(0, 10)+" "+s.getMedicos().get(i).getExtras().get(j).getHora();
+						
+						String[]aux=nom.split(" ");
+						nom=aux[0];
+						String mm="";
+						String ape1="";
+						if (aux.length>1){
+							ape1=aux[1];
+						}
+						for(int k=2;k<aux.length;k++){
+							mm=mm+aux[k];
+						}
+						crearQuery();
+						resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + nom + "' AND Apellido1 = '" +ape1+ "' AND Apellido2 = '"+mm+"'");
+						//si no existe debe darse de alta el paciente como usuario y como paciente
+						if (!resultado.next()){
+							crearQuery();
+							query.executeUpdate("INSERT INTO usuario (NombreUsuario, Nombre, Telefono) VALUES " +"('"+nom+"', '"+nom+"', '"+telf+"')");
+							crearQuery();
+							query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+nom+"', '"+telf+"')");
+						}else
+							nom=resultado.getString("NombreUsuario");
 						
 						crearQuery();
 						query.executeUpdate("INSERT INTO extras (Nombre, Medico, Fecha, Mensaje, Telefono, Tipo) VALUES " +"('"+nom+"', '"+medico+"', '"+f+"', '"+men+"'," +

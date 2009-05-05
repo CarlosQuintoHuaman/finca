@@ -142,9 +142,9 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la cita(nombre, apellido, telefono, hora)
      */
-    public void mostrarVentanaCita(String nombre, String apellido, String Telf, String hora, String fecha){
+    public void mostrarVentanaCita(String nombre, String apellido1,String apellido2, String Telf, String hora, String fecha){
     	getInformacionAgente();
-    	DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido, Telf,fecha, hora);
+    	DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido1,apellido2, Telf,fecha, hora);
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = RepositorioInterfaces.instance();
