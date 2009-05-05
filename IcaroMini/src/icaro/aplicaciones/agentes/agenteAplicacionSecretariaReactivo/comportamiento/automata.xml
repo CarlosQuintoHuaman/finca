@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE tablaEstados SYSTEM "schemas/TablaEstados.dtd">
+<!-- para validacion manual:
+<!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
+ -->
+<tablaEstados descripcionTabla="Tabla para la ficha">
+	<estadoInicial idInicial="estadoInicial">
+		<transicion input="comenzar" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
+	</estadoInicial>
+	<estado idIntermedio="empezando">
+		<transicion input="inicio" accion="pintaVentanaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="esperaAccion">
+		<transicion input="darCita" accion="pintaVentanaCita" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"/>
+		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/><transicion input="anadirLlamada" accion="pintaVentanaLlamada" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="consultarPCitas" accion="pintaVentanaPCitas" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="agenda" accion="rellenaAgendaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="guardarAgenda" accion="guardaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="cerrarAgenda" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"></transicion></estado>
+	<estado idIntermedio="esperaResultadoLlamada">
+		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="borrarLlamada" accion="borrarLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="modLlamada" accion="modificaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
+	<transicion input="infoExtra" accion="insertaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="cancelarExtra" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="borrarExtra" accion="borrarExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="modExtra" accion="modificaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperandoTerminacion">
+		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="esperaResultadoCita">
+		<transicion input="infoCita" accion="inserta" estadoSiguiente="validaCita" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="cancelarCita" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado>
+	<estado idIntermedio="validaCita">
+		<transicion input="correcto" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="errorFormato" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="tratamientoErrores">
+		<transicion input="errorRecuperable" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
+		<transicion input="errorCritico" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado><estado idIntermedio="consultaPCitas">
+	<transicion input="cancelarPCitas" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+	<transicion input="buscarPaciente" accion="buscaPaciente" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion></estado>
+	<estadoFinal idFinal="terminado"/>
+	<transicionUniversal input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/></tablaEstados>

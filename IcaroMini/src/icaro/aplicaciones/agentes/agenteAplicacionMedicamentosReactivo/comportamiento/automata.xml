@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE tablaEstados SYSTEM "schemas/TablaEstados.dtd">
+<!-- para validacion manual:
+<!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
+ -->
+<tablaEstados descripcionTabla="Tabla para Medicamentos">
+	<estadoInicial idInicial="estadoInicial">
+		<transicion input="comenzar" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+	</estadoInicial>
+	<estado idIntermedio="esperaAccion">
+		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="mostrarVentanaBusqueda" accion="pintaVentanaBusqueda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="mostrarVentanaNuevo" accion="pintaVentanaNuevo" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="asignarMedicamento" accion="asignarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="insertarMedicamento" accion="insertarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="borrarMedicamento" accion="borrarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="eliminarMedicamento" accion="eliminarMedicamento" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="cargarMedicamentos" accion="cargarMedicamentos" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="esperandoTerminacion">
+		<transicion input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estado idIntermedio="tratamientoErrores">
+		<transicion input="errorRecuperable" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
+		<transicion input="errorCritico" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	</estado>
+	<estadoFinal idFinal="terminado"/>
+	<transicionUniversal input="termina" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>
+	<transicionUniversal input="error" accion="clasifica" estadoSiguiente="tratamientoErrores" modoDeTransicion="bloqueante"/>
+</tablaEstados>

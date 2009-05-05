@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<icaro:DescOrganizacion xmlns:icaro="urn:icaro:aplicaciones:descripcionOrganizaciones" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:icaro:aplicaciones:descripcionOrganizaciones ../../../../schemas/DescripcionOrganizacionSchema.xsd ">
+	<!--******************************************************************************************************
+	******************     Propiedades globales de la organización             				******************
+	********************************************************************************************************-->
+	<icaro:PropiedadesGlobales>
+	<icaro:intervaloMonitorizacionGestores>5000</icaro:intervaloMonitorizacionGestores>
+	<icaro:activarPanelTrazasDebug>true</icaro:activarPanelTrazasDebug>
+		<icaro:listaPropiedades>
+			<icaro:propiedad atributo="gestores.comun.intervaloMonitorizacion"
+				valor="50000" />
+		</icaro:listaPropiedades>
+	</icaro:PropiedadesGlobales>
+	<icaro:DescripcionComponentes>
+		<icaro:DescComportamientoAgentes>
+	<!--******************************************************************************************************
+	******************  Descripción del comportamiento de los gestores   					******************
+	********************************************************************************************************-->
+			<icaro:DescComportamientoGestores>
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="GestorOrganizacion" rol="Gestor" tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="GestorAgentes" rol="Gestor" tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="GestorRecursos" rol="Gestor" tipo="Reactivo" />
+			</icaro:DescComportamientoGestores>
+	<!--******************************************************************************************************
+	******************   Descripción del comportamiento de los agentes de aplicación   		******************
+	********************************************************************************************************-->		
+			<icaro:DescComportamientoAgentesAplicacion>
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionLogin" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionLoginReactivo.comportamiento"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionMedico" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionMedicoReactivo.comportamiento"
+					tipo="Reactivo" />				
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionHistorial" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionHistorialReactivo.comportamiento"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionMedicamentos" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionMedicamentosReactivo.comportamiento"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionSecretaria" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionSecretariaReactivo.comportamiento"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionFicha" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionFichaReactivo.comportamiento"
+					tipo="Reactivo" />
+				<icaro:DescComportamientoAgente
+					nombreComportamiento="AgenteAplicacionAdmin" rol="AgenteAplicacion"
+					localizacionComportamiento="icaro.aplicaciones.agentes.agenteAplicacionAdminReactivo.comportamiento"
+					tipo="Reactivo" />
+			</icaro:DescComportamientoAgentesAplicacion>
+		</icaro:DescComportamientoAgentes>
+	<!--******************************************************************************************************
+	******************   Descripción de los recursos de aplicación							******************
+	********************************************************************************************************-->
+		<icaro:DescRecursosAplicacion>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionLogin"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaLogin"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaMedico"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionMedico"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionHistorial"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaHistorial"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionMedicamentos"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaMedicamentos"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaSecretaria"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionSecretaria"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaFicha"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionFicha"/>
+			<icaro:DescRecursoAplicacion nombre="VisualizacionAdmin"/>
+			<icaro:DescRecursoAplicacion nombre="PersistenciaAdmin"/>
+		</icaro:DescRecursosAplicacion>
+	</icaro:DescripcionComponentes>
+	<icaro:DescInstancias>
+	<!--******************************************************************************************************
+	******************   Instancias de gestores												******************
+	********************************************************************************************************-->
+		<icaro:Gestores>
+			<icaro:InstanciaGestor id="GestorOrganizacion"	refDescripcion="GestorOrganizacion">
+				<icaro:componentesGestionados>
+					<icaro:componenteGestionado refId="GestorAgentes" tipoComponente="Gestor"/>
+					<icaro:componenteGestionado refId="GestorRecursos" tipoComponente="Gestor" />
+				</icaro:componentesGestionados>
+			</icaro:InstanciaGestor>
+			<icaro:InstanciaGestor id="GestorAgentes" refDescripcion="GestorAgentes">
+				<icaro:componentesGestionados>
+				  <icaro:componenteGestionado refId="AgenteAplicacionLogin1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionMedico1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionHistorial1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionMedicamentos1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionSecretaria1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionFicha1" tipoComponente="AgenteAplicacion"/>
+				  <icaro:componenteGestionado refId="AgenteAplicacionAdmin1" tipoComponente="AgenteAplicacion"/>
+				</icaro:componentesGestionados>
+			</icaro:InstanciaGestor>
+			
+			<icaro:InstanciaGestor id="GestorRecursos" refDescripcion="GestorRecursos" >
+				<icaro:componentesGestionados>
+					<icaro:componenteGestionado refId="VisualizacionLogin1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaLogin1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaMedico1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionMedico1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionHistorial1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaHistorial1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionMedicamentos1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaMedicamentos1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaSecretaria1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionSecretaria1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaFicha1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionFicha1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="VisualizacionAdmin1" tipoComponente="RecursoAplicacion"/>
+					<icaro:componenteGestionado refId="PersistenciaAdmin1" tipoComponente="RecursoAplicacion"/>
+				</icaro:componentesGestionados>
+			</icaro:InstanciaGestor>
+		</icaro:Gestores>
+	<!--******************************************************************************************************
+	******************   Instancias de Agentes de aplicación								******************
+	*******************************************************************************************************-->	
+		<icaro:AgentesAplicacion>
+			<icaro:Instancia id="AgenteAplicacionLogin1" refDescripcion="AgenteAplicacionLogin">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionMedico1" refDescripcion="AgenteAplicacionMedico">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionHistorial1" refDescripcion="AgenteAplicacionHistorial">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionMedicamentos1" refDescripcion="AgenteAplicacionMedicamentos">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionSecretaria1" refDescripcion="AgenteAplicacionSecretaria">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionFicha1" refDescripcion="AgenteAplicacionFicha">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="AgenteAplicacionAdmin1" refDescripcion="AgenteAplicacionAdmin">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="" valor=""/>
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+		</icaro:AgentesAplicacion>
+	<!--******************************************************************************************************
+	******************   Instancias de Recursos de aplicación								******************
+	********************************************************************************************************-->	
+		<icaro:RecursosAplicacion>
+			<icaro:Instancia id="PersistenciaLogin1" refDescripcion="PersistenciaLogin" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaMedico1" refDescripcion="PersistenciaMedico" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaHistorial1" refDescripcion="PersistenciaHistorial" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaMedicamentos1" refDescripcion="PersistenciaMedicamentos" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaSecretaria1" refDescripcion="PersistenciaSecretaria" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="PersistenciaAdmin1" refDescripcion="PersistenciaAdmin" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="VisualizacionLogin1" refDescripcion="VisualizacionLogin" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionMedico1" refDescripcion="VisualizacionMedico" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionHistorial1" refDescripcion="VisualizacionHistorial" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionMedicamentos1" refDescripcion="VisualizacionMedicamentos" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionSecretaria1" refDescripcion="VisualizacionSecretaria" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="PersistenciaFicha1" refDescripcion="PersistenciaFicha" xsi:type="icaro:Instancia">
+				<icaro:listaPropiedades>
+					<icaro:propiedad atributo="MYSQL_USER" valor="root" />
+					<icaro:propiedad atributo="MYSQL_PASSWORD" valor="" />
+					<icaro:propiedad atributo="MYSQL_SCRIPT_ITEMS" valor="config/bbdd.SQL" />
+					<icaro:propiedad atributo="MYSQL_URL" valor="jdbc:mysql://localhost:3306/doctoris" />
+				</icaro:listaPropiedades>
+			</icaro:Instancia>
+			<icaro:Instancia id="VisualizacionFicha1" refDescripcion="VisualizacionFicha" xsi:type="icaro:Instancia"/>
+			<icaro:Instancia id="VisualizacionAdmin1" refDescripcion="VisualizacionAdmin" xsi:type="icaro:Instancia"/>
+		</icaro:RecursosAplicacion>
+	<!--******************************************************************************************************
+	******************   Descripción común del nodo en el que se despliegan las instancias	******************
+	*******************************************************************************************************-->	
+		<icaro:nodoComun>
+			<icaro:nombreUso>NodoPrincipal</icaro:nombreUso>
+			<icaro:nombreCompletoHost>localhost</icaro:nombreCompletoHost>
+		</icaro:nodoComun>
+	</icaro:DescInstancias>
+</icaro:DescOrganizacion>

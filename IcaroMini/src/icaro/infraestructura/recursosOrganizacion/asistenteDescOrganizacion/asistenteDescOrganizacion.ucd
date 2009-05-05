@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="asistenteDescOrganizacion" size="613,388" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion" metadata="uml2-1.0" initialized="true" scrolledY="26" tag="10" key="32303037303533312D313020496361726F332E362E324C6F63616C507275656261">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.0 //@children.2/@sourceConnections.1" name="AsistenteDescOrganizacion" location="90,195" size="258,70" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="83,18">
+      <children xsi:type="editmodel:MethodEditModel" name="instancia" location="79,250" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion#instancia()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/ItfUsoAsistenteDescOrganizacion&lt;-icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="128,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="168,48"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion-Soyatec::Implement->icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/ItfUsoAsistenteDescOrganizacion" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,16" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="148,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="188,48"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.0/@sourceConnections.0 //@children.0/@sourceConnections.1" name="ItfUsoAsistenteDescOrganizacion" location="50,50" size="304,48" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/ItfUsoAsistenteDescOrganizacion">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="AsistenteDescOrganizacionImpl" location="90,360" size="290,158" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="115,90">
+      <children xsi:type="editmodel:MethodEditModel" name="arranca" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl#arranca()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="continua" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl#continua()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="obtenerEstado" location="5,139" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl#obtenerEstado()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="para" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl#para()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="termina" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl#termina()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion&lt;-icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl" source="//@children.2" target="//@children.0" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="128,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="128,70"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion.imp/AsistenteDescOrganizacionImpl-Standard::Derive->icaro.infraestructura.recursosOrganizacion.asistenteDescOrganizacion/AsistenteDescOrganizacion" source="//@children.2" target="//@children.0" targetEnd="//@children.2/@sourceConnections.1/@children.2" label="//@children.2/@sourceConnections.1/@children.0" sourceEnd="//@children.2/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Derive»" size="49,16" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="108,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="108,70"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" level="-1" showScope="InPackage" properties="wireOptions=7;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
