@@ -201,7 +201,7 @@ public class ConsultaBBDD {
 				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				if (resultado1.next()) {
 					
-					String nombre =resultado1.getString("Nombre");
+					String nombre =resultado1.getString("Nombre")+" "+resultado1.getString("Apellido1")+" "+resultado1.getString("Apellido2");;
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i))){
@@ -322,6 +322,7 @@ public class ConsultaBBDD {
 					resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom + "'");
 					//si no existe debe darse de alta el paciente como usuario y como paciente
 					if (!resultado.next()){
+						nom=s.getMedicos().get(i).getDatos().get(j).tomaNombre();
 						crearQuery();
 						query.executeUpdate("INSERT INTO usuario (NombreUsuario, Nombre, Telefono) VALUES " +"('"+nom+"', '"+nom+"', '"+telf+"')");
 						crearQuery();

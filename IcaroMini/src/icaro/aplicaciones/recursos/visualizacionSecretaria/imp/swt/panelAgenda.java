@@ -829,8 +829,11 @@ public class panelAgenda extends Thread {
 						extra=datos.getMedicos().get(i).getExtras();
 						if(extra==null)
 							extra=new ArrayList<DatosLlamada>();
+						
+						if (agenda.getText().equals("CAMBIO FECHA")){
 						listaLlamadasL();
 						listaLlamadasE();
+						}
 					}
 					i++;	
 				}
@@ -842,31 +845,35 @@ public class panelAgenda extends Thread {
 					int m=Agenda.getSelectionIndex();
 					if (m>-1){
 						RellenaTabla(iniMan, iniTar, finMan, finTar, man, m);
-						boolean cu=false;
-						int i=0;
-						String medico=Agenda.getSelection().getText();
-						while(i<datos.getNumM() && !cu){
-							if (datos.getMedicos().get(i).getNombre().equals(medico)){
-								cu=true;
-								for(int j=0;j<llamada.size();j++){
-									NombresL[j].dispose();
+						if (agenda.getText().equals("CAMBIO FECHA")){
+							boolean cu=false;
+							int i=0;
+							String medico=Agenda.getSelection().getText();
+							while(i<datos.getNumM() && !cu){
+								if (datos.getMedicos().get(i).getNombre().equals(medico)){
+									cu=true;
+									for(int j=0;j<llamada.size();j++){
+										NombresL[j].dispose();
+									}
+									for(int j=0;j<extra.size();j++){
+										NombresE[j].dispose();
+										horasE[j].dispose();
+									}
+									llamada=datos.getMedicos().get(i).getLlamadas();
+									if(llamada==null){
+										llamada=new ArrayList<DatosLlamada>();
+									}
+									extra=datos.getMedicos().get(i).getExtras();
+									if(extra==null)
+										extra=new ArrayList<DatosLlamada>();
+									
+									
+									listaLlamadasL();
+									listaLlamadasE();
+									
 								}
-								for(int j=0;j<extra.size();j++){
-									NombresE[j].dispose();
-									horasE[j].dispose();
-								}
-								llamada=datos.getMedicos().get(i).getLlamadas();
-								if(llamada==null){
-									llamada=new ArrayList<DatosLlamada>();
-								}
-								extra=datos.getMedicos().get(i).getExtras();
-								if(extra==null)
-									extra=new ArrayList<DatosLlamada>();
-								
-								listaLlamadasL();
-								listaLlamadasE();
+								i++;	
 							}
-							i++;	
 						}
 					}
 					huecoAgenda.layout();
@@ -901,7 +908,7 @@ public class panelAgenda extends Thread {
 		for(i=0;i<ll.size();i++){
 			for(int j=0; j<cc; j++){
 			if (horas[j].getText().equals((ll.get(i).tomaHora()))){
-					Nombres[j].setText(ll.get(i).tomaNombre()+" "+ll.get(i).tomaApell1());
+					Nombres[j].setText(ll.get(i).tomaNombre()+" "+ll.get(i).tomaApell1()+" "+ll.get(i).getApell2());
 					Telefonos[j].setText(ll.get(i).tomaTelf());
 				}
 			}
@@ -2254,9 +2261,7 @@ public class panelAgenda extends Thread {
 				horaE.setLayoutData(horaELData);
 				horaE.setForeground(SWTResourceManager.getColor(255, 255, 255));
 			}
-/*			DatosLlamada e = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
-			extra.add(e);
-			listaLlamadasE();*/
+
 			{
 			
 			GridData añadirELData = new GridData();
@@ -2301,9 +2306,6 @@ public class panelAgenda extends Thread {
 				nombreL.setBackground(SWTResourceManager.getColor(220, 189, 244));
 				nombreL.setForeground(SWTResourceManager.getColor(255, 255, 255));
 			}
-/*			DatosLlamada l = new DatosLlamada("pedro", "Quiere hablar contigo urgentemente", "91875432", true, "9:00");
-			llamada.add(l);
-			listaLlamadasL();*/
 			
 			{
 				
