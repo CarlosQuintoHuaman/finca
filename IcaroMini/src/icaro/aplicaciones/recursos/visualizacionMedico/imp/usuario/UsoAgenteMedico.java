@@ -157,6 +157,29 @@ public class UsoAgenteMedico {
     }
     
     /**
+     * Llama al agente Ficha para que muestre la ficha de un paciente
+     * @param paciente
+     */
+    public void abrirFicha(String paciente) {
+    	getInformacionAgente();
+    	
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoFicha = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionFicha1");
+            
+            itfUsoFicha.aceptaEvento(new EventoRecAgte("mostrarVentanaFicha", "VisualizacionMedico1", "AgenteAplicacionFicha1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Ficha desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * Envia un evento a Medicamentos para que cargue y envie de vuelta los medicamentos (asincrono)
      */
     public void cargarMedicamentos() {

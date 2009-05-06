@@ -248,7 +248,7 @@ public class PanelLista extends Thread {
 			if (listaLabels.get(i)[0] == e)
 				break;
 		
-		Date f = v.get(i%2).getFecha();
+		Date f = v.get(i).getFecha();
 		
 		usoAgente.mostrarVentanaHistorial(lTitulo.getText().substring(13), f);
 	}

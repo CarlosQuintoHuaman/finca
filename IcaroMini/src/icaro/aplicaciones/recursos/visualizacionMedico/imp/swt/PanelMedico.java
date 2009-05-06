@@ -9,6 +9,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -199,7 +200,7 @@ public class PanelMedico extends Thread {
 			{
 				barraLateral = new CTabFolder(izquierda, SWT.BORDER);
 				{
-					cTabItem1 = new CTabItem(barraLateral, SWT.CLOSE);
+					cTabItem1 = new CTabItem(barraLateral, SWT.NONE);
 					cTabItem1.setText("Pacientes del dia");
 					{
 						listadoPacientes = new List(barraLateral, SWT.NONE);
@@ -207,6 +208,15 @@ public class PanelMedico extends Thread {
 						fechaActual = new Date();
 						actualizarCitas(fechaActual);
 						cTabItem1.setControl(listadoPacientes);
+						
+						listadoPacientes.addMouseListener(new MouseAdapter() {
+							public void mouseDoubleClick(MouseEvent evt) {
+								if (listadoPacientes.getSelectionIndex() != -1)
+									usoAgente.abrirFicha(usuario);
+								else
+									usoAgente.mostrarMensajeAviso("Debe seleccionar un paciente de la lista", "Atencion");
+							}
+						});
 					}
 				}
 				{
@@ -265,6 +275,15 @@ public class PanelMedico extends Thread {
 							listaBusPaciente.setLayoutData(listaBusPacienteLData);
 
 							actualizarLista();
+							
+							listaBusPaciente.addMouseListener(new MouseAdapter() {
+								public void mouseDoubleClick(MouseEvent evt) {
+									if (listaBusPaciente.getSelectionIndex() != -1)
+										usoAgente.abrirFicha(usuario);
+									else
+										usoAgente.mostrarMensajeAviso("Debe seleccionar un paciente de la lista", "Atencion");
+								}
+							});
 						}
 					}
 				}
@@ -515,7 +534,7 @@ public class PanelMedico extends Thread {
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente de la lista", "Paciente no seleccionado");
 		} else {
 			String hora = listadoPacientes.getSelection()[0].substring(0,5) + ":00";
-			String dia = fecha.getYear() + 1900 + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+			String dia = fechaActual.getYear() + 1900 + "-" + (fechaActual.getMonth() + 1) + "-" + fechaActual.getDate();
 			
 			InfoCita c = null;
 			

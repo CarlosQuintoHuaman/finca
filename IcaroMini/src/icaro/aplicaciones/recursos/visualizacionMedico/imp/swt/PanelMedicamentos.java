@@ -218,7 +218,10 @@ public class PanelMedicamentos extends Composite {
 				bBorrar.setText("Borrar Medicamento");
 				bBorrar.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						usoAgente.borrarMed(filtro.get(listaMed.getSelectionIndex()));
+						if (listaMed.getSelectionIndex() >= 0)
+							usoAgente.borrarMed(filtro.get(listaMed.getSelectionIndex()));
+						else
+							usoAgente.mostrarMensajeError("Debe seleccionar un medicamento de la lista", "Atencion");
 					}
 				});
 			}

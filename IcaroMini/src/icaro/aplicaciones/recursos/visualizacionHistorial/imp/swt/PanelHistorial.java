@@ -460,8 +460,12 @@ public class PanelHistorial extends Thread {
 								bPruebaBorrar.setSize(86, 25);
 								bPruebaBorrar.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
-										usoAgente.borrarPrueba(pruebas.get(listadoPruebas.getSelectionIndex()));
-										tPruebasDesc.setText("");
+										if (listadoPruebas.getSelectionIndex() != -1) {
+											usoAgente.borrarPrueba(pruebas.get(listadoPruebas.getSelectionIndex()));
+											tPruebasDesc.setText("");
+										} else {
+											usoAgente.mostrarMensajeAviso("Debe seleccionar una prueba de la lista", "Atencion");
+										}
 									}
 								});
 							}
@@ -582,8 +586,12 @@ public class PanelHistorial extends Thread {
 								bMedBorrar.setSize(124, 25);
 								bMedBorrar.addSelectionListener(new SelectionAdapter() {
 									public void widgetSelected(SelectionEvent evt) {
-										usoAgente.borrarMed(v, medicamentos.get(listaMedicamentos.getSelectionIndex()));
-										tMedNotas.setText("");
+										if (listaMedicamentos.getSelectionIndex() != -1) {
+											usoAgente.borrarMed(v, medicamentos.get(listaMedicamentos.getSelectionIndex()));
+											tMedNotas.setText("");
+										} else {
+											usoAgente.mostrarMensajeAviso("Debe seleccionar un medicamento de la lista", "Atencion");
+										}
 									}
 								});
 							}

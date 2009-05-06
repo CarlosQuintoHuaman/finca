@@ -248,9 +248,26 @@ public class PanelPrueba extends Thread {
 	}
 	
 	private void bAceptarWidgetSelected(SelectionEvent evt) {        
-		InfoPrueba p = new InfoPrueba(v.getUsuario(), tNombre.getText(), new Timestamp(v.getFecha().getTime()), "prueba", tArchivo.getText(), tDescripcion.getText());
-		usoAgente.guardarPrueba(p);
-		usoAgente.cerrarVentanaPrueba();
+		boolean correcto = true;
+		String mensaje = "Faltan los siguientes campos por rellenar:\n\n";
+		
+		if (tNombre.getText() == "") {
+			correcto = false;
+			mensaje += "- Nombre de la prueba\n";
+		}
+		
+		if (tDescripcion.getText() == "") {
+			correcto = false;
+			mensaje += "- Descripcion de la prueba\n";
+		}
+		
+		if (correcto) {
+			InfoPrueba p = new InfoPrueba(v.getUsuario(), tNombre.getText(), new Timestamp(v.getFecha().getTime()), "prueba", tArchivo.getText(), tDescripcion.getText());
+			usoAgente.guardarPrueba(p);
+			usoAgente.cerrarVentanaPrueba();
+		}
+		else
+			usoAgente.mostrarMensajeError(mensaje, "Faltan campos por rellenar");
 	}
 	
 	private void bCancelarWidgetSelected(SelectionEvent evt) {
