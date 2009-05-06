@@ -57,7 +57,6 @@ public class AccionesSemanticasAgenteAplicacionMensajeria extends AccionesSemant
 		
 		try {
 			//Se obtiene el visualizador
-			//Se obtiene el visualizador
 			visualizacion = (ItfUsoVisualizadorMensajeria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionMensajeria1");
 			
@@ -79,6 +78,30 @@ public class AccionesSemanticasAgenteAplicacionMensajeria extends AccionesSemant
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}
+	
+	public void insertarMensaje(InfoMensaje m){
+		
+		try {			
+			persistencia = (ItfUsoPersistenciaMensajeria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMensajeria1");
+			
+			persistencia.insertaMensaje(m);
+			
+			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de enviar un mensaje",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+			ItfUsoRecursoTrazas trazas = (ItfUsoRecursoTrazas)ClaseGeneradoraRepositorioInterfaces.instance().obtenerInterfaz(
+					NombresPredefinidos.ITF_USO+NombresPredefinidos.RECURSO_TRAZAS);
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al abrir el visualizador de Mensajeria en accion semantica 'pintaVentanaMensajeria()'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}	
 	
 	// Los siguientes 3 metodos suelen estar siempre en todos los automatas
 	public void terminacion() {

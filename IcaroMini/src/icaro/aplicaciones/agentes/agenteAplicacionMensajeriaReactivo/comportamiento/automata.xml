@@ -10,6 +10,7 @@
 	<estado idIntermedio="esperaAccion">
 		<transicion input="cargarMensajes" accion="cargarMensajes" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="enviarMensaje" accion="enviarMensaje" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="insertarMensaje" accion="insertarMensaje" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

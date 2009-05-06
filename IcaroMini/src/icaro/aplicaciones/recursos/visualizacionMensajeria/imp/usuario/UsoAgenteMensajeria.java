@@ -1,5 +1,7 @@
 package icaro.aplicaciones.recursos.visualizacionMensajeria.imp.usuario;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionHistorial.InfoVisita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.recursos.visualizacionMensajeria.imp.ClaseGeneradoraVisualizacionMensajeria;
 import icaro.herramientas.descripcionorganizacion.asistentecreacion.evento.Evento;
 import icaro.infraestructura.entidadesBasicas.EventoRecAgte;
@@ -45,25 +47,25 @@ public class UsoAgenteMensajeria {
     }
 
 
-    // Al ser un metodo de EJEMPLO hay muchos nombres que cambiar (parametros, evento, etc).
-    public void mostrarVentanaMensajeria(String paciente, String fecha) {
-    	//visualizador.mostrarVisualizadorHistorial(nombreAgenteHistorial, tipoAgenteHistorial);
+    /**
+     * Guarda un mensaje en la BD
+     * @param m InfoMensaje
+     */
+    public void enviarMensaje(InfoMensaje m) {
     	getInformacionAgente();
     	
     	try {
-    		
-    		Object datos[] = {paciente,fecha};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
             }
             
-            ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
+            ItfUsoAgenteReactivo itfUsoMensajeria = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMensajeria1");
             
-            itfUsoHistorial.aceptaEvento(new EventoRecAgte("mostrarVentanaHistorial", datos, "VisualizacionHistorial1", "AgenteAplicacionHistorial1"));
+            itfUsoMensajeria.aceptaEvento(new EventoRecAgte("insertarMensaje", m, "VisualizacionMensajeria1", "AgenteAplicacionMensajeria1"));
 
         } catch (Exception e) {
-            System.out.println("Ha habido un error al mostrar el agente Historial");
+            System.out.println("Ha habido un error al guardar el Historial");
             e.printStackTrace();
         }
     }

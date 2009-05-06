@@ -1,5 +1,6 @@
 package icaro.aplicaciones.recursos.visualizacionMensajeria.imp;
 
+import icaro.aplicaciones.recursos.persistenciaMensajeria.ItfUsoPersistenciaMensajeria;
 import icaro.aplicaciones.recursos.visualizacionMensajeria.ItfUsoVisualizadorMensajeria;
 import icaro.aplicaciones.recursos.visualizacionMensajeria.imp.swt.*;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
@@ -57,11 +58,22 @@ public class ClaseGeneradoraVisualizacionMensajeria extends ImplRecursoSimple im
         System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
    
-		this.ventanaMensajeNuevo.mostrar(usuario);
-		
-		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMensajeria",
-  				"Mostrando visualizador Lista...",
-  				InfoTraza.NivelTraza.debug));
+		try {
+			ItfUsoPersistenciaMensajeria persistencia = (ItfUsoPersistenciaMensajeria) ClaseGeneradoraRepositorioInterfaces.instance().obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaMensajeria1");
+			
+			ventanaMensajeNuevo.setUsuarios(persistencia.getUsuarios());
+			
+			this.ventanaMensajeNuevo.mostrar(usuario);
+			
+			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionMensajeria",
+	  				"Mostrando visualizador Lista...",
+	  				InfoTraza.NivelTraza.debug));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
  
 	public void cerrarVisualizadorMensajeNuevo() {

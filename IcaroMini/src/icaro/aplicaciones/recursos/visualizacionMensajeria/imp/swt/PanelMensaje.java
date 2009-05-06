@@ -1,5 +1,9 @@
 package icaro.aplicaciones.recursos.visualizacionMensajeria.imp.swt;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -13,6 +17,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.recursos.visualizacionMensajeria.imp.ClaseGeneradoraVisualizacionMensajeria;
 import icaro.aplicaciones.recursos.visualizacionMensajeria.imp.usuario.UsoAgenteMensajeria;
 
@@ -36,6 +41,7 @@ public class PanelMensaje extends Thread {
 	 */
 	final UsoAgenteMensajeria usoAgente;
 	String usuario;
+	ArrayList<String> usuarios = new ArrayList<String>();
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -168,7 +174,8 @@ public class PanelMensaje extends Thread {
 			bAceptar.setText("Aceptar");
 			bAceptar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
-					
+					InfoMensaje m = new InfoMensaje(usuario,comboUsuarios.getText(),new Timestamp(new Date().getTime()), tAsunto.getText(), tMensaje.getText());
+					usoAgente.enviarMensaje(m);
 				}
 			});
 		}
@@ -207,5 +214,16 @@ public class PanelMensaje extends Thread {
 
 
 	// Aqui iran los metodos especificos de cada ventana
-
+	public void setUsuarios(final ArrayList<String> u) {
+		usuarios = u;
+				
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	comboUsuarios.removeAll();
+            	comboUsuarios.setText("Elegir Destinatario...");
+            	for (int i=0; i<u.size(); i++)
+        			comboUsuarios.add(u.get(i));
+	       }
+         });
+	}
 }

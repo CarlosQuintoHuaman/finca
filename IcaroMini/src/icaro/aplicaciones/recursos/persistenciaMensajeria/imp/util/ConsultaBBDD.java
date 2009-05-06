@@ -86,7 +86,7 @@ public class ConsultaBBDD {
 	}
 	
 	/**
-	 * Lee de la BD todos los mensajes para un paciente en concreto
+	 * Lee de la BD todos los mensajes para un usuario en concreto
 	 * @param p
 	 * @return
 	 */
@@ -115,6 +115,36 @@ public class ConsultaBBDD {
 		
 		return men;
 	}
+	
+	/**
+	 * Lee de la BD todos los usuarios para un paciente en concreto
+	 * @return
+	 */
+	public ArrayList<String> getUsuarios() {
+		ArrayList<String> usuarios = new ArrayList<String>();
+		
+		try {
+			crearQuery();
+			resultado = query.executeQuery("SELECT * FROM usuario");
+			
+			while (resultado.next()) {
+//				InfoMensaje m = new InfoMensaje(resultado.getString("Remitente"),
+//										resultado.getString("Destinatario"),
+//										resultado.getTimestamp("Fecha"),
+//										resultado.getString("Asunto"),
+//										resultado.getString("Contenido")
+//				);
+				
+				usuarios.add(resultado.getString("NombreUsuario"));
+			}
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return usuarios;
+	}	
 	
 	/**
 	 * Inserta un medicamento en la BD

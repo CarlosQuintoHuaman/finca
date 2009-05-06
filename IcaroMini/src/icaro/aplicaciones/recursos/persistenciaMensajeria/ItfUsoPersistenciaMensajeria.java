@@ -34,4 +34,6 @@ public interface ItfUsoPersistenciaMensajeria extends ItfUsoRecursoSimple {
 	 * @throws Exception
 	 */
 	public void eliminarMensaje(InfoMensaje m) throws Exception;
+	
+	public ArrayList<String> getUsuarios() throws Exception;
 }

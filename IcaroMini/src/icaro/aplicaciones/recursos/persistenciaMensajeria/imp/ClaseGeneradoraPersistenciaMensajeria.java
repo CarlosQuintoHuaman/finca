@@ -72,6 +72,10 @@ public class ClaseGeneradoraPersistenciaMensajeria extends ImplRecursoSimple imp
 	public void insertaMensaje(InfoMensaje m) throws Exception {
 		consulta.insertaMensaje(m);
 	}
+	
+	public ArrayList<String> getUsuarios() {
+		return consulta.getUsuarios();
+	}
 
 	@Override
 	public void termina() {
