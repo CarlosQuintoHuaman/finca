@@ -26,6 +26,9 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.cloudgarden.resource.SWTResourceManager;
@@ -33,6 +36,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.swt.PanelMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.ClaseGeneradoraVisualizacionMedico;
 import icaro.aplicaciones.recursos.visualizacionMedico.imp.usuario.UsoAgenteMedico;
@@ -46,6 +50,16 @@ public class PanelMedico extends Thread {
 
 	// Variables
 	private Menu menu1;
+	private Button bEnviarMensaje;
+	private Button bActMensajes;
+	private Composite cMensajes;
+	private TableColumn colMensaje;
+	private TableColumn colOrigen;
+	private TableColumn colAsunto;
+	private TableColumn colFecha;
+	// Para guardar dinamicamente los objetos de cada fila de la tabla
+	private ArrayList<TableItem> filasTabla = new ArrayList<TableItem>();
+	private Table tablaMens;
 	private List listadoPacientes;
 	private List listaBusPaciente;
 	private Text tBusApellido;
@@ -87,7 +101,7 @@ public class PanelMedico extends Thread {
 	private ArrayList<InfoPaciente> pacientes;
 	private ArrayList<InfoPaciente> filtro = new ArrayList<InfoPaciente>();
 	private ArrayList<InfoCita> citas;
-	
+	private ArrayList<InfoMensaje> mensajes = new ArrayList<InfoMensaje>();
 	
 	/**
 	 * comunicacion con el agente (control)
@@ -140,6 +154,7 @@ public class PanelMedico extends Thread {
             	pacientes = visualizador.getPacientes(usuario);
             	citas = visualizador.getCitas(usuario);
             	usoAgente.cargarMedicamentos();
+            	usoAgente.cargarMensajes(usuario);
             	
             	shell.setText("Bienvenido Dr."+usuario);
             	actualizarLista();
@@ -446,6 +461,76 @@ public class PanelMedico extends Thread {
 				mensajeria.setText("Mensajeria");
 			}
 			{
+				cMensajes = new Composite(panelContenido, SWT.NONE);
+				mensajeria.setControl(cMensajes);
+				GridLayout composite2Layout = new GridLayout();
+				composite2Layout.numColumns = 2;
+				composite2Layout.makeColumnsEqualWidth = true;
+				cMensajes.setLayout(composite2Layout);
+				{
+					tablaMens = new Table(cMensajes, SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.BORDER);
+					tablaMens.setHeaderVisible(true);
+					tablaMens.setItemCount(0);
+					tablaMens.setLinesVisible(true);
+					GridData tablaMensLData = new GridData();
+					tablaMensLData.verticalAlignment = GridData.FILL;
+					tablaMensLData.grabExcessHorizontalSpace = true;
+					tablaMensLData.grabExcessVerticalSpace = true;
+					tablaMensLData.horizontalAlignment = GridData.FILL;
+					tablaMensLData.horizontalSpan = 2;
+					tablaMens.setLayoutData(tablaMensLData);
+					
+					{
+						colFecha = new TableColumn(tablaMens, SWT.LEFT);
+						colFecha.setText("Fecha");
+						colFecha.setWidth(100);
+					}
+					{
+						colAsunto = new TableColumn(tablaMens, SWT.LEFT);
+						colAsunto.setText("Asunto");
+						colAsunto.setWidth(100);
+					}
+					{
+						colOrigen = new TableColumn(tablaMens, SWT.LEFT);
+						colOrigen.setText("Remitente");
+						colOrigen.setWidth(100);
+					}						
+					{
+						colMensaje = new TableColumn(tablaMens, SWT.NONE);
+						colMensaje.setText("Mensaje");
+						colMensaje.setWidth(190);
+					}
+
+					actualizarMensajes();
+					{
+						bEnviarMensaje = new Button(cMensajes, SWT.PUSH | SWT.CENTER);
+						GridData bEnviarMensajeLData = new GridData();
+						bEnviarMensajeLData.verticalAlignment = GridData.BEGINNING;
+						bEnviarMensajeLData.horizontalAlignment = GridData.FILL;
+						bEnviarMensaje.setLayoutData(bEnviarMensajeLData);
+						bEnviarMensaje.setText("Enviar un nuevo mensaje");
+						bEnviarMensaje.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.enviarMensaje(usuario);
+							}
+						});
+						
+						bActMensajes = new Button(cMensajes, SWT.PUSH | SWT.CENTER);
+						GridData bActMensajesLData = new GridData();
+						bActMensajesLData.verticalAlignment = GridData.BEGINNING;
+						bActMensajesLData.horizontalAlignment = GridData.FILL;
+						bActMensajes.setLayoutData(bActMensajesLData);
+						bActMensajes.setText("Comprobar si hay nuevos mensajes");
+						bActMensajes.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.cargarMensajes(usuario);
+							}
+						});
+						
+					}
+				}
+			}
+			{
 				cTabMed = new CTabItem(panelContenido, SWT.CLOSE);
 				cTabMed.setText("Medicamentos");
 				{
@@ -645,6 +730,22 @@ public class PanelMedico extends Thread {
 			
 	}
 	
+	private void actualizarMensajes() {
+		for (int i=0; i<filasTabla.size(); i++)
+			filasTabla.get(i).dispose();
+		
+		filasTabla.clear();
+		
+		for (int i=0; i<mensajes.size(); i++) {
+			//TableItem t = mensajes.get(i);
+			TableItem t = new TableItem(tablaMens, 0);
+			filasTabla.add(t);
+			
+			InfoMensaje m = mensajes.get(i);
+			t.setText(new String[]{m.getFecha().toString(), m.getAsunto(), m.getRemitente(), m.getContenido()});
+		}
+	}
+	
 	/**
 	 * Lee el contenido de la pestaña Medicamentos remotamente. El agente medicamentos
 	 * se ocupa de ella y aqui tan solo se muestra.
@@ -657,6 +758,16 @@ public class PanelMedico extends Thread {
 	
 	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
 		((PanelMedicamentos) cMedicamentos).mostrarDatos(m);
+	}
+	
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) {
+		mensajes = m;
+		
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	actualizarMensajes();
+	       }
+         });
 	}
 
 }

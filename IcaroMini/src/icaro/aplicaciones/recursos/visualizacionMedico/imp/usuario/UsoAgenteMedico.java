@@ -226,6 +226,50 @@ public class UsoAgenteMedico {
     }
     
     /**
+     * Envia un evento a Mensajes para que cargue y envie de vuelta los mensajes (asincrono)
+     */
+    public void cargarMensajes(String usuario) {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            Object[] datos = {usuario,"AgenteAplicacionMedico1"};
+            
+            ItfUsoAgenteReactivo itfUsoMensajeria = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMensajeria1");
+            
+            // Como dato le paso el nombre de este agente para que me devuelva los datos
+            itfUsoMensajeria.aceptaEvento(new EventoRecAgte("cargarMensajes", datos, "VisualizacionMedico1", "AgenteAplicacionMensajeria1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Mensajeria desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Envia un evento a Mensajes para que muestre la ventana de envio de mensaje
+     */
+    public void enviarMensaje(String usuario) {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMensajeria = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMensajeria1");
+            
+            // Como dato le paso el nombre de este agente para que me devuelva los datos
+            itfUsoMensajeria.aceptaEvento(new EventoRecAgte("enviarMensaje", usuario, "VisualizacionMedico1", "AgenteAplicacionMensajeria1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Mensajeria desde el agente Medico");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * -En fase experimental- Aun no funciona
      * @param c
      * @param estilo

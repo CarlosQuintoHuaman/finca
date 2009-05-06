@@ -3,20 +3,13 @@
 <!-- para validacion manual:
 <!DOCTYPE tablaEstados SYSTEM "../../../../../../schemas/TablaEstados.dtd">
  -->
-<tablaEstados descripcionTabla="Tabla para Medico">
+<tablaEstados descripcionTabla="Tabla para la mensajeria">
 	<estadoInicial idInicial="estadoInicial">
-		<transicion input="comenzar" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
+		<transicion input="comenzar" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 	</estadoInicial>
-	<estado idIntermedio="empezando">
-		<transicion input="inicio" accion="pintaVentanaMedico" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-	</estado>
 	<estado idIntermedio="esperaAccion">
-		<transicion input="mostrarVentanaMedico" accion="pintaVentanaMedico" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-		<transicion input="mostrarTabMed" accion="pintaTabMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-		<transicion input="mostrarDatosMed" accion="mostrarDatosMed" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-		<transicion input="mostrarMensajes" accion="mostrarMensajes" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-		<transicion input="cerrarSesion" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
+		<transicion input="cargarMensajes" accion="cargarMensajes" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="enviarMensaje" accion="enviarMensaje" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

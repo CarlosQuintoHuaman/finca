@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoMedico;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.recursos.visualizacionMedicamentos.ItfUsoVisualizadorMedicamentos;
 import icaro.aplicaciones.recursos.visualizacionMedico.ItfUsoVisualizadorMedico;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
@@ -76,6 +77,14 @@ public class AccionesSemanticasAgenteAplicacionMedico extends AccionesSemanticas
 	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) {
 		try {
 			visualizacion.mostrarDatosMed(m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) {
+		try {
+			visualizacion.mostrarMensajes(m);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

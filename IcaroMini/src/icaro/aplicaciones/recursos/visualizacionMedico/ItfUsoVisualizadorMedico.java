@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.eclipse.swt.widgets.Composite;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedicamentos.InfoMedicamento;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
@@ -37,6 +38,14 @@ public interface ItfUsoVisualizadorMedico extends ItfUsoRecursoSimple{
 	 * @throws Exception
 	 */
 	public void mostrarDatosMed(ArrayList<InfoMedicamento> m) throws Exception;
+	
+	/**
+	 * Se usa para avisar asincronamente de que los datos de los mensajes ya estan
+	 * listos para ser mostrados por pantalla
+	 * @param m
+	 * @throws Exception
+	 */
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) throws Exception;
 
 	/**
 	 * 
