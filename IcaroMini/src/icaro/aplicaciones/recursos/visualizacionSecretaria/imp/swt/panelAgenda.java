@@ -1338,7 +1338,7 @@ public class panelAgenda extends Thread {
 	private void CrearFichaWidgetSelected(SelectionEvent evt){
 		//busqueda del paciente que se le pasa como parametro para recoger todos sus datos
 		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
-		DatosCita a= new DatosCita(d.tomaNombre(), d.tomaTelf(), true);
+		DatosCita a= new DatosCita(d.tomaNombre(), d.tomaTelf(), true,d.getUsuario());
 		if (!d.tomaNombre().equals(""))
 			usoAgente.mostrarVentanaFicha(a);
 		else
@@ -1509,11 +1509,30 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
+		int n=0;
+		int t=0;
+		//Buscar en los datos de la agenda el usuario
+		for(int m=0;m<datos.getNumM();m++){
+			if (datos.getMedicos().get(m).getNombre().equals(Agenda.getSelection().getText())){
+				 n=0;
+				boolean cumple=false;
+				while(n<datos.getMedicos().get(m).getDatos().size() && !cumple){
+					if (datos.getMedicos().get(m).getDatos().get(n).tomaHora().equals(Hora)){
+						cumple=true;
+						t=m;
+					}
+					n++;
+				}
+			}
+		}
+		
+		if (cumple)
+			n--;
 		DatosCitaSinValidar d;
 		if (c==i)
 			d= new DatosCitaSinValidar("", ap1,apell2, Telf, Hora);
 		else
-		    d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora);
+		    d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora,false,datos.getMedicos().get(t).getDatos().get(n).getUsuario());
 		return d;
 	}
 	
@@ -1639,12 +1658,50 @@ public class panelAgenda extends Thread {
 	        			}
 	        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora());
 	        			datos.getMedicos().get(w).getDatos().add(c);
+	        			
 	        	 }
 	         }
 	         else{
-			//Si fallo muestro la cita otra vez y mensaje error
+	        	 if(usoAgente.mostrarMensajeAvisoC("Al insertar esta cita se sobreescribe sobre la agenda actual. ¿Esta seguro de que desea continuar?", "Atencion")){
+	        		 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
+		        		 Nombres[i].setText(d1.tomaNombre()+" "+d1.tomaApell1()+" "+d1.getApell2());
+		        		 Telefonos[i].setText(d1.tomaTelf());
+		        		 String m=Agenda.getSelection().getText();
+		        			int w=0;
+		        			boolean cu=false;
+		        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+		        			while(w<datos.getNumM() && !cu){
+		        				if (datos.getMedicos().get(w).getNombre().equals(m)){
+		        					cu=true;
+		        					ll=datos.getMedicos().get(w).getDatos();
+		        					w--;
+		        				}
+		        				w++;	
+		        			}
+		        			cu=false;
+		        			int v=0;
+		        			int g=0;
+		        			while(v<ll.size() &&!cu){
+		        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
+		        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
+		        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
+		        				}
+		        			
+		        				v++;
+		        			}
+		        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora());
+		        			datos.getMedicos().get(w).getDatos().add(c);
+		        			usoAgente.cerrarVentanaCita();
+		        			
+		        	 }
+	        	 }
+	        	 else{
+	        		 
+	        		 usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.getApell2(), d.tomaTelf(), d.tomaHora(), fd);
+	        	 }
+		
 	         }
-	         
+	         usoAgente.cerrarVentanaCita();
 			       }
 	         });
 		}

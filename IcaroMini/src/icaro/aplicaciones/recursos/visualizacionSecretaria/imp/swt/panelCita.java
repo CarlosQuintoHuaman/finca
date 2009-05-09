@@ -1,15 +1,20 @@
 package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,12 +25,26 @@ import org.eclipse.swt.widgets.Text;
 
 import com.cloudgarden.resource.SWTResourceManager;
 import icaro.util.util;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.HorasCita;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class panelCita extends Thread {
 
 	// Variables
@@ -33,6 +52,9 @@ public class panelCita extends Thread {
 	private Composite compoPrincipal;
 	private Composite compoLinea1;
 	private Composite compoLinea2;
+	private CLabel lPacientes;
+	private CCombo cPacientes;
+	private Button bBuscar;
 	private Button bNuevo;
 	private Button bCancelar;
 	private Button bAceptar;
@@ -60,6 +82,9 @@ public class panelCita extends Thread {
 	private int intervalo=15;
 	private int periodo;
 	private HorasCita hora;
+	private ArrayList<InfoPaciente> LPacientes;
+	private boolean buscado;
+	private boolean init;
 
 	final UsoAgenteSecretaria usoAgente;
 	
@@ -131,7 +156,7 @@ public class panelCita extends Thread {
           	}else{
           		tPaciente.setText(aux[0]);
           		
-          		tApellidos.setText(dat.tomaApell1());
+          		tApellidos.setText(dat.tomaApell1()+" "+dat.getApell2());
           	}
           	tFecha.setText(dat.getFecha());
       		tTelefono1.setText(dat.tomaTelf());
@@ -177,7 +202,7 @@ public class panelCita extends Thread {
 			GridLayout shellLayout = new GridLayout();
 			shellLayout.makeColumnsEqualWidth = true;
 			shell.setLayout(shellLayout);
-			shell.setSize(492, 259);
+			shell.setSize(521, 297);
 			shell.setText("Dar Cita");
 			
 			{
@@ -191,6 +216,7 @@ public class panelCita extends Thread {
 			    }
 			});
 			periodo=1;
+			LPacientes=new ArrayList<InfoPaciente>();
 			{
 				compoPrincipal = new Composite(shell, SWT.NONE);
 				GridLayout compoPrincipalLayout = new GridLayout();
@@ -228,6 +254,7 @@ public class panelCita extends Thread {
 						tFecha.setLayoutData(tFechaLData);
 						util f=new util(); 
 						tFecha.setText("");
+						tFecha.setEditable(false);
 					}
 					{
 						cHoraCita = new CLabel(compoLinea1, SWT.NONE);
@@ -241,6 +268,7 @@ public class panelCita extends Thread {
 						tHoraDLData.widthHint = 34;
 						tHoraD = new Text(compoLinea1, SWT.BORDER);
 						tHoraD.setLayoutData(tHoraDLData);
+						tHoraD.setEditable(false);
 					}
 					{
 						cHoraA = new CLabel(compoLinea1, SWT.NONE);
@@ -254,6 +282,7 @@ public class panelCita extends Thread {
 						text1LData.widthHint = 34;
 						text1 = new Text(compoLinea1, SWT.BORDER);
 						text1.setLayoutData(text1LData);
+						text1.setEditable(false);
 					}
 					{
 						bmenos = new Button(compoLinea1, SWT.PUSH | SWT.CENTER);
@@ -294,12 +323,12 @@ public class panelCita extends Thread {
 				{
 					compoLinea2 = new Composite(compoPrincipal, SWT.NONE);
 					GridLayout compoLinea2Layout = new GridLayout();
-					compoLinea2Layout.numColumns = 3;
+					compoLinea2Layout.numColumns = 4;
 					GridData compoLinea2LData = new GridData();
 					compoLinea2LData.verticalAlignment = GridData.BEGINNING;
 					compoLinea2LData.horizontalAlignment = GridData.BEGINNING;
-					compoLinea2LData.widthHint = 469;
-					compoLinea2LData.heightHint = 210;
+					compoLinea2LData.widthHint = 493;
+					compoLinea2LData.heightHint = 212;
 					compoLinea2.setLayoutData(compoLinea2LData);
 					compoLinea2.setLayout(compoLinea2Layout);
 					{
@@ -307,9 +336,15 @@ public class panelCita extends Thread {
 						GridData bPrimeraVezLData = new GridData();
 						bPrimeraVezLData.verticalAlignment = GridData.BEGINNING;
 						bPrimeraVezLData.horizontalAlignment = GridData.BEGINNING;
-						bPrimeraVezLData.horizontalSpan = 3;
+						bPrimeraVezLData.horizontalSpan = 4;
 						bPrimeraVez.setLayoutData(bPrimeraVezLData);
 						bPrimeraVez.setText("Primera vez");
+						bPrimeraVez.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bPrimeraVezWidgetSelected(evt);
+								
+							}
+						});
 					}
 					{
 						cPaciente = new CLabel(compoLinea2, SWT.NONE);
@@ -320,7 +355,7 @@ public class panelCita extends Thread {
 						tPacienteLData.verticalAlignment = GridData.BEGINNING;
 						tPacienteLData.horizontalAlignment = GridData.BEGINNING;
 						tPacienteLData.heightHint = 17;
-						tPacienteLData.horizontalSpan = 2;
+						tPacienteLData.horizontalSpan = 3;
 						tPacienteLData.widthHint = 251;
 						tPaciente = new Text(compoLinea2, SWT.BORDER);
 						tPaciente.setLayoutData(tPacienteLData);
@@ -334,7 +369,7 @@ public class panelCita extends Thread {
 						tApellidosLData.verticalAlignment = GridData.BEGINNING;
 						tApellidosLData.horizontalAlignment = GridData.BEGINNING;
 						tApellidosLData.heightHint = 17;
-						tApellidosLData.horizontalSpan = 2;
+						tApellidosLData.horizontalSpan = 3;
 						tApellidosLData.widthHint = 357;
 						tApellidos = new Text(compoLinea2, SWT.BORDER);
 						tApellidos.setLayoutData(tApellidosLData);
@@ -359,6 +394,7 @@ public class panelCita extends Thread {
 						tTelefono2LData.horizontalAlignment = GridData.BEGINNING;
 						tTelefono2LData.heightHint = 17;
 						tTelefono2LData.widthHint = 99;
+						tTelefono2LData.horizontalSpan = 2;
 						tTelefono2 = new Text(compoLinea2, SWT.BORDER);
 						tTelefono2.setLayoutData(tTelefono2LData);
 					}
@@ -372,9 +408,30 @@ public class panelCita extends Thread {
 						tAseguradoraLData.horizontalAlignment = GridData.BEGINNING;
 						tAseguradoraLData.heightHint = 17;
 						tAseguradoraLData.widthHint = 105;
-						tAseguradoraLData.horizontalSpan = 2;
+						tAseguradoraLData.horizontalSpan = 3;
 						tAseguradora = new Text(compoLinea2, SWT.BORDER);
 						tAseguradora.setLayoutData(tAseguradoraLData);
+					}
+					{
+						lPacientes = new CLabel(compoLinea2, SWT.NONE);
+						lPacientes.setText("Pacientes");
+					}
+					{
+						GridData cPacientesLData = new GridData();
+						cPacientesLData.verticalAlignment = GridData.BEGINNING;
+						cPacientesLData.horizontalAlignment = GridData.BEGINNING;
+						cPacientesLData.horizontalSpan = 3;
+						cPacientesLData.heightHint = 17;
+						cPacientesLData.widthHint = 388;
+						cPacientes = new CCombo(compoLinea2, SWT.NONE);
+						cPacientes.setLayoutData(cPacientesLData);
+						cPacientes.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bPacientesWidgetSelected(evt);
+								
+							}
+						});
+						
 					}
 					{
 						bAceptar = new Button(compoLinea2, SWT.PUSH | SWT.CENTER);
@@ -388,7 +445,7 @@ public class panelCita extends Thread {
 						bAceptar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 								bAceptarWidgetSelected(evt);
-								usoAgente.cerrarVentanaCita();
+								
 								
 							}
 						});
@@ -409,6 +466,21 @@ public class panelCita extends Thread {
 						});
 					}
 					{
+						bBuscar = new Button(compoLinea2, SWT.PUSH | SWT.CENTER);
+						GridData bBuscarLData = new GridData();
+						bBuscarLData.verticalAlignment = GridData.BEGINNING;
+						bBuscarLData.horizontalAlignment = GridData.BEGINNING;
+						bBuscarLData.heightHint = 31;
+						bBuscarLData.widthHint = 74;
+						bBuscar.setLayoutData(bBuscarLData);
+						bBuscar.setText("Buscar");
+						bBuscar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bBuscarWidgetSelected(evt);
+							}
+						});
+					}
+					{
 						bNuevo = new Button(compoLinea2, SWT.PUSH | SWT.CENTER);
 						GridData bNuevoLData = new GridData();
 						bNuevoLData.verticalAlignment = GridData.BEGINNING;
@@ -420,7 +492,7 @@ public class panelCita extends Thread {
 						bNuevo.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 //								if (!tPaciente.getText().equals("")){
-									DatosCita d=new DatosCita(tPaciente.getText()+" "+tApellidos.getText(),tTelefono1.getText(),true,0);
+								DatosCita d=new DatosCita(tPaciente.getText()+" "+tApellidos.getText(),tTelefono1.getText(),true,"");
 									usoAgente.mostrarVentanaFicha(d);
 /*								}
 								else{
@@ -429,6 +501,13 @@ public class panelCita extends Thread {
 							}
 						});
 					}
+					tPaciente.setEditable(false);
+					tApellidos.setEditable(false);
+					tTelefono1.setEditable(false);
+					tTelefono2.setEditable(false);
+					tAseguradora.setEditable(false);
+					buscado=false;
+					init=false;
 				}
 			}
 
@@ -476,20 +555,132 @@ public class panelCita extends Thread {
 	 * @param evt
 	 */
 	private void bAceptarWidgetSelected(SelectionEvent evt){
-		datos.setNombre(tPaciente.getText());
-		datos.setApell1(tApellidos.getText());
-		datos.setHora(tHoraD.getText());
-		datos.setPeriodo(periodo);
-		datos.setTelf(tTelefono1.getText());
-		usoAgente.validaCita(datos);
-		try {
-			vis.cerrarVisualizadorExtra();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		boolean p;
+		p=false;
+
+		String mensaje="Faltan por rellenar los siguientes campos"+"\\n";
+		if(tPaciente.getText().equals("")){
+			mensaje=mensaje+"Nombre"+"\\n";
+			p=true;
+		}
+		if(tApellidos.getText().equals("")){
+			mensaje=mensaje+"Apellidos"+"\\n";
+			p=true;
+		}
+		
+		if(tTelefono1.getText().equals("")){
+			mensaje=mensaje+"Telefono"+"\\n";
+			p=true;
+		}
+		if(p)
+			usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
+		else{
+			String[] aux=tApellidos.getText().split(" ");
+			String ap1="";
+			String ap2="";
+			if (aux.length>0){
+				ap1=aux[0];
+			}
+			if (aux.length>1){
+				ap2=aux[1];
+			}
+				
+			
+			datos.setNombre(tPaciente.getText());
+			datos.setApell1(ap1);
+			datos.setApell2(ap2);
+			datos.setHora(tHoraD.getText());
+			datos.setPeriodo(periodo);
+			datos.setTelf(tTelefono1.getText());
+			if(bPrimeraVez.getSelection())
+				datos.setUsuario(tPaciente.getText());
+			datos.setNuevo(true);
+		
+		    if(buscado)
+		    	datos.setUsuario(LPacientes.get(cPacientes.getSelectionIndex()-1).getUsuario());
+		    datos.setNuevo(false);
+		
+			usoAgente.validaCita(datos);
+			try {
+				//vis.cerrarVisualizadorCita();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
+	/**
+	 * Evento del boton buscar de la ventana
+	 * @param evt
+	 */
+	private void bBuscarWidgetSelected(SelectionEvent evt){
+		
+			usoAgente.buscarPacientes();
+	}
+	
+	/**
+	 * Evento del check box al seleccionar un paciente
+	 * @param evt
+	 */
+	private void bPacientesWidgetSelected(SelectionEvent evt){
+		CCombo lsel=(CCombo)evt.getSource();
+		int i=lsel.getSelectionIndex();
+		if(i>0){
+			InfoPaciente p=LPacientes.get(i-1);
+			tPaciente.setEditable(false);
+			tApellidos.setEditable(false);
+			tTelefono1.setEditable(false);
+			tTelefono2.setEditable(false);
+			tAseguradora.setEditable(false);
+			bBuscar.setEnabled(true);
+			cPacientes.setEnabled(true);
+			tPaciente.setText(p.getNombre());
+			tApellidos.setText(p.getApellido1()+" "+p.getApellido2());
+			tTelefono1.setText(p.getTelefono());
+			tAseguradora.setText(p.getSeguro());
+			buscado=true;
+		}
+		else{
+			tPaciente.setText("");
+			tApellidos.setText("");
+			tTelefono1.setText("");
+			tAseguradora.setText("");
+			buscado=false;
+		}
+	}
+	
+	/**
+	 * Evento del check box para detectar si es un nuevo paciente
+	 * @param evt
+	 */
+	private void bPrimeraVezWidgetSelected(SelectionEvent evt){
+		if (bPrimeraVez.getSelection()){
+			tPaciente.setEditable(true);
+			tApellidos.setEditable(true);
+			tTelefono1.setEditable(true);
+			tTelefono2.setEditable(true);
+			tAseguradora.setEditable(true);
+
+			bBuscar.setEnabled(false);
+			cPacientes.setEnabled(false);
+			buscado=false;
+		}
+		else{
+			tPaciente.setEditable(false);
+			tApellidos.setEditable(false);
+			tTelefono1.setEditable(false);
+			tTelefono2.setEditable(false);
+			tAseguradora.setEditable(false);
+			bBuscar.setEnabled(true);
+			cPacientes.setEnabled(true);
+			tPaciente.setText("");
+			tApellidos.setText("");
+			tTelefono1.setText("");
+			tAseguradora.setText("");
+		}
+			
+	}
 	/**
 	 * Funcion auxiliar que nos ayuda a calcular cuantas franjas horarias de la agenda ocupa un paciente a traves del periodo.
 	 * Ejemplo: Si intervalo interconsulta= 15 min, periodo=2 y hora inicio cita paciente=9:00 entonces el paciente estara 
@@ -545,7 +736,22 @@ public class panelCita extends Thread {
 		datos.setPeriodo(periodo);
 	}
 
-	
+	public void rellenaTabla(final ArrayList<InfoPaciente> l){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	LPacientes=l;
+            	cPacientes.removeAll();
+            	cPacientes.add("Seleccionar...");
+            	cPacientes.select(0);
+            	for(int i=0;i<l.size();i++){
+            		cPacientes.add(l.get(i).getNombre()+" "+l.get(i).getApellido1()+" "+l.get(i).getApellido2());
+            	}
+ 
+	       }
+         });
+	}
     public void cerrar() {
     	disp.asyncExec(new Runnable() {
             public void run() {

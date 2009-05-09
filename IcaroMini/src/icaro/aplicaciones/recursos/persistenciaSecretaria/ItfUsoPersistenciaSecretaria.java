@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
@@ -53,4 +54,9 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 * @return p 		:: ArrayList DatosCita (nombre Paciente, telefono, medico, fecha, hora)
 	 */
 	public ArrayList<DatosCita> getPaciente(String nom,String telf, String fecha);
+	
+	/**
+	 * Esta funcion nos sirve para obtener todos los pacientes de la bbdd
+	 */
+	public ArrayList<InfoPaciente> getPacientes();
 }

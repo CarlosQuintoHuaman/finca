@@ -289,6 +289,7 @@ public class ConsultaBBDD {
 		}
 		return p;
 	}
+
 	/**
 	 *  Con esta consulta pretendemos guardar los cambios que hayamos hecho en la agenda para el dia actual 
 	 * @param s			:: parametro que contiene toda la informacion de una una agenda para una secretaria y un dia concreto(fecha actual).

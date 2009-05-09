@@ -4,6 +4,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -43,6 +44,13 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 	 * @param l
 	 */
     public void meteDatos(ArrayList<DatosCita> l)throws Exception;
+ 
+	/**
+	 * Despues de mostrar la ventana de Citas (sin datos) llamamos a esta funcion desde fuera de panelCita para
+	 * que cargue los datos que se deben mostrar en esta ventana
+	 * @param l
+	 */
+    public void meteDatosPacientes(ArrayList<InfoPaciente> l)throws Exception;
     
     /**
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 

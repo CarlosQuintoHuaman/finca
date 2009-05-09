@@ -138,20 +138,11 @@ public class ConsultaBBDD {
 				String usuario=resultado.getString("NombreUsuario");
 				crearQuery();
 				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
-//				crearQuery();
-//				query.executeUpdate("DELETE FROM paciente WHERE NombreUsuario = '" + usuario +"'");
-//				crearQuery();
-//				query.executeUpdate("DELETE FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				
 				crearQuery();
-//				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
-//						"VALUES " +"('"+usuario+"', '"+pass+"', '"+ficha.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+ficha.getDireccion()+"'" +
-//								", '"+ficha.getTelf1()+"')");
-				//UPDATE `doctoris`.`usuario` SET `Nombre` = 'Secreetaria1' WHERE `usuario`.`NombreUsuario` = 'sec1' LIMIT 1 ;
+
 				query.executeUpdate("UPDATE usuario SET Nombre = '" + fichaN.getNombre() +"', Apellido1 = '" + ape1 +"', Apellido2 = '" + ape2 +
 						"', Direccion = '" + fichaN.getDireccion() +"', Telefono = '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+usuario+"'");
-//				crearQuery();
-//				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+usuario+"', '"+ficha.getAseguradora()+"')");
 				
 				crearQuery();
 				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+usuario+"', '"+desc+"')");
@@ -182,19 +173,14 @@ public class ConsultaBBDD {
 	public DatosFicha getFicha(DatosCita datos){
 		try {
 			DatosFicha ficha= new DatosFicha();
-			String[] aux=datos.getNombre().split(" ");
-			String nom=aux[0];
-			String ape1="";
+			String usuario=datos.getUsuario();
 			String desc="";
-			if (aux.length>1)
-				ape1=aux[1];
-			
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + nom +"'");
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 			
 			
 			if (resultado.next()){
-				String usuario=resultado.getString("NombreUsuario");
+				
 				crearQuery();
 				resultado = query.executeQuery("SELECT * FROM Antecedentes WHERE Paciente = '" + usuario +"'");
 				if (resultado.next()){

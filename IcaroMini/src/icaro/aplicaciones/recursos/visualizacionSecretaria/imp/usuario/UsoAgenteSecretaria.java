@@ -456,6 +456,13 @@ public class UsoAgenteSecretaria {
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
     
+    public void mostrarMensajeAviso(String mensaje, String titulo){
+    	visualizador.mostrarMensajeAviso(titulo, mensaje);
+    }
+    
+    public boolean mostrarMensajeAvisoC(String mensaje, String titulo){
+    	return visualizador.mostrarMensajeAvisoC(titulo, mensaje);
+    }
     /**
      * Generamos un evento para el automataSecretaria con input: 'infoCita', para la accion semantica 
      * que le corresponde: 'inserta'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
@@ -605,6 +612,34 @@ public class UsoAgenteSecretaria {
          }
          
      }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'buscarPacientes'.Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es Buscar todos los pacientes en la bbdd. Posteriormente se le enviara la peticion a la persistencia 
+     */
+    public void buscarPacientes(){
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+    	try {
+       	 
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("buscarPacientes", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de buscarPaciente ");
+            e.printStackTrace();
+        }
+       
+    }
     
     /**
      * Generamos un evento para el automataSecretaria con input: 'buscarPaciente', con 'datos' como parametro para la accion semantica 

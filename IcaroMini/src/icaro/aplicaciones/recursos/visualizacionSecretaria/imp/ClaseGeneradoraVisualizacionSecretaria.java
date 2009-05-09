@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria.imp;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -134,6 +135,9 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		this.ventanaPCita.meteDatos(l);
 	}
   
+	public void meteDatosPacientes(ArrayList<InfoPaciente> l){
+		this.ventanaCitaAgenda.rellenaTabla(l);
+	}
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
 		
@@ -146,18 +150,6 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		messageBox.setMessage (mensaje);
 	    messageBox.open();
 	    
-		/*JOptionPane.showMessageDialog(ventanaAgendaUsuario,mensaje,titulo,JOptionPane.INFORMATION_MESSAGE);
-		
-		try {
-			ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces
-			.obtenerInterfaz(NombresPredefinidos.ITF_USO+NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha");
-			itfUsoAgente.aceptaEvento(new EventoInput("termina","VisualizadorFicha",NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha"));
-			
-		} catch (Exception e) {
-			System.out.println("Ha habido un error al enviar el evento termina al agente");
-			e.printStackTrace();
-		}
-		*/
 	}
 	
 	public boolean mostrarMensajeAvisoC(String titulo,String mensaje) {

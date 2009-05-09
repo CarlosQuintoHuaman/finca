@@ -16,6 +16,7 @@ public class DatosCitaSinValidar implements Serializable {
 	private String telf;
 	private String fecha;
 	private String hora;
+	private Boolean nuevo;
 	private int periodo;
 	
 	public DatosCitaSinValidar (String nombre, String apell1, String apell2,String telf, String hora) {
@@ -24,6 +25,18 @@ public class DatosCitaSinValidar implements Serializable {
 		this.apell1 = apell1;
 		this.telf = telf;
 		this.hora= hora;
+		periodo=1;
+		
+	}
+	
+	public DatosCitaSinValidar(String nombre, String apell1, String apell2,String telf, String hora, boolean n,String usuario) {
+		
+		this.nombre = nombre;
+		this.apell1 = apell1;
+		this.apell2 = apell2;
+		this.telf = telf;
+		this.hora= hora;
+		this.usuario=usuario;
 		periodo=1;
 		
 	}
@@ -68,6 +81,14 @@ public DatosCitaSinValidar (String nombre, String apell1, String apell2, String 
 	this.periodo=periodo;
 	this.usuario=usuario;
 }
+	public Boolean getNuevo() {
+	return nuevo;
+}
+
+public void setNuevo(Boolean nuevo) {
+	this.nuevo = nuevo;
+}
+
 	public String tomaNombre() {
 		return nombre;
 	}

@@ -31,7 +31,8 @@
 	</estado>
 	<estado idIntermedio="esperaResultadoCita">
 		<transicion input="infoCita" accion="inserta" estadoSiguiente="validaCita" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="cancelarCita" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado>
+		<transicion input="cancelarCita" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="buscarPacientes" accion="getPacientes" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="validaCita">
 		<transicion input="correcto" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="errorFormato" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>

@@ -15,6 +15,7 @@ public class DatosFicha implements Serializable {
 	
 	
 	private String nombre;
+	private String usuario;
 	private String apellidos;
 	private String NIF;
 	private Date fNacimiento;
@@ -52,6 +53,28 @@ public class DatosFicha implements Serializable {
 		this.otros=otros;
 		this.PestOtros=pOtros;
 	}
+	
+	public DatosFicha (String nombre, String usuario, String apell1, String NIF, Date fNacimiento, int edad, String direccion, String CP, String prov, 
+			String loc, String telf1, String telf2, String mail, String prof, String seguro, String otros, String pOtros) {
+
+this.nombre = nombre;
+this.usuario= usuario;
+this.apellidos = apell1;
+this.NIF=NIF;
+this.fNacimiento=fNacimiento;
+this.edad=edad;
+this.direccion=direccion;
+this.CP=CP;
+this.provincia=prov;
+this.localidad=loc;
+this.telf1=telf1;
+this.telf2=telf2;
+this.mail=mail;
+this.profesion=prof;
+this.aseguradora=seguro;
+this.otros=otros;
+this.PestOtros=pOtros;
+}
 	
 	public DatosFicha (String nombre, String apell1, String NIF, Date fNacimiento, int edad, String direccion, String CP, String prov, 
 			String loc, String telf1, String telf2, String mail, String prof, String seguro, String otros, String pOtros, boolean esta) {

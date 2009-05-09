@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.persistenciaSecretaria.imp;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
@@ -90,6 +91,9 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 		return consulta.getPaciente(nom,telf,fecha);
 	}
 	
+	public ArrayList<InfoPaciente> getPacientes(){
+		return consulta.getPacientes();
+	}
 	public boolean meteAgenda(DatosSecretaria s){
 		return consulta.meteAgenda(s);
 	}

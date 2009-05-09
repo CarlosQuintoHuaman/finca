@@ -1,14 +1,14 @@
 package icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria;
 
 public class DatosCita {
-	private String nombreUsuario;
+	private String usuario;
 	private String nombre;
 	private String telf;
 	private String medico;
 	private String fecha;
 	private String hora;
 	private Boolean crear;
-	private int usuario;
+
 	
 
 	/**
@@ -27,7 +27,7 @@ public class DatosCita {
 		this.fecha = fecha;
 		this.hora = hora;
 	}
-	public DatosCita(String nombre, String telf, Boolean crear, int usu){
+	public DatosCita(String nombre, String telf, Boolean crear, String usu){
 		this.nombre = nombre;
 		this.telf = telf;
 		this.usuario = usu;
@@ -57,11 +57,11 @@ public class DatosCita {
 	public String getNombre() {
 		return nombre;
 	}
-	public String getNombreUsuario() {
-		return nombreUsuario;
+	public String getUsuario() {
+		return usuario;
 	}
-	public void setNombreUsuario(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
+	public void setUsuario(String nombreUsuario) {
+		this.usuario = nombreUsuario;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
@@ -96,11 +96,6 @@ public class DatosCita {
 	public void setCrear(Boolean crear) {
 		this.crear = crear;
 	}
-	public int getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(int usuario) {
-		this.usuario = usuario;
-	}
+
 	
 }

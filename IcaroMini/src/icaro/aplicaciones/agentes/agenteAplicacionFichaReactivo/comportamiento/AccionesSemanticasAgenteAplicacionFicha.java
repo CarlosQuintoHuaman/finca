@@ -107,6 +107,8 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
 			
+			//Comprobar si existe la ficha y añadirle la variable!!!!!!!
+			
 			//Manda los datos a la persistencia
 			boolean b=Persistencia.meteFicha(original,fichaN);
 			if (!b){

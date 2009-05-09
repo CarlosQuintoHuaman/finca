@@ -208,11 +208,11 @@ public class panelFicha extends Thread {
             	tNombre.setText(aux[0]);
             	tApellidos.setText(a);
             	tTelefono1.setText(datos.getTelf());
-            	if (datos.getUsuario()==0){
+            	/*if (datos.getUsuario()==0){
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();
             	    cAntFamiliares.dispose();
-            	}
+            	}*/
             	Edicion(false);
          	   shell.open();
 	       }
