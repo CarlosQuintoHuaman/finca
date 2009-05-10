@@ -128,7 +128,7 @@ public class ConsultaBBDD {
 	 * @param lnombres	:: Lista de nombres de todos los medicos cuyas citas queremos obtener
 	 * @return medicos	:: devuelve una arrayList de datosmedicos (nomMedico,Citas para ese medico especificando la fecha) 
 	 */
-	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> lnombres) {
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<DatosMedico> lnombres) {
 		ArrayList<DatosMedico> medicos = new ArrayList<DatosMedico>();
 		
 		try {		
@@ -147,11 +147,12 @@ public class ConsultaBBDD {
 			ArrayList<DatosLlamada>[] extras =arrayLists3;
 			
 			for(int i=0;i<lnombres.size();i++){
-				datos[i]=new DatosMedico(lnombres.get(i));
+				datos[i]=new DatosMedico(lnombres.get(i).getNombre(),lnombres.get(i).getUsuario());
 				datos[i].setIntervalo(15);
 				citas[i]=new ArrayList<DatosCitaSinValidar>();
 				llamadas[i]=new ArrayList<DatosLlamada>();
 				extras[i]=new ArrayList<DatosLlamada>();
+
 			}
 			
 			// Consulta que nos devuelve los datos de la citas de todos los medicos que posteriormente filtramos
@@ -174,7 +175,7 @@ public class ConsultaBBDD {
 				 
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
-					if (medico.equals(lnombres.get(i))){
+					if (medico.equals(lnombres.get(i).getUsuario())){
 						
 						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido1,apellido2,telf,h,1,usuario);
 						
@@ -204,7 +205,7 @@ public class ConsultaBBDD {
 					String nombre =resultado1.getString("Nombre")+" "+resultado1.getString("Apellido1")+" "+resultado1.getString("Apellido2");;
 				//filtramos las citas que nos interesan segun los medicos que tiene asiganada esta secretaria 
 				for(int i=0;i<lnombres.size();i++){
-					if (medico.equals(lnombres.get(i))){
+					if (medico.equals(lnombres.get(i).getUsuario())){
 						if(tipo.equals("llamada")){
 						DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19));
 						
@@ -236,19 +237,27 @@ public class ConsultaBBDD {
 	/**
 	 * Consulta con la que se obtiene la lista de medicos que tienen como secretaria la que se pasa por parametro
 	 * @param s			:: Nombre de la secretaria de la que se quiere consultar sus medicos asociados
-	 * @return medicos	:: ArrayList nombresMedicos
+	 * @return medicos	:: ArrayList datosMedicos
 	 */
-	public ArrayList<String> getMedicos(String s) {
-		ArrayList<String> medicos = new ArrayList<String>();
+	public ArrayList<DatosMedico> getMedicos(String s) {
+		ArrayList<DatosMedico> medicos = new ArrayList<DatosMedico>();
 		
 		try {	
+			String n="";
 			
 			crearQuery();
+			
 			//resultado = query.executeQuery("SELECT * FROM medicopaciente WHERE Fecha >= '" + fecha + "' AND Fecha < '" + fecha2 + "'");
 			resultado = query.executeQuery("SELECT * FROM tieneagenda WHERE Secretaria = '" + s + "'");
 			while (resultado.next()) {
-				String m=resultado.getString("Medico");			
-				medicos.add(m);
+				String m=resultado.getString("Medico");
+				crearQuery();
+				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + m + "'");
+				while (resultado1.next()) {
+					n=resultado1.getString("Nombre");
+				}
+				DatosMedico med=new DatosMedico(n,m);
+				medicos.add(med);
 			}
 				
 		} catch (Exception e) {
@@ -499,8 +508,36 @@ public class ConsultaBBDD {
 		}
 	}
 	
-	public boolean insertaCita (DatosCitaSinValidar cita) throws ErrorEnRecursoException {
-		return true;
+	public void insertaCita (DatosCitaSinValidar cita) throws ErrorEnRecursoException {
+		try {
+			if (cita.getNuevo()){
+				crearQuery();
+				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre,  Apellido1, Apellido2, Telefono) VALUES " +"('"+cita.getUsuario()+
+						"', '"+cita.getUsuario()+"', '"+cita.tomaNombre()+"', '"+cita.tomaApell1()+"', '"+cita.getApell2()+"', '"+cita.tomaTelf()+"')");
+				crearQuery();
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+cita.getUsuario()+"', '"+cita.getSeguro()+"')");
+				
+			}
+				crearQuery();
+	      		resultado = query.executeQuery("SELECT * FROM medicopaciente where Medico = '"
+	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha() + "' and Hora = '" + cita.tomaHora() + "'");	
+				
+	      		if (resultado.next()){
+					crearQuery();
+					query.executeUpdate("UPDATE medicopaciente SET Paciente = '" + cita.getUsuario() + "' WHERE Medico = '"+cita.getMedico() +
+							"' and Fecha = '" + cita.getFecha() + "' and Hora = '" + cita.tomaHora() + "'");
+				}
+	      		else{
+	      			crearQuery();
+					query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora) VALUES " +"('"+cita.getMedico()+"', '"+cita.getUsuario()+"', '"+
+							cita.getFecha()+"', '"+cita.tomaHora()+"')");
+	      		}
+		
+		}
+		
+		catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
+		}
 
 	}
 }

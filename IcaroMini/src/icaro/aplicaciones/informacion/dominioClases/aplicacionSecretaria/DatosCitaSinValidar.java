@@ -11,11 +11,13 @@ public class DatosCitaSinValidar implements Serializable {
 	
 	private String usuario;
 	private String nombre;
+	private String medico;
 	private String apell1;
 	private String apell2;
 	private String telf;
 	private String fecha;
 	private String hora;
+	private String seguro;
 	private Boolean nuevo;
 	private int periodo;
 	
@@ -49,6 +51,32 @@ public class DatosCitaSinValidar implements Serializable {
 		this.telf = telf;
 		this.fecha=fecha;
 		this.hora= hora;
+		periodo=1;
+		
+	}
+	
+	public DatosCitaSinValidar (String nombre, String apell1, String apell2, String telf,String fecha, String hora,int n, String usuario) {
+		
+		this.nombre = nombre;
+		this.apell1 = apell1;
+		this.apell2 = apell2;
+		this.telf = telf;
+		this.fecha=fecha;
+		this.hora= hora;
+		this.usuario=usuario;
+		periodo=1;
+		
+	}
+	
+	public DatosCitaSinValidar (String nombre, String apell1, String apell2, String telf,String fecha, String hora, String medico) {
+		
+		this.nombre = nombre;
+		this.apell1 = apell1;
+		this.apell2 = apell2;
+		this.telf = telf;
+		this.fecha=fecha;
+		this.hora= hora;
+		this.medico=medico;
 		periodo=1;
 		
 	}
@@ -87,6 +115,22 @@ public DatosCitaSinValidar (String nombre, String apell1, String apell2, String 
 
 public void setNuevo(Boolean nuevo) {
 	this.nuevo = nuevo;
+}
+
+	public String getSeguro() {
+	return seguro;
+}
+
+public void setSeguro(String seguro) {
+	this.seguro = seguro;
+}
+
+	public String getMedico() {
+	return medico;
+}
+
+public void setMedico(String medico) {
+	this.medico = medico;
 }
 
 	public String tomaNombre() {

@@ -48,7 +48,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			util f=new util();
 			//Fecha actual
 			String fecha=f.getStrDateSQL();
-			ArrayList<String> l=new ArrayList<String>();
+			ArrayList<DatosMedico> l=new ArrayList<DatosMedico>();
 			//Consulta que me devuelve la lista de medicos para los que trabaja la secretaria
 			l=persistencia.getMedicos(secretaria);
 			//Consulta que me devuelve la lista de citas para cada uno de los medicos para los que trabaja la secretaria
@@ -87,7 +87,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
 			
-			ArrayList<String> l=new ArrayList<String>();
+			ArrayList<DatosMedico> l=new ArrayList<DatosMedico>();
 			//Consulta que me devuelve la lista de medicos para los que trabaja la secretaria
 			l=persistencia.getMedicos(s);
 			//Consulta que me devuelve la lista de citas para cada uno de los medicos para los que trabaja la secretaria
@@ -360,14 +360,14 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 	 * @param datos
 	 */
 	public void inserta(DatosCitaSinValidar datos) {
-		boolean ok = false;
+		boolean ok = true;
 		
 		//Se lo mando a panel agenda para que lo compruebe
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
-			visualizacion.comprobarInfoCita(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
-			visualizacion.cerrarVisualizadorCita();
+			
+			visualizacion.comprobarInfoCita(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);;
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
 		}
 
@@ -379,6 +379,26 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			}catch(Exception e){e.printStackTrace();}
 		}
 		
+		try {
+			//Una vez comprobado todo correcto se manda a persistencia
+			visualizacion.cerrarVisualizadorCita();
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.setCita(datos);
+			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+this.nombreAgente);
+			if(ok){
+				agenteSecretaria.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
+			}
+			
+			
+			
+			
+		}
+		catch (Exception e) {
+		}
 		//Una vez comprobado todo correcto se manda a persistencia
 
 	}

@@ -163,7 +163,7 @@ public class panelCita extends Thread {
       		tHoraD.setText(dat.tomaHora());
       		hora= new HorasCita(dat.tomaHora(),"");
       	
-      		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(),dat.getApell2(), dat.tomaTelf(), dat.tomaHora(),periodo);
+      		datos=new DatosCitaSinValidar(dat.tomaNombre(),dat.tomaApell1(),dat.getApell2(), dat.tomaTelf(), dat.tomaHora(),periodo,dat.getUsuario());
       		calculaPeriodo(); 
 	       }
          });
@@ -592,15 +592,25 @@ public class panelCita extends Thread {
 			datos.setHora(tHoraD.getText());
 			datos.setPeriodo(periodo);
 			datos.setTelf(tTelefono1.getText());
-			if(bPrimeraVez.getSelection())
+			datos.setSeguro(tAseguradora.getText());
+			
+			if(bPrimeraVez.getSelection()){
 				datos.setUsuario(tPaciente.getText());
-			datos.setNuevo(true);
+				datos.setNuevo(true);
+				
+			}
 		
-		    if(buscado)
+		    if(buscado){
+		    	int i=cPacientes.getSelectionIndex()-1;
 		    	datos.setUsuario(LPacientes.get(cPacientes.getSelectionIndex()-1).getUsuario());
-		    datos.setNuevo(false);
+		    	datos.setNuevo(false);
+		    }
+		    if(!bPrimeraVez.getSelection()&&!buscado){
+		    	datos.setNuevo(false);
+		    }
+		    usoAgente.validaCita(datos);
 		
-			usoAgente.validaCita(datos);
+			
 			try {
 				//vis.cerrarVisualizadorCita();
 			} catch (Exception e) {
@@ -661,7 +671,10 @@ public class panelCita extends Thread {
 			tTelefono1.setEditable(true);
 			tTelefono2.setEditable(true);
 			tAseguradora.setEditable(true);
-
+			tPaciente.setText("");
+			tApellidos.setText("");
+			tTelefono1.setText("");
+			tAseguradora.setText("");
 			bBuscar.setEnabled(false);
 			cPacientes.setEnabled(false);
 			buscado=false;

@@ -10,6 +10,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCi
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
+import icaro.aplicaciones.recursos.persistenciaSecretaria.imp.ErrorEnRecursoException;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
@@ -31,14 +32,21 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 * @param lnombres	:: Lista de nombres de todos los medicos cuyas citas queremos obtener
 	 * @return medicos	:: devuelve una arrayList de datosmedicos (nomMedico,Citas para ese medico especificando la fecha) 
 	 */
-	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> l);
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<DatosMedico> l);
 	
 	/**
 	 * Funcion con la que se obtiene la lista de medicos que tienen como secretaria la que se pasa por parametro
 	 * @param s			:: Nombre de la secretaria de la que se quiere consultar sus medicos asociados
 	 * @return medicos	:: ArrayList nombresMedicos
 	 */
-	public ArrayList<String> getMedicos(String s);
+	public ArrayList<DatosMedico> getMedicos(String s);
+	
+	/**
+	 * Funcion con la que se inserta en la bbdd una nueva cita
+	 * @param datos			:: Datos de la cita que se quiere guardar en la bbdd. Si existe otra en la misma posicion se reemplazan
+	 * @throws ErrorEnRecursoException 
+	 */
+	public void setCita(DatosCitaSinValidar datos) throws ErrorEnRecursoException;
 	/**
 	 * Su proposito es guardar los datos que se le pasan por parametro enviandoselos a la persistencia 
 	 * @param s		:: Datos que incluyen todas las citas de todos los medicos para los que trabaja una secretaria concreta en un dia preestablecido

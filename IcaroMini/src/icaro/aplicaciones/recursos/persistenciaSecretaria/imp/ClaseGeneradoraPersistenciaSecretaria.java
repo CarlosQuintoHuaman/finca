@@ -80,10 +80,10 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 		return consulta.getPacientes();
 	}*/
 	
-	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<String> l) {
+	public ArrayList<DatosMedico> getCitas(String fecha, ArrayList<DatosMedico> l) {
 		return consulta.getCitas(fecha, l);
 	}
-	public ArrayList<String> getMedicos(String s){
+	public ArrayList<DatosMedico> getMedicos(String s){
 		return consulta.getMedicos(s);
 	}
 	
@@ -125,12 +125,16 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 
 	}*/
 	
-	public void insertaCita(DatosCitaSinValidar cita)
-	throws ErrorEnRecursoException {
+	public void setCita(DatosCitaSinValidar cita)throws ErrorEnRecursoException {
 		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaSecretaria",
 			"Insertando cita "+cita,
 			InfoTraza.NivelTraza.debug));
-		//consulta.insertaCita(cita);
+		try {
+			consulta.insertaCita(cita);
+		} catch (icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 }
 

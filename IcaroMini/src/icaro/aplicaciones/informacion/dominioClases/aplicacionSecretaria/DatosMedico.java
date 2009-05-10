@@ -4,12 +4,20 @@ import java.util.ArrayList;
 
 public class DatosMedico {
 private String nombre;
+private String usuario;
 private int intervalo;
 private ArrayList <DatosCitaSinValidar> datos;
 //Pendiente de añadir
 private ArrayList<DatosLlamada> extras;
 private ArrayList<DatosLlamada> llamadas;
 
+
+public String getUsuario() {
+	return usuario;
+}
+public void setUsuario(String usuario) {
+	this.usuario = usuario;
+}
 public ArrayList<DatosLlamada> getExtras() {
 	return extras;
 }
@@ -33,6 +41,12 @@ public DatosMedico(String nombre){
 	this.datos=new ArrayList<DatosCitaSinValidar>();
 	this.nombre=nombre;
 }
+
+public DatosMedico(String nombre, String usuario){
+	this.datos=new ArrayList<DatosCitaSinValidar>();
+	this.nombre=nombre;
+	this.usuario=usuario;
+}
 /**
  * Crea un objeto nuevo donde almacenar los datos de las citas de un de la agenda
  * @param nombre		:: nombre medico
@@ -51,6 +65,15 @@ public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar>
 	this.datos = datos;
 	this.llamadas=llamadas;
 	this.extras=extras;
+}
+
+public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar> datos, ArrayList<DatosLlamada> llamadas, ArrayList<DatosLlamada> extras, String usuario) {
+	this.nombre = nombre;
+	this.intervalo = intervalo;
+	this.datos = datos;
+	this.llamadas=llamadas;
+	this.extras=extras;
+	this.usuario=usuario;
 }
 public ArrayList<DatosCitaSinValidar> getDatos() {
 	return datos;

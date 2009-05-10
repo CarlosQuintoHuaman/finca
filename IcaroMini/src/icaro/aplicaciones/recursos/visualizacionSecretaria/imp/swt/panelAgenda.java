@@ -212,7 +212,7 @@ public class panelAgenda extends Thread {
             	datos.getMedicos().clear();
             	datos.setNumM(numM);
             	for(int i=0;i<lm1.size();i++){
-            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos(), lm1.get(i).getLlamadas(), lm1.get(i).getExtras());            		
+            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos(), lm1.get(i).getLlamadas(), lm1.get(i).getExtras(),lm1.get(i).getUsuario());            		
             		datos.getMedicos().add(med);
             		
             	}
@@ -1368,7 +1368,7 @@ public class panelAgenda extends Thread {
 /*		if (d.tomaNombre()=="")
 			usoAgente.mostrarVentanaCita();
 		else*/
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd,d.getUsuario());
 		}else{
 			usoAgente.mostrarMensajeError("Debe seleccionar una cita", "Atención");
 		}
@@ -1408,7 +1408,7 @@ public class panelAgenda extends Thread {
 
 		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			DatosCitaSinValidar d= buscarSeleccionado(lsel);
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd);
+			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd,d.getUsuario());
 		}
 		seleccion=lsel;
 		
@@ -1511,14 +1511,14 @@ public class panelAgenda extends Thread {
 		}
 		int n=0;
 		int t=0;
+		boolean cumplee=false;
 		//Buscar en los datos de la agenda el usuario
 		for(int m=0;m<datos.getNumM();m++){
 			if (datos.getMedicos().get(m).getNombre().equals(Agenda.getSelection().getText())){
 				 n=0;
-				boolean cumple=false;
-				while(n<datos.getMedicos().get(m).getDatos().size() && !cumple){
+				while(n<datos.getMedicos().get(m).getDatos().size() && !cumplee){
 					if (datos.getMedicos().get(m).getDatos().get(n).tomaHora().equals(Hora)){
-						cumple=true;
+						cumplee=true;
 						t=m;
 					}
 					n++;
@@ -1526,13 +1526,16 @@ public class panelAgenda extends Thread {
 			}
 		}
 		
-		if (cumple)
+		if (cumplee)
 			n--;
 		DatosCitaSinValidar d;
 		if (c==i)
-			d= new DatosCitaSinValidar("", ap1,apell2, Telf, Hora);
+			d= new DatosCitaSinValidar("", ap1,apell2, Telf, Hora,false,"");
 		else
-		    d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora,false,datos.getMedicos().get(t).getDatos().get(n).getUsuario());
+			if(nombre.getText().equals(""))
+				d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora,false,"");
+			else
+				d= new DatosCitaSinValidar(nombre.getText(), ap1, apell2, Telf, Hora,false,datos.getMedicos().get(t).getDatos().get(n).getUsuario());
 		return d;
 	}
 	
@@ -1614,101 +1617,104 @@ public class panelAgenda extends Thread {
 	 * 			que ello sea factible la cita de 9:15 a 9:30 debe estar libre. De esta comprobacion es de lo que se encarga esta funcion  
 	 * @param d		:: datos de la cita que se quiere comprobar con los datos que se tienen de la agenda
 	 */
-	public void comprobarCita(final DatosCitaSinValidar d) {
-		
+	public boolean comprobarCita(final DatosCitaSinValidar d) {
 		try{
-			disp.asyncExec(new Runnable() {
+			
+			disp.syncExec(new Runnable() {
 	            public void run() {
-	         DatosCitaSinValidar d1=d;	   
-	         int i=0;
-	         while (i<c && !d1.tomaHora().equals(horas[i].getText())){
-	        	 i++;
-	         }
-	         int j=0;
-	         while (j<d1.tomaPeriodo() && Nombres[i].getText()=="" && Telefonos[i].getText()==""){
-	        	 j++;
-	         }
-	         if(j==d1.tomaPeriodo()){
-	         //Si acierto relleno la agenda con los datos y llamo a persistencia
-	        	 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
-	        		 Nombres[i].setText(d1.tomaNombre()+" "+d1.tomaApell1());
-	        		 Telefonos[i].setText(d1.tomaTelf());
-	        		 String m=Agenda.getSelection().getText();
-	        			int w=0;
-	        			boolean cu=false;
-	        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
-	        			while(w<datos.getNumM() && !cu){
-	        				if (datos.getMedicos().get(w).getNombre().equals(m)){
-	        					cu=true;
-	        					ll=datos.getMedicos().get(w).getDatos();
-	        					w--;
-	        				}
-	        				w++;	
-	        			}
-	        			cu=false;
-	        			int v=0;
-	        			int g=0;
-	        			while(v<ll.size() &&!cu){
-	        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
-	        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
-	        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
-	        				}
-	        			
-	        				v++;
-	        			}
-	        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora());
-	        			datos.getMedicos().get(w).getDatos().add(c);
-	        			
-	        	 }
-	         }
-	         else{
-	        	 if(usoAgente.mostrarMensajeAvisoC("Al insertar esta cita se sobreescribe sobre la agenda actual. ¿Esta seguro de que desea continuar?", "Atencion")){
-	        		 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
-		        		 Nombres[i].setText(d1.tomaNombre()+" "+d1.tomaApell1()+" "+d1.getApell2());
-		        		 Telefonos[i].setText(d1.tomaTelf());
-		        		 String m=Agenda.getSelection().getText();
-		        			int w=0;
-		        			boolean cu=false;
-		        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
-		        			while(w<datos.getNumM() && !cu){
-		        				if (datos.getMedicos().get(w).getNombre().equals(m)){
-		        					cu=true;
-		        					ll=datos.getMedicos().get(w).getDatos();
-		        					w--;
-		        				}
-		        				w++;	
-		        			}
-		        			cu=false;
-		        			int v=0;
-		        			int g=0;
-		        			while(v<ll.size() &&!cu){
-		        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
-		        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
-		        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
-		        				}
-		        			
-		        				v++;
-		        			}
-		        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora());
-		        			datos.getMedicos().get(w).getDatos().add(c);
-		        			usoAgente.cerrarVentanaCita();
-		        			
-		        	 }
-	        	 }
-	        	 else{
-	        		 
-	        		 usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.getApell2(), d.tomaTelf(), d.tomaHora(), fd);
-	        	 }
-		
-	         }
-	         usoAgente.cerrarVentanaCita();
-			       }
+			         DatosCitaSinValidar d1=d;	   
+			         int i=0;
+			         while (i<c && !d1.tomaHora().equals(horas[i].getText())){
+			        	 i++;
+			         }
+			         int j=0;
+			         while (j<d1.tomaPeriodo() && Nombres[i].getText()=="" && Telefonos[i].getText()==""){
+			        	 j++;
+			         }
+			         if(j==d1.tomaPeriodo()){
+			         //Si acierto relleno la agenda con los datos y llamo a persistencia
+			        	 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
+			        		 Nombres[i].setText(d1.tomaNombre()+" "+d1.tomaApell1()+" "+d1.getApell2());
+			        		 Telefonos[i].setText(d1.tomaTelf());
+			        		 String m=Agenda.getSelection().getText();
+			        			int w=0;
+			        			boolean cu=false;
+			        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+			        			while(w<datos.getNumM() && !cu){
+			        				if (datos.getMedicos().get(w).getNombre().equals(m)){
+			        					cu=true;
+			        					ll=datos.getMedicos().get(w).getDatos();
+			        					w--;
+			        				}
+			        				w++;	
+			        			}
+			        			cu=false;
+			        			int v=0;
+			        			int g=0;
+			        			while(v<ll.size() &&!cu){
+			        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
+			        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
+			        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
+			        				}
+			        			
+			        				v++;
+			        			}
+			        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora(),0,d1.getUsuario());
+			        			datos.getMedicos().get(w).getDatos().add(c);
+			        			d.setMedico(datos.getMedicos().get(w).getUsuario());
+			        			d.setFecha(fy);
+			        	 }
+			         }
+			         else{
+			        	 if(usoAgente.mostrarMensajeAvisoC("Al insertar esta cita se sobreescribe sobre la agenda actual. ¿Esta seguro de que desea continuar?", "Atencion")){
+			        		 for(int k=i;k<=i+d1.tomaPeriodo()-1;k++){
+				        		 Nombres[i].setText(d1.tomaNombre()+" "+d1.tomaApell1()+" "+d1.getApell2());
+				        		 Telefonos[i].setText(d1.tomaTelf());
+				        		 String m=Agenda.getSelection().getText();
+				        			int w=0;
+				        			boolean cu=false;
+				        			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+				        			while(w<datos.getNumM() && !cu){
+				        				if (datos.getMedicos().get(w).getNombre().equals(m)){
+				        					cu=true;
+				        					ll=datos.getMedicos().get(w).getDatos();
+				        					w--;
+				        				}
+				        				w++;	
+				        			}
+				        			cu=false;
+				        			int v=0;
+				        			int g=0;
+				        			while(v<ll.size() &&!cu){
+				        				if(ll.get(v).tomaHora().equals(d1.tomaHora())){
+				        					datos.getMedicos().get(w).getDatos().get(v).setNombre(d1.tomaNombre());
+				        					datos.getMedicos().get(w).getDatos().get(v).setTelf(d1.tomaTelf());
+				        				}
+				        			
+				        				v++;
+				        			}
+				        			DatosCitaSinValidar c=new DatosCitaSinValidar(d1.tomaNombre(),d1.tomaApell1(),d1.getApell2(), d1.tomaTelf(), fy, d1.tomaHora(),0,d1.getUsuario());
+				        			datos.getMedicos().get(w).getDatos().add(c);
+				        			d.setMedico(datos.getMedicos().get(w).getUsuario());
+				        			d.setFecha(fy);
+				        	 }
+			        		 
+			        	 }
+			        	 else{
+			        		 int b =0;
+			        		 //usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.getApell2(), d.tomaTelf(), d.tomaHora(), fd);
+			        	 }
+			         }
+			         
+	            }
 	         });
 		}
 		catch(Exception e){
 			e.printStackTrace();
-		
+			return false;
 		}
+		return true;
+		
 		
 	}
 	
