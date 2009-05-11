@@ -150,7 +150,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
-			ArrayList<DatosCita> l=new ArrayList<DatosCita>();
+			ArrayList<DatosCitaSinValidar> l=new ArrayList<DatosCitaSinValidar>();
 			util f=new util();
 			//fecha actual
 			String fecha=f.getStrDateSQL();
@@ -367,7 +367,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
 			
-			visualizacion.comprobarInfoCita(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);;
+			ok=visualizacion.comprobarInfoCita(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);;
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
 		}
 
@@ -380,20 +380,23 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}
 		
 		try {
-			visualizacion.cerrarVisualizadorCita();
 			
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
 			
 			//Una vez comprobado todo correcto se manda a persistencia
-			persistencia.setCita(datos);
 			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
 			if(ok){
-				agenteSecretaria.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
+				persistencia.setCita(datos);
+				visualizacion.cerrarVisualizadorCita();
+				agenteSecretaria.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria1"));
 			}
-			else
-				visualizacion.mostrarMensajeError("Error","Cita incorrecta. Vuelva a intertarlo");
+			else{
+				ok=false;
+				agenteSecretaria.aceptaEvento(new EventoRecAgte("cancelar",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria1"));
+				//visualizacion.mostrarMensajeError("Error","Cita incorrecta. Vuelva a intertarlo");
+			}
 		}
 		catch (Exception e) {
 		}

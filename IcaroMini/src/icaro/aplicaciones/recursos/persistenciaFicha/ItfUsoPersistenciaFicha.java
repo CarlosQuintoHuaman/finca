@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
@@ -27,7 +28,7 @@ public interface ItfUsoPersistenciaFicha extends ItfUsoRecursoSimple {
 	 * @param datos		:: Datos que incluye datos para buscar una ficha
 	 * @return 		:: devuelve la ficha si esta y una ficha vacia si no
 	 */
-	public DatosFicha getFicha(DatosCita datos);
+	public DatosFicha getFicha(DatosCitaSinValidar datos);
 	
 	
 

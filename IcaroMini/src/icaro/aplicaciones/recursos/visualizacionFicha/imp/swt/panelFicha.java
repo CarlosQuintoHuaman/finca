@@ -193,21 +193,21 @@ public class panelFicha extends Thread {
 	 * Muestra la ventana y añade a los campos que corresponda los datos pasados por parametro
 	 * @param d		:: datos que se deben mostrar en la ventana (nombre,telefono, hora, fecha, crear)
 	 */
-	public void mostrar(final DatosCita d){
+	public void mostrar(final DatosCitaSinValidar d){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.asyncExec(new Runnable() {
             public void run() {
-            	DatosCita datos=d;
-            	nuevo=datos.getCrear();
-            	String[] aux=datos.getNombre().split(" ");
+            	DatosCitaSinValidar datos=d;
+            	nuevo=datos.getNuevo();
+            	String[] aux=datos.tomaNombre().split(" ");
             	String a="";
             	for(int i=1;i<aux.length;i++){
             		a=a+aux[i];
             	}
             	tNombre.setText(aux[0]);
             	tApellidos.setText(a);
-            	tTelefono1.setText(datos.getTelf());
+            	tTelefono1.setText(datos.tomaTelf());
             	/*if (datos.getUsuario()==0){
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();

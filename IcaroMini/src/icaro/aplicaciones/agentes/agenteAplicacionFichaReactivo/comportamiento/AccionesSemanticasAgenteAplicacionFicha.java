@@ -4,6 +4,7 @@ package icaro.aplicaciones.agentes.agenteAplicacionFichaReactivo.comportamiento;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
@@ -33,7 +34,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-	public void pintaVentanaFicha(DatosCita datos){
+	public void pintaVentanaFicha(DatosCitaSinValidar datos){
 		
 		try {
 			//Se obtiene el visualizador

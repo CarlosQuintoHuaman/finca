@@ -38,7 +38,7 @@
 	<estado idIntermedio="validaCita">
 		<transicion input="correcto" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
 		<transicion input="errorFormato" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
-	</estado>
+		<transicion input="cancelar" accion="nula" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="tratamientoErrores">
 		<transicion input="errorRecuperable" accion="nula" estadoSiguiente="esperaFicha" modoDeTransicion="bloqueante"/>
 		<transicion input="errorCritico" accion="terminacion" estadoSiguiente="terminado" modoDeTransicion="bloqueante"/>

@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.persistenciaFicha.imp.util;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException;
 import icaro.infraestructura.entidadesBasicas.NombresPredefinidos;
 import icaro.infraestructura.entidadesBasicas.descEntidadesOrganizacion.DescInstanciaRecursoAplicacion;
@@ -170,7 +171,7 @@ public class ConsultaBBDD {
 		
 	}
 	
-	public DatosFicha getFicha(DatosCita datos){
+	public DatosFicha getFicha(DatosCitaSinValidar datos){
 		try {
 			DatosFicha ficha= new DatosFicha();
 			String usuario=datos.getUsuario();

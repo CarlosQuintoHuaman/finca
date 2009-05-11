@@ -68,7 +68,7 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 * @param fecha		:: fecha concreta sobre la q deseamos hacer la consulta que suele ser la fecha actual
 	 * @return p 		:: ArrayList DatosCita (nombre Paciente, telefono, medico, fecha, hora)
 	 */
-	public ArrayList<DatosCita> getPaciente(String nom,String telf, String fecha);
+	public ArrayList<DatosCitaSinValidar> getPaciente(String nom,String telf, String fecha);
 	
 	/**
 	 * Esta funcion nos sirve para obtener todos los pacientes de la bbdd

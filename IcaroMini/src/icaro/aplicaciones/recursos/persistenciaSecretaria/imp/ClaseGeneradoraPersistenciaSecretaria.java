@@ -87,7 +87,7 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 		return consulta.getMedicos(s);
 	}
 	
-	public ArrayList<DatosCita> getPaciente(String nom,String telf, String fecha){
+	public ArrayList<DatosCitaSinValidar> getPaciente(String nom,String telf, String fecha){
 		return consulta.getPaciente(nom,telf,fecha);
 	}
 	

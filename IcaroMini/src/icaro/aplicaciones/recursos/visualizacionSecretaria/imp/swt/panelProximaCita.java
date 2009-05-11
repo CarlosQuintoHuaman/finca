@@ -3,6 +3,7 @@ package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt;
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.usuario.UsoAgenteSecretaria;
 
@@ -99,7 +100,7 @@ public class panelProximaCita extends Thread {
 	 * que cargue los datos que se deben mostrar en esta ventana
 	 * @param l
 	 */
-	public void meteDatos(final ArrayList<DatosCita> l){
+	public void meteDatos(final ArrayList<DatosCitaSinValidar> l){
 		// Al ser un Thread, SWT nos obliga a enviarle comandos
 		// rodeando el codigo de esta manera
 		disp.syncExec(new Runnable() {
@@ -119,7 +120,7 @@ public class panelProximaCita extends Thread {
         			Fechas[i].setText(l.get(i).getFecha().substring(0, 10));
         			Fechas[i].setAlignment(SWT.CENTER);
         			horas[i] = new CLabel(tabla, SWT.NONE);
-        			horas[i].setText(l.get(i).getHora().substring(11, 16));
+        			horas[i].setText(l.get(i).tomaHora().substring(11, 16));
         			horas[i].setAlignment(SWT.CENTER);
         			Medicos[i]=new CLabel(tabla, SWT.NONE);
         			Medicos[i].setText(l.get(i).getMedico());

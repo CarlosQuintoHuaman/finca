@@ -19,8 +19,7 @@ public class DatosCita {
 	 * @param fecha
 	 * @param hora
 	 */
-	public DatosCita(String nombre, String telf, String medico, String fecha,
-			String hora) {
+	public DatosCita(String nombre, String telf, String medico, String fecha,String hora) {
 		this.nombre = nombre;
 		this.telf = telf;
 		this.medico = medico;
@@ -37,8 +36,7 @@ public class DatosCita {
 		this.usuario = usu;
 		this.crear=crear;
 	}
-	public DatosCita(String nombre, String telf, String fecha,
-			String hora, Boolean crear) {
+	public DatosCita(String nombre, String telf, String fecha,String hora, Boolean crear) {
 		this.nombre = nombre;
 		this.telf = telf;
 		this.fecha = fecha;
@@ -46,8 +44,7 @@ public class DatosCita {
 		this.crear = crear;
 	}
 	
-	public DatosCita(String nombre, String telf, String hora,
-			String fecha){
+	public DatosCita(String nombre, String telf, String hora,String fecha){
 		this.nombre = nombre;
 		this.telf = telf;
 		this.fecha = fecha;

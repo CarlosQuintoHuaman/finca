@@ -492,7 +492,7 @@ public class panelCita extends Thread {
 						bNuevo.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 //								if (!tPaciente.getText().equals("")){
-								DatosCita d=new DatosCita(tPaciente.getText()+" "+tApellidos.getText(),tTelefono1.getText(),true,"");
+								DatosCitaSinValidar d=new DatosCitaSinValidar(tPaciente.getText()+" "+tApellidos.getText(),tTelefono1.getText(),true,"");
 									usoAgente.mostrarVentanaFicha(d);
 /*								}
 								else{

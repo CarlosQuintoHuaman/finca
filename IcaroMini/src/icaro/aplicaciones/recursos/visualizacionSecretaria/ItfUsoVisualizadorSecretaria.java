@@ -43,7 +43,7 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 	 * que cargue los datos que se deben mostrar en esta ventana
 	 * @param l
 	 */
-    public void meteDatos(ArrayList<DatosCita> l)throws Exception;
+    public void meteDatos(ArrayList<DatosCitaSinValidar> l)throws Exception;
  
 	/**
 	 * Despues de mostrar la ventana de Citas (sin datos) llamamos a esta funcion desde fuera de panelCita para

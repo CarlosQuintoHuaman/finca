@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.recursos.persistenciaFicha.ItfUsoPersistenciaFicha;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.ErrorEnRecursoException;
 import icaro.aplicaciones.recursos.persistenciaFicha.imp.util.AccesoBBDD;
@@ -64,7 +65,7 @@ public class ClaseGeneradoraPersistenciaFicha extends ImplRecursoSimple implemen
 		return consulta.borraFicha(ficha);
 	}
 
-	public DatosFicha getFicha(DatosCita datos){
+	public DatosFicha getFicha(DatosCitaSinValidar datos){
 		return consulta.getFicha(datos);
 	}
 

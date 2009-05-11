@@ -131,7 +131,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     	ventanaAgendaUsuario.start();
     }
 	
-	public void meteDatos(ArrayList<DatosCita> l){
+	public void meteDatos(ArrayList<DatosCitaSinValidar> l){
 		this.ventanaPCita.meteDatos(l);
 	}
   

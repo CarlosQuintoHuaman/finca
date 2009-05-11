@@ -56,7 +56,7 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-    public void mostrarVentanaFicha(DatosCita datos){
+    public void mostrarVentanaFicha(DatosCitaSinValidar datos){
     	getInformacionAgente();
     	
         try {
@@ -78,7 +78,7 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro buscando la informacion de la ficha en la bbdd
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-    public void mostrarVentanaFicha1(DatosCita datos){
+    public void mostrarVentanaFicha1(DatosCitaSinValidar datos){
     	getInformacionAgente();
     	
         try {

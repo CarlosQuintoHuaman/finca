@@ -276,8 +276,8 @@ public class ConsultaBBDD {
 	 * @param fecha		:: fecha concreta sobre la q deseamos hacer la consulta que suele ser la fecha actual
 	 * @return p 		:: ArrayList DatosCita (nombre Paciente, telefono, medico, fecha, hora)
 	 */
-	public ArrayList<DatosCita> getPaciente(String n ,String t, String fecha) {
-		ArrayList<DatosCita> p = new ArrayList<DatosCita>();
+	public ArrayList<DatosCitaSinValidar> getPaciente(String n ,String t, String fecha) {
+		ArrayList<DatosCitaSinValidar> p = new ArrayList<DatosCitaSinValidar>();
 		
 		try {	
 			
@@ -288,7 +288,7 @@ public class ConsultaBBDD {
 				String m=resultado.getString("Medico");	
 				String f=resultado.getTimestamp("Fecha").toString();
 				String h=resultado.getTimestamp("Hora").toString();
-				DatosCita c=new DatosCita(n,t,m,f,h);
+				DatosCitaSinValidar c=new DatosCitaSinValidar(n,t,m,f,h);
 				p.add(c);
 			}
 				

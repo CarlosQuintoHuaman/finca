@@ -109,6 +109,54 @@ public DatosCitaSinValidar (String nombre, String apell1, String apell2, String 
 	this.periodo=periodo;
 	this.usuario=usuario;
 }
+
+public DatosCitaSinValidar (String nombre, String telf, boolean nuevo, String usuario){
+	this.nombre = nombre;
+	this.telf = telf;
+	this.nuevo=nuevo;
+	this.usuario=usuario;
+}
+
+public DatosCitaSinValidar (String nombre, String telf, String medico, String fecha, String hora, boolean n) {
+	
+	this.nombre = nombre;
+	this.telf = telf;
+	this.hora= hora;
+	this.medico=medico;
+	this.fecha=fecha;
+}
+
+public DatosCitaSinValidar (boolean nuevo) {
+	
+	this.nuevo=nuevo;
+}
+
+public DatosCitaSinValidar (String nombre, String telf, String fecha, String hora, boolean nuevo) {
+	
+	this.nombre = nombre;
+	this.telf = telf;
+	this.hora= hora;
+	this.fecha=fecha;
+	this.nuevo=nuevo;
+}
+
+public DatosCitaSinValidar (String nombre, String telf, String hora, String fecha) {
+	
+	this.nombre = nombre;
+	this.telf = telf;
+	this.hora= hora;
+	this.fecha=fecha;
+
+}
+
+public DatosCitaSinValidar (String nombre, String telf, boolean nuevo) {
+	
+	this.nombre = nombre;
+	this.telf = telf;
+	this.nuevo=nuevo;
+}
+
+
 	public Boolean getNuevo() {
 	return nuevo;
 }

@@ -4,6 +4,7 @@ package icaro.aplicaciones.recursos.visualizacionFicha;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionFicha.DatosFicha;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
 
 /**
@@ -23,7 +24,7 @@ public interface ItfUsoVisualizadorFicha extends ItfUsoRecursoSimple{
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la ficha (nombre, telefono, hora,fecha, crear)
      */
-	public void mostrarVisualizadorFicha(String nombreAgente,String tipo, DatosCita datos) throws Exception;
+	public void mostrarVisualizadorFicha(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
 	
 	   /**
      * Generamos un evento para el automataFicha con input: 'mostrarVentanaFicha', con 'datos' como parametro para la accion semantica 
