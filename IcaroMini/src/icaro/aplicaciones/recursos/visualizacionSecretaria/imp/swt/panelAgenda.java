@@ -147,6 +147,7 @@ public class panelAgenda extends Thread {
 	private Date fecha;
 	protected Date fechaAnt;
 	private int min;
+	private boolean ok;
 
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -262,7 +263,7 @@ public class panelAgenda extends Thread {
 			//VARIABLES
 			shell.addShellListener(new ShellAdapter() {
 			    public void shellClosed(ShellEvent event) {
-			    	usoAgente.guardarAgenda(datos);
+			    	//usoAgente.guardarAgenda(datos);
 			    	usoAgente.cerrarVentanaSecretaria();
 			    }
 			});
@@ -463,7 +464,7 @@ public class panelAgenda extends Thread {
 						actualizar.setText("Actualizar");
 						actualizar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								usoAgente.guardarAgenda(datos);
+								//usoAgente.guardarAgenda(datos);
 								usoAgente.mostrarAgendaSecretaria(fy, usuEste);
 							}
 						});
@@ -480,7 +481,7 @@ public class panelAgenda extends Thread {
 						cerrar.setText("Cerrar");
 						cerrar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								usoAgente.guardarAgenda(datos);
+								//usoAgente.guardarAgenda(datos);
 								usoAgente.cerrarVentanaSecretaria();
 							}
 						});
@@ -695,6 +696,8 @@ public class panelAgenda extends Thread {
 				}
 			}
 			}
+			copiado=new DatosCita(false);
+			ok=false;
 
 			shell.layout();
 		
@@ -1167,12 +1170,15 @@ public class panelAgenda extends Thread {
 	private void CopiarWidgetSelected(SelectionEvent evt){
 		
 		//if (cNomSel.getText()=="")
-		if(seleccion.getText().equals(""))
+		if(seleccion.getText().equals("")){
 			usoAgente.mostrarMensajeError("Debe seleccionar un paciente", "Atención");
-		else
+			copiado=new DatosCita(false);
+			
+		}else{
 			cNomSel.setBackground(SWTResourceManager.getColor(249, 120, 106));
 			copiado=buscarSeleccionadoA(seleccion);
 			copiado.setCrear(true);
+		}
 	}
 	/**
 	 * Accion del evento asociado al boton 'pegar'
@@ -1225,10 +1231,22 @@ public class panelAgenda extends Thread {
 							v++;
 						
 						}
+						
+						int j=0;
+						cu=false;
+						String u="";
+						while(j<ll.size() && !cu){
+							if (ll.get(j).tomaHora().equals(copiado.getHora())){
+								u=ll.get(j).getUsuario();
+								cu=true;
+							}
+							j++;
+						}
 						String n=copiado.getNombre();
 						String[]aux=n.split(" ");
 						String mm="";
 						String ape1="";
+
 						if (aux.length>1){
 							ape1=aux[1];
 						}
@@ -1237,6 +1255,11 @@ public class panelAgenda extends Thread {
 						}
 						DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fd, pegado.getHora());
 						datos.getMedicos().get(w).getDatos().add(d);
+						
+						DatosCitaSinValidar c=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fy, pegado.getHora(),0,u);
+	        			c.setMedico(datos.getMedicos().get(w).getUsuario());
+	        			usoAgente.pegaCita(c);
+	        			
 					}
 					//Si el expacio de la cita esta libre
 				}else{
@@ -1262,6 +1285,17 @@ public class panelAgenda extends Thread {
 						}
 						w++;	
 					}
+					int j=0;
+					cu=false;
+					String u="";
+					while(j<ll.size() && !cu){
+						if (ll.get(j).tomaHora().equals(copiado.getHora())){
+							u=ll.get(j).getUsuario();
+							cu=true;
+						}
+						j++;
+					}
+					
 					String n=copiado.getNombre();
 					String[]aux=n.split(" ");
 					String mm="";
@@ -1274,6 +1308,10 @@ public class panelAgenda extends Thread {
 					}
 					DatosCitaSinValidar d=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fd, horas[i].getText());
 					datos.getMedicos().get(w).getDatos().add(d);
+					
+					DatosCitaSinValidar c=new DatosCitaSinValidar(aux[0],ape1,mm,copiado.getTelf(), fy, pegado.getHora(),0,u);
+        			c.setMedico(datos.getMedicos().get(w).getUsuario());
+        			usoAgente.pegaCita(c);
 				}
 				
 
@@ -1321,7 +1359,12 @@ public class panelAgenda extends Thread {
 				int g=0;
 				while(v<ll.size() &&!cu){
 					if(ll.get(v).tomaHora().equals(horas[i].getText())){
+						
+						DatosCitaSinValidar d= datos.getMedicos().get(w).getDatos().get(v);
+						d.setFecha(fy);
+						d.setMedico(datos.getMedicos().get(w).getUsuario());
 						datos.getMedicos().get(w).getDatos().remove(v);
+						usoAgente.borraCita(d);
 					}
 					v++;
 				
@@ -1664,6 +1707,7 @@ public class panelAgenda extends Thread {
 			        			d.setMedico(datos.getMedicos().get(w).getUsuario());
 			        			d.setFecha(fy);
 			        	 }
+			        	 ok=true;
 			         }
 			         else{
 			        	 if(usoAgente.mostrarMensajeAvisoC("Al insertar esta cita se sobreescribe sobre la agenda actual. ¿Esta seguro de que desea continuar?", "Atencion")){
@@ -1698,24 +1742,22 @@ public class panelAgenda extends Thread {
 				        			d.setMedico(datos.getMedicos().get(w).getUsuario());
 				        			d.setFecha(fy);
 				        	 }
-			        		 
+			        		 ok=true;
 			        	 }
 			        	 else{
-			        		 int b =0;
+			        		 ok=false;
 			        		 //usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.getApell2(), d.tomaTelf(), d.tomaHora(), fd);
 			        	 }
 			         }
 			         
 	            }
 	         });
+			return ok;
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
-		return true;
-		
-		
 	}
 	
 	/**
@@ -2205,7 +2247,7 @@ public class panelAgenda extends Thread {
 								shell.setText("Agenda "+fd);
 								fy=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
 								datos.setFecha(fant);
-								usoAgente.guardarAgenda(datos);
+								//usoAgente.guardarAgenda(datos);
 								usoAgente.mostrarAgendaSecretaria(fy,usuEste);
 								fant=fy;
 						//shell.dispose();
@@ -2245,7 +2287,7 @@ public class panelAgenda extends Thread {
 					shell.setText("Agenda "+fd);
 					fy=(fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate()+" 00:00:00";
 					datos.setFecha(fant);
-					usoAgente.guardarAgenda(datos);
+					//usoAgente.guardarAgenda(datos);
 					usoAgente.mostrarAgendaSecretaria(fy,usuEste);
 					fant=fy;    
                 }

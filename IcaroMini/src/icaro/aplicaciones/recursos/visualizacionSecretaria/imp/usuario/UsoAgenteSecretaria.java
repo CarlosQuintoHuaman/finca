@@ -473,9 +473,6 @@ public class UsoAgenteSecretaria {
       
 	   getInformacionAgente();
         //provoca la petici�n de autentificaci�n
-    	
-         
-
         try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
@@ -486,6 +483,36 @@ public class UsoAgenteSecretaria {
                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
                 if (itfUsoAgente != null) {
                     itfUsoAgente.aceptaEvento(new EventoRecAgte("infoCita", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de la cita ");
+            e.printStackTrace();
+        }
+        
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'infoCita', para la accion semantica 
+     * que le corresponde: 'inserta'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora
+     * @param datos 	:: Datos a insertar en la agenda (nombre, apellido1, telefono,fecha, hora, periodo)
+      */
+    public void pegaCita(DatosCitaSinValidar datos) {
+      
+	   getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+        try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("pegaCita", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
                 }
             }
 
@@ -670,6 +697,37 @@ public class UsoAgenteSecretaria {
             e.printStackTrace();
         }
        
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'borrarCita', para la accion semantica 
+     * que le corresponde: 'borrarCita'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es borrar la entrada de la en tabla de citas de la agenda que se corresponda con la que se pasa por parametro.
+     * @param datos	:: Datos a borrar en la agenda 
+      */
+    public void borraCita(DatosCitaSinValidar datos) {
+        
+  	   getInformacionAgente();
+          //provoca la petici�n de autentificaci�n
+          try {
+        	  visualizador.cerrarVisualizadorCita();
+              if (itfUsoRepositorioInterfaces == null) {
+                  itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+              }
+
+              if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                  //AgenteAplicacionSecretaria
+                  ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                  if (itfUsoAgente != null) {
+                      itfUsoAgente.aceptaEvento(new EventoRecAgte("borrarCita", datos, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                  }
+              }
+
+          } catch (Exception e) {
+              System.out.println("Ha habido un error al borrar datos Cita ");
+              e.printStackTrace();
+          }
+          
     }
     
     /**

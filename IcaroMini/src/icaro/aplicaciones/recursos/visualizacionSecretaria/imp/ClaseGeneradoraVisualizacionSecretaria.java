@@ -355,6 +355,16 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     	ventanaExtra.start();
     }
 
+    public void borrarCita(String nombreAgente,String tipo, DatosCitaSinValidar datos){
+		this.nombreAgenteControlador = nombreAgente;
+		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+
+		//this.ventanaAgendaUsuario.borraCita(datos);
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+		"Mostrando visualizador...",
+		InfoTraza.NivelTraza.debug));
+    }
     public void insertaLlamada(String nombreAgente,String tipo, DatosLlamada datos){
 		this.nombreAgenteControlador = nombreAgente;
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
@@ -420,15 +430,15 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
     }
-    public void comprobarInfoCita(String nombreAgente,String tipo, DatosCitaSinValidar datos){
+    public boolean comprobarInfoCita(String nombreAgente,String tipo, DatosCitaSinValidar datos){
 		this.nombreAgenteControlador = nombreAgente;
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
-
-		this.ventanaAgendaUsuario.comprobarCita(datos);
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
-		"Mostrando visualizador...",
-		InfoTraza.NivelTraza.debug));
+				"Mostrando visualizador...",
+				InfoTraza.NivelTraza.debug));
+		return this.ventanaAgendaUsuario.comprobarCita(datos);
+		
     }
     
     public boolean estaLibre(HorasCita hora){

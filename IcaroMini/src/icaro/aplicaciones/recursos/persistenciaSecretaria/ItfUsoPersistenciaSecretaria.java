@@ -47,6 +47,13 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 * @throws ErrorEnRecursoException 
 	 */
 	public void setCita(DatosCitaSinValidar datos) throws ErrorEnRecursoException;
+	
+	/**
+	 * Funcion con la que se borra de la bbdd una cita
+	 * @param datos			:: Datos de la cita que se quiere borrar de la bbdd.
+	 * @throws ErrorEnRecursoException 
+	 */
+	public void borraCita(DatosCitaSinValidar datos) throws ErrorEnRecursoException;
 	/**
 	 * Su proposito es guardar los datos que se le pasan por parametro enviandoselos a la persistencia 
 	 * @param s		:: Datos que incluyen todas las citas de todos los medicos para los que trabaja una secretaria concreta en un dia preestablecido

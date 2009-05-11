@@ -89,7 +89,12 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
      * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora
      * @param datos 	:: Datos a insertar en la agenda (nombre, apellido1, telefono,fecha, hora, periodo)
      */
-    public void comprobarInfoCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
+    public boolean comprobarInfoCita(String nombreAgente,String tipo, DatosCitaSinValidar datos) throws Exception;
+    /**
+     * Su proposito es borrar la entrada de la en tabla de citas de la agenda que se corresponda con la que se pasa por parametro.
+     * @param datos	:: Datos a borrar en la agenda
+     */
+    public void borrarCita(String nombreAgente,String tipo, DatosCitaSinValidar datos)throws Exception;
     /**
     * Su proposito es Almacenar los datos que se le pasan por parametro en la tabla de llamadas de la agenda.
     * @param datos 	:: Datos a insertar en la agenda (nombre,mensaje, telefono, paciente, hora)

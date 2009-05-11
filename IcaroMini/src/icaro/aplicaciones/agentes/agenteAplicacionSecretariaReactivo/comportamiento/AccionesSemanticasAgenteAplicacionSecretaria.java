@@ -355,9 +355,9 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}
 	}	
 	/**
-	 * METODO EJEMPLO ANTIGUO
-	 * Comprueba una cita en la visualizacion
-	 * @param datos
+	 * 
+	 * Comprueba una cita en la visualizacion y si es correcta la manda a la persistencia
+	 * @param datos		:: Datos de la cita a comprobar.
 	 */
 	public void inserta(DatosCitaSinValidar datos) {
 		boolean ok = true;
@@ -380,25 +380,78 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}
 		
 		try {
-			//Una vez comprobado todo correcto se manda a persistencia
 			visualizacion.cerrarVisualizadorCita();
 			
 			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
 			
+			//Una vez comprobado todo correcto se manda a persistencia
 			persistencia.setCita(datos);
 			agenteSecretaria = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+this.nombreAgente);
 			if(ok){
 				agenteSecretaria.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria"));
 			}
-			
-			
-			
-			
+			else
+				visualizacion.mostrarMensajeError("Error","Cita incorrecta. Vuelva a intertarlo");
 		}
 		catch (Exception e) {
 		}
+	}
+	
+	/**
+	 * 
+	 * Comprueba una cita en la visualizacion y si es correcta la manda a la persistencia
+	 * @param datos		:: Datos de la cita a comprobar.
+	 */
+	public void pegarCita(DatosCitaSinValidar datos) {
+		boolean ok = true;
+		
+		//Se lo mando a panel agenda para que lo compruebe
+		try {
+			 persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			datos.setNuevo(false);
+			persistencia.setCita(datos);
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de pegar la Cita",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al comprobar pegarCita en la accion semantica pegarCita'", 
+														  InfoTraza.NivelTraza.error));
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	/**
+	 * borra una cita (la que se pasa por parametro) de la visualizacion y de la persistencia
+	 * @param datos		:: datos de una cita a borrar
+	 */
+	public void borrarCita(DatosCitaSinValidar datos) {
+		boolean ok = false;
+		
+		//Se lo mando a panel agenda para que lo compruebe
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.borraCita(datos);
+			//visualizacion.borrarCita(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'borrarLlamada()'", 
+														  InfoTraza.NivelTraza.error));
+			}catch(Exception e){e.printStackTrace();}
+		}
+		
 		//Una vez comprobado todo correcto se manda a persistencia
 
 	}
@@ -415,13 +468,14 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
 			visualizacion.borrarLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
 		}
 
 		catch (Exception ex) {
 			try {
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'borrarLlamada()'", 
+														  "Ha habido un problema al comprobar infoCita en accion semantica 'borrarCita()'", 
 														  InfoTraza.NivelTraza.error));
 			}catch(Exception e){e.printStackTrace();}
 		}

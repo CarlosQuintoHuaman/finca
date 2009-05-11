@@ -27,6 +27,10 @@ public class DatosCita {
 		this.fecha = fecha;
 		this.hora = hora;
 	}
+	
+	public DatosCita(boolean crear){
+		this.crear=crear;
+	}
 	public DatosCita(String nombre, String telf, Boolean crear, String usu){
 		this.nombre = nombre;
 		this.telf = telf;

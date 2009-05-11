@@ -520,22 +520,36 @@ public class ConsultaBBDD {
 			}
 				crearQuery();
 	      		resultado = query.executeQuery("SELECT * FROM medicopaciente where Medico = '"
-	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha() + "' and Hora = '" + cita.tomaHora() + "'");	
+	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + cita.tomaHora() + "'");	
 				
 	      		if (resultado.next()){
 					crearQuery();
 					query.executeUpdate("UPDATE medicopaciente SET Paciente = '" + cita.getUsuario() + "' WHERE Medico = '"+cita.getMedico() +
-							"' and Fecha = '" + cita.getFecha() + "' and Hora = '" + cita.tomaHora() + "'");
+							"' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + cita.tomaHora() + "'");
 				}
 	      		else{
 	      			crearQuery();
 					query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora) VALUES " +"('"+cita.getMedico()+"', '"+cita.getUsuario()+"', '"+
-							cita.getFecha()+"', '"+cita.tomaHora()+"')");
+							cita.getFecha().substring(0, 10)+"', '"+cita.tomaHora()+"')");
 	      		}
 		
 		}
 		
 		catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
+		}
+
+	}
+	
+	public void borraCita (DatosCitaSinValidar cita) throws ErrorEnRecursoException {
+		try {
+
+				crearQuery();
+				String hora=cita.tomaHora()+":00";
+				query.executeUpdate("DELETE FROM medicopaciente where Medico = '"
+	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + hora + "'");	
+		
+		}catch (Exception e) {
 			throw new ErrorEnRecursoException(e.getMessage());
 		}
 
