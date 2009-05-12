@@ -419,10 +419,9 @@ public class panelCita extends Thread {
 					{
 						GridData cPacientesLData = new GridData();
 						cPacientesLData.verticalAlignment = GridData.BEGINNING;
-						cPacientesLData.horizontalAlignment = GridData.BEGINNING;
 						cPacientesLData.horizontalSpan = 3;
 						cPacientesLData.heightHint = 17;
-						cPacientesLData.widthHint = 388;
+						cPacientesLData.widthHint = 371;
 						cPacientes = new CCombo(compoLinea2, SWT.BORDER);
 						cPacientes.setLayoutData(cPacientesLData);
 						cPacientes.addSelectionListener(new SelectionAdapter() {
