@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.cloudgarden.resource.SWTResourceManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -45,6 +46,7 @@ public class panelLlamada extends Thread {
 	// Variables
 	//componentes de la ventana
     private Text tNombre;
+    private Composite composite2;
     private Button bBorrar;
     private Composite compoBotones;
     private Button bCancelar;
@@ -61,6 +63,9 @@ public class panelLlamada extends Thread {
     //variables globales
     private String hora;
     private util f;
+    private CCombo cPacientes;
+    private CLabel LPacientes;
+    private Button bBuscar;
 	private DatosLlamada llamada;
 	private DatosLlamada llamadaAnterior;
 	
@@ -152,7 +157,7 @@ public class panelLlamada extends Thread {
 			shellLayout.makeColumnsEqualWidth = true;
 			shell.setText("Llamada");
 			shell.setLayout(shellLayout);
-			shell.setSize(402, 276);
+			shell.setSize(402, 305);
 			{
         		//Register as a resource user - SWTResourceManager will
         		//handle the obtaining and disposing of resources
@@ -199,6 +204,14 @@ public class panelLlamada extends Thread {
 					tTelefono.setEditable(false);
 				}
 				{
+					bPaciente = new Button(composite1, SWT.CHECK | SWT.LEFT);
+					GridData bPacienteLData = new GridData();
+					bPacienteLData.horizontalSpan = 2;
+					bPaciente.setLayoutData(bPacienteLData);
+					bPaciente.setText("Primera vez");
+					bPaciente.setEnabled(false);
+				}
+				{
 					cMensaje = new CLabel(composite1, SWT.NONE);
 					GridData cMensajeLData = new GridData();
 					cMensajeLData.horizontalSpan = 2;
@@ -215,22 +228,38 @@ public class panelLlamada extends Thread {
 					tMensaje.setEditable(false);
 				}
 				{
-					bPaciente = new Button(composite1, SWT.CHECK | SWT.LEFT);
-					GridData bPacienteLData = new GridData();
-					bPacienteLData.horizontalSpan = 2;
-					bPaciente.setLayoutData(bPacienteLData);
-					bPaciente.setText("Tiene Ficha");
-					bPaciente.setEnabled(false);
+					GridData composite2LData1 = new GridData();
+					composite2LData1.widthHint = 369;
+					composite2LData1.heightHint = 28;
+					composite2LData1.horizontalSpan = 2;
+					composite2 = new Composite(composite1, SWT.NONE);
+					GridLayout composite2Layout1 = new GridLayout();
+					composite2Layout1.numColumns = 2;
+					composite2.setLayout(composite2Layout1);
+					composite2.setLayoutData(composite2LData1);
+					{
+						LPacientes = new CLabel(composite2, SWT.NONE);
+						GridData LPacientesLData = new GridData();
+						LPacientes.setLayoutData(LPacientesLData);
+						LPacientes.setText("Pacientes");
+					}
+					{
+						GridData cPacientesLData = new GridData();
+						cPacientesLData.widthHint = 292;
+						cPacientesLData.heightHint = 17;
+						cPacientes = new CCombo(composite2, SWT.BORDER);
+						cPacientes.setLayoutData(cPacientesLData);
+					}
 				}
 				{
 					GridData composite2LData = new GridData();
-					composite2LData.widthHint = 276;
+					composite2LData.widthHint = 357;
 					composite2LData.heightHint = 42;
-					composite2LData.horizontalAlignment = GridData.CENTER;
+					composite2LData.horizontalSpan = 2;
 					compoBotones = new Composite(composite1, SWT.NONE);
 					GridLayout composite2Layout = new GridLayout();
 					composite2Layout.makeColumnsEqualWidth = true;
-					composite2Layout.numColumns = 4;
+					composite2Layout.numColumns = 5;
 					compoBotones.setLayout(composite2Layout);
 					compoBotones.setLayoutData(composite2LData);
 					{
@@ -288,6 +317,14 @@ public class panelLlamada extends Thread {
 								
 							}  
 						});
+					}
+					{
+						bBuscar = new Button(compoBotones, SWT.PUSH | SWT.CENTER);
+						GridData bBuscarLData = new GridData();
+						bBuscarLData.heightHint = 29;
+						bBuscarLData.widthHint = 63;
+						bBuscar.setLayoutData(bBuscarLData);
+						bBuscar.setText("Buscar");
 					}
 				}
 			}

@@ -423,7 +423,7 @@ public class panelCita extends Thread {
 						cPacientesLData.horizontalSpan = 3;
 						cPacientesLData.heightHint = 17;
 						cPacientesLData.widthHint = 388;
-						cPacientes = new CCombo(compoLinea2, SWT.NONE);
+						cPacientes = new CCombo(compoLinea2, SWT.BORDER);
 						cPacientes.setLayoutData(cPacientesLData);
 						cPacientes.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
