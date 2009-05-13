@@ -2142,7 +2142,7 @@ public class panelAgenda extends Thread {
 			while(i<datos.getNumM() && !cu){
 				if (datos.getMedicos().get(i).getNombre().equals(medico)){
 					u=datos.getMedicos().get(i).getUsuario();
-					ll=datos.getMedicos().get(i).getExtras();
+					ll=datos.getMedicos().get(i).getLlamadas();
 					cu=true;
 					i--;
 				}
