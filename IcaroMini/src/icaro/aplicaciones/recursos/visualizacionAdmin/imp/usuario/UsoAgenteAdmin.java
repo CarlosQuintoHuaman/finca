@@ -114,9 +114,27 @@ public class UsoAgenteAdmin {
     	visualizador.mostrarMensajeError(titulo, mensaje);
     }
     
-    public void optimizar() {
+    public void optimizarBD() {
     	try {
-			visualizador.optimizar();
+			visualizador.optimizarBD();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void crearBD() {
+    	try {
+			visualizador.crearBD();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void resetearBD() {
+    	try {
+			visualizador.resetearBD();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

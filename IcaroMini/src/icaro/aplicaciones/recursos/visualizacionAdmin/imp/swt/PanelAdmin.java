@@ -247,6 +247,11 @@ public class PanelAdmin extends Thread {
 						bCrear.setLayoutData(bCrearLData);
 						bCrear.setText("Crear BD");
 						bCrear.setSize(146, 25);
+						bCrear.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.crearBD();
+							}
+						});
 					}
 					{
 						bResetear = new Button(cBase, SWT.PUSH | SWT.CENTER);
@@ -257,14 +262,24 @@ public class PanelAdmin extends Thread {
 						bResetear.setLayoutData(bResetearLData);
 						bResetear.setText("Resetear");
 						bResetear.setSize(146, 25);
+						bResetear.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.resetearBD();
+							}
+						});
 					}
 					{
 						bOptimizar = new Button(cBase, SWT.PUSH | SWT.CENTER);
+						GridData bOptimizarLData = new GridData();
+						bOptimizarLData.horizontalSpan = 2;
+						bOptimizarLData.widthHint = 146;
+						bOptimizarLData.heightHint = 25;
+						bOptimizar.setLayoutData(bOptimizarLData);
 						bOptimizar.setText("Optimizar");
 						bOptimizar.setSize(146, 25);
 						bOptimizar.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
-								usoAgente.optimizar();
+								usoAgente.optimizarBD();
 							}
 						});
 					}

@@ -73,7 +73,16 @@ public class ClaseGeneradoraPersistenciaAdmin extends ImplRecursoSimple implemen
 		return consulta.getUsuarios();
 	}
 
-	public void optimizar() throws Exception {
+	public void optimizarBD() throws Exception {
 		consulta.optimizar();
+	}
+
+	public void crearBD() throws Exception {
+		consulta.crear();
+	}
+
+	public void resetearBD() throws Exception {
+		consulta.resetear();
+		
 	}
 }

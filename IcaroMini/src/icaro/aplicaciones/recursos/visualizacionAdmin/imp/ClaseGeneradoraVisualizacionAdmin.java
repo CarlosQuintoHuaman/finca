@@ -178,8 +178,16 @@ public class ClaseGeneradoraVisualizacionAdmin extends ImplRecursoSimple impleme
 
 
 	
-	public void optimizar() throws Exception {
-		p.optimizar();
+	public void optimizarBD() throws Exception {
+		p.optimizarBD();
+	}
+	
+	public void crearBD() throws Exception {
+		p.crearBD();
+	}
+	
+	public void resetearBD() throws Exception {
+		p.resetearBD();
 	}
 	
 	// Aqui van los metodos no genericos		

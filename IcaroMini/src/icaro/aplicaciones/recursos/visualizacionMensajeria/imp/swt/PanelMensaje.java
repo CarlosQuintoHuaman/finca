@@ -42,6 +42,7 @@ public class PanelMensaje extends Thread {
 	final UsoAgenteMensajeria usoAgente;
 	String usuario;
 	ArrayList<String> usuarios = new ArrayList<String>();
+	boolean c;
 	
 	// Variables de inicializacion de SWT
 	private Display disp;
@@ -219,6 +220,7 @@ public class PanelMensaje extends Thread {
 				
 		disp.asyncExec(new Runnable() {
             public void run() {
+            	c = false;
             	comboUsuarios.removeAll();
             	comboUsuarios.setText("Elegir Destinatario...");
             	for (int i=0; i<u.size(); i++)

@@ -24,7 +24,9 @@ public interface ItfUsoVisualizadorAdmin extends ItfUsoRecursoSimple{
 	 */
 	public void cerrarVisualizadorAdmin() throws Exception;
 	
-	public void optimizar() throws Exception;
+	public void optimizarBD() throws Exception;
+	public void crearBD() throws Exception;
+	public void resetearBD() throws Exception;
     
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;
   	public void mostrarMensajeAviso(String titulo,String mensaje) throws Exception;

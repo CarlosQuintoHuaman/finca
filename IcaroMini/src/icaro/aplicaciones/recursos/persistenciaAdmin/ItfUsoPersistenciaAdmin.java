@@ -12,5 +12,7 @@ import icaro.infraestructura.patronRecursoSimple.ItfUsoRecursoSimple;
  */
 public interface ItfUsoPersistenciaAdmin extends ItfUsoRecursoSimple {
 	public ArrayList<InfoUsuario> getUsuarios() throws Exception;
-	public void optimizar() throws Exception;
+	public void optimizarBD() throws Exception;
+	public void crearBD() throws Exception;
+	public void resetearBD() throws Exception;
 }
