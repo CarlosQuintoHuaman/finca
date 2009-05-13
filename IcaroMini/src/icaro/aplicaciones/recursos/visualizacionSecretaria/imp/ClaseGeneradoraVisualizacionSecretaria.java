@@ -142,6 +142,10 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	public void meteDatosPacientesE(ArrayList<InfoPaciente> l){
 		this.ventanaExtra.rellenaTabla(l);
 	}
+	
+	public void meteDatosPacientesL(ArrayList<InfoPaciente> l){
+		this.ventanaLlamada.rellenaTabla(l);
+	}
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
 		
@@ -280,6 +284,20 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 			this.tipoAgenteControlador = tipo;
 
 			this.ventanaExtra.mostrarVacia(d);
+			
+			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+			"Mostrando visualizador...",
+			InfoTraza.NivelTraza.debug));
+			
+		}
+		
+		public void mostrarVisualizadorLlamadaVacia(String nombreAgente, String tipo,DatosLlamada d){
+			
+			this.nombreAgenteControlador = nombreAgente;
+			System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+			this.tipoAgenteControlador = tipo;
+
+			this.ventanaLlamada.mostrarVacia(d);
 			
 			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",

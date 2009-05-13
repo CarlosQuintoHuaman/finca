@@ -1457,7 +1457,7 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
-		usoAgente.mostrarVentanaLlamadas();
+		usoAgente.mostrarVentanaLlamadas(u,fy);
 	}
 	/**
 	 * Accion del evento asociado al hacer click sobre alguno de los nombres de la tabla, tanto si esta vacio como si no
@@ -1841,6 +1841,8 @@ public class panelAgenda extends Thread {
 	            				llamada.get(i).setMensaje(dP.getMensaje());
 	            				llamada.get(i).setTelf(dP.getTelf());
 	            				llamada.get(i).setPaciente(dP.getPaciente());
+	            				llamada.get(i).setUsuario(dP.getUsuario());
+	            				dP.setHora(dA.getHora());
 	            			}
 	            		}
 	            	}
@@ -2129,18 +2131,48 @@ public class panelAgenda extends Thread {
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
 			DatosLlamada d= buscarSeleccionadoL(nombre);
 			cNomSel.setText(nombre);
+
 			boolean cu=false;
-			 i=0;
+			i=0;
 			String u="";
+			String uPaciente="";
+			
+			ArrayList<DatosLlamada> ll=new ArrayList<DatosLlamada>();
 			String medico=Agenda.getSelection().getText();
 			while(i<datos.getNumM() && !cu){
 				if (datos.getMedicos().get(i).getNombre().equals(medico)){
 					u=datos.getMedicos().get(i).getUsuario();
-					i++;
+					ll=datos.getMedicos().get(i).getExtras();
+					cu=true;
+					i--;
 				}
+				
+				i++;
 			}
+
+			cu=false;
+			int v=0;
+			String n=d.getNombre();
+			String[] aux;
+			aux=n.split(" ");
+			//n=aux[0];
+			String ap1="";
+			String ap2="";
+			if (aux.length>1){
+				ap1=aux[1];
+			}
+			for(int k=2;k<aux.length;k++){
+					ap2=ap2+aux[k];
+			}
+			while(v<ll.size() &&!cu){
+				if(ll.get(v).getNombre().equals(n)){
+					uPaciente=ll.get(v).getUsuario();
+				}
 			
-			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
+				v++;
+			}
+
+			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora(),u,fy,uPaciente);
 		}
 		else{
 			cNomSel.setText("");

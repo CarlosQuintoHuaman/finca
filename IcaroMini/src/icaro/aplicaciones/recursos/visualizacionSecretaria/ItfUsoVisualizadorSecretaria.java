@@ -60,6 +60,13 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
     public void meteDatosPacientesE(ArrayList<InfoPaciente> l)throws Exception;
     
     /**
+	 * Despues de mostrar la ventana de llamadas (sin datos) llamamos a esta funcion desde fuera de panelLlamada para
+	 * que cargue los datos que se deben mostrar en esta ventana
+	 * @param l
+	 */
+    public void meteDatosPacientesL(ArrayList<InfoPaciente> l)throws Exception;
+    
+    /**
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la cita(nombre, apellido, telefono, hora)
      */
@@ -81,6 +88,10 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
      * Su proposito es pintar la ventana vacia
      */
     public void mostrarVisualizadorExtraVacia(String nombreAgente,String tipo, DatosLlamada d) throws Exception;
+    /**
+     * Su proposito es pintar la ventana vacia
+     */
+    public void mostrarVisualizadorLlamadaVacia(String nombreAgente,String tipo, DatosLlamada d) throws Exception;
     /**
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar del extra(nombre, mensaje, telefono, Espaciente, hora)

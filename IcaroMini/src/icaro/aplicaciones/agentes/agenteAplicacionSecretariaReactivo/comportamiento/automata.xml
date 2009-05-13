@@ -13,7 +13,7 @@
 	<estado idIntermedio="esperaAccion">
 		<transicion input="darCita" accion="pintaVentanaCita" estadoSiguiente="esperaResultadoCita" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/><transicion input="anadirLlamada" accion="pintaVentanaLlamada" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="anadirLlamadaV" accion="pintaVentanaLlamadaVacia" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion><transicion input="anadirExtra" accion="pintaVentanaExtra" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="anadirExtraV" accion="pintaVentanaExtraVacia" estadoSiguiente="esperaResultadoExtra" modoDeTransicion="bloqueante"></transicion><transicion input="consultarPCitas" accion="pintaVentanaPCitas" estadoSiguiente="consultaPCitas" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="agenda" accion="rellenaAgendaSecretaria" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="guardarAgenda" accion="guardaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
@@ -25,7 +25,8 @@
 		<transicion input="infoLlamada" accion="insertaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="cancelarLlamada" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="borrarLlamada" accion="borrarLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="modLlamada" accion="modificaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
+		<transicion input="modLlamada" accion="modificaLlamada" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="buscarPacientesL" accion="getPacientesL" estadoSiguiente="esperaResultadoLlamada" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoExtra">
 	<transicion input="infoExtra" accion="insertaExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 	<transicion input="cancelarExtra" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 	<transicion input="borrarExtra" accion="borrarExtra" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>

@@ -225,8 +225,9 @@ public class UsoAgenteSecretaria {
      * que le corresponde: 'pintaVentanaLlamada'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es pintar la ventana 
      */
-    public void mostrarVentanaLlamadas(){
+    public void mostrarVentanaLlamadas(String medico, String fecha){
     	getInformacionAgente();
+    	DatosLlamada datos= new DatosLlamada(medico,fecha);
     	
     	try {
             if (itfUsoRepositorioInterfaces == null) {
@@ -237,7 +238,7 @@ public class UsoAgenteSecretaria {
                 //AgenteAplicacionSecretaria
                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
                 if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoRecAgte("anadirLlamada", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("anadirLlamadaV", datos,"VisualizacionSecretaria1", nombreAgenteSecretaria));
                
                 }
             }
@@ -254,9 +255,9 @@ public class UsoAgenteSecretaria {
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la llamada(nombre, mensaje, telefono, Espaciente, hora)
      */
-    public void mostrarVentanaLlamada(String nombre, String mensaje, String Telf, Boolean paciente, String hora){
+    public void mostrarVentanaLlamada(String nombre, String mensaje, String Telf, Boolean paciente, String hora,String medico,String fecha,String usuario){
     	getInformacionAgente();
-    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora);
+    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora,medico,fecha,usuario);
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
@@ -691,6 +692,34 @@ public class UsoAgenteSecretaria {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al enviar los datos de buscarPacientesE ");
+            e.printStackTrace();
+        }
+       
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'buscarPacientesL'.Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es Buscar todos los pacientes en la bbdd. Posteriormente se le enviara la peticion a la persistencia 
+     */
+    public void buscarPacientesL(){
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+    	try {
+       	 
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("buscarPacientesL", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de buscarPacientesL ");
             e.printStackTrace();
         }
        

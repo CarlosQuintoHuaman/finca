@@ -30,7 +30,6 @@ import org.eclipse.swt.events.ShellEvent;
 
 import icaro.util.util;
 
-
 /**
 * This code was edited or generated using CloudGarden's Jigloo
 * SWT/Swing GUI Builder, which is free for non-commercial
@@ -247,8 +246,7 @@ public class panelExtra extends Thread {
 					bPaciente.setEnabled(false);
 					bPaciente.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							bPrimeraVezWidgetSelected(evt);
-							
+							bPrimeraVezWidgetSelected(evt);							
 						}
 					});
 				}
@@ -257,8 +255,7 @@ public class panelExtra extends Thread {
 					GridData cMensajeLData = new GridData();
 					cMensajeLData.horizontalSpan = 2;
 					cMensaje.setLayoutData(cMensajeLData);
-					cMensaje.setText("Informacion adicional");
-					
+					cMensaje.setText("Informacion adicional");					
 				}
 				{
 					GridData tmensajeLData = new GridData();
@@ -324,8 +321,7 @@ public class panelExtra extends Thread {
 						bAceptar.setText("Aceptar");
 						bAceptar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
-								bAceptarWidgetSelected(evt);
-								
+								bAceptarWidgetSelected(evt);								
 							}                               
 						});
 					}
@@ -337,11 +333,8 @@ public class panelExtra extends Thread {
 						bCancelar.setLayoutData(bCancelarLData);
 						bCancelar.setText("Cancelar");
 						bCancelar.addSelectionListener (new SelectionAdapter () {
-							public void widgetSelected (SelectionEvent evt) {
-								
-									usoAgente.cerrarVentanaExtra();
-								
-								
+							public void widgetSelected (SelectionEvent evt) {								
+									usoAgente.cerrarVentanaExtra();								
 							}                               
 						});
 					}
@@ -354,8 +347,7 @@ public class panelExtra extends Thread {
 						bBorrar.setText("Borrar");
 						bBorrar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
-								bBorrarWidgetSelected(evt);
-								
+								bBorrarWidgetSelected(evt);								
 							}                               
 						});
 					}
@@ -370,7 +362,6 @@ public class panelExtra extends Thread {
 						bEditar.addSelectionListener (new SelectionAdapter () {
 							public void widgetSelected (SelectionEvent evt) {
 								bEditarWidgetSelected(evt);
-								
 							}                               
 						});
 					}
@@ -389,8 +380,6 @@ public class panelExtra extends Thread {
 					}
 				}
 			}
-			
-
 			buscado=false;
 			LPacientes=new ArrayList<InfoPaciente>();
 			bBuscar.setEnabled(false);
@@ -476,10 +465,6 @@ public class panelExtra extends Thread {
 		if (cc){
 		//llama al agente para enviar un evento que le permita borrar el extra que se le pasa por parametro
 			if(!bBuscar.getEnabled()&& !bPaciente.getEnabled()){
-/*				if (usuario.equals(""))
-					llamada.setUsuario(udesp);
-				else
-					llamada.setUsuario(usuario);*/
 				llamada.setUsuario(udesp);
 				usoAgente.borraExtra(llamada);
 			}
