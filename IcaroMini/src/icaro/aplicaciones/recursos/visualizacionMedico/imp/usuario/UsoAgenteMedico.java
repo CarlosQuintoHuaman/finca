@@ -119,7 +119,12 @@ public class UsoAgenteMedico {
             
             Timestamp t = new Timestamp(0);
             
-            t.setTime(c.getFecha().getTime() + c.getHora().getTime());
+            //t.setTime(c.getFecha().getTime() + c.getHora().getTime());
+            t.setDate(c.getFecha().getDate());
+            t.setHours(c.getHora().getHours());
+            t.setMinutes(c.getHora().getMinutes());
+            t.setMonth(c.getFecha().getMonth());
+            t.setYear(c.getFecha().getYear());
             
             Object d[] = {c.getUsuario(),t,2};
             

@@ -133,7 +133,8 @@ public class ConsultaBBDD {
 			while (resultado.next()) {
 				InfoCita p = new InfoCita(resultado.getString("Paciente"),
 										resultado.getTimestamp("Fecha"),
-										resultado.getTime("Hora")
+										resultado.getTime("Hora"),
+										resultado.getInt("estado")
 				);
 				
 				citas.add(p);

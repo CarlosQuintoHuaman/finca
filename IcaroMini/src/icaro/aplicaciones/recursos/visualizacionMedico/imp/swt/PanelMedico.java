@@ -704,6 +704,9 @@ public class PanelMedico extends Thread {
 		for (int i=0; i<citas.size(); i++) {
 			InfoCita t = citas.get(i);
 			
+			if (t.getEstado() > 1)
+				continue;
+			
 			if (t.getFecha().getDate() != f.getDate()
 					|| t.getFecha().getMonth() != f.getMonth())
 				continue;

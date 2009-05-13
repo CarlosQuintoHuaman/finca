@@ -17,6 +17,7 @@ public class InfoCita implements Serializable {
 	private String usuario;
 	private Date fecha;
 	private Time hora;
+	private int estado;
 
 	/**
 	 * Crea un objetivo nuevo donde almacenar los datos de una cita
@@ -24,10 +25,11 @@ public class InfoCita implements Serializable {
 	 * @param f
 	 * @param t
 	 */
-	public InfoCita (String p, Date f, Time t) {
+	public InfoCita (String p, Date f, Time t, int estado) {
 		setUsuario(p);
 		setFecha(f);
 		setHora(t);
+		setEstado(estado);
 	}
 
 	public void setUsuario(String usuario) {
@@ -52,6 +54,14 @@ public class InfoCita implements Serializable {
 
 	public Time getHora() {
 		return hora;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public int getEstado() {
+		return estado;
 	}
 	
 	
