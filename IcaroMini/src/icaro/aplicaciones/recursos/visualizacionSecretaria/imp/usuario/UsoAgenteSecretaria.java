@@ -311,9 +311,9 @@ public class UsoAgenteSecretaria {
     * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
     * @param datos		:: Datos con los que rellenar la llamada(nombre, mensaje, telefono, Espaciente, hora)
     */
-    public void mostrarVentanaExtra(String nombre, String mensaje, String Telf, Boolean paciente, String hora){
+    public void mostrarVentanaExtra(String nombre, String mensaje, String Telf, Boolean paciente, String hora,String medico,String fecha,String usuario){
     	getInformacionAgente();
-    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora);
+    	DatosLlamada datos= new DatosLlamada(nombre, mensaje, Telf, paciente, hora,medico,fecha,usuario);
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
@@ -663,6 +663,34 @@ public class UsoAgenteSecretaria {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al enviar los datos de buscarPaciente ");
+            e.printStackTrace();
+        }
+       
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'buscarPacientesE'.Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es Buscar todos los pacientes en la bbdd. Posteriormente se le enviara la peticion a la persistencia 
+     */
+    public void buscarPacientesE(){
+    	getInformacionAgente();
+        //provoca la petici�n de autentificaci�n
+    	try {
+       	 
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("buscarPacientesE", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar los datos de buscarPacientesE ");
             e.printStackTrace();
         }
        

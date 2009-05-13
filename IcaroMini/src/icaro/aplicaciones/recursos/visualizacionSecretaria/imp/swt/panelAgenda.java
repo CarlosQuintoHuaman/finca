@@ -1423,6 +1423,17 @@ public class panelAgenda extends Thread {
 	 * @param evt
 	 */	
 	private void anadirEWidgetSelected(SelectionEvent evt){
+		boolean cu=false;
+		int i=0;
+		String u="";
+		String medico=Agenda.getSelection().getText();
+		while(i<datos.getNumM() && !cu){
+			if (datos.getMedicos().get(i).getNombre().equals(medico)){
+				u=datos.getMedicos().get(i).getUsuario();
+				
+			}
+			i++;
+		}
 		usoAgente.mostrarVentanaExtra();
 	}
 	
@@ -1432,6 +1443,16 @@ public class panelAgenda extends Thread {
 	 * @param evt
 	 */	
 	private void anadirLWidgetSelected(SelectionEvent evt){
+		boolean cu=false;
+		int i=0;
+		String u="";
+		String medico=Agenda.getSelection().getText();
+		while(i<datos.getNumM() && !cu){
+			if (datos.getMedicos().get(i).getNombre().equals(medico)){
+				u=datos.getMedicos().get(i).getUsuario();
+			}
+			i++;
+		}
 		usoAgente.mostrarVentanaLlamadas();
 	}
 	/**
@@ -1822,6 +1843,7 @@ public class panelAgenda extends Thread {
 	    
             		if(!esta){
             			llamada.add(dP);
+            			//añadir fecha y mandar a persistencia
             		}
             		int m=Agenda.getSelectionIndex();
             		datos.getMedicos().get(m).setLlamadas(llamada);
@@ -1934,6 +1956,7 @@ public class panelAgenda extends Thread {
 	            	
 	            	//Y ESTO QUE HAGO?????
             		if(!esta){
+            			//mandar a persistencia con fecha y tipo
             			extra.add(dP);
             		}
             		int m=Agenda.getSelectionIndex();
@@ -2100,6 +2123,16 @@ public class panelAgenda extends Thread {
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
 			DatosLlamada d= buscarSeleccionadoL(nombre);
 			cNomSel.setText(nombre);
+			boolean cu=false;
+			 i=0;
+			String u="";
+			String medico=Agenda.getSelection().getText();
+			while(i<datos.getNumM() && !cu){
+				if (datos.getMedicos().get(i).getNombre().equals(medico)){
+					u=datos.getMedicos().get(i).getUsuario();
+					i++;
+				}
+			}
 			
 			usoAgente.mostrarVentanaLlamada(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
 		}
@@ -2165,7 +2198,46 @@ public class panelAgenda extends Thread {
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
 			DatosLlamada d= buscarSeleccionadoE(nombre);
 			cNomSel.setText(nombre);
-			usoAgente.mostrarVentanaExtra(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora());
+			boolean cu=false;
+			i=0;
+			String u="";
+			String uPaciente="";
+			int w=0;
+			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+			String medico=Agenda.getSelection().getText();
+			while(i<datos.getNumM() && !cu){
+				if (datos.getMedicos().get(i).getNombre().equals(medico)){
+					u=datos.getMedicos().get(i).getUsuario();
+					ll=datos.getMedicos().get(w).getDatos();
+					cu=true;
+					i--;
+				}
+				
+				i++;
+			}
+
+			cu=false;
+			int v=0;
+			String n=d.getNombre();
+			String[] aux;
+			aux=n.split(" ");
+			n=aux[0];
+			String ap1="";
+			String ap2="";
+			if (aux.length>1){
+				ap1=aux[1];
+			}
+			for(int k=2;k<aux.length;k++){
+					ap2=ap2+aux[k];
+			}
+			while(v<ll.size() &&!cu){
+				if(ll.get(v).tomaNombre().equals(n)&& ll.get(v).tomaApell1().equals(ap1)&&ll.get(v).getApell2().equals(ap2)){
+					uPaciente=datos.getMedicos().get(w).getDatos().get(v).getUsuario();
+				}
+			
+				v++;
+			}
+			usoAgente.mostrarVentanaExtra(d.getNombre(), d.getMensaje(), d.getTelf(), d.getPaciente(),d.getHora(),u,fy,uPaciente);
 		}
 		else{
 			cNomSel.setText("");
@@ -2475,7 +2547,7 @@ public class panelAgenda extends Thread {
 		nombreL.dispose();
 		AnadirL.dispose();
 		
-		usoAgente.guardarAgenda(datos);
+		//usoAgente.guardarAgenda(datos);
 		util f=new util();
 		String f1=util.getStrDateSQL2();
 		String f2=util.getStrDateSQL();

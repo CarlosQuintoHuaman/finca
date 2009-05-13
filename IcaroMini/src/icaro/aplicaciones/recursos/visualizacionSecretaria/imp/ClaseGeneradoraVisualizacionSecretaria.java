@@ -138,6 +138,10 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	public void meteDatosPacientes(ArrayList<InfoPaciente> l){
 		this.ventanaCitaAgenda.rellenaTabla(l);
 	}
+	
+	public void meteDatosPacientesE(ArrayList<InfoPaciente> l){
+		this.ventanaExtra.rellenaTabla(l);
+	}
 	public void mostrarMensajeInformacion(String titulo,String mensaje) {
 	/*Muestra el mensaje y avisa al gestor para finalizar*/
 		

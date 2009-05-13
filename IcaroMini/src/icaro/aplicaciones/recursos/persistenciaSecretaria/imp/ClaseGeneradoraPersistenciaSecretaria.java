@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 //import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
@@ -131,6 +132,19 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 			InfoTraza.NivelTraza.debug));
 		try {
 			consulta.insertaCita(cita);
+		} catch (icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+}
+	
+	public void setExtra(DatosLlamada l1,DatosLlamada l2)throws ErrorEnRecursoException {
+		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaSecretaria",
+			"Modificando Extra "+l1,
+			InfoTraza.NivelTraza.debug));
+		try {
+			consulta.modificaExtra(l1,l2);
 		} catch (icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

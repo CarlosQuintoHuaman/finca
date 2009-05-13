@@ -53,6 +53,13 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
     public void meteDatosPacientes(ArrayList<InfoPaciente> l)throws Exception;
     
     /**
+	 * Despues de mostrar la ventana de extras (sin datos) llamamos a esta funcion desde fuera de panelExtra para
+	 * que cargue los datos que se deben mostrar en esta ventana
+	 * @param l
+	 */
+    public void meteDatosPacientesE(ArrayList<InfoPaciente> l)throws Exception;
+    
+    /**
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar la cita(nombre, apellido, telefono, hora)
      */

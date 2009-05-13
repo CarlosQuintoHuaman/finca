@@ -557,18 +557,18 @@ public class panelCita extends Thread {
 		boolean p;
 		p=false;
 
-		String mensaje="Faltan por rellenar los siguientes campos"+"\\n";
+		String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
 		if(tPaciente.getText().equals("")){
-			mensaje=mensaje+"Nombre"+"\\n";
+			mensaje=mensaje+"Nombre"+"\n";
 			p=true;
 		}
 		if(tApellidos.getText().equals("")){
-			mensaje=mensaje+"Apellidos"+"\\n";
+			mensaje=mensaje+"Apellidos"+"\n";
 			p=true;
 		}
 		
 		if(tTelefono1.getText().equals("")){
-			mensaje=mensaje+"Telefono"+"\\n";
+			mensaje=mensaje+"Telefono"+"\n";
 			p=true;
 		}
 		if(p)

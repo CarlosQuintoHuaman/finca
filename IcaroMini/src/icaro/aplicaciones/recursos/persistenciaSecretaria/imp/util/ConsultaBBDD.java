@@ -554,4 +554,50 @@ public class ConsultaBBDD {
 		}
 
 	}
+	
+	public void modificaExtra (DatosLlamada la,DatosLlamada lp) throws ErrorEnRecursoException {
+		try {
+			String fechaA=la.getFecha().substring(0, 10)+la.getHora();
+			String fechaB=lp.getFecha().substring(0, 10)+lp.getHora();
+			if (lp.getPaciente()){
+				String n=lp.getNombre();
+				String[]aux=n.split(" ");
+				String mm="";
+				String ape1="";
+				String s="Ninguno";
+				if (aux.length>1){
+					ape1=aux[1];
+				}
+				for(int k=2;k<aux.length;k++){
+					mm=mm+aux[k];
+				}
+				crearQuery();
+				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre,  Apellido1, Apellido2, Telefono) VALUES " +"('"+lp.getUsuario()+
+						"', '"+lp.getUsuario()+"', '"+aux[0]+"', '"+ape1+"', '"+mm+"', '"+lp.getTelf()+"')");
+				crearQuery();
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+lp.getUsuario()+"', '"+s+"')");
+				
+			}
+				crearQuery();
+	      		resultado = query.executeQuery("SELECT * FROM extras where Medico = '"
+	      					+ la.getMedico() + "' and Fecha = '" + fechaA + "' and Nombre = '" + la.getUsuario() + "'");	
+				
+	      		if (resultado.next()){
+					crearQuery();
+					query.executeUpdate("UPDATE extras SET Nombre = '" + lp.getUsuario() +"', Fecha = '" + fechaB + "', Mensaje = '" + lp.getMensaje()+ "', Telefono = '" + lp.getTelf()
+							+ "' WHERE Nombre = '"+la.getUsuario() +"' and Fecha = '" + fechaA + "' and Mensaje = '" + la.getMensaje() + "'");
+				}
+	      		else{
+	      			crearQuery();
+					query.executeUpdate("INSERT INTO extras (Nombre, Medico, Fecha, Mensaje, Telefono, Tipo) VALUES " +"('"+lp.getUsuario()+"', '"+lp.getMedico()+"', '"+
+							fechaB+"', '"+lp.getMensaje()+"', '"+lp.getTelf()+"', '"+lp.getTipo()+"')");
+	      		}
+		
+		}
+		
+		catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
+		}
+
+	}
 }

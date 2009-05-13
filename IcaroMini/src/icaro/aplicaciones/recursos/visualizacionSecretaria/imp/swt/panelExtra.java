@@ -1,7 +1,9 @@
 package icaro.aplicaciones.recursos.visualizacionSecretaria.imp.swt;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.imp.ClaseGeneradoraVisualizacionSecretaria;
@@ -68,6 +70,11 @@ public class panelExtra extends Thread {
     private CLabel cPacientes;
 	private DatosLlamada llamada;
 	private DatosLlamada llamadaAnterior;
+	private boolean buscado;
+	private ArrayList<InfoPaciente> LPacientes;
+	private String medico;
+	private String fecha;
+	private String usuario;
 
 	final UsoAgenteSecretaria usoAgente;
 	
@@ -119,6 +126,10 @@ public class panelExtra extends Thread {
             	tMensaje.setText(dat.getMensaje());
             	bPaciente.setSelection(dat.getPaciente());
             	hora=dat.getHora();
+            	medico=dat.getMedico();
+            	usuario=dat.getUsuario();
+            	fecha=dat.getFecha();
+            	
 		    }
         });
 	}
@@ -208,6 +219,12 @@ public class panelExtra extends Thread {
 					bPaciente.setLayoutData(bPacienteLData);
 					bPaciente.setText("Primera vez");
 					bPaciente.setEnabled(false);
+					bPaciente.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							bPrimeraVezWidgetSelected(evt);
+							
+						}
+					});
 				}
 				{
 					cMensaje = new CLabel(composite1, SWT.NONE);
@@ -252,6 +269,12 @@ public class panelExtra extends Thread {
 						cCombo1LData.grabExcessHorizontalSpace = true;
 						cCombo1 = new CCombo(composite2, SWT.BORDER);
 						cCombo1.setLayoutData(cCombo1LData);
+						cCombo1.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bPacientesWidgetSelected(evt);
+								
+							}
+						});
 					}
 				}
 				{
@@ -332,11 +355,22 @@ public class panelExtra extends Thread {
 						bBuscarLData.heightHint = 29;
 						bBuscar.setLayoutData(bBuscarLData);
 						bBuscar.setText("Buscar");
+						bBuscar.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								bBuscarWidgetSelected(evt);
+							}
+						});
 					}
 				}
 			}
-
-        			shell.layout();
+			
+			tNombre.setEditable(false);
+			tTelefono.setEditable(false);
+			tMensaje.setEditable(false);
+			buscado=false;
+			LPacientes=new ArrayList<InfoPaciente>();
+			bBuscar.setEnabled(false);
+        	shell.layout();
 		
 			while (!shell.isDisposed()) {
 				if (!disp.readAndDispatch())
@@ -400,7 +434,11 @@ public class panelExtra extends Thread {
 			tTelefono.setEditable(true);
 			tMensaje.setEditable(true);
 			bPaciente.setEnabled(true);
-			llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+			llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+			llamadaAnterior.setTipo("extra");
+			//meterle el usuario a la llamada anterior
+			llamadaAnterior.setUsuario(usuario);
+			bBuscar.setEnabled(true);
 		}
 		else{
 			if (hora==null){
@@ -411,16 +449,124 @@ public class panelExtra extends Thread {
 			tTelefono.setEditable(false);
 			tMensaje.setEditable(false);
 			bPaciente.setEnabled(false);
-			if (tNombre.getText().equals("")){
-				usoAgente.mostrarMensajeError("Debe rellenar un nombre", "Error en formato");
+			bBuscar.setEnabled(false);
+			boolean p;
+			p=false;
+
+			String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
+			if(tNombre.getText().equals("")){
+				mensaje=mensaje+"Nombre"+"\n";
+				p=true;
 			}
+			if(tMensaje.getText().equals("")){
+				mensaje=mensaje+"Mensaje"+"\n";
+				p=true;
+			}
+			
+			if(tTelefono.getText().equals("")){
+				mensaje=mensaje+"Telefono"+"\n";
+				p=true;
+			}
+			if(p)
+				usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
 			else{
-			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+			llamada.setTipo("extra");
+			if(bPaciente.getSelection()){
+				llamada.setUsuario(tNombre.getText());
+				llamada.setPaciente(true);
+				
+			}
+		
+		    if(buscado){
+		    	int i=cCombo1.getSelectionIndex()-1;
+		    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
+		    	llamada.setPaciente(false);
+		    }
+		    if(!bPaciente.getSelection()&&!buscado){
+		    	llamada.setPaciente(false);
+		    }
+		    //usoAgente.validaCita(datos);
+		    
 			//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
 			usoAgente.modificaExtra(llamadaAnterior, llamada);
 
 			}
 		}
 
+	}
+	
+	/**
+	 * Evento del check box para detectar si es un nuevo paciente
+	 * @param evt
+	 */
+	private void bPrimeraVezWidgetSelected(SelectionEvent evt){
+		if (bPaciente.getSelection()){
+			tNombre.setEditable(true);
+			tTelefono.setEditable(true);
+			tMensaje.setEditable(true);
+			bBuscar.setEnabled(false);
+			cCombo1.setEnabled(false);
+			tNombre.setText("");
+			tMensaje.setText("");
+			tTelefono.setText("");
+			buscado=false;
+		}
+		else{
+			tNombre.setEditable(false);
+			tTelefono.setEditable(false);
+			//tMensaje.setEditable(true);
+			bBuscar.setEnabled(true);
+			cCombo1.setEnabled(true);
+
+		}
+			
+	}
+	/**
+	 * Evento del boton buscar de la ventana
+	 * @param evt
+	 */
+	private void bBuscarWidgetSelected(SelectionEvent evt){
+			usoAgente.buscarPacientesE();
+	}
+	
+	private void bPacientesWidgetSelected(SelectionEvent evt){
+		CCombo lsel=(CCombo)evt.getSource();
+		int i=lsel.getSelectionIndex();
+		if(i>0){
+			InfoPaciente p=LPacientes.get(i-1);
+			tNombre.setEditable(false);
+			//tMensaje.setEditable(true);
+			tTelefono.setEditable(false);
+			bBuscar.setEnabled(true);
+			cCombo1.setEnabled(true);
+			tNombre.setText(p.getNombre()+" "+p.getApellido1()+" "+p.getApellido2());
+			tTelefono.setText(p.getTelefono());
+			tMensaje.setText("");
+			buscado=true;
+		}
+		else{
+			tNombre.setText("");
+			tMensaje.setText("");
+			tTelefono.setText("");
+			buscado=false;
+		}
+	}
+	
+	public void rellenaTabla(final ArrayList<InfoPaciente> l){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	LPacientes=l;
+            	cCombo1.removeAll();
+            	cCombo1.add("Seleccionar...");
+            	cCombo1.select(0);
+            	for(int i=0;i<l.size();i++){
+            		cCombo1.add(l.get(i).getNombre()+" "+l.get(i).getApellido1()+" "+l.get(i).getApellido2());
+            	}
+ 
+	       }
+         });
 	}
 }

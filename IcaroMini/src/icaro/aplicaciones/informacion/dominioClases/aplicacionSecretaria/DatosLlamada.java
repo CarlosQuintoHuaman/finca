@@ -6,6 +6,10 @@ public class DatosLlamada {
 	private String telefono;
 	private boolean paciente;
 	private String hora;
+	private String usuario;
+	private String medico;
+	private String tipo;
+	private String fecha;
 	
 	/**
 	  * Crea un objeto nuevo donde almacenar los datos de una Llamada de la agenda
@@ -21,6 +25,36 @@ public class DatosLlamada {
 		telefono=t;
 		paciente=p;
 		hora =i;
+	}
+	
+	public DatosLlamada(String n, String m, String t, boolean p, String i, String me){
+		nombre=n;
+		mensaje=m;
+		telefono=t;
+		paciente=p;
+		hora =i;
+		medico=me;
+	}
+	
+	public DatosLlamada(String n, String m, String t, boolean p, String i, String me, String fecha){
+		nombre=n;
+		mensaje=m;
+		telefono=t;
+		paciente=p;
+		hora =i;
+		medico=me;
+		this.fecha=fecha;
+	}
+	
+	public DatosLlamada(String n, String m, String t, boolean p, String i, String me, String fecha,String usuario){
+		nombre=n;
+		mensaje=m;
+		telefono=t;
+		paciente=p;
+		hora =i;
+		medico=me;
+		this.fecha=fecha;
+		this.usuario=usuario;
 	}
 	
 	public DatosLlamada(String n, String m, String t, boolean p){
@@ -41,6 +75,40 @@ public class DatosLlamada {
 		telefono=t;
 		hora=f;
 	}
+	
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getMedico() {
+		return medico;
+	}
+
+	public void setMedico(String medico) {
+		this.medico = medico;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
 	public String getNombre(){
 		return  nombre;
 	}

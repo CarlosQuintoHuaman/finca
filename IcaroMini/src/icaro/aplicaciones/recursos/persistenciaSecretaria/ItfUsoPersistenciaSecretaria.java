@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
 import icaro.aplicaciones.recursos.persistenciaSecretaria.imp.ErrorEnRecursoException;
@@ -47,6 +48,13 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 * @throws ErrorEnRecursoException 
 	 */
 	public void setCita(DatosCitaSinValidar datos) throws ErrorEnRecursoException;
+	
+	/**
+	 * Funcion con la que se inserta en la bbdd un nuevo extra
+	 * @param datos			:: Datos del extra que se quiere guardar en la bbdd. Si existe otra en la misma posicion se reemplazan
+	 * @throws ErrorEnRecursoException 
+	 */
+	public void setExtra(DatosLlamada datosA,DatosLlamada datosP ) throws ErrorEnRecursoException;
 	
 	/**
 	 * Funcion con la que se borra de la bbdd una cita

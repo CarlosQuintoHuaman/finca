@@ -171,7 +171,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 	}
 	
 	/**
-	 * Buscamos todos los pacientes 
+	 * Buscamos todos los pacientes para la cita
 	 */
 	public void getPacientes(){
 		try {
@@ -188,6 +188,37 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			l=persistencia.getPacientes();
 			//Mete datos en la ventana de Cita con los resultados de la consulta de persistencia
 			visualizacion.meteDatosPacientes(l); 
+		}
+
+		catch (Exception ex) {
+			try {
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al buscarPaciente'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	
+	/**
+	 * Buscamos todos los pacientes para los extras
+	 */
+	public void getPacientesE(){
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			ArrayList<InfoPaciente> l=new ArrayList<InfoPaciente>();
+			util f=new util();
+			//fecha actual
+			String fecha=f.getStrDateSQL();
+			//Saca de la persistencia los datos de las citas del paciente que cumplan parametros
+			l=persistencia.getPacientes();
+			//Mete datos en la ventana de Cita con los resultados de la consulta de persistencia
+			visualizacion.meteDatosPacientesE(l); 
 		}
 
 		catch (Exception ex) {
@@ -525,14 +556,20 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
 			visualizacion.modificaLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, dAnt,dPost);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+			
+			
 		}
 
 		catch (Exception ex) {
 			try {
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
-														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'insertaLlamada()'", 
+														  "Ha habido un problema al comprobar infoLlamada en accion semantica 'modificaLlamada()'", 
 														  InfoTraza.NivelTraza.error));
 			}catch(Exception e){e.printStackTrace();}
 		}
@@ -551,8 +588,14 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
 			visualizacion.modificaExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, dAnt,dPost);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+			
+			persistencia.setExtra(dAnt,dPost);
 		}
 
 		catch (Exception ex) {
