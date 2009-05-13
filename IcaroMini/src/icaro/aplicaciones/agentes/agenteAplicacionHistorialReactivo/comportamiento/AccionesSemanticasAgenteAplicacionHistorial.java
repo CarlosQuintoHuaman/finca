@@ -37,7 +37,7 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 	 * @param paciente
 	 * @param fecha Fecha de la visita
 	 */
-	public void pintaVentanaHistorial(String paciente, Timestamp fecha){
+	public void pintaVentanaHistorial(String paciente, Timestamp fecha, Integer estado){
 		
 		try {
 			this.paciente = paciente;
@@ -47,7 +47,6 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			visualizacion = (ItfUsoVisualizadorHistorial) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionHistorial1");
 			
-			// Ejemplo de algo que podemos hacer con el
 			visualizacion.mostrarVisualizadorHistorial(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
 			
 			//Y la persistencia
@@ -60,6 +59,9 @@ public class AccionesSemanticasAgenteAplicacionHistorial extends AccionesSemanti
 			persistenciaMed = (ItfUsoPersistenciaMedicamentos) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaMedicamentos1");
 			visualizacion.mostrarDatosMed(persistenciaMed.getMedicamentos(paciente, fecha));
+			
+			if (estado != -1)
+				persistencia.cambiarEstado(paciente, fecha, estado);
 			
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));

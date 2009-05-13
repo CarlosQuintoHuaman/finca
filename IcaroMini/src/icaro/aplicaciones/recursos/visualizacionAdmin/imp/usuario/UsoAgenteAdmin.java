@@ -140,5 +140,56 @@ public class UsoAgenteAdmin {
 			e.printStackTrace();
 		}
     }
+    
+    public void editarUsuario(String usuario) {
+    	try {
+    		if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+    		
+    		ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + "AgenteAplicacionFicha1");
+            if (itfUsoAgente != null) {
+                itfUsoAgente.aceptaEvento(new EventoRecAgte("mostrarVentanaFicha", "VisualizacionAdmin1", "AgenteAplicacionFicha1"));
+            }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void bajaUsuario(String usuario) {
+    	try {
+			//visualizador.bajaUsuario(usuario);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    /**
+     * Desconecta al usuario
+     */
+    public void cerrarSesion() {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoLogin = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionLogin1");
+            
+            itfUsoLogin.aceptaEvento(new EventoRecAgte("cerrarSesion", "VisualizacionAdmin1", "AgenteAplicacionLogin1"));
+            
+            visualizador.cerrarVisualizadorAdmin();
+            
+            ItfUsoAgenteReactivo itfUsoAdmin = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionAdmin1");
+            
+            itfUsoAdmin.aceptaEvento(new EventoRecAgte("cerrarSesion", "VisualizacionAdmin1", "AgenteAplicacionAdmin1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al cerrar la sesion del Medico");
+            e.printStackTrace();
+        }
+    }
 }
 

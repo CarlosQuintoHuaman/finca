@@ -104,7 +104,7 @@ public class UsoAgenteHistorial {
     	
     	try {
     		
-    		Object datos[] = {paciente,fecha};
+    		Object datos[] = {paciente,fecha,-1};
     		
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();

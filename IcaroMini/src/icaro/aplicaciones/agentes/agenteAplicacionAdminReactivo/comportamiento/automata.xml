@@ -12,6 +12,7 @@
 	</estado>
 	<estado idIntermedio="esperaAccion">
 		<transicion input="mostrarVentanaAdmin" accion="pintaVentanaAdmin" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"/>
+		<transicion input="cerrarSesion" accion="nula" estadoSiguiente="empezando" modoDeTransicion="bloqueante"/>
 		<transicion input="peticion_terminacion" accion="pedirTerminacionGestorAgentes" estadoSiguiente="esperandoTerminacion" modoDeTransicion="bloqueante"/>
 	</estado>
 	<estado idIntermedio="esperandoTerminacion">

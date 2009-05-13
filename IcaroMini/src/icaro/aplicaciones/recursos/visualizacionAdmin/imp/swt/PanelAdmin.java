@@ -128,7 +128,7 @@ public class PanelAdmin extends Thread {
 		GridLayout shellLayout = new GridLayout();
 		shellLayout.numColumns = 2;
 		shell.setLayout(shellLayout);
-		shell.setText("Insertar un Medicamento");
+		shell.setText("Administrador");
 		shell.setSize(800, 600);
 		{
 			cTabAdmin = new CTabFolder(shell, SWT.NONE);
@@ -181,8 +181,7 @@ public class PanelAdmin extends Thread {
 							bAlta.setText("Dar de alta nuevo usuario");
 							bAlta.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
-									System.out.println("bAlta.widgetSelected, event="+evt);
-									//TODO add your code for bAlta.widgetSelected
+									
 								}
 							});
 						}
@@ -192,8 +191,7 @@ public class PanelAdmin extends Thread {
 							bBaja.setSize(146, 25);
 							bBaja.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
-									System.out.println("bBaja.widgetSelected, event="+evt);
-									//TODO add your code for bBaja.widgetSelected
+									usoAgente.bajaUsuario(lUsuarios.getSelection()[0]);
 								}
 							});
 						}
@@ -203,8 +201,7 @@ public class PanelAdmin extends Thread {
 							bEditar.setSize(146, 25);
 							bEditar.addSelectionListener(new SelectionAdapter() {
 								public void widgetSelected(SelectionEvent evt) {
-									System.out.println("bEditar.widgetSelected, event="+evt);
-									//TODO add your code for bEditar.widgetSelected
+									usoAgente.editarUsuario(lUsuarios.getSelection()[0]);
 								}
 							});
 						}
@@ -312,7 +309,7 @@ public class PanelAdmin extends Thread {
 			GridData bCancelarLData = new GridData();
 			bCancelarLData.grabExcessHorizontalSpace = true;
 			bCancelar.setLayoutData(bCancelarLData);
-			bCancelar.setText("Cancelar");
+			bCancelar.setText("Cerrar Sesion");
 			bCancelar.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					bCancelarWidgetSelected(evt);
@@ -347,8 +344,7 @@ public class PanelAdmin extends Thread {
 	}
 	
 	private void bCancelarWidgetSelected(SelectionEvent evt) {
-		System.out.println("bCancelar.widgetSelected, event="+evt);
-		//TODO add your code for bCancelar.widgetSelected
+		usoAgente.cerrarSesion();
 	}
 	
 	private void actualizarLista() {

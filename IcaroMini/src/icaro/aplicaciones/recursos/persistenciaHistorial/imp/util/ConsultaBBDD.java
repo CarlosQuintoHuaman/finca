@@ -271,4 +271,47 @@ public class ConsultaBBDD {
 			e.printStackTrace();
 		}
 	}
+	
+	public void cambiarEstado(String paciente, Timestamp fecha, int estado) {
+		String f = String.valueOf((fecha.getYear()+1900));
+		
+		if (fecha.getMonth() < 10)
+			f += "-0" + (fecha.getMonth()+1);
+		else
+			f += "-" + (fecha.getMonth()+1);
+		
+		if (fecha.getDate() < 10)
+			f += "-0" + fecha.getDate();
+		else
+			f += "-" + fecha.getDate();
+		
+		String h = "";
+		
+		if (fecha.getHours() < 10)
+			h += "0" + fecha.getHours();
+		else
+			h += String.valueOf(fecha.getHours());
+		
+		if (fecha.getMinutes() < 10)
+			h += ":0" + fecha.getMinutes();
+		else
+			h += String.valueOf(fecha.getMinutes());
+		
+		if (fecha.getSeconds() < 10)
+			h += ":0" + fecha.getSeconds();
+		else
+			h += String.valueOf(fecha.getSeconds());
+		
+		
+		try {
+			crearQuery();
+			query.executeUpdate("UPDATE medicopaciente SET estado="+estado+" WHERE Paciente='"+paciente+"' AND Fecha='"+f+"' AND Hora='"+h+"'");
+			query.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

@@ -65,4 +65,12 @@ public interface ItfUsoPersistenciaHistorial extends ItfUsoRecursoSimple {
 	 * @param m Objeto InfoMedicamento del medicamento a borrar
 	 */
 	public void borrarMedicamento(InfoMedicamento p) throws Exception;
+	
+	/**
+	 * Cambia el estado de un paciente
+	 * @param paciente
+	 * @param fecha
+	 * @param estado
+	 */
+	public void cambiarEstado(String paciente, Timestamp fecha, int estado) throws Exception;
 }

@@ -106,4 +106,10 @@ public class ClaseGeneradoraPersistenciaHistorial extends ImplRecursoSimple impl
 			e.printStackTrace();
 		}
 	}
+
+	public void cambiarEstado(String paciente, Timestamp fecha, int estado)
+			throws Exception {
+		consulta.cambiarEstado(paciente, fecha, estado);
+		
+	}
 }

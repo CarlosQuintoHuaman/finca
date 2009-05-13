@@ -121,7 +121,7 @@ public class UsoAgenteMedico {
             
             t.setTime(c.getFecha().getTime() + c.getHora().getTime());
             
-            Object d[] = {c.getUsuario(),t};
+            Object d[] = {c.getUsuario(),t,2};
             
             ItfUsoAgenteReactivo itfUsoHistorial = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionHistorial1");
             
