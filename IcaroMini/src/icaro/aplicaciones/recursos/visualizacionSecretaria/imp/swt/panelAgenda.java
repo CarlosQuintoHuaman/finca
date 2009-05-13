@@ -843,6 +843,8 @@ public class panelAgenda extends Thread {
 				}
 			}
 			huecoAgenda.layout();
+			tablaLlamadas.layout();
+			tablaExtras.layout();
 			Agenda.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					int m=Agenda.getSelectionIndex();
@@ -880,6 +882,8 @@ public class panelAgenda extends Thread {
 						}
 					}
 					huecoAgenda.layout();
+					tablaLlamadas.layout();
+					tablaExtras.layout();
 					disp.update();
 				}
 			});
@@ -1434,7 +1438,7 @@ public class panelAgenda extends Thread {
 			}
 			i++;
 		}
-		usoAgente.mostrarVentanaExtra();
+		usoAgente.mostrarVentanaExtra(u,fy);
 	}
 	
 	/**
@@ -1943,12 +1947,14 @@ public class panelAgenda extends Thread {
 	            		for (int i=0;i<extra.size();i++){	            		
 	            			NombresE[i].dispose();
 	            			horasE[i].dispose();
-	            			if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getNombre().equals(dA.getNombre())){
+	            			//if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getNombre().equals(dA.getNombre())){
+	            			if (extra.get(i).getHora().equals(dA.getHora()) && extra.get(i).getUsuario().equals(dA.getUsuario())){
 	            				esta=true;
 	            				extra.get(i).setNombre(dP.getNombre());
 	            				extra.get(i).setMensaje(dP.getMensaje());
 	            				extra.get(i).setTelf(dP.getTelf());
 	            				extra.get(i).setPaciente(dP.getPaciente());
+	            				extra.get(i).setUsuario(dP.getUsuario());
 	            				dP.setHora(dA.getHora());
 	            			}
 	            		}
@@ -2202,13 +2208,13 @@ public class panelAgenda extends Thread {
 			i=0;
 			String u="";
 			String uPaciente="";
-			int w=0;
-			ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+			
+			ArrayList<DatosLlamada> ll=new ArrayList<DatosLlamada>();
 			String medico=Agenda.getSelection().getText();
 			while(i<datos.getNumM() && !cu){
 				if (datos.getMedicos().get(i).getNombre().equals(medico)){
 					u=datos.getMedicos().get(i).getUsuario();
-					ll=datos.getMedicos().get(w).getDatos();
+					ll=datos.getMedicos().get(i).getExtras();
 					cu=true;
 					i--;
 				}
@@ -2221,7 +2227,7 @@ public class panelAgenda extends Thread {
 			String n=d.getNombre();
 			String[] aux;
 			aux=n.split(" ");
-			n=aux[0];
+			//n=aux[0];
 			String ap1="";
 			String ap2="";
 			if (aux.length>1){
@@ -2231,8 +2237,8 @@ public class panelAgenda extends Thread {
 					ap2=ap2+aux[k];
 			}
 			while(v<ll.size() &&!cu){
-				if(ll.get(v).tomaNombre().equals(n)&& ll.get(v).tomaApell1().equals(ap1)&&ll.get(v).getApell2().equals(ap2)){
-					uPaciente=datos.getMedicos().get(w).getDatos().get(v).getUsuario();
+				if(ll.get(v).getNombre().equals(n)){
+					uPaciente=ll.get(v).getUsuario();
 				}
 			
 				v++;

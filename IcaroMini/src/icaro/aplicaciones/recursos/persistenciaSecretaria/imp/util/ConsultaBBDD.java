@@ -207,13 +207,13 @@ public class ConsultaBBDD {
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i).getUsuario())){
 						if(tipo.equals("llamada")){
-						DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19));
+						DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19),usuario,f11);
 						
 						llamadas[i].add(p);
 						datos[i].setLlamadas(llamadas[i]);
 						}
 						if(tipo.equals("extra")){
-							DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19));
+							DatosLlamada p = new DatosLlamada(nombre,mensaje,telf,f.substring(11, 19),usuario,f11);
 							
 							extras[i].add(p);
 							datos[i].setExtras(extras[i]);
@@ -557,8 +557,8 @@ public class ConsultaBBDD {
 	
 	public void modificaExtra (DatosLlamada la,DatosLlamada lp) throws ErrorEnRecursoException {
 		try {
-			String fechaA=la.getFecha().substring(0, 10)+la.getHora();
-			String fechaB=lp.getFecha().substring(0, 10)+lp.getHora();
+			String fechaA=la.getFecha().substring(0, 10)+" "+la.getHora();
+			String fechaB=lp.getFecha().substring(0, 10)+" "+lp.getHora();
 			if (lp.getPaciente()){
 				String n=lp.getNombre();
 				String[]aux=n.split(" ");
@@ -593,6 +593,19 @@ public class ConsultaBBDD {
 							fechaB+"', '"+lp.getMensaje()+"', '"+lp.getTelf()+"', '"+lp.getTipo()+"')");
 	      		}
 		
+		}
+		
+		catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
+		}
+
+	}
+	
+	public void borraExtra (DatosLlamada d) throws ErrorEnRecursoException {
+		try {
+			String fechaA=d.getFecha().substring(0, 10)+" "+d.getHora();
+			query.executeUpdate("DELETE FROM extras where Medico = '"
+  					+ d.getMedico() + "' and Fecha = '" + fechaA + "' and Nombre = '" + d.getUsuario() + "' and Mensaje = '" + d.getMensaje() +"'");	
 		}
 		
 		catch (Exception e) {

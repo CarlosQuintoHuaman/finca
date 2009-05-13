@@ -80,7 +80,7 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
     /**
      * Su proposito es pintar la ventana vacia
      */
-    public void mostrarVisualizadorExtra(String nombreAgente,String tipo) throws Exception;
+    public void mostrarVisualizadorExtraVacia(String nombreAgente,String tipo, DatosLlamada d) throws Exception;
     /**
      * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar del extra(nombre, mensaje, telefono, Espaciente, hora)

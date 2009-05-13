@@ -75,6 +75,8 @@ public class panelExtra extends Thread {
 	private String medico;
 	private String fecha;
 	private String usuario;
+	private Boolean p;
+	private String udesp;
 
 	final UsoAgenteSecretaria usoAgente;
 	
@@ -128,8 +130,32 @@ public class panelExtra extends Thread {
             	hora=dat.getHora();
             	medico=dat.getMedico();
             	usuario=dat.getUsuario();
+            	udesp=usuario;
             	fecha=dat.getFecha();
+    			tNombre.setEditable(false);
+    			tTelefono.setEditable(false);
+    			tMensaje.setEditable(false);
             	
+		    }
+        });
+	}
+	
+	/**
+	 * Muestra la ventana vacia pero conociendo los datos del medico y la fecha que le corresponden
+	 * @param dat	:: DatosLlamada(medico,fecha)
+	 */
+	public void mostrarVacia(final DatosLlamada dat){
+		disp.asyncExec(new Runnable() {
+            public void run() {   
+            	shell.open();
+            	medico=dat.getMedico();
+            	fecha=dat.getFecha();
+    			tNombre.setEditable(true);
+    			tTelefono.setEditable(true);
+    			tMensaje.setEditable(true);
+    			bBuscar.setEnabled(true);
+    			bEditar.setEnabled(false);
+    			bPaciente.setEnabled(true);
 		    }
         });
 	}
@@ -364,12 +390,13 @@ public class panelExtra extends Thread {
 				}
 			}
 			
-			tNombre.setEditable(false);
-			tTelefono.setEditable(false);
-			tMensaje.setEditable(false);
+
 			buscado=false;
 			LPacientes=new ArrayList<InfoPaciente>();
 			bBuscar.setEnabled(false);
+			usuario="";
+			udesp=usuario;
+			p=false;
         	shell.layout();
 		
 			while (!shell.isDisposed()) {
@@ -393,15 +420,48 @@ public class panelExtra extends Thread {
 			 f=new util(); 
 			hora=f.getStrTime();
 		}
-		if (tNombre.getText().equals("")){
-			usoAgente.mostrarMensajeError("Debe rellenar un nombre", "Error en formato");
+	    p=false;
+		
+		String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
+		if(tNombre.getText().equals("")){
+			mensaje=mensaje+"Nombre"+"\n";
+			p=true;
 		}
+		if(tMensaje.getText().equals("")){
+			mensaje=mensaje+"Mensaje"+"\n";
+			p=true;
+		}
+		
+		if(tTelefono.getText().equals("")){
+			mensaje=mensaje+"Telefono"+"\n";
+			p=true;
+		}
+		if(p)
+			usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
 		else{
-		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
-		if(!tNombre.getEditable())
-			//llamada al agente para mandar un evento que añada el extra que se le pasa por parametro a la tabla de extras
-			usoAgente.anadeExtra(llamada);
-		usoAgente.cerrarVentanaExtra();
+			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+			llamada.setTipo("extra");
+			if(bPaciente.getSelection()){
+				llamada.setUsuario(tNombre.getText());
+				llamada.setPaciente(true);
+				
+			}
+		
+		    if(buscado){
+		    	int i=cCombo1.getSelectionIndex()-1;
+		    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
+		    	llamada.setPaciente(false);
+		    }
+		    if(!bPaciente.getSelection()&&!buscado){
+		    	llamada.setPaciente(false);
+		    }
+
+		
+			if(!bEditar.getEnabled())
+				//llamada al agente para mandar un evento que añada el extra que se le pasa por parametro a la tabla de extras
+				usoAgente.anadeExtra(llamada);
+			usoAgente.cerrarVentanaExtra();
+			
 		}
 	}
 	/**
@@ -410,11 +470,19 @@ public class panelExtra extends Thread {
 	 */
 	private void bBorrarWidgetSelected(SelectionEvent evt){
 		
-		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora);
+		llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+		llamada.setTipo("extra");
 		boolean cc=vis.mostrarMensajeAvisoC("Atención", "¿Esta seguro que desea borrar esta cita?");
 		if (cc){
 		//llama al agente para enviar un evento que le permita borrar el extra que se le pasa por parametro
-			usoAgente.borraExtra(llamada);
+			if(!bBuscar.getEnabled()&& !bPaciente.getEnabled()){
+/*				if (usuario.equals(""))
+					llamada.setUsuario(udesp);
+				else
+					llamada.setUsuario(usuario);*/
+				llamada.setUsuario(udesp);
+				usoAgente.borraExtra(llamada);
+			}
 			usoAgente.cerrarVentanaExtra();
 		}
 	}
@@ -424,20 +492,19 @@ public class panelExtra extends Thread {
 	 * Nos permite editar un extra de la tabla de extras de la ventana 'agenda'
 	 */
 	private void bEditarWidgetSelected(SelectionEvent evt){
-		if(bEditar.getText().equals("Editar"))
-			bEditar.setText("Guardar");
-		else
-			bEditar.setText("Editar");
-		
-		if(bEditar.getText().equals("Guardar")){
+
+		if(bEditar.getText().equals("Editar")){
 			tNombre.setEditable(true);
 			tTelefono.setEditable(true);
 			tMensaje.setEditable(true);
 			bPaciente.setEnabled(true);
-			llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
-			llamadaAnterior.setTipo("extra");
+			if(!p){
+				llamadaAnterior=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+				llamadaAnterior.setTipo("extra");
 			//meterle el usuario a la llamada anterior
-			llamadaAnterior.setUsuario(usuario);
+				llamadaAnterior.setUsuario(usuario);				
+			}
+
 			bBuscar.setEnabled(true);
 		}
 		else{
@@ -445,12 +512,8 @@ public class panelExtra extends Thread {
 				 f=new util(); 
 				hora=f.getStrTime();
 			}
-			tNombre.setEditable(false);
-			tTelefono.setEditable(false);
-			tMensaje.setEditable(false);
-			bPaciente.setEnabled(false);
-			bBuscar.setEnabled(false);
-			boolean p;
+
+			
 			p=false;
 
 			String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
@@ -470,29 +533,47 @@ public class panelExtra extends Thread {
 			if(p)
 				usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
 			else{
-			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
-			llamada.setTipo("extra");
-			if(bPaciente.getSelection()){
-				llamada.setUsuario(tNombre.getText());
-				llamada.setPaciente(true);
+				tNombre.setEditable(false);
+				tTelefono.setEditable(false);
+				tMensaje.setEditable(false);
+				bPaciente.setEnabled(false);
+				bBuscar.setEnabled(false);
 				
-			}
-		
-		    if(buscado){
-		    	int i=cCombo1.getSelectionIndex()-1;
-		    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
-		    	llamada.setPaciente(false);
-		    }
-		    if(!bPaciente.getSelection()&&!buscado){
-		    	llamada.setPaciente(false);
-		    }
-		    //usoAgente.validaCita(datos);
-		    
-			//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
-			usoAgente.modificaExtra(llamadaAnterior, llamada);
-
+				llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+				llamada.setTipo("extra");
+				if(bPaciente.getSelection()){
+					llamada.setUsuario(tNombre.getText());
+					llamada.setPaciente(true);
+					udesp=llamada.getUsuario();
+					
+					
+				}
+			
+			    if(buscado){
+			    	int i=cCombo1.getSelectionIndex()-1;
+			    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
+			    	llamada.setPaciente(false);
+			    	udesp=llamada.getUsuario();
+			    }
+			    if(!bPaciente.getSelection()&&!buscado){
+			    	llamada.setPaciente(false);
+			    	llamada.setUsuario(llamadaAnterior.getUsuario());
+			    	udesp=llamada.getUsuario();
+			    	
+			    }
+			   
+			    //usoAgente.validaCita(datos);
+			    
+				//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
+				usoAgente.modificaExtra(llamadaAnterior, llamada);
+	
 			}
 		}
+		
+		if(bEditar.getText().equals("Editar"))
+			bEditar.setText("Guardar");
+		else if(bEditar.getText().equals("Guardar")&&!p)
+			bEditar.setText("Editar");
 
 	}
 	

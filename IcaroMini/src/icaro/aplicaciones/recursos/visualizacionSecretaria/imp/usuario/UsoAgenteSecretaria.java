@@ -282,9 +282,9 @@ public class UsoAgenteSecretaria {
      * que le corresponde: 'pintaVentanaExtra'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es pintar la ventana 
      */
-       public void mostrarVentanaExtra(){
+       public void mostrarVentanaExtra(String medico, String fecha){
     	getInformacionAgente();
-    	
+    	DatosLlamada datos= new DatosLlamada(medico,fecha);
     	try {
             if (itfUsoRepositorioInterfaces == null) {
                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
@@ -294,7 +294,7 @@ public class UsoAgenteSecretaria {
                 //AgenteAplicacionSecretaria
                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
                 if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoRecAgte("anadirExtra", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("anadirExtraV", datos,"VisualizacionSecretaria1", nombreAgenteSecretaria));
                
                 }
             }

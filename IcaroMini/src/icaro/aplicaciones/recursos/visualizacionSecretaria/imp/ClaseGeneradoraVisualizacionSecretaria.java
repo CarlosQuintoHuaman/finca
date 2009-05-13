@@ -273,13 +273,13 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		InfoTraza.NivelTraza.debug));
 	}
 	
-		public void mostrarVisualizadorExtra(String nombreAgente, String tipo){
+		public void mostrarVisualizadorExtraVacia(String nombreAgente, String tipo,DatosLlamada d){
 		
 			this.nombreAgenteControlador = nombreAgente;
 			System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 			this.tipoAgenteControlador = tipo;
 
-			this.ventanaExtra.mostrar();
+			this.ventanaExtra.mostrarVacia(d);
 			
 			trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 			"Mostrando visualizador...",

@@ -56,6 +56,14 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	 */
 	public void setExtra(DatosLlamada datosA,DatosLlamada datosP ) throws ErrorEnRecursoException;
 	
+	
+	/**
+	 * Funcion con la que se borra el extra que se le pasa por parametro de la bbdd
+	 * @param datos			:: Datos del extra que se quiere borrar la bbdd. 
+	 * @throws ErrorEnRecursoException 
+	 */
+	public void borraExtra(DatosLlamada datos ) throws ErrorEnRecursoException;
+	
 	/**
 	 * Funcion con la que se borra de la bbdd una cita
 	 * @param datos			:: Datos de la cita que se quiere borrar de la bbdd.

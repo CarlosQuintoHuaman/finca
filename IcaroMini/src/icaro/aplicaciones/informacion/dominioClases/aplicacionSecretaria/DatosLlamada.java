@@ -57,6 +57,12 @@ public class DatosLlamada {
 		this.usuario=usuario;
 	}
 	
+	public DatosLlamada(String m,String fecha){
+		medico=m;
+		this.fecha=fecha;
+
+	}
+	
 	public DatosLlamada(String n, String m, String t, boolean p){
 		nombre=n;
 		mensaje=m;
@@ -74,6 +80,15 @@ public class DatosLlamada {
 		mensaje=m;
 		telefono=t;
 		hora=f;
+	}
+	
+	public DatosLlamada(String n, String m, String t, String f,String usuario, String fecha){
+		nombre=n;
+		mensaje=m;
+		telefono=t;
+		hora=f;
+		this.usuario=usuario;
+		this.fecha=fecha;
 	}
 	
 	public String getUsuario() {

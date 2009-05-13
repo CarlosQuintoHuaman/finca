@@ -323,12 +323,12 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 	/**
 	 * Pinta la ventana de extras vacia
 	 */
-	public void pintaVentanaExtra(){
+	public void pintaVentanaExtraVacia(DatosLlamada d){
 		
 		try {
 			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
-			visualizacion.mostrarVisualizadorExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO);
+			visualizacion.mostrarVisualizadorExtraVacia(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO,d);
 			
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador extra",InfoTraza.NivelTraza.debug));
 		}
@@ -623,6 +623,11 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
 			visualizacion.borrarExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar el extra",InfoTraza.NivelTraza.debug));
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.borraExtra(datos);
 		}
 
 		catch (Exception ex) {
@@ -652,6 +657,10 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			visualizacion.insertaExtra(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar el extra",InfoTraza.NivelTraza.debug));
 			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.setExtra(datos,datos);
 			
 		}
 
