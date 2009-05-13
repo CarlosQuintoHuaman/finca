@@ -554,7 +554,12 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
 			visualizacion.borrarLlamada(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
 			
-			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar la Cita",InfoTraza.NivelTraza.debug));
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de comprobar borrar llamada",InfoTraza.NivelTraza.debug));
+			
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.borraExtra(datos);
 		}
 
 		catch (Exception ex) {
