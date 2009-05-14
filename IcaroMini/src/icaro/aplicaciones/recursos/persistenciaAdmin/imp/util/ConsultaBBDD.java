@@ -157,30 +157,30 @@ public class ConsultaBBDD {
 		      		query.close();
 		      		crearQuery();
 		      		
-					query.addBatch("CREATE TABLE Extras(Nombre VARCHAR(20), Medico VARCHAR(20), Fecha TIMESTAMP, Mensaje VARCHAR(100), Telefono INTEGER, Tipo VARCHAR(10));");
+					query.addBatch("CREATE TABLE Extras(Nombre VARCHAR(40), Medico VARCHAR(40), Fecha TIMESTAMP, Mensaje VARCHAR(100), Telefono INTEGER, Tipo VARCHAR(10));");
 					
-					query.addBatch("CREATE TABLE Antecedentes(Paciente VARCHAR(20), Descripcion TEXT(500));");
+					query.addBatch("CREATE TABLE Antecedentes(Paciente VARCHAR(40), Descripcion TEXT(500));");
 					
 					query.addBatch("CREATE TABLE Tratamientos(Nombre VARCHAR(50), Descripcion TEXT(1000), Tipo VARCHAR(20));");
 					query.addBatch("CREATE TABLE MedicPorTrat(Tratamiento VARCHAR(50), CodigoMed INTEGER);");
 					query.addBatch("CREATE TABLE Medicamentos(Codigo INTEGER, Nombre VARCHAR(20), PrincipioActivo VARCHAR(50), Descripcion TEXT(500), Indicaciones TEXT(100));");
 					query.addBatch("CREATE TABLE Consentimientos(Nombre VARCHAR(50), Titulo VARCHAR(50), Contenido TEXT(1000));");
 					query.addBatch("CREATE TABLE Documentos(Paciente VARCHAR(20), Nombre VARCHAR(50), FechaVisita TIMESTAMP, Tipo VARCHAR(20), Archivo VARCHAR(100), DESCRIPCION TEXT(1000));");
-					query.addBatch("CREATE TABLE Visita(Paciente VARCHAR(20), Fecha TIMESTAMP, Motivo TEXT(500), Descripcion TEXT(1000), Exploracion TEXT(500), Diagnostico TEXT(1000), Tratamiento TEXT(1000));");
-					query.addBatch("CREATE TABLE Administrador(NombreUsuario VARCHAR(20));");
-					query.addBatch("CREATE TABLE Secretaria(NombreUsuario VARCHAR(20), InicioMan TINYINT(4), FinMan TINYINT(4), InicioTar TINYINT(4), FinTar TINYINT(4));");
-					query.addBatch("CREATE TABLE Usuario(NombreUsuario VARCHAR(20), Password VARCHAR(15), Nombre VARCHAR(15), Apellido1 VARCHAR(15), Apellido2 VARCHAR(15), Direccion VARCHAR(20), Telefono INTEGER);");
-					query.addBatch("CREATE TABLE Paciente(NombreUsuario VARCHAR(20), Seguro VARCHAR(20));");
-					query.addBatch("CREATE TABLE Medico(NombreUsuario VARCHAR(20), Especialidad VARCHAR(30), Intervalo TINYINT(4), InicioMan TINYINT(4), FinMan TINYINT(4), InicioTar TINYINT(4), FinTar TINYINT(4));");
+					query.addBatch("CREATE TABLE Visita(Paciente VARCHAR(40), Fecha TIMESTAMP, Motivo TEXT(500), Descripcion TEXT(1000), Exploracion TEXT(500), Diagnostico TEXT(1000), Tratamiento TEXT(1000));");
+					query.addBatch("CREATE TABLE Administrador(NombreUsuario VARCHAR(40));");
+					query.addBatch("CREATE TABLE Secretaria(NombreUsuario VARCHAR(40), InicioMan TINYINT(4), FinMan TINYINT(4), InicioTar TINYINT(4), FinTar TINYINT(4));");
+					query.addBatch("CREATE TABLE Usuario(NombreUsuario VARCHAR(40), Password VARCHAR(15), Nombre VARCHAR(15), Apellido1 VARCHAR(15), Apellido2 VARCHAR(15), Direccion VARCHAR(20), Telefono INTEGER);");
+					query.addBatch("CREATE TABLE Paciente(NombreUsuario VARCHAR(40), Seguro VARCHAR(20));");
+					query.addBatch("CREATE TABLE Medico(NombreUsuario VARCHAR(40), Especialidad VARCHAR(30), Intervalo TINYINT(4), InicioMan TINYINT(4), FinMan TINYINT(4), InicioTar TINYINT(4), FinTar TINYINT(4));");
 					query.addBatch("CREATE TABLE TieneCons(NombreTratamiento VARCHAR(50), NombreConsentimiento VARCHAR(50));");
-					query.addBatch("CREATE TABLE Recetas(Codigo INTEGER, Paciente VARCHAR(50), FechaVisita TIMESTAMP, Notas VARCHAR(500));");
+					query.addBatch("CREATE TABLE Recetas(Codigo INTEGER, Paciente VARCHAR(40), FechaVisita TIMESTAMP, Notas VARCHAR(500));");
 					query.addBatch("CREATE TABLE MedPorReceta(CodigoRec INTEGER, CodigoMed INTEGER);");
 					query.addBatch("CREATE TABLE TieneDoc(NombreDoc VARCHAR(50), FechaVisita TIMESTAMP, Fecha TIMESTAMP);");
-					query.addBatch("CREATE TABLE TieneTratamientos(Nombre VARCHAR(50), Paciente VARCHAR(50), FechaVisita TIMESTAMP);");
-					query.addBatch("CREATE TABLE TieneHistorial(NombreUsuario VARCHAR(20), FechaVisita TIMESTAMP);");
-					query.addBatch("CREATE TABLE Comunica(Remitente VARCHAR(20), Destinatario VARCHAR(20), Fecha TIMESTAMP, Asunto VARCHAR(30), Contenido TEXT(5000));");
-					query.addBatch("CREATE TABLE TieneAgenda(Medico VARCHAR(20), Secretaria VARCHAR(20));");
-					query.addBatch("CREATE TABLE MedicoPaciente(Medico VARCHAR(20), Paciente VARCHAR(20), Fecha DATE, Hora TIME, Estado TINYINT(4));");
+					query.addBatch("CREATE TABLE TieneTratamientos(Nombre VARCHAR(50), Paciente VARCHAR(40), FechaVisita TIMESTAMP);");
+					query.addBatch("CREATE TABLE TieneHistorial(NombreUsuario VARCHAR(40), FechaVisita TIMESTAMP);");
+					query.addBatch("CREATE TABLE Comunica(Remitente VARCHAR(40), Destinatario VARCHAR(40), Fecha TIMESTAMP, Asunto VARCHAR(30), Contenido TEXT(5000));");
+					query.addBatch("CREATE TABLE TieneAgenda(Medico VARCHAR(40), Secretaria VARCHAR(40));");
+					query.addBatch("CREATE TABLE MedicoPaciente(Medico VARCHAR(40), Paciente VARCHAR(40), Fecha DATE, Hora TIME, Estado TINYINT(4));");
 										
 					query.executeBatch();
 		      		query.close();
