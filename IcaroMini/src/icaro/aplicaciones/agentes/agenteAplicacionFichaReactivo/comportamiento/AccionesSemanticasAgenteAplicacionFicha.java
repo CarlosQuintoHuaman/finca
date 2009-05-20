@@ -47,10 +47,16 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			//Manda los datos a la persistencia
 			DatosFicha ficha=Persistencia.getFicha(datos);
 			if (!ficha.isEsta()){
-				ok=visualizacion.mostrarMensajeAvisoC("Aviso", "Este paciente no tiene almacenados los datos de la ficha. ¿Desea añadirlos ahora?");
+				ok=visualizacion.mostrarMensajeAvisoCA("Aviso", "Este paciente no tiene almacenados los datos de la ficha. ¿Desea añadirlos ahora?");
 			// Pinta la ficha con datos de la cita pq no esta en la bbdd
 				if (ok)
 					visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+				else{
+					agenteFicha = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+					(NombresPredefinidos.ITF_USO+this.nombreAgente);
+					visualizacion.cerrarVisualizadorFicha();
+					agenteFicha.aceptaEvento(new EventoRecAgte("cerrarVentanaFicha",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha1"));
+				}
 			}else
 				visualizacion.mostrarVisualizadorFichaBD(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, ficha);
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
@@ -117,6 +123,14 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 				visualizacion.mostrarMensajeError("Error en base de datos", "Los datos modificados no se han guardado");
 			}
 			
+			agenteFicha = (ItfUsoAgenteReactivo) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+this.nombreAgente);
+			 ItfUsoAgenteReactivo itfUsoSecretaria = (ItfUsoAgenteReactivo)itfUsoRepositorio.obtenerInterfaz("Itf_Uso_AgenteAplicacionSecretaria1");
+			 //itfUsoSecretaria.aceptaEvento(new EventoRecAgte("cargarMensajes", datos, "VisualizacionSecretaria1", "AgenteAplicacionMensajeria1"));
+			
+			itfUsoSecretaria.aceptaEvento(new EventoRecAgte("guardarFicha",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Secretaria1"));
+			visualizacion.cerrarVisualizadorFicha();
+			
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba guardar datos del visualizador",InfoTraza.NivelTraza.debug));
 		}
 
@@ -130,6 +144,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 		}
 	}
 	
+
 	/**
 	 * borra todos los datos de una ficha de un determinado paciente
 	 * @param datos		:: contiene  los datos de una ficha
@@ -198,7 +213,7 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 						
 			if(ok){
 				// Se envia el evento sin datos ya que no lo requiere
-				agenteFicha.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha"));
+				agenteFicha.aceptaEvento(new EventoRecAgte("correcto",this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha1"));
 				// Si hubiera que enviar datos con el evento se haria asi:
 				// agenteFicha.aceptaEvento(new EventoRecAgte("correcto",infoFicha, this.nombreAgente,NombresPredefinidos.NOMBRE_AGENTE_APLICACION+"Ficha"));
 			}

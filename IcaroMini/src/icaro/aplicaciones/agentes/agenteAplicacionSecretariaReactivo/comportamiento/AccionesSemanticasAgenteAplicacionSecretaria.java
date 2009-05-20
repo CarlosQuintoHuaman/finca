@@ -10,6 +10,7 @@ import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCi
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosMedico;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosSecretaria;
+import icaro.aplicaciones.recursos.visualizacionFicha.ItfUsoVisualizadorFicha;
 import icaro.aplicaciones.recursos.visualizacionSecretaria.ItfUsoVisualizadorSecretaria;
 import icaro.aplicaciones.recursos.persistencia.ItfUsoPersistencia; 
 import icaro.aplicaciones.recursos.persistenciaHistorial.ItfUsoPersistenciaHistorial;
@@ -134,6 +135,32 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			try {
 					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
 														  "Ha habido un problema al guardar datos el visualizador de Secretaria en accion semantica 'guardaAgenda'", 
+														  InfoTraza.NivelTraza.error));
+					ex.printStackTrace();
+			}catch(Exception e){e.printStackTrace();}
+		}
+	}
+	
+	/**
+	 * Actualiza la agenda despues de modificar una ficha
+	 * @param datos		:: contiene  los datos de una ficha
+	 */
+	public void actualizaAgenda(){
+		
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+
+				visualizacion.actualizaAgenda();
+			
+			
+			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de actualizar datos del visualizador",InfoTraza.NivelTraza.debug));
+		}
+
+		catch (Exception ex) {
+			try {
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al guardar datos el visualizador de Secretaria en accion semantica 'actualizaAgenda'", 
 														  InfoTraza.NivelTraza.error));
 					ex.printStackTrace();
 			}catch(Exception e){e.printStackTrace();}
@@ -445,10 +472,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
-     * @param datos		:: Datos con los que rellenar el extra(nombre, mensaje, telefono, Espaciente, hora)
-     */
+
 	public void pintaVentanaExtra(DatosLlamada datos){
 		
 		try {
@@ -467,6 +491,7 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 			}catch(Exception e){e.printStackTrace();}
 		}
 	}	
+
 	/**
 	 * 
 	 * Comprueba una cita en la visualizacion y si es correcta la manda a la persistencia

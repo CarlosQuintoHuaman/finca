@@ -87,18 +87,13 @@ public class ConsultaBBDD {
 	}
 	
 	public boolean borraFicha(DatosFicha ficha){
-		try {
-			String[] aux=ficha.getApellidos().split(" ");
-			String ape1=aux[0];
-			
+		try {			
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + ficha.getNombre() +"' AND Apellido1 = '" + ape1 +
-					"' AND Telefono = '" + ficha.getTelf1() + "'");
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + ficha.getUsuario() +"'");
 			
 			if (resultado.next()){
-				String usuario=resultado.getString("NombreUsuario");
 				crearQuery();
-				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
+				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + ficha.getUsuario() +"'");
 			}
 			else
 				return false;
@@ -122,7 +117,7 @@ public class ConsultaBBDD {
 			String[] aux2=original.getApellidos().split(" ");
 			String ape1o=aux2[0];
 
-			
+			String nombre=fichaN.getNombre()+fichaN.getApellidos();
 			
 			String desc=fichaN.getNIF()+'/'+fichaN.getNombre()+'/'+fichaN.getApellidos()+'/'+util.getStrDateSQL2(fichaN.getFNacimiento())+'/'+Integer.valueOf(fichaN.getEdad())+'/'
 			+fichaN.getDireccion()+'/'+fichaN.getCP()+'/'+fichaN.getProvincia()+'/'+fichaN.getLocalidad()+'/'+fichaN.getTelf1()+'/'+fichaN.getTelf2()+'/'+fichaN.getMail()+'/'+fichaN.getProfesion()
@@ -131,22 +126,21 @@ public class ConsultaBBDD {
 			int id=1;
 			//Compruebo si esta dado de alta en la bbdd
 			crearQuery();
-			resultado = query.executeQuery("SELECT * FROM usuario WHERE Nombre = '" + original.getNombre() +"' AND Apellido1 = '" + ape1o +
-					"' AND Telefono = '" + original.getTelf1() + "'");
+			resultado = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + original.getUsuario() +"'");
 			
 			
 			if (resultado.next()){
-				String usuario=resultado.getString("NombreUsuario");
+				
 				crearQuery();
-				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + usuario +"'");
+				query.executeUpdate("DELETE FROM Antecedentes WHERE Paciente = '" + original.getUsuario() +"'");
 				
 				crearQuery();
 
 				query.executeUpdate("UPDATE usuario SET Nombre = '" + fichaN.getNombre() +"', Apellido1 = '" + ape1 +"', Apellido2 = '" + ape2 +
-						"', Direccion = '" + fichaN.getDireccion() +"', Telefono = '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+usuario+"'");
+						"', Direccion = '" + fichaN.getDireccion() +"', Telefono = '" + fichaN.getTelf1() + "' WHERE NombreUsuario = '"+original.getUsuario()+"'");
 				
 				crearQuery();
-				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+usuario+"', '"+desc+"')");
+				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+original.getUsuario()+"', '"+desc+"')");
 				
 			}
 			else{
@@ -154,13 +148,13 @@ public class ConsultaBBDD {
 				id=4;
 				crearQuery();
 				query.executeUpdate("INSERT INTO usuario (NombreUsuario, Password, Nombre, Apellido1, Apellido2, Direccion, Telefono) " +
-						"VALUES " +"('"+fichaN.getNombre()+"', '"+fichaN.getNombre()+"', '"+fichaN.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+fichaN.getDireccion()+"'" +
+						"VALUES " +"('"+nombre+"', '"+nombre+"', '"+fichaN.getNombre()+"', '"+ape1+"', '"+ape2+"', '"+fichaN.getDireccion()+"'" +
 								", '"+fichaN.getTelf1()+"')");
 				crearQuery();
-				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+fichaN.getNombre()+"', '"+fichaN.getAseguradora()+"')");
+				query.executeUpdate("INSERT INTO paciente (NombreUsuario, Seguro) VALUES " +"('"+nombre+"', '"+fichaN.getAseguradora()+"')");
 				
 				crearQuery();
-				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+fichaN.getNombre()+"', '"+desc+"')");
+				query.executeUpdate("INSERT INTO Antecedentes (Paciente, Descripcion) VALUES " +"('"+nombre+"', '"+desc+"')");
 			}
 			return true;
 		} catch (Exception e) {
@@ -194,7 +188,7 @@ public class ConsultaBBDD {
 			ficha.setNombre(aux2[1]);
 			ficha.setApellidos(aux2[2]);
 			ficha.setFNacimiento(util.StrToDate(aux2[3]));
-
+			ficha.setUsuario(usuario);
 			ficha.setDireccion(aux2[5]);
 			ficha.setCP(aux2[6]);
 			ficha.setProvincia(aux2[7]);

@@ -240,6 +240,16 @@ this.PestOtros=pOtros;
 		PestOtros = pestOtros;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}

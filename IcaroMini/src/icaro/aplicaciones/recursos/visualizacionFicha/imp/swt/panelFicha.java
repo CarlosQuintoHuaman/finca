@@ -149,6 +149,7 @@ public class panelFicha extends Thread {
     private Boolean nuevo;
     private DatosFicha original;
     private String usuario;
+    private Boolean cumple;
 	/**
 	 * comunicacion con el agente (control)
 	 * Hay que cambiar "Template" por el nombre del agente.
@@ -248,9 +249,8 @@ public class panelFicha extends Thread {
             	tProvincia.setText(datos.getProvincia());
             	tOtros.setText(datos.getOtros());
             	tNotas.setText(datos.getPestOtros());
-        
             	tTelefono2.setText(datos.getTelf2());
-            	
+            	usuario=d.getUsuario();
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();
             	    cAntFamiliares.dispose();
@@ -1082,6 +1082,7 @@ public class panelFicha extends Thread {
 		}
 		
       	shell.layout();
+      	cumple=true;
 		
 			while (!shell.isDisposed()) {
 				if (!disp.readAndDispatch())
@@ -1206,10 +1207,7 @@ public class panelFicha extends Thread {
 			DatosFicha ficha;
 			try {
 				ficha = new DatosFicha();
-		       	util u=new util();
-	        	ficha.setNombre(tNombre.getText());
-	        	ficha.setTelf1(tTelefono1.getText());
-	        	ficha.setApellidos(tApellidos.getText());
+	        	ficha.setUsuario(usuario);
 	        	
 				usoAgente.borrarFicha(ficha);
 				usoAgente.cerrarVentanaFicha();
@@ -1229,6 +1227,25 @@ public class panelFicha extends Thread {
 	private void bCerrarWidgetSelected(SelectionEvent evt){
 
 		usoAgente.cerrarVentanaFicha();
+	}
+	
+	public boolean mostrarMensajeAvisoC(final String titulo,final String mensaje){
+		
+		cumple=true;
+		disp.syncExec(new Runnable() {
+            public void run() {
+				MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK |SWT.CANCEL| SWT.ICON_WARNING);
+				messageBox.setText (titulo);
+				messageBox.setMessage (mensaje);
+				if (messageBox.open() == SWT.OK){
+					cumple= true;
+				}else
+					cumple= false;
+            }
+            
+        });
+		return cumple;
+	
 	}
 	
 

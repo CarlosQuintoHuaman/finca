@@ -117,6 +117,12 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
 	 */
 	public void mostrarMensajes(ArrayList<InfoMensaje> m) throws Exception;
     
+	/**
+	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
+     * @param datos		:: Datos con los que rellenar el extra(nombre, mensaje, telefono, Espaciente, hora)
+	 */
+	
+	public void actualizaAgenda() throws Exception;
     /**
      * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora
      * @param datos 	:: Datos a insertar en la agenda (nombre, apellido1, telefono,fecha, hora, periodo)

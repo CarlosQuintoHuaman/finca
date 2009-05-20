@@ -99,6 +99,17 @@ public class panelMensajeria  extends Thread {
          });
 	}
 	
+	public void mostrardatos(final String usu){
+		// Al ser un Thread, SWT nos obliga a enviarle comandos
+		// rodeando el codigo de esta manera
+		disp.asyncExec(new Runnable() {
+            public void run() {
+         	   shell.open();
+         	   usuario=usu;
+	       }
+         });
+	}
+	
 	public void ocultar(){
 		// NO CONFIRMADO
 		disp.asyncExec(new Runnable() {

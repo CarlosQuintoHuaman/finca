@@ -160,6 +160,11 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
 			return false;
 
 	}
+	
+	public boolean mostrarMensajeAvisoCA(String titulo,String mensaje) {
+		return this.ventanaFichaUsuario.mostrarMensajeAvisoC(titulo,mensaje);
+
+	}
   
 	public void mostrarMensajeAviso(String titulo,String mensaje) {
       	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",

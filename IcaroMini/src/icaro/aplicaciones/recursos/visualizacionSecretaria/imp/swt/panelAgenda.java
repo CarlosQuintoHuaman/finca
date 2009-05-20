@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import java.util.GregorianCalendar;
 
@@ -1404,7 +1405,7 @@ public class panelAgenda extends Thread {
 		if (!d.tomaNombre().equals(""))
 			usoAgente.mostrarVentanaFicha(a);
 		else
-			usoAgente.mostrarMensajeAviso("Error", "Debe seleccionar un paciente");
+			usoAgente.mostrarMensajeAviso( "Debe seleccionar un paciente","Error");
 			//usoAgente.mostrarVentanaFicha();
 	}
 	
@@ -2876,6 +2877,36 @@ public class panelAgenda extends Thread {
 		
 	}
 	
+	public boolean mostrarMensajeAvisoC(final String titulo,final String mensaje){
+		
+		cumple=true;
+		disp.syncExec(new Runnable() {
+            public void run() {
+				MessageBox messageBox = new MessageBox (new Shell(), SWT.APPLICATION_MODAL | SWT.OK |SWT.CANCEL| SWT.ICON_WARNING);
+				messageBox.setText (titulo);
+				messageBox.setMessage (mensaje);
+				if (messageBox.open() == SWT.OK){
+					cumple= true;
+				}else
+					cumple= false;
+            }
+            
+        });
+		return cumple;
 	
+	}
+	
+	public boolean actualizaAgenda(){
+		
+		cumple=true;
+		disp.syncExec(new Runnable() {
+            public void run() {
+            	usoAgente.mostrarAgendaSecretaria(fy,usuEste);
+            }
+            
+        });
+		return cumple;
+	
+	}
 
 }
