@@ -183,6 +183,7 @@ public class ClaseGeneradoraVisualizacionFicha extends ImplRecursoSimple impleme
 	    messageBox.open();
 	}
 	
+	
 	public void mostrarMensajeError(String titulo,String mensaje) {
       	trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionFicha",
   				"Mostrando mensaje de error",

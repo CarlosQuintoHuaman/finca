@@ -144,10 +144,11 @@ public class panelFicha extends Thread {
     private CTabFolder cTablaFicha;
     private Composite composite1;
     private CCombo cCombo1;
+    
     //Variables globales
     private Boolean nuevo;
     private DatosFicha original;
-
+    private String usuario;
 	/**
 	 * comunicacion con el agente (control)
 	 * Hay que cambiar "Template" por el nombre del agente.
@@ -185,6 +186,7 @@ public class panelFicha extends Thread {
         	    cAntDepilacion.dispose();
         	    cAntPersonales.dispose();
         	    cAntFamiliares.dispose();
+        	    usuario="";
          	   shell.open();
 	       }
          });
@@ -208,6 +210,7 @@ public class panelFicha extends Thread {
             	tNombre.setText(aux[0]);
             	tApellidos.setText(a);
             	tTelefono1.setText(datos.tomaTelf());
+            	usuario=d.getUsuario();
             	/*if (datos.getUsuario()==0){
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();
@@ -1154,7 +1157,7 @@ public class panelFicha extends Thread {
 		
 		if (!tFNacimiento.getText().equals(""))
 			f=tFNacimiento.getText();
-		original=new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),util.StrToDate(f),
+		original=new DatosFicha(tNombre.getText(),usuario,tApellidos.getText(),tNif.getText(),util.StrToDate(f),
 				Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
 				tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
 				text1.getText());
@@ -1175,7 +1178,7 @@ public class panelFicha extends Thread {
 				f=util.StrToDate(util.getStrDateSQL2());
 			}else
 				f=util.StrToDate(tFNacimiento.getText());
-			fichaN = new DatosFicha(tNombre.getText(),tApellidos.getText(),tNif.getText(),f,
+			fichaN = new DatosFicha(tNombre.getText(),usuario,tApellidos.getText(),tNif.getText(),f,
 			Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
 			tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
 			text1.getText());

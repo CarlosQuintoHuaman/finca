@@ -54,6 +54,7 @@ public class DatosFicha implements Serializable {
 		this.PestOtros=pOtros;
 	}
 	
+	
 	public DatosFicha (String nombre, String usuario, String apell1, String NIF, Date fNacimiento, int edad, String direccion, String CP, String prov, 
 			String loc, String telf1, String telf2, String mail, String prof, String seguro, String otros, String pOtros) {
 

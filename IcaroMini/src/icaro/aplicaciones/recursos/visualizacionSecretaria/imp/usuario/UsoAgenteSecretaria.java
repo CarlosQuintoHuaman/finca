@@ -225,6 +225,34 @@ public class UsoAgenteSecretaria {
      * que le corresponde: 'pintaVentanaLlamada'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es pintar la ventana 
      */
+    public void mostrarVentanaMensajeria(String usuario){
+    	getInformacionAgente();
+    	//DatosCitaSinValidar datos= new DatosCitaSinValidar(nombre, apellido, Telf, hora);
+    	try {
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("consultarMensajera", usuario,"VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al consultarPCitas ");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'anadirLlamada', para la accion semantica 
+     * que le corresponde: 'pintaVentanaLlamada'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es pintar la ventana 
+     */
     public void mostrarVentanaLlamadas(String medico, String fecha){
     	getInformacionAgente();
     	DatosLlamada datos= new DatosLlamada(medico,fecha);
@@ -449,6 +477,36 @@ public class UsoAgenteSecretaria {
 
         } catch (Exception e) {
             System.out.println("Ha habido un error al enviar evento cancelarPCitas al agente secretaria");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Generamos un evento para el automataSecretaria con input: 'cerrarMensajeria', para la accion semantica 
+     * que le corresponde: 'nula'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es cerrar la ventana
+      */
+    public void cerrarVentanaMensajeria(){
+    	getInformacionAgente();
+    	
+    	try {
+    		visualizador.cerrarVisualizadorMensajeria();
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+
+            if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                //AgenteAplicacionSecretaria
+                ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                if (itfUsoAgente != null) {
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("cerrarMensajeria", "VisualizacionSecretaria1", nombreAgenteSecretaria));
+               
+                }
+            }
+            
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al enviar evento cerrarMensajeria al agente secretaria");
             e.printStackTrace();
         }
     }
@@ -785,6 +843,50 @@ public class UsoAgenteSecretaria {
               e.printStackTrace();
           }
           
+    }
+    
+    /**
+     * Envia un evento a Mensajes para que muestre la ventana de envio de mensaje
+     */
+    public void enviarMensaje(String usuario) {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            ItfUsoAgenteReactivo itfUsoMensajeria = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMensajeria1");
+            
+            // Como dato le paso el nombre de este agente para que me devuelva los datos
+            itfUsoMensajeria.aceptaEvento(new EventoRecAgte("enviarMensaje", usuario, "VisualizacionSecretaria1", "AgenteAplicacionMensajeria1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Mensajeria desde el agente Secretaria");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Envia un evento a Mensajes para que cargue y envie de vuelta los mensajes (asincrono)
+     */
+    public void cargarMensajes(String usuario) {
+    	try {
+    		
+            if (itfUsoRepositorioInterfaces == null) {
+                itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+            }
+            
+            Object[] datos = {usuario,"AgenteAplicacionSecretaria1"};
+            
+            ItfUsoAgenteReactivo itfUsoMensajeria = (ItfUsoAgenteReactivo)itfUsoRepositorioInterfaces.obtenerInterfaz("Itf_Uso_AgenteAplicacionMensajeria1");
+            
+            // Como dato le paso el nombre de este agente para que me devuelva los datos
+            itfUsoMensajeria.aceptaEvento(new EventoRecAgte("cargarMensajes", datos, "VisualizacionSecretaria1", "AgenteAplicacionMensajeria1"));
+
+        } catch (Exception e) {
+            System.out.println("Ha habido un error al activar el agente Mensajeria desde el agente Secretaria");
+            e.printStackTrace();
+        }
     }
     
     /**

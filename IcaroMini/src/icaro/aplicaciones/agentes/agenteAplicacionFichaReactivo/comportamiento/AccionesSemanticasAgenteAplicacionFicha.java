@@ -43,14 +43,15 @@ public class AccionesSemanticasAgenteAplicacionFicha extends AccionesSemanticasA
 			
 			Persistencia = (ItfUsoPersistenciaFicha) itfUsoRepositorio.obtenerInterfaz
 			(NombresPredefinidos.ITF_USO+"PersistenciaFicha1");
-			
+			boolean ok=true;
 			//Manda los datos a la persistencia
 			DatosFicha ficha=Persistencia.getFicha(datos);
-			if (!ficha.isEsta())
-			
+			if (!ficha.isEsta()){
+				ok=visualizacion.mostrarMensajeAvisoC("Aviso", "Este paciente no tiene almacenados los datos de la ficha. ¿Desea añadirlos ahora?");
 			// Pinta la ficha con datos de la cita pq no esta en la bbdd
-				visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
-			else
+				if (ok)
+					visualizacion.mostrarVisualizadorFicha(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, datos);
+			}else
 				visualizacion.mostrarVisualizadorFichaBD(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, ficha);
 			// Ejemplo de como enviar una traza para asi hacer un seguimiento en la ventana de trazas
 			trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador",InfoTraza.NivelTraza.debug));

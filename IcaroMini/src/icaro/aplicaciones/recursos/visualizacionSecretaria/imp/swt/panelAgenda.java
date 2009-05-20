@@ -101,6 +101,7 @@ public class panelAgenda extends Thread {
 	private Button Copiar;
 	private Button ConsultarCitas;
 	private Button AgendaHoy;
+	private Button Mensajeria;
 	private Label LMenu1;
 	private Composite Menu1;
 	private Composite principal;
@@ -444,10 +445,24 @@ public class panelAgenda extends Thread {
 						button1LData.heightHint = 57;
 						//button1LData.horizontalAlignment = GridData.CENTER;
 						AgendaHoy.setLayoutData(button1LData);
-						AgendaHoy.setText("AGENDA HOY");
+						AgendaHoy.setText("Agenda Hoy");
 						AgendaHoy.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(SelectionEvent evt) {
 								agendaHoyWidgetSelected(evt);
+								
+							}
+						});
+					}
+					{
+						Mensajeria = new Button(Menu1, SWT.PUSH | SWT.CENTER);
+						GridData button1LData = new GridData();
+						button1LData.horizontalAlignment = GridData.FILL;
+						button1LData.heightHint = 57;
+						Mensajeria.setLayoutData(button1LData);
+						Mensajeria.setText("Mensajeria");
+						Mensajeria.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(SelectionEvent evt) {
+								usoAgente.mostrarVentanaMensajeria(usuEste);
 								
 							}
 						});
@@ -1389,7 +1404,8 @@ public class panelAgenda extends Thread {
 		if (!d.tomaNombre().equals(""))
 			usoAgente.mostrarVentanaFicha(a);
 		else
-			usoAgente.mostrarVentanaFicha();
+			usoAgente.mostrarMensajeAviso("Error", "Debe seleccionar un paciente");
+			//usoAgente.mostrarVentanaFicha();
 	}
 	
 

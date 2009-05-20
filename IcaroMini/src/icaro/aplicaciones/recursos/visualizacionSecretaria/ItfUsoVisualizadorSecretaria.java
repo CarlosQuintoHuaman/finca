@@ -104,6 +104,11 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
     public void mostrarVisualizadorPCitas(String nombreAgente, String tipo) throws Exception;
     
     /**
+     * Su proposito es pintar la ventana 
+     */
+    public void mostrarVisualizadorMensajeria(String nombreAgente, String tipo, String usuario) throws Exception;
+    
+    /**
      * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora
      * @param datos 	:: Datos a insertar en la agenda (nombre, apellido1, telefono,fecha, hora, periodo)
      */

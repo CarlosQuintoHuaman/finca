@@ -414,6 +414,28 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}catch(Exception e){e.printStackTrace();}
 	}
 }
+	
+	/**
+	 * Pinta la ventana de mensajeria
+	 */
+	public void pintaVentanaMensajeria(String usuario){
+	
+	try {
+		visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+		(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+		visualizacion.mostrarVisualizadorMensajeria(this.nombreAgente, NombresPredefinidos.TIPO_REACTIVO, usuario);
+		
+		trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente,"Se acaba de mostrar el visualizador de mensajeria",InfoTraza.NivelTraza.debug));
+	}
+
+	catch (Exception ex) {
+		try {
+				trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+													  "Ha habido un problema al abrir el visualizador de mensajeria en accion semantica 'pintaVentanaMensajeria()'", 
+													  InfoTraza.NivelTraza.error));
+		}catch(Exception e){e.printStackTrace();}
+	}
+}
 	/**
 	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar el extra(nombre, mensaje, telefono, Espaciente, hora)

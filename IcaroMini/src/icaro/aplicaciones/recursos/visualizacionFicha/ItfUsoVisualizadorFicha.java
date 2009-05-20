@@ -41,5 +41,6 @@ public interface ItfUsoVisualizadorFicha extends ItfUsoRecursoSimple{
     //Funciones que nos muestran ventanas con mensajes de error/informacion/aviso
   	public void mostrarMensajeInformacion(String titulo,String mensaje) throws Exception;
   	public void mostrarMensajeAviso(String titulo,String mensaje) throws Exception;
+  	public boolean mostrarMensajeAvisoC(String titulo,String mensaje);
   	public void mostrarMensajeError(String titulo,String mensaje) throws Exception;	
 }

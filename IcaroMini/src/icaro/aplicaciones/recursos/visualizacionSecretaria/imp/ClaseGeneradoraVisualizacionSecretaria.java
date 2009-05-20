@@ -43,6 +43,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	private panelLlamada ventanaLlamada;
 	private panelExtra ventanaExtra;
 	private panelProximaCita ventanaPCita;
+	private panelMensajeria ventanaMensajeria;
 	
 	private ItfUsoRecursoTrazas trazas; //trazas del sistema
 	
@@ -72,6 +73,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   		ventanaExtra.start();
   		this.ventanaPCita = new panelProximaCita(this);
   		ventanaPCita.start();
+  		this.ventanaMensajeria=new panelMensajeria(this);
   		
   		
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionAgenda",
@@ -237,6 +239,19 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
 	}
+	
+	public void mostrarVisualizadorMensajeria(String nombreAgente, String tipo, String usuario){
+		this.nombreAgenteControlador = nombreAgente;
+		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
+		this.tipoAgenteControlador = tipo;
+
+		this.ventanaPCita.mostrar();
+		//this.ventanaAgendaUsuario.mostrarCita();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
+		"Mostrando visualizador...",
+		InfoTraza.NivelTraza.debug));
+	}
+	
 	public void mostrarVisualizadorCita(String nombreAgente, String tipo){
 		
 			this.nombreAgenteControlador = nombreAgente;
@@ -359,6 +374,20 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     public void reiniciaVisualizadorPCitas() {
     	ventanaPCita = new panelProximaCita(this);
     	ventanaPCita.start();
+    }
+    
+    public void cerrarVisualizadorMensajeria(){
+    	this.ventanaPCita.destruir();
+		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionLlamada",
+                "Cerrando visualizador...",
+                InfoTraza.NivelTraza.debug));
+     
+      reiniciaVisualizadorMensajeria();
+    }
+    
+    public void reiniciaVisualizadorMensajeria() {
+    	ventanaMensajeria = new panelMensajeria(this);
+    	//ventanaMensajeria.start();
     }
     
     
