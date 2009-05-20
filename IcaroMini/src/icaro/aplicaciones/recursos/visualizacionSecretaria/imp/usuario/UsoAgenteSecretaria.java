@@ -237,13 +237,13 @@ public class UsoAgenteSecretaria {
                 //AgenteAplicacionSecretaria
                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
                 if (itfUsoAgente != null) {
-                    itfUsoAgente.aceptaEvento(new EventoRecAgte("consultarMensajera", usuario,"VisualizacionSecretaria1", nombreAgenteSecretaria));
+                    itfUsoAgente.aceptaEvento(new EventoRecAgte("mensajeria", usuario,"VisualizacionSecretaria1", nombreAgenteSecretaria));
                
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Ha habido un error al consultarPCitas ");
+            System.out.println("Ha habido un error al consultarMensajeria ");
             e.printStackTrace();
         }
     }

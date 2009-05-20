@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -74,7 +75,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
   		this.ventanaPCita = new panelProximaCita(this);
   		ventanaPCita.start();
   		this.ventanaMensajeria=new panelMensajeria(this);
-  		
+  		ventanaMensajeria.start();
   		
   		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionAgenda",
   				"Inicializando recurso",
@@ -116,6 +117,10 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 	public void meteDatos(String fecha, ArrayList<DatosMedico> m, int num, String s){
 
 		this.ventanaAgendaUsuario.meteDatos(fecha, m, num, s);
+	}
+	
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) throws Exception {
+		this.ventanaMensajeria.mostrarMensajes(m);
 	}
 
 	public void cerrarVisualizadorSecretaria() {
@@ -245,8 +250,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
 		System.out.println("El nombre dado a la visualizacion es:"+nombreAgente);
 		this.tipoAgenteControlador = tipo;
 
-		this.ventanaPCita.mostrar();
-		//this.ventanaAgendaUsuario.mostrarCita();
+		this.ventanaMensajeria.mostrar();
 		trazas.aceptaNuevaTraza(new InfoTraza("VisualizacionSecretaria",
 		"Mostrando visualizador...",
 		InfoTraza.NivelTraza.debug));
@@ -387,7 +391,7 @@ public class ClaseGeneradoraVisualizacionSecretaria extends ImplRecursoSimple im
     
     public void reiniciaVisualizadorMensajeria() {
     	ventanaMensajeria = new panelMensajeria(this);
-    	//ventanaMensajeria.start();
+    	ventanaMensajeria.start();
     }
     
     

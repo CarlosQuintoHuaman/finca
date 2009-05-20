@@ -43,7 +43,7 @@ import org.eclipse.swt.layout.GridData;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class panelMensajeria {
+public class panelMensajeria  extends Thread {
 	private Composite cMensajes;
 	private TableColumn colMensaje;
 	private TableColumn colOrigen;
@@ -209,11 +209,6 @@ public class panelMensajeria {
 			SWTResourceManager.registerResourceUser(shell);
 		}
 		shell.layout();
-
-		
-		
-		
-		shell.open();
 		
 		while (!shell.isDisposed()) {
 			if (!disp.readAndDispatch())
@@ -239,5 +234,15 @@ public class panelMensajeria {
 			InfoMensaje m = mensajes.get(i);
 			t.setText(new String[]{m.getFecha().toString(), m.getAsunto(), m.getRemitente(), m.getContenido()});
 		}
+	}
+	
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) {
+		mensajes = m;
+		
+		disp.asyncExec(new Runnable() {
+            public void run() {
+            	actualizarMensajes();
+	       }
+         });
 	}
 }

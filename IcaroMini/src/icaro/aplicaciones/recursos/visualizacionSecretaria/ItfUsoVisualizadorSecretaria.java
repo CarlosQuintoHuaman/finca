@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -107,6 +108,14 @@ public interface ItfUsoVisualizadorSecretaria extends ItfUsoRecursoSimple{
      * Su proposito es pintar la ventana 
      */
     public void mostrarVisualizadorMensajeria(String nombreAgente, String tipo, String usuario) throws Exception;
+    
+	/**
+	 * Se usa para avisar asincronamente de que los datos de los mensajes ya estan
+	 * listos para ser mostrados por pantalla
+	 * @param m
+	 * @throws Exception
+	 */
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) throws Exception;
     
     /**
      * Su proposito es Almacenar los datos que se le pasan por parametro en la agenda en el lugar que indique datos.hora

@@ -4,6 +4,7 @@ package icaro.aplicaciones.agentes.agenteAplicacionSecretariaReactivo.comportami
 import java.util.ArrayList;
 
 import icaro.aplicaciones.informacion.dominioClases.aplicacionMedico.InfoPaciente;
+import icaro.aplicaciones.informacion.dominioClases.aplicacionMensajeria.InfoMensaje;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCita;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosCitaSinValidar;
 import icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria.DatosLlamada;
@@ -436,6 +437,14 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 		}catch(Exception e){e.printStackTrace();}
 	}
 }
+	
+	public void mostrarMensajes(ArrayList<InfoMensaje> m) {
+		try {
+			visualizacion.mostrarMensajes(m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Su proposito es pintar la ventana con los datos que se le pasan por parametro 
      * @param datos		:: Datos con los que rellenar el extra(nombre, mensaje, telefono, Espaciente, hora)
