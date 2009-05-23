@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class util {
 
@@ -96,5 +97,27 @@ public class util {
 	public static String formatoHora(Timestamp h){
 		return String.valueOf(h).substring(11, 16);
 		 
+	}
+	
+	public static boolean isFechaValida(String fechax) {
+		try {
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy",Locale.getDefault());
+			formatoFecha.setLenient(false);
+			formatoFecha.parse(fechax);
+		} catch (ParseException e) {
+			return false;
+		}
+
+		return true;
+		} 
+	
+	public static boolean isNumero(String dato){
+		try{
+		     int numero = Integer.parseInt(dato);
+		     return true;
+		}catch(NumberFormatException e){
+			return false;
+		     //La cadena no se puede convertir a entero
+		}  
 	}
 }

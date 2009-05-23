@@ -554,9 +554,11 @@ public class panelCita extends Thread {
 	 * @param evt
 	 */
 	private void bAceptarWidgetSelected(SelectionEvent evt){
-		boolean p;
+		boolean p,cumple;
 		p=false;
-
+		cumple=true;
+		String m1="Formato de ";
+		String m2=" invalido";
 		String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
 		if(tPaciente.getText().equals("")){
 			mensaje=mensaje+"Nombre"+"\n";
@@ -571,51 +573,61 @@ public class panelCita extends Thread {
 			mensaje=mensaje+"Telefono"+"\n";
 			p=true;
 		}
+		
+
 		if(p)
 			usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
+		
+
 		else{
-			String[] aux=tApellidos.getText().split(" ");
-			String ap1="";
-			String ap2="";
-			if (aux.length>0){
-				ap1=aux[0];
+			
+			if(!util.isNumero(tTelefono1.getText())){
+				m1=m1+",Telefono1";
+				cumple=false;
 			}
-			if (aux.length>1){
-				ap2=aux[1];
+			if(!tTelefono2.getText().equals("")&&!util.isNumero(tTelefono2.getText())){
+				m1=m1+",Telefono2";
+				cumple=false;
 			}
+			
+			if(!cumple)
+				usoAgente.mostrarMensajeAviso(m1+m2, "Error");
+			else{
+				String[] aux=tApellidos.getText().split(" ");
+				String ap1="";
+				String ap2="";
+				if (aux.length>0){
+					ap1=aux[0];
+				}
+				if (aux.length>1){
+					ap2=aux[1];
+				}
+					
 				
-			
-			datos.setNombre(tPaciente.getText());
-			datos.setApell1(ap1);
-			datos.setApell2(ap2);
-			datos.setHora(tHoraD.getText());
-			datos.setPeriodo(periodo);
-			datos.setTelf(tTelefono1.getText());
-			datos.setSeguro(tAseguradora.getText());
-			
-			if(bPrimeraVez.getSelection()){
-				datos.setUsuario(tPaciente.getText());
-				datos.setNuevo(true);
+				datos.setNombre(tPaciente.getText());
+				datos.setApell1(ap1);
+				datos.setApell2(ap2);
+				datos.setHora(tHoraD.getText());
+				datos.setPeriodo(periodo);
+				datos.setTelf(tTelefono1.getText());
+				datos.setSeguro(tAseguradora.getText());
 				
-			}
-		
-		    if(buscado){
-		    	int i=cPacientes.getSelectionIndex()-1;
-		    	datos.setUsuario(LPacientes.get(cPacientes.getSelectionIndex()-1).getUsuario());
-		    	datos.setNuevo(false);
-		    }
-		    if(!bPrimeraVez.getSelection()&&!buscado){
-		    	datos.setNuevo(false);
-		    }
-		    usoAgente.validaCita(datos);
-		
+				if(bPrimeraVez.getSelection()){
+					datos.setUsuario(tPaciente.getText());
+					datos.setNuevo(true);
+					
+				}
 			
-			try {
-				//vis.cerrarVisualizadorCita();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			    if(buscado){
+			    	int i=cPacientes.getSelectionIndex()-1;
+			    	datos.setUsuario(LPacientes.get(cPacientes.getSelectionIndex()-1).getUsuario());
+			    	datos.setNuevo(false);
+			    }
+			    if(!bPrimeraVez.getSelection()&&!buscado){
+			    	datos.setNuevo(false);
+			    }
+			    usoAgente.validaCita(datos);
+		    }
 		}
 	}
 	

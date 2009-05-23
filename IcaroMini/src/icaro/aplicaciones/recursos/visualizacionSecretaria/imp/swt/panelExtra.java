@@ -428,29 +428,40 @@ public class panelExtra extends Thread {
 		if(p)
 			usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
 		else{
-			llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
-			llamada.setTipo("extra");
-			if(bPaciente.getSelection()){
-				llamada.setUsuario(tNombre.getText());
-				llamada.setPaciente(true);
+			String m1="Formato de ";
+			String m2=" invalido";
+			boolean cumple=true;
+			if(!util.isNumero(tTelefono.getText())){
+				m1=m1+",Telefono";
+				cumple=false;
+			}
+			if(!cumple)
+				usoAgente.mostrarMensajeAviso(m1+m2, "Error");
+			else{
+				llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+				llamada.setTipo("extra");
+				if(bPaciente.getSelection()){
+					llamada.setUsuario(tNombre.getText());
+					llamada.setPaciente(true);
+					
+				}
+			
+			    if(buscado){
+			    	int i=cCombo1.getSelectionIndex()-1;
+			    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
+			    	llamada.setPaciente(false);
+			    }
+			    if(!bPaciente.getSelection()&&!buscado){
+			    	llamada.setPaciente(false);
+			    }
+	
+			
+				if(!bEditar.getEnabled())
+					//llamada al agente para mandar un evento que añada el extra que se le pasa por parametro a la tabla de extras
+					usoAgente.anadeExtra(llamada);
+				usoAgente.cerrarVentanaExtra();
 				
 			}
-		
-		    if(buscado){
-		    	int i=cCombo1.getSelectionIndex()-1;
-		    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
-		    	llamada.setPaciente(false);
-		    }
-		    if(!bPaciente.getSelection()&&!buscado){
-		    	llamada.setPaciente(false);
-		    }
-
-		
-			if(!bEditar.getEnabled())
-				//llamada al agente para mandar un evento que añada el extra que se le pasa por parametro a la tabla de extras
-				usoAgente.anadeExtra(llamada);
-			usoAgente.cerrarVentanaExtra();
-			
 		}
 	}
 	/**
@@ -518,40 +529,51 @@ public class panelExtra extends Thread {
 			if(p)
 				usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
 			else{
-				tNombre.setEditable(false);
-				tTelefono.setEditable(false);
-				tMensaje.setEditable(false);
-				bPaciente.setEnabled(false);
-				bBuscar.setEnabled(false);
-				
-				llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
-				llamada.setTipo("extra");
-				if(bPaciente.getSelection()){
-					llamada.setUsuario(tNombre.getText());
-					llamada.setPaciente(true);
-					udesp=llamada.getUsuario();
-					
-					
+				String m1="Formato de ";
+				String m2=" invalido";
+				boolean cumple=true;
+				if(!util.isNumero(tTelefono.getText())){
+					m1=m1+",Telefono";
+					cumple=false;
 				}
-			
-			    if(buscado){
-			    	int i=cCombo1.getSelectionIndex()-1;
-			    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
-			    	llamada.setPaciente(false);
-			    	udesp=llamada.getUsuario();
-			    }
-			    if(!bPaciente.getSelection()&&!buscado){
-			    	llamada.setPaciente(false);
-			    	llamada.setUsuario(llamadaAnterior.getUsuario());
-			    	udesp=llamada.getUsuario();
-			    	
-			    }
-			   
-			    //usoAgente.validaCita(datos);
-			    
-				//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
-				usoAgente.modificaExtra(llamadaAnterior, llamada);
-	
+				if(!cumple)
+					usoAgente.mostrarMensajeAviso(m1+m2, "Error");
+				else{
+					tNombre.setEditable(false);
+					tTelefono.setEditable(false);
+					tMensaje.setEditable(false);
+					bPaciente.setEnabled(false);
+					bBuscar.setEnabled(false);
+					
+					llamada=new DatosLlamada(tNombre.getText(),tMensaje.getText(),tTelefono.getText(),bPaciente.getSelection(),hora,medico,fecha);
+					llamada.setTipo("extra");
+					if(bPaciente.getSelection()){
+						llamada.setUsuario(tNombre.getText());
+						llamada.setPaciente(true);
+						udesp=llamada.getUsuario();
+						
+						
+					}
+				
+				    if(buscado){
+				    	int i=cCombo1.getSelectionIndex()-1;
+				    	llamada.setUsuario(LPacientes.get(cCombo1.getSelectionIndex()-1).getUsuario());
+				    	llamada.setPaciente(false);
+				    	udesp=llamada.getUsuario();
+				    }
+				    if(!bPaciente.getSelection()&&!buscado){
+				    	llamada.setPaciente(false);
+				    	llamada.setUsuario(llamadaAnterior.getUsuario());
+				    	udesp=llamada.getUsuario();
+				    	
+				    }
+				   
+				    //usoAgente.validaCita(datos);
+				    
+					//llama al agente para enviar un evento que le permita modificar el extra que se le pasa por parametro
+					usoAgente.modificaExtra(llamadaAnterior, llamada);
+		
+				}
 			}
 		}
 		

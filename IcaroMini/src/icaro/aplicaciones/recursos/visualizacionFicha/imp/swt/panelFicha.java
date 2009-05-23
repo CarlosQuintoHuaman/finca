@@ -254,7 +254,19 @@ public class panelFicha extends Thread {
             	    cAntDepilacion.dispose();
             	    cAntPersonales.dispose();
             	    cAntFamiliares.dispose();
+            	Date f = null;
+            	Date f2 = null;
+				try {
+					f = datos.getFNacimiento();
+					f2=util.StrToDate(util.getStrDate());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
             	
+            	int dif=f2.getYear()-f.getYear();
+            	
+            	cEdadd.setText(String.valueOf(dif));
             	Edicion(false);
          	   shell.open();
 	       }
@@ -1159,7 +1171,7 @@ public class panelFicha extends Thread {
 		if (!tFNacimiento.getText().equals(""))
 			f=tFNacimiento.getText();
 		original=new DatosFicha(tNombre.getText(),usuario,tApellidos.getText(),tNif.getText(),util.StrToDate(f),
-				Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
+				Integer.valueOf(cEdadd.getText()),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
 				tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
 				text1.getText());
 		shell.layout();
@@ -1174,17 +1186,92 @@ public class panelFicha extends Thread {
 		
 		DatosFicha fichaN;
 		try {
-			Date f;
-			if (tFNacimiento.getText().equals("")){
-				f=util.StrToDate(util.getStrDateSQL2());
-			}else
-				f=util.StrToDate(tFNacimiento.getText());
-			fichaN = new DatosFicha(tNombre.getText(),usuario,tApellidos.getText(),tNif.getText(),f,
-			Integer.valueOf("4"),tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
-			tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
-			text1.getText());
-			usoAgente.guardarFicha( original,fichaN);
-			Edicion(false);
+			String mensaje="Faltan por rellenar los siguientes campos:"+"\n";
+			boolean cumple=true;
+			if(tNombre.getText().equals("")){
+				mensaje=mensaje+"Nombre"+"\n";
+				cumple=false;
+			}
+			if(tApellidos.getText().equals("")){
+				mensaje=mensaje+"Apellidos"+"\n";
+				cumple=false;
+			}
+			if(tNif.getText().equals("")){
+				mensaje=mensaje+"Nif"+"\n";
+				cumple=false;
+			}
+			if(tDireccion.getText().equals("")){
+				mensaje=mensaje+"Direccion"+"\n";
+				cumple=false;
+			}
+			if(tCP.getText().equals("")){
+				mensaje=mensaje+"CP"+"\n";
+				cumple=false;
+			}
+			if(tProvincia.getText().equals("")){
+				mensaje=mensaje+"Provincia";
+				cumple=false;
+			}
+			if(tLocalidad.getText().equals("")){
+				mensaje=mensaje+"Localidad"+"\n";
+				cumple=false;
+			}
+			if(tTelefono1.getText().equals("")){
+				mensaje=mensaje+"Telefono"+"\n";
+				cumple=false;
+			}
+			if(tmail.getText().equals("")){
+				mensaje=mensaje+"Mail"+"\n";
+				cumple=false;
+			}
+			if(tFNacimiento.getText().equals("")){
+				mensaje=mensaje+"Fecha Nacimiento"+"\n";
+				cumple=false;
+			}
+			
+			if(!cumple)
+				usoAgente.mostrarMensajeAviso(mensaje, "Aviso");
+			else{
+				Date f=util.StrToDate(tFNacimiento.getText());
+            	Date f2 = null;
+				f2=util.StrToDate(util.getStrDate());
+				String m1="Formato de ";
+				String m2=" invalido";
+				cumple=true;
+				if(!util.isFechaValida(tFNacimiento.getText())||f2.getYear()-f.getYear()<0){
+					m1=m1+"Fecha ";
+					cumple=false;
+				}
+				if(!util.isNumero(tTelefono1.getText())){
+					m1=m1+",Telefono1";
+					cumple=false;
+				}
+				if(!tTelefono2.getText().equals("")&&!util.isNumero(tTelefono2.getText())){
+					m1=m1+",Telefono2";
+					cumple=false;
+				}
+				if(!util.isNumero(tCP.getText())||!(tCP.getText().length()==5)){
+					m1=m1+",CP";
+					cumple=false;
+				}
+				if(!(tNif.getText().length()==9)||!util.isNumero(tNif.getText().substring(0, 8))||util.isNumero(tNif.getText().substring(9,9))){
+					m1=m1+",Nif";
+					cumple=false;
+				}
+				if(!cumple)
+					usoAgente.mostrarMensajeAviso(m1+m2, "Error");
+				else{
+					
+					int dif=f2.getYear()-f.getYear();
+	            	
+					fichaN = new DatosFicha(tNombre.getText(),usuario,tApellidos.getText(),tNif.getText(),f,
+					dif,tDireccion.getText(),tCP.getText(),tProvincia.getText(),tLocalidad.getText(),tTelefono1.getText(),
+					tTelefono2.getText(),tmail.getText(),tProfesion.getText(),tAseguradora.getText(),tOtros.getText(),
+					text1.getText());
+					usoAgente.guardarFicha( original,fichaN);
+					Edicion(false);
+				}
+			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
