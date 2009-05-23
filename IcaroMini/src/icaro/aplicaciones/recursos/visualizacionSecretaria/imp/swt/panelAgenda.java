@@ -133,7 +133,7 @@ public class panelAgenda extends Thread {
 	
 	//variables globales
 	private boolean man=true;
-	private int intervalo=15;
+	//private int intervalo=15;
 	//hora de inicio,fin, mañana y tarde
 	private Time iniMan = new java.sql.Time(0000000);
 	private Time iniTar=new java.sql.Time(0000000);
@@ -168,7 +168,6 @@ public class panelAgenda extends Thread {
 	private ArrayList<DatosMedico> medatos;
 	private int numM;
 
-	private ArrayList<Agenda> Ag;
 	private String usuEste;
 
 	private String fd;
@@ -215,7 +214,9 @@ public class panelAgenda extends Thread {
             	datos.getMedicos().clear();
             	datos.setNumM(numM);
             	for(int i=0;i<lm1.size();i++){
-            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),intervalo, lm1.get(i).getDatos(), lm1.get(i).getLlamadas(), lm1.get(i).getExtras(),lm1.get(i).getUsuario());            		
+            		DatosMedico med=new DatosMedico(lm1.get(i).getNombre(),lm1.get(i).getIntervalo(), lm1.get(i).getDatos(), lm1.get(i).getLlamadas(),
+            					lm1.get(i).getExtras(),lm1.get(i).getUsuario(),lm1.get(i).getMañana().getHInicio(),lm1.get(i).getTarde().getHInicio(),
+            					lm1.get(i).getMañana().getHFin(),lm1.get(i).getTarde().getHFin());            		
             		datos.getMedicos().add(med);
             		
             	}
@@ -273,9 +274,7 @@ public class panelAgenda extends Thread {
 			numM=0;
 			datos=new DatosSecretaria(medatos, numM);
 
-			l=new ArrayList<DatosCitaSinValidar> ();
-			Ag= new ArrayList<Agenda>();
-			
+			l=new ArrayList<DatosCitaSinValidar> ();			
 			shell.setLayout(new FillLayout());
 			//Genera fecha actual
 			util f=new util();
@@ -959,16 +958,26 @@ public class panelAgenda extends Thread {
 	private void tablaAux(Time inicio,Time fin, int k){
 		int minIni=inicio.getHours()*60+inicio.getMinutes();
 		int minFin=fin.getHours()*60+fin.getMinutes();
-		min=(minFin-minIni)/intervalo;
+		String medico=Agenda.getItem(k).getText();
+		boolean cu=false;
+		int l=0;
+		while(l<datos.getNumM() && !cu){
+			if (datos.getMedicos().get(l).getNombre().equals(medico)){
+				cu=true;
+				l--;
+			}
+			l++;	
+		}
+		min=(minFin-minIni)/datos.getMedicos().get(l).getIntervalo();
 		if(!init){
-			for (int i=0;i<min+1;i++){
+			//for (int i=0;i<min+1;i++){
+			for (int i=0;i<horas.length;i++){
 				horas[i].dispose();
-				
 				Nombres[i].dispose();
 				Telefonos[i].dispose();
 			}
 		}
-		int a=min/4+1;
+		int a=min/(60/datos.getMedicos().get(l).getIntervalo())+1;
 		horas= new Button[min+1];
 		aux1= new GridData[min+1];
 		aux2= new GridData[min+1];
@@ -979,7 +988,7 @@ public class panelAgenda extends Thread {
 		 int m=0;
 		for (int i=0;i<a;i++){
 			int j=0;
-			while(j<60){
+			while(j<60&& c<=min){
 				if (i==0&&j==0){
 					j=inicio.getMinutes();
 				}
@@ -999,7 +1008,7 @@ public class panelAgenda extends Thread {
 				else
 					horas[c].setText(aux+":"+String.valueOf(j));
 				
-				j=j+intervalo;
+				j=j+datos.getMedicos().get(l).getIntervalo();
 				Nombres[c] = new CLabel(agendaDinamica[k], SWT.NONE);
 				Telefonos[c] = new CLabel(agendaDinamica[k], SWT.NONE);
 				
@@ -2863,7 +2872,7 @@ public class panelAgenda extends Thread {
 				h1=String.valueOf((Integer.valueOf(h1)-1));
 				min=String.valueOf(60);
 			}
-			min=String.valueOf((Integer.valueOf(min)-intervalo));
+			//min=String.valueOf((Integer.valueOf(min)-intervalo));
 			if (min.equals("0")){
 				min=min+"0";
 			}

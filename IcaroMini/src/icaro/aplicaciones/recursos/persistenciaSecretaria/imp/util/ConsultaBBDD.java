@@ -148,7 +148,9 @@ public class ConsultaBBDD {
 			
 			for(int i=0;i<lnombres.size();i++){
 				datos[i]=new DatosMedico(lnombres.get(i).getNombre(),lnombres.get(i).getUsuario());
-				datos[i].setIntervalo(15);
+				datos[i].setIntervalo(lnombres.get(i).getIntervalo());
+				datos[i].setMañana(lnombres.get(i).getMañana());
+				datos[i].setTarde(lnombres.get(i).getTarde());
 				citas[i]=new ArrayList<DatosCitaSinValidar>();
 				llamadas[i]=new ArrayList<DatosLlamada>();
 				extras[i]=new ArrayList<DatosLlamada>();
@@ -244,6 +246,11 @@ public class ConsultaBBDD {
 		
 		try {	
 			String n="";
+			String IManana="";
+			String ITarde="";
+			String FManana="";
+			String FTarde="";
+			int intervalo=15;
 			
 			crearQuery();
 			
@@ -256,7 +263,17 @@ public class ConsultaBBDD {
 				while (resultado1.next()) {
 					n=resultado1.getString("Nombre");
 				}
-				DatosMedico med=new DatosMedico(n,m);
+				
+				crearQuery();
+				resultado1 = query.executeQuery("SELECT * FROM medico WHERE NombreUsuario = '" + m + "'");
+				while (resultado1.next()) {
+					IManana=resultado1.getString("InicioMan");
+					ITarde=resultado1.getString("InicioTar");
+					FManana=resultado1.getString("FinMan");
+					FTarde=resultado1.getString("FinTar");
+					intervalo=resultado1.getInt("Intervalo");
+				}
+				DatosMedico med=new DatosMedico(n,m,IManana,ITarde,FManana,FTarde,intervalo);
 				medicos.add(med);
 			}
 				

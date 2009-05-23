@@ -10,6 +10,8 @@ private ArrayList <DatosCitaSinValidar> datos;
 //Pendiente de añadir
 private ArrayList<DatosLlamada> extras;
 private ArrayList<DatosLlamada> llamadas;
+private HorasCita mañana;
+private HorasCita tarde;
 
 
 public String getUsuario() {
@@ -47,6 +49,15 @@ public DatosMedico(String nombre, String usuario){
 	this.nombre=nombre;
 	this.usuario=usuario;
 }
+
+public DatosMedico(String nombre, String usuario, String Iman, String Itar, String Fman, String Ftar, int intervalo){
+	this.datos=new ArrayList<DatosCitaSinValidar>();
+	this.nombre=nombre;
+	this.usuario=usuario;
+	mañana=new HorasCita(Iman,Fman);
+	tarde=new HorasCita(Itar,Ftar);
+	this.intervalo=intervalo;
+}
 /**
  * Crea un objeto nuevo donde almacenar los datos de las citas de un de la agenda
  * @param nombre		:: nombre medico
@@ -75,6 +86,18 @@ public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar>
 	this.extras=extras;
 	this.usuario=usuario;
 }
+
+public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar> datos, ArrayList<DatosLlamada> llamadas, ArrayList<DatosLlamada> extras, 
+				String usuario,String iniMan, String iniTar, String FinMan, String FinTar) {
+	this.nombre = nombre;
+	this.intervalo = intervalo;
+	this.datos = datos;
+	this.llamadas=llamadas;
+	this.extras=extras;
+	this.usuario=usuario;
+	mañana=new HorasCita(iniMan,FinMan);
+	tarde=new HorasCita(iniTar,FinTar);
+}
 public ArrayList<DatosCitaSinValidar> getDatos() {
 	return datos;
 }
@@ -94,6 +117,18 @@ public int getIntervalo() {
 }
 public void setIntervalo(int intervalo) {
 	this.intervalo = intervalo;
+}
+public HorasCita getMañana() {
+	return mañana;
+}
+public void setMañana(HorasCita mañana) {
+	this.mañana = mañana;
+}
+public HorasCita getTarde() {
+	return tarde;
+}
+public void setTarde(HorasCita tarde) {
+	this.tarde = tarde;
 }
 
 }
