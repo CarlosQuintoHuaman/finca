@@ -135,10 +135,10 @@ public class panelAgenda extends Thread {
 	private boolean man=true;
 	//private int intervalo=15;
 	//hora de inicio,fin, mañana y tarde
-	private Time iniMan = new java.sql.Time(0000000);
-	private Time iniTar=new java.sql.Time(0000000);
-	private Time finMan=new java.sql.Time(0000000);
-	private Time finTar=new java.sql.Time(0000000);
+	//private Time iniMan = new java.sql.Time(0000000);
+	//private Time iniTar=new java.sql.Time(0000000);
+	//private Time finMan=new java.sql.Time(0000000);
+	//private Time finTar=new java.sql.Time(0000000);
 
 	private boolean init=true;
 	private int k=0;
@@ -777,18 +777,6 @@ public class panelAgenda extends Thread {
 			telefono.setAlignment(SWT.CENTER);
 		}
 		
-		//por defecto hasta que se rellene BBDD
-		iniMan.setMinutes(0);
-		iniMan.setHours(9);
-		
-		finMan.setHours(14);
-		finMan.setMinutes(0);
-		
-		finTar.setHours(21);
-		finTar.setMinutes(30);
-		
-		iniTar.setMinutes(30);
-		iniTar.setHours(16);
 	}
 	
 	/**
@@ -832,11 +820,20 @@ public class panelAgenda extends Thread {
 			
 			int m=Agenda.getSelectionIndex();
 			if (m>-1){
-				RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
-				if (agenda.getText().equals("AGENDA")){
 				boolean cu=false;
 				int i=0;
 				String medico=Agenda.getSelection().getText();
+				while(i<datos.getNumM() && !cu){
+					if (datos.getMedicos().get(i).getNombre().equals(medico)){
+						RellenaTabla(datos.getMedicos().get(i).getMañana().getHInicio(), datos.getMedicos().get(i).getTarde().getHInicio(),
+								datos.getMedicos().get(i).getMañana().getHFin(), datos.getMedicos().get(i).getTarde().getHFin(), man,m);
+					}
+					i++;
+				}
+				
+				if (agenda.getText().equals("AGENDA")){
+				cu=false;
+				i=0;
 				while(i<datos.getNumM() && !cu){
 					if (datos.getMedicos().get(i).getNombre().equals(medico)){
 						cu=true;
@@ -867,15 +864,25 @@ public class panelAgenda extends Thread {
 			huecoAgenda.layout();
 			tablaLlamadas.layout();
 			tablaExtras.layout();
+			disp.update();
 			Agenda.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent evt) {
 					int m=Agenda.getSelectionIndex();
 					if (m>-1){
-						RellenaTabla(iniMan, iniTar, finMan, finTar, man, m);
+						boolean cu=false;
+						int i=0;
+						String medico=Agenda.getSelection().getText();
+						while(i<datos.getNumM() && !cu){
+							if (datos.getMedicos().get(i).getNombre().equals(medico)){
+								RellenaTabla(datos.getMedicos().get(i).getMañana().getHInicio(), datos.getMedicos().get(i).getTarde().getHInicio(),
+										datos.getMedicos().get(i).getMañana().getHFin(), datos.getMedicos().get(i).getTarde().getHFin(), man,m);
+							}
+							i++;
+						}
 						if (agenda.getText().equals("CAMBIO FECHA")){
-							boolean cu=false;
-							int i=0;
-							String medico=Agenda.getSelection().getText();
+							cu=false;
+							i=0;
+							
 							while(i<datos.getNumM() && !cu){
 								if (datos.getMedicos().get(i).getNombre().equals(medico)){
 									cu=true;
@@ -1131,10 +1138,18 @@ public class panelAgenda extends Thread {
 		man=true;
 		int m=Agenda.getSelectionIndex();
 		if (m>-1){
-			RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
-		boolean cu=false;
-		int i=0;
-		String medico=Agenda.getSelection().getText();
+			boolean cu=false;
+			int i=0;
+			String medico=Agenda.getSelection().getText();
+			while(i<datos.getNumM() && !cu){
+				if (datos.getMedicos().get(i).getNombre().equals(medico)){
+					RellenaTabla(datos.getMedicos().get(i).getMañana().getHInicio(), datos.getMedicos().get(i).getTarde().getHInicio(),
+							datos.getMedicos().get(i).getMañana().getHFin(), datos.getMedicos().get(i).getTarde().getHFin(), man,m);
+				}
+				i++;
+			}
+		cu=false;
+		i=0;
 		while(i<datos.getNumM() && !cu){
 			if (datos.getMedicos().get(i).getNombre().equals(medico)){
 				cu=true;
@@ -1158,6 +1173,9 @@ public class panelAgenda extends Thread {
 			i++;	
 		}
 		}
+		huecoAgenda.layout();
+		tablaLlamadas.layout();
+		tablaExtras.layout();
 		disp.update();
 	}
 	
@@ -1171,10 +1189,19 @@ public class panelAgenda extends Thread {
 		man=false;
 		int m=Agenda.getSelectionIndex();
 		if (m>-1){
-			RellenaTabla(iniMan, iniTar, finMan, finTar, man,m);
 			boolean cu=false;
 			int i=0;
 			String medico=Agenda.getSelection().getText();
+			while(i<datos.getNumM() && !cu){
+				if (datos.getMedicos().get(i).getNombre().equals(medico)){
+					RellenaTabla(datos.getMedicos().get(i).getMañana().getHInicio(), datos.getMedicos().get(i).getTarde().getHInicio(),
+							datos.getMedicos().get(i).getMañana().getHFin(), datos.getMedicos().get(i).getTarde().getHFin(), man,m);
+				}
+				i++;
+			}
+			cu=false;
+			i=0;
+			
 			while(i<datos.getNumM() && !cu){
 				if (datos.getMedicos().get(i).getNombre().equals(medico)){
 					cu=true;
@@ -1198,6 +1225,9 @@ public class panelAgenda extends Thread {
 				i++;	
 			}
 			}
+		huecoAgenda.layout();
+		tablaLlamadas.layout();
+		tablaExtras.layout();
 		disp.update();
 		
 		/**
@@ -2865,8 +2895,8 @@ public class panelAgenda extends Thread {
 		disp.syncExec(new Runnable() {
             public void run() {
        
-		String h=hora.getHInicio();
-		String haux=hora.getHFin();
+		String h=hora.getHInicio().toString().substring(0,5);
+		String haux=hora.getHFin().toString().substring(0,5);;
 		
 		while(!haux.equals(h)& cumple){
 			int i=c-1;

@@ -749,10 +749,10 @@ public class panelCita extends Thread {
 		t=t-15;
 		if (x==0){
 			text1.setText(aux+String.valueOf(x)+"0");
-			hora.setHFin(aux+String.valueOf(x)+"0");
+			hora.setHfin(aux+String.valueOf(x)+"0");
 		}else{
 			text1.setText(aux+String.valueOf(x));
-			hora.setHFin(aux+String.valueOf(x));
+			hora.setHfin(aux+String.valueOf(x));
 		}if (t==0)
 			cTiempo.setText(aux2+String.valueOf(t)+"0");
 		else

@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,10 +247,10 @@ public class ConsultaBBDD {
 		
 		try {	
 			String n="";
-			String IManana="";
-			String ITarde="";
-			String FManana="";
-			String FTarde="";
+			Time IManana = null;
+			Time ITarde= null;;
+			Time FManana= null;;
+			Time FTarde= null;;
 			int intervalo=15;
 			
 			crearQuery();
@@ -267,10 +268,10 @@ public class ConsultaBBDD {
 				crearQuery();
 				resultado1 = query.executeQuery("SELECT * FROM medico WHERE NombreUsuario = '" + m + "'");
 				while (resultado1.next()) {
-					IManana=resultado1.getString("InicioMan");
-					ITarde=resultado1.getString("InicioTar");
-					FManana=resultado1.getString("FinMan");
-					FTarde=resultado1.getString("FinTar");
+					IManana=resultado1.getTime("InicioMan");
+					ITarde=resultado1.getTime("InicioTar");
+					FManana=resultado1.getTime("FinMan");
+					FTarde=resultado1.getTime("FinTar");
 					intervalo=resultado1.getInt("Intervalo");
 				}
 				DatosMedico med=new DatosMedico(n,m,IManana,ITarde,FManana,FTarde,intervalo);

@@ -1,5 +1,6 @@
 package icaro.aplicaciones.informacion.dominioClases.aplicacionSecretaria;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class DatosMedico {
@@ -50,7 +51,7 @@ public DatosMedico(String nombre, String usuario){
 	this.usuario=usuario;
 }
 
-public DatosMedico(String nombre, String usuario, String Iman, String Itar, String Fman, String Ftar, int intervalo){
+public DatosMedico(String nombre, String usuario, Time Iman, Time Itar, Time Fman, Time Ftar, int intervalo){
 	this.datos=new ArrayList<DatosCitaSinValidar>();
 	this.nombre=nombre;
 	this.usuario=usuario;
@@ -88,7 +89,7 @@ public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar>
 }
 
 public DatosMedico(String nombre, int intervalo, ArrayList <DatosCitaSinValidar> datos, ArrayList<DatosLlamada> llamadas, ArrayList<DatosLlamada> extras, 
-				String usuario,String iniMan, String iniTar, String FinMan, String FinTar) {
+				String usuario,Time iniMan, Time iniTar, Time FinMan, Time FinTar) {
 	this.nombre = nombre;
 	this.intervalo = intervalo;
 	this.datos = datos;
