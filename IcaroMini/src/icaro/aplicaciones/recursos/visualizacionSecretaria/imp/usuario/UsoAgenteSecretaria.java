@@ -986,6 +986,38 @@ public class UsoAgenteSecretaria {
     }
       
     /**
+     * Generamos un evento para el automataSecretaria con input: 'anadeEstado', para la accion semantica 
+     * que le corresponde: 'anadeEstado'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
+     * Su proposito es actualizar el estado de la cita que se le pasa por parametro.
+     * @param datos 	:: Datos (cita, nuevoEstado)
+      */
+	public void anadeEstado(DatosCitaSinValidar cita) {
+    
+ 	   getInformacionAgente();
+         //provoca la petici�n de autentificaci�n
+
+         try {
+        	 
+             if (itfUsoRepositorioInterfaces == null) {
+                 itfUsoRepositorioInterfaces = ClaseGeneradoraRepositorioInterfaces.instance();
+             }
+
+             if (tipoAgenteSecretaria.equals(NombresPredefinidos.TIPO_REACTIVO)) {
+                 //AgenteAplicacionSecretaria
+                 ItfUsoAgenteReactivo itfUsoAgente = (ItfUsoAgenteReactivo) itfUsoRepositorioInterfaces.obtenerInterfaz(NombresPredefinidos.ITF_USO + nombreAgenteSecretaria);
+                 if (itfUsoAgente != null) {
+                     itfUsoAgente.aceptaEvento(new EventoRecAgte("anadeEstado", cita, "VisualizacionSecretaria1", nombreAgenteSecretaria));
+                 }
+             }
+
+         } catch (Exception e) {
+             System.out.println("Ha habido un error al enviar los datos del estado ");
+             e.printStackTrace();
+         }
+         
+     }
+	
+    /**
      * Generamos un evento para el automataSecretaria con input: 'infoExtra', para la accion semantica 
      * que le corresponde: 'insertaExtra'. Este es un evento con origen VisualizacionSecretaria y destino AgenteSecretaria.
      * Su proposito es Almacenar los datos que se le pasan por parametro en la tabla de Extras de la agenda.

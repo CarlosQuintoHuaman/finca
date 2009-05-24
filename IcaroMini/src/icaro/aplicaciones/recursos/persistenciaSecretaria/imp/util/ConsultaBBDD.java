@@ -168,6 +168,7 @@ public class ConsultaBBDD {
 				String medico=resultado.getString("Medico");
 				 resultado.getTimestamp("Fecha").toString();
 				 String h=resultado.getTimestamp("Hora").toString().substring(11, 16);
+				 int estado=resultado.getInt("Estado");
 				crearQuery();
 				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				while (resultado1.next()) {
@@ -180,7 +181,7 @@ public class ConsultaBBDD {
 				for(int i=0;i<lnombres.size();i++){
 					if (medico.equals(lnombres.get(i).getUsuario())){
 						
-						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido1,apellido2,telf,h,1,usuario);
+						DatosCitaSinValidar p = new DatosCitaSinValidar(paciente,apellido1,apellido2,telf,h,1,usuario,estado);
 						
 						citas[i].add(p);
 						datos[i].setDatos(citas[i]);
@@ -200,7 +201,7 @@ public class ConsultaBBDD {
 				 String mensaje =resultado.getString("Mensaje");
 				 String telf=String.valueOf(resultado.getInt("Telefono"));
 				 String tipo=resultado.getString("Tipo");
-				 
+			
 				crearQuery();
 				ResultSet resultado1 = query.executeQuery("SELECT * FROM usuario WHERE NombreUsuario = '" + usuario +"'");
 				if (resultado1.next()) {
@@ -306,7 +307,8 @@ public class ConsultaBBDD {
 				String m=resultado.getString("Medico");	
 				String f=resultado.getTimestamp("Fecha").toString();
 				String h=resultado.getTimestamp("Hora").toString();
-				DatosCitaSinValidar c=new DatosCitaSinValidar(n,t,m,f,h);
+				int estado=resultado.getInt("Estado");
+				DatosCitaSinValidar c=new DatosCitaSinValidar(estado,n,t,m,f,h);
 				p.add(c);
 			}
 				
@@ -539,16 +541,17 @@ public class ConsultaBBDD {
 				crearQuery();
 	      		resultado = query.executeQuery("SELECT * FROM medicopaciente where Medico = '"
 	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + cita.tomaHora() + "'");	
-				
+	      		int e=0;
 	      		if (resultado.next()){
 					crearQuery();
-					query.executeUpdate("UPDATE medicopaciente SET Paciente = '" + cita.getUsuario() + "' WHERE Medico = '"+cita.getMedico() +
+					query.executeUpdate("UPDATE medicopaciente SET Paciente = '" + cita.getUsuario() +"', Estado = '" +e+ "' WHERE Medico = '"+cita.getMedico() +
 							"' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + cita.tomaHora() + "'");
 				}
 	      		else{
 	      			crearQuery();
-					query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora) VALUES " +"('"+cita.getMedico()+"', '"+cita.getUsuario()+"', '"+
-							cita.getFecha().substring(0, 10)+"', '"+cita.tomaHora()+"')");
+	      			
+					query.executeUpdate("INSERT INTO medicopaciente (Medico, Paciente, Fecha, Hora, Estado) VALUES " +"('"+cita.getMedico()+"', '"+cita.getUsuario()+"', '"+
+							cita.getFecha().substring(0, 10)+"', '"+cita.tomaHora()+"', '"+e+"')");
 	      		}
 		
 		}
@@ -566,6 +569,18 @@ public class ConsultaBBDD {
 				String hora=cita.tomaHora()+":00";
 				query.executeUpdate("DELETE FROM medicopaciente where Medico = '"
 	      					+ cita.getMedico() + "' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + hora + "'");	
+		
+		}catch (Exception e) {
+			throw new ErrorEnRecursoException(e.getMessage());
+		}
+
+	}
+	
+	public void modificaEstado (DatosCitaSinValidar cita) throws ErrorEnRecursoException {
+		try {
+
+				crearQuery();
+				query.executeUpdate("UPDATE medicopaciente SET Estado = '" + cita.getEstado() + "' WHERE Medico = '"+cita.getMedico() +"' and Fecha = '" + cita.getFecha().substring(0, 10) + "' and Hora = '" + cita.tomaHora() + "'");	
 		
 		}catch (Exception e) {
 			throw new ErrorEnRecursoException(e.getMessage());

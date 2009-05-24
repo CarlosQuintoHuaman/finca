@@ -21,7 +21,8 @@
 		<transicion input="borrarCita" accion="borrarCita" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="pegaCita" accion="pegarCita" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="mensajeria" accion="pintaVentanaMensajeria" estadoSiguiente="consultaMensajeria" modoDeTransicion="bloqueante"></transicion>
-		<transicion input="guardarFicha" accion="actualizaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado>
+		<transicion input="guardarFicha" accion="actualizaAgenda" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
+		<transicion input="anadeEstado" accion="anadeEstado" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion></estado>
 	<estado idIntermedio="consultaMensajeria">
 		<transicion input="cerrarMensajeria" accion="nula" estadoSiguiente="esperaAccion" modoDeTransicion="bloqueante"></transicion>
 		<transicion input="mostrarMensajes" accion="mostrarMensajes" estadoSiguiente="consultaMensajeria" modoDeTransicion="bloqueante"></transicion></estado><estado idIntermedio="esperaResultadoLlamada">

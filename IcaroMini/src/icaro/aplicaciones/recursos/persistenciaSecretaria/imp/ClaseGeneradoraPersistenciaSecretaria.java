@@ -150,6 +150,19 @@ public class ClaseGeneradoraPersistenciaSecretaria extends ImplRecursoSimple imp
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void setEstado(DatosCitaSinValidar cita)throws ErrorEnRecursoException {
+		trazas.aceptaNuevaTraza(new InfoTraza("PersistenciaSecretaria",
+			"Modificando Estado "+cita,
+			InfoTraza.NivelTraza.debug));
+		try {
+			consulta.modificaEstado(cita);
+		} catch (icaro.aplicaciones.recursos.persistenciaMedico.imp.ErrorEnRecursoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 }
 	
 	public void borraExtra(DatosLlamada d)throws ErrorEnRecursoException {

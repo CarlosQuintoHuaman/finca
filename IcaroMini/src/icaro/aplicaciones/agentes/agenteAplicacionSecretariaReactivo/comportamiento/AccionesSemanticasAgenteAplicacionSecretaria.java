@@ -793,6 +793,36 @@ public class AccionesSemanticasAgenteAplicacionSecretaria extends AccionesSemant
 
 	}
 	
+	/**
+	 * Actuliza el estado en la cita que se le pasa por parametro (la que se pasa por parametro) en la persistencia
+	 * @param datos		:: datos de una cita y su nuevo estado
+	 */
+	public void anadeEstado(DatosCitaSinValidar cita) {
+		boolean ok = false;
+		ok=true;
+		//Se lo mando a panel agenda para que lo compruebe
+		try {
+			visualizacion = (ItfUsoVisualizadorSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"VisualizacionSecretaria1");
+
+			persistencia = (ItfUsoPersistenciaSecretaria) itfUsoRepositorio.obtenerInterfaz
+			(NombresPredefinidos.ITF_USO+"PersistenciaSecretaria1");
+			
+			persistencia.setEstado(cita);
+			
+		}
+
+		catch (Exception ex) {
+			try {
+					trazas.aceptaNuevaTraza(new InfoTraza(this.nombreAgente, 
+														  "Ha habido un problema al comprobar infoextra en accion semantica 'insertaextra()'", 
+														  InfoTraza.NivelTraza.error));
+			}catch(Exception e){e.printStackTrace();}
+		}
+		
+		//Una vez comprobado todo correcto se manda a persistencia
+
+	}
 	public void terminacion() {
 		try {
 			visualizacion.cerrarVisualizadorSecretaria();

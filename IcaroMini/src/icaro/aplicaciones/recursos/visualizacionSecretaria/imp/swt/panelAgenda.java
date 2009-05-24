@@ -133,13 +133,6 @@ public class panelAgenda extends Thread {
 	
 	//variables globales
 	private boolean man=true;
-	//private int intervalo=15;
-	//hora de inicio,fin, mañana y tarde
-	//private Time iniMan = new java.sql.Time(0000000);
-	//private Time iniTar=new java.sql.Time(0000000);
-	//private Time finMan=new java.sql.Time(0000000);
-	//private Time finTar=new java.sql.Time(0000000);
-
 	private boolean init=true;
 	private int k=0;
 	private int c=0;
@@ -940,12 +933,31 @@ public class panelAgenda extends Thread {
 			i++;	
 		}
 		
-		
 		for(i=0;i<ll.size();i++){
 			for(int j=0; j<cc; j++){
 			if (horas[j].getText().equals((ll.get(i).tomaHora()))){
 					Nombres[j].setText(ll.get(i).tomaNombre()+" "+ll.get(i).tomaApell1()+" "+ll.get(i).getApell2());
 					Telefonos[j].setText(ll.get(i).tomaTelf());
+					if(ll.get(i).getEstado()==0){
+						Nombres[j].setBackground(SWTResourceManager.getColor(255, 255, 255));
+						Telefonos[j].setBackground(SWTResourceManager.getColor(255, 255, 255));
+					}
+					if(ll.get(i).getEstado()==1){
+						Nombres[j].setBackground(SWTResourceManager.getColor(173, 216, 167));
+						Telefonos[j].setBackground(SWTResourceManager.getColor(173, 216, 167));
+					}
+					if(ll.get(i).getEstado()==2){
+						Nombres[j].setBackground(SWTResourceManager.getColor(255, 111, 111));
+						Telefonos[j].setBackground(SWTResourceManager.getColor(255, 111, 111));
+					}
+					if(ll.get(i).getEstado()==3){
+						Nombres[j].setBackground(SWTResourceManager.getColor(255, 184, 113));
+						Telefonos[j].setBackground(SWTResourceManager.getColor(255, 184, 113));
+					}
+					if(ll.get(i).getEstado()==4){
+						Nombres[j].setBackground(SWTResourceManager.getColor(209, 209, 209));
+						Telefonos[j].setBackground(SWTResourceManager.getColor(209, 209, 209));
+					}
 				}
 			}
 		}		
@@ -1064,38 +1076,59 @@ public class panelAgenda extends Thread {
 						
 					}
 				});
-				/*MenuItem Estado = new MenuItem(opciones,SWT.CASCADE);
+				MenuItem Estado = new MenuItem(opciones,SWT.CASCADE);
 				Estado.setText("Estado");
 				Menu estadoMenu = new Menu(opciones);
-				Estado.setMenu(estadoMenu);*/
-				//Nombres[0].setText("Pepita");
+				Estado.setMenu(estadoMenu);
 				
-				
-				MenuItem espera = new MenuItem(opciones,SWT.PUSH);
+				MenuItem espera = new MenuItem(estadoMenu,SWT.PUSH);
 				espera.setText("En sala espera"); 
 				espera.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						EsperaWidgetSelected(evt);
+						EstadoWidgetSelected(evt,1);
 					}
 				});
-				MenuItem Siguiente = new MenuItem(opciones,SWT.PUSH);
+				
+				/* MenuItem Siguiente = new MenuItem(estadoMenu,SWT.PUSH);
 				Siguiente.setText("El siguiente");
 				Siguiente.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						SiguienteWidgetSelected(evt);
-						
-						
 					}
-				});
-				MenuItem cobrado = new MenuItem(opciones,SWT.PUSH);
+				});*/
+				
+				MenuItem cobrado = new MenuItem(estadoMenu,SWT.PUSH);
 				cobrado.setText("Cobrado");
 				cobrado.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						CobradoWidgetSelected(evt);
-						
-						
+						EstadoWidgetSelected(evt,4);
 					}
-				});				
+				});		
+				
+				MenuItem EnConsulta = new MenuItem(estadoMenu,SWT.PUSH);
+				EnConsulta.setText("Dentro Consulta");
+				EnConsulta.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						EstadoWidgetSelected(evt,2);
+					}
+				});	
+				
+				MenuItem visitado = new MenuItem(estadoMenu,SWT.PUSH);
+				visitado.setText("Atendido");
+				visitado.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						EstadoWidgetSelected(evt,3);
+					}
+				});	
+				
+				MenuItem noEstablecido = new MenuItem(estadoMenu,SWT.PUSH);
+				noEstablecido.setText("Ninguno");
+				noEstablecido.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						EstadoWidgetSelected(evt,0);
+					}
+				});
+				
 				Nombres[c].setText("");
 				Telefonos[c].setText("");
 				//}
@@ -1455,20 +1488,8 @@ public class panelAgenda extends Thread {
 			usoAgente.mostrarVentanaFicha(a);
 		else
 			usoAgente.mostrarMensajeAviso( "Debe seleccionar un paciente","Error");
-			//usoAgente.mostrarVentanaFicha();
-	}
-	
 
-/*	private void DarCitaWidgetSelected(SelectionEvent evt){
-		CLabel lsel=(CLabel)evt.getSource();
-		//busqueda del paciente que se le pasa como parametro para recoger todos sus datos
-		DatosCitaSinValidar d= buscarSeleccionado(lsel);
-		if (d.tomaNombre()=="")
-			usoAgente.mostrarVentanaCita();
-		else
-			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(), d.tomaTelf(), d.tomaHora());
-	
-	}*/
+	}
 	
 	/**
 	 * Accion del evento asociado al boton 'Dar Cita'
@@ -1478,9 +1499,6 @@ public class panelAgenda extends Thread {
 	private void DarCitaWidgetSelectedB(SelectionEvent evt){
 		if (!(seleccion==null)){
 		DatosCitaSinValidar d= buscarSeleccionado(seleccion);
-/*		if (d.tomaNombre()=="")
-			usoAgente.mostrarVentanaCita();
-		else*/
 			usoAgente.mostrarVentanaCita(d.tomaNombre(), d.tomaApell1(),d.getApell2(), d.tomaTelf(), d.tomaHora(),fd,d.getUsuario());
 		}else{
 			usoAgente.mostrarMensajeError("Debe seleccionar una cita", "Atención");
@@ -1554,6 +1572,7 @@ public class panelAgenda extends Thread {
 		for (int i=0;i<c;i++){
 			Nombres[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
 			Telefonos[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
+			agendaPersistencia(Agenda.getItem(Agenda.getSelectionIndex()).getText(),c);
 		}
 		for(int i=0;i<llamada.size();i++){
 			NombresL[i].setBackground(SWTResourceManager.getColor(255, 255, 255));
@@ -1567,6 +1586,7 @@ public class panelAgenda extends Thread {
 		if (!cNomSel.getText().equals(nombre)|| nombre.equals("")){
 			
 			lsel.setBackground(SWTResourceManager.getColor(123, 114, 211));
+			buscarSeleccionado(lsel);
 			cNomSel.setText(nombre);
 		}
 		else{
@@ -1630,6 +1650,7 @@ public class panelAgenda extends Thread {
 			if(Nombres[i]==nombre){
 				Telf=Telefonos[i].getText();
 				Hora=horas[i].getText();
+				Nombres[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
 				Telefonos[i].setBackground(SWTResourceManager.getColor(123, 114, 211));
 				aux=nombre.getText().split(" ");
 				
@@ -2831,57 +2852,46 @@ public class panelAgenda extends Thread {
 	 * EN PRUEBAS
 	 * @param evt
 	 */
-	private void EsperaWidgetSelected(SelectionEvent evt){
-/*		MenuItem lsel=(MenuItem)evt.getSource();
-		Menu m=lsel.getParent();
-		//lsel.get
-		CLabel llLabel=(CLabel)lsel.getData();
-		CLabel llLabel1=(CLabel)m.getData();
-		Menu m1=lsel.getParent();
-		
-		Decorations ll=(Decorations)m.getParent();
-	
-		String nombre=ll.getText();
-
-		int i;
-		for (i=0;i<c;i++){
-			if (Nombres[i].getText().equals(nombre))
-				Nombres[i].setBackground(SWTResourceManager.getColor(116, 193, 30));
-		}*/
-	}
-	
-	/**
-	 * Codigo asociado al evento del menu contextual 'cobrado'
-	 * EN PRUEBAS
-	 * @param evt
-	 */
-	private void CobradoWidgetSelected(SelectionEvent evt){
-		CLabel lsel=(CLabel)evt.getSource();
-		String nombre=lsel.getText();
-
-		int i;
-		for (i=0;i<c;i++){
-			if (Nombres[i].getText().equals(nombre))
-				Nombres[i].setBackground(SWTResourceManager.getColor(218, 101, 101));
+	private void EstadoWidgetSelected(SelectionEvent evt, int estado){
+		int i=0;
+		boolean Es=false;
+		while (i<c & !Es){
+			if(Nombres[i]==seleccion){
+				Nombres[i].setBackground(SWTResourceManager.getColor(173, 216, 167));
+				Telefonos[i].setBackground(SWTResourceManager.getColor(173, 216, 167));
+				Es=true;
+				i--;
+			}
+			i++;
 		}
-		
-	}
-	
-	/**
-	 * Codigo asociado al evento del menu contextual 'el siguiente'
-	 * EN PRUEBAS
-	 * @param evt
-	 */
-	private void SiguienteWidgetSelected(SelectionEvent evt){
-		CLabel lsel=(CLabel)evt.getSource();
-		String nombre=lsel.getText();
-
-		int i;
-		for (i=0;i<c;i++){
-			if (Nombres[i].getText().equals(nombre))
-				Nombres[i].setBackground(SWTResourceManager.getColor(48, 175, 175));
+		Es=false;
+		i=0;
+		String medico=Agenda.getSelection().getText();
+		ArrayList<DatosCitaSinValidar> ll=new ArrayList<DatosCitaSinValidar>();
+		while(i<datos.getNumM() && !Es){
+			if (datos.getMedicos().get(i).getNombre().equals(medico)){
+				ll=datos.getMedicos().get(i).getDatos();
+				Es=true;
+				i--;
+			}
+			i++;
 		}
-		
+		Es=false;
+		int v=0;
+		DatosCitaSinValidar cita=buscarSeleccionado(seleccion);
+		while(v<ll.size() &&!Es){
+			if(ll.get(v).tomaHora().equals(cita.tomaHora())){
+				datos.getMedicos().get(i).getDatos().get(v).setEstado(1);
+				DatosCitaSinValidar aux=datos.getMedicos().get(i).getDatos().get(v);
+				aux.setFecha(fy);
+				aux.setEstado(estado);
+				aux.setMedico(datos.getMedicos().get(i).getUsuario());
+				usoAgente.anadeEstado(aux);
+				Es=true;
+			}
+			v++;
+		}
+		v--;
 	}
 	
 	/**

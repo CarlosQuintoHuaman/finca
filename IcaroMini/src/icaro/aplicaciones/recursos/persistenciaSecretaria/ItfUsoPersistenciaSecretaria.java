@@ -58,6 +58,14 @@ public interface ItfUsoPersistenciaSecretaria extends ItfUsoRecursoSimple {
 	
 	
 	/**
+	 * Funcion con la que se actualiza el estado de una cita
+	 * @param cita		:: Datos de la cita que se debe actulizar
+	 * @throws ErrorEnRecursoException 
+	 */
+	public void setEstado(DatosCitaSinValidar cita) throws ErrorEnRecursoException;
+	
+	
+	/**
 	 * Funcion con la que se borra el extra que se le pasa por parametro de la bbdd
 	 * @param datos			:: Datos del extra que se quiere borrar la bbdd. 
 	 * @throws ErrorEnRecursoException 
