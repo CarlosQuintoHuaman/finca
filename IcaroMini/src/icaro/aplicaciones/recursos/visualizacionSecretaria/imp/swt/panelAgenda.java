@@ -519,7 +519,7 @@ public class panelAgenda extends Thread {
 						Agenda = new CTabFolder(huecoAgenda, SWT.NONE);
 					
 						GridData AgendaLData = new GridData();
-						AgendaLData.verticalAlignment = GridData.FILL;
+						AgendaLData.verticalAlignment = GridData.FILL;		
 						AgendaLData.horizontalAlignment = GridData.FILL;
 						AgendaLData.grabExcessVerticalSpace = true;
 						AgendaLData.grabExcessHorizontalSpace = true;
@@ -527,10 +527,10 @@ public class panelAgenda extends Thread {
 						Agenda.setSelection(0);
 						{
 							GridData seleccionadoLData = new GridData();
-							seleccionadoLData.verticalAlignment = GridData.BEGINNING;
+							seleccionadoLData.verticalAlignment = GridData.FILL;	
 							seleccionadoLData.horizontalAlignment = GridData.FILL;
 							seleccionadoLData.heightHint = 29;
-							seleccionadoLData.grabExcessVerticalSpace = true;
+							//seleccionadoLData.grabExcessVerticalSpace = true;
 							seleccionadoLData.grabExcessHorizontalSpace = true;
 							seleccionado = new Composite(huecoAgenda, SWT.NONE);
 							GridLayout seleccionadoLayout = new GridLayout();
@@ -806,9 +806,16 @@ public class panelAgenda extends Thread {
 				for(int i=0;i<datos.getNumM();i++){
 					TabNomMed[i] = new CTabItem(Agenda, SWT.NONE);
 					TabNomMed[i].setText(datos.getMedicos().get(i).getNombre());
+		
 					agendaDinamica[i] = new Composite(Agenda, SWT.SCROLL_PAGE|SWT.V_SCROLL|SWT.BORDER);
 					GridLayout AgendaDinamicaLayout = new GridLayout();
 					AgendaDinamicaLayout.numColumns = 3;
+					GridData AgendaDinamicaLData = new GridData();				//Todo esto es nuevo
+					AgendaDinamicaLData.verticalAlignment=GridData.FILL;
+					AgendaDinamicaLData.horizontalAlignment = GridData.FILL;
+					AgendaDinamicaLData.grabExcessHorizontalSpace = true;
+					AgendaDinamicaLData.grabExcessVerticalSpace = false;
+					agendaDinamica[i].setLayoutData(AgendaDinamicaLData);
 					agendaDinamica[i].setLayout(AgendaDinamicaLayout);
 					
 					//genera la agenda (horas y pacientes) del medico que se le pasa por paramentro
@@ -818,7 +825,7 @@ public class panelAgenda extends Thread {
 			GridData AgendaLData = new GridData();
 			AgendaLData.verticalAlignment = GridData.FILL;
 			AgendaLData.horizontalAlignment = GridData.FILL;
-			AgendaLData.grabExcessVerticalSpace = true;
+			//AgendaLData.grabExcessVerticalSpace = true;
 			AgendaLData.grabExcessHorizontalSpace = true;
 			Agenda.setLayoutData(AgendaLData);
 			Agenda.setSelection(0);
@@ -998,6 +1005,7 @@ public class panelAgenda extends Thread {
 				horas[c] = new Button(agendaDinamica[k], SWT.PUSH | SWT.CENTER);
 				aux1[c] = new GridData();
 				aux1[c].horizontalAlignment = GridData.FILL;
+				aux1[c].verticalAlignment = GridData.BEGINNING;      //nuevo
 				horas[c].setLayoutData(aux1[c]);
 				horas[c].setAlignment(SWT.FILL);
 				String aux=String.valueOf(i+inicio.getHours());
@@ -1089,6 +1097,7 @@ public class panelAgenda extends Thread {
 				Nombres[c].setAlignment(SWT.CENTER);
 				aux2[c] = new GridData();
 				aux2[c].horizontalAlignment = GridData.FILL;
+				aux2[c].verticalAlignment = GridData.BEGINNING;      //nuevo
 				aux2[c].widthHint = 484;
 
 				aux2[c].grabExcessHorizontalSpace = true;
@@ -1097,6 +1106,7 @@ public class panelAgenda extends Thread {
 				Telefonos[c].setAlignment(SWT.CENTER);
 				aux3[c] = new GridData();
 				aux3[c].horizontalAlignment = GridData.FILL;
+				aux3[c].verticalAlignment = GridData.BEGINNING;      //nuevo
 				aux3[c].grabExcessHorizontalSpace = true;
 				Telefonos[c].setLayoutData(aux3[c]);
 
